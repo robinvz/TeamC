@@ -3,22 +3,22 @@
          xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
          xsi:schemaLocation="http://java.sun.com/xml/ns/javaee http://java.sun.com/xml/ns/javaee/web-app_3_0.xsd">
 
-    <display-name>Spring Web MVC Application</display-name>
+    <display-name>Trips Webapp</display-name>
 
     <servlet>
-        <servlet-name>HelloWorld</servlet-name>
+        <servlet-name>Trips</servlet-name>
         <servlet-class>org.springframework.web.servlet.DispatcherServlet</servlet-class>
         <load-on-startup>1</load-on-startup>
     </servlet>
 
     <servlet-mapping>
-        <servlet-name>HelloWorld</servlet-name>
+        <servlet-name>Trips</servlet-name>
         <url-pattern>/</url-pattern>
     </servlet-mapping>
 
     <context-param>
         <param-name>contextConfigLocation</param-name>
-        <param-value>/WEB-INF/HelloWorld-servlet.xml</param-value>
+        <param-value>/WEB-INF/Trips-servlet.xml</param-value>
     </context-param>
 
     <listener>
