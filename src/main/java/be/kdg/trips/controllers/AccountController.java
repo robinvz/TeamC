@@ -18,7 +18,6 @@ public class AccountController
     @RequestMapping(method = RequestMethod.GET)
     public String getLoginPage(ModelMap map)
     {
-        map.addAttribute("message", "Login page");
         return "login";
     }
 

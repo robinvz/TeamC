@@ -1,10 +1,3 @@
-<%--
-  Created by IntelliJ IDEA.
-  User: Keke
-  Date: 6/02/13
-  Time: 9:22
-  To change this template use File | Settings | File Templates.
---%>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <html>
 <head>
@@ -22,7 +15,7 @@
                 <li><a class="selected nav-link" href="index.html" title="Home">Home</a></li>
                 <li><a class="nav-link" href="../jsp/trips.html" title="">Trips</a></li>
                 <li><a class="nav-link" href="../jsp/Profiel.html" title="">Profiel</a></li>
-                <li><a class="nav-link" href="account" title="">Inloggen</a></li>
+                <li><a class="nav-link" href="account" title="">Log in</a></li>
                 <li><a class="nav-link" href="../jsp/Contact.html" title="">Contact</a></li>
             </ul>
         </nav>

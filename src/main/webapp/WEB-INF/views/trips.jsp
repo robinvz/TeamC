@@ -1,6 +1,4 @@
-
-<!DOCTYPE html>
-<meta charset="=UTF-8">
+<%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <html>
 <head>
     <link rel="stylesheet" href="../css/main.css" />
@@ -102,7 +100,7 @@
         </table>
     </div>
 
-<footer><p class="footer">Trips -   2013</p></footer>
+    <footer><p class="footer">Trips -   2013</p></footer>
 </div>
 </body>
 <script src="../js/jquery-1.9.0.min.js"></script>
