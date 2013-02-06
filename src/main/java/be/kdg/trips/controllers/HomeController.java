@@ -15,7 +15,7 @@ import org.springframework.web.bind.annotation.RequestMethod;
 @RequestMapping("/")
 public class HomeController
 {
-    @RequestMapping(value = "/", method = RequestMethod.GET)
+    @RequestMapping(method = RequestMethod.GET)
     public String sayHello(ModelMap modelMap)
     {
         modelMap.addAttribute("message", "Hello from Spring MVC.");
