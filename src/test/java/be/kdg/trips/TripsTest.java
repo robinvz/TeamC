@@ -8,4 +8,5 @@ package be.kdg.trips;
  */
 public class TripsTest
 {
+
 }

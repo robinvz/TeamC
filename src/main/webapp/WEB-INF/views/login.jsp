@@ -1,4 +1,6 @@
+<%@ taglib prefix="form" uri="http://www.springframework.org/tags/form" %>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
+
 <html>
 <head>
     <link rel="stylesheet" href="../css/main.css" />
@@ -40,12 +42,14 @@
         </fieldset>
 
         <fieldset id="form-register" >
-            <form>
-                <label for="newemail"> Email: </label> <input type="text" name="newemail" id="newemail">
+            <form:form action="account/register" method="POST">
+                <form:label path="email">First Name</form:label>
+                <form:input path="email" />
+                <!--<label for="newemail"> Email: </label> <input type="text" name="newemail" id="newemail">
                 <label for="newpassword"> Password: </label> <input type="password" name="newpassword" id="newpassword">
-                <label for="newpasswordconf"> Confirm Password: </label> <input type="password" name="newpasswordconf" id="newpasswordconf">
+                <label for="newpasswordconf"> Confirm Password: </label> <input type="password" name="newpasswordconf" id="newpasswordconf">-->
                 <input type="submit" value="Registreren" class="btn-submit">
-            </form>
+            </form:form>
         </fieldset>
 
 

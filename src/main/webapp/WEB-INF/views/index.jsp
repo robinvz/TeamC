@@ -12,7 +12,7 @@
         <h1 class="header-title">Trips</h1>
         <nav class="header-nav">
             <ul class="nav">
-                <li><a class="selected nav-link" href="index.html" title="Home">Home</a></li>
+                <li><a class="selected nav-link" href="/" title="Home">Home</a></li>
                 <li><a class="nav-link" href="../jsp/trips.html" title="">Trips</a></li>
                 <li><a class="nav-link" href="../jsp/Profiel.html" title="">Profiel</a></li>
                 <li><a class="nav-link" href="account" title="">Log in</a></li>
@@ -25,6 +25,7 @@
     <div id="content">
         <div class="title-block">
             <h1>Trips</h1>
+            <h1>${message}</h1>
             <h2>De oplossing voor het plannen van uw uitstapen</h2>
         </div>
     </div>
