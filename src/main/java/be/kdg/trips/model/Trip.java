@@ -6,6 +6,6 @@ package be.kdg.trips.model;
  * Karel de Grote-Hogeschool
  * 2012-2013
  */
-public class Trips
+public class Trip
 {
 }
