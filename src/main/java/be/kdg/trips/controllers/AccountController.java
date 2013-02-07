@@ -2,14 +2,13 @@ package be.kdg.trips.controllers;
 
 import be.kdg.trips.model.User;
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
 import org.springframework.ui.ModelMap;
 import org.springframework.validation.BindingResult;
-import org.springframework.web.bind.annotation.ModelAttribute;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.SessionAttributes;
+import org.springframework.web.bind.annotation.*;
 import org.springframework.web.context.request.ServletRequestAttributes;
 import org.springframework.web.servlet.ModelAndView;
+import org.springframework.web.servlet.View;
 
 /**
  * Subversion 2
@@ -21,21 +20,28 @@ import org.springframework.web.servlet.ModelAndView;
 @SessionAttributes
 public class AccountController
 {
-
-
-    @RequestMapping(value = "/login", method = RequestMethod.POST)
-    public String addContact(@ModelAttribute("login")
-                             User user, BindingResult result) {
-
-        System.out.println("Email:" + user.getEmail() +
-                "Password:" + user.getPassword());
-
-        return "index";
+    @ModelAttribute
+    public User newRequest(@RequestParam(required=false) Integer id) {
+        return (new User());
     }
 
-    @RequestMapping("/login")
-    public ModelAndView showLogin() {
+    /**
+     * <p>Saves a person.</p>
+     *
+     * <p>Expected HTTP POST and request '/person/form'.</p>
+     */
+    @RequestMapping(value="/login", method=RequestMethod.POST)
+    public void form(User person, Model model) {
+        System.out.println("asdfasdfasdf"+ person.getPassword());
+    }
 
-        return new ModelAndView("login", "command", new User());
+
+    /**
+     * <p>Person form request.</p>
+     *
+     * <p>Expected HTTP GET and request '/person/form'.</p>
+     */
+    @RequestMapping(value="/login", method=RequestMethod.GET)
+    public void form() {
     }
 }
