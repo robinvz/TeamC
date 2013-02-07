@@ -7,7 +7,9 @@ import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.SessionAttributes;
 import org.springframework.web.context.request.ServletRequestAttributes;
+import org.springframework.web.servlet.ModelAndView;
 
 /**
  * Subversion 2
@@ -16,24 +18,24 @@ import org.springframework.web.context.request.ServletRequestAttributes;
  * 2012-2013
  */
 @Controller
-@RequestMapping(value = "/account")
+@SessionAttributes
 public class AccountController
 {
-    @RequestMapping(method = RequestMethod.GET)
-    public String getLoginPage()
-    {
-        return "login";
+
+
+    @RequestMapping(value = "/login", method = RequestMethod.POST)
+    public String addContact(@ModelAttribute("login")
+                             User user, BindingResult result) {
+
+        System.out.println("Email:" + user.getEmail() +
+                "Password:" + user.getPassword());
+
+        return "index";
     }
 
-    @RequestMapping(value = "/register", method = RequestMethod.POST)
-    public String register(ModelMap map, @ModelAttribute ("user") User user, BindingResult bindingResult)
-    {
-        if(bindingResult.hasErrors())
-        {
-            map.addAttribute("message", "Register Failed");
-            return "index";
-        }
-        map.addAttribute("message", "Registered " + user.getEmail() + " / " + user.getPassword());
-        return "index";
+    @RequestMapping("/login")
+    public ModelAndView showLogin() {
+
+        return new ModelAndView("login", "command", new User());
     }
 }

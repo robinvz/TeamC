@@ -15,7 +15,7 @@
                 <li><a class="selected nav-link" href="/" title="Home">Home</a></li>
                 <li><a class="nav-link" href="../jsp/trips.html" title="">Trips</a></li>
                 <li><a class="nav-link" href="../jsp/Profiel.html" title="">Profiel</a></li>
-                <li><a class="nav-link" href="account" title="">Log in</a></li>
+                <li><a class="nav-link" href="/login" title="">Log in</a></li>
                 <li><a class="nav-link" href="../jsp/Contact.html" title="">Contact</a></li>
             </ul>
         </nav>
