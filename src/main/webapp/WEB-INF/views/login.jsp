@@ -42,9 +42,11 @@
         </fieldset>
 
         <fieldset id="form-register" >
-            <form:form action="account/register" method="POST">
+            <form:form action="login" method="POST">
                 <form:label path="email">First Name</form:label>
                 <form:input path="email" />
+                <form:label path="password">Password</form:label>
+                <form:input path="password" />
                 <!--<label for="newemail"> Email: </label> <input type="text" name="newemail" id="newemail">
                 <label for="newpassword"> Password: </label> <input type="password" name="newpassword" id="newpassword">
                 <label for="newpasswordconf"> Confirm Password: </label> <input type="password" name="newpasswordconf" id="newpasswordconf">-->
