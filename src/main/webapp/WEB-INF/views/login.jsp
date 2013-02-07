@@ -3,23 +3,23 @@
 
 <html>
 <head>
-    <link rel="stylesheet" href="../css/main.css" />
-    <link rel="stylesheet" href="../css/login.css" />
-    <link rel="shortcut icon" href="favicon.ico">
+    <link rel="stylesheet" href="${pageContext.request.contextPath}/resources/css/main.css" />
+    <link rel="stylesheet" href="${pageContext.request.contextPath}/resources/css/login.css" />
+    <link rel="shortcut icon" href="${pageContext.request.contextPath}/resources/res/favicon.ico">
     <title>Home</title>
 </head>
 <body>
 <div id="page">
     <header>
-        <img class="header-img" src="../res/img/dragon.png" alt="Logo" title="Home"/>
+        <img class="header-img" src="${pageContext.request.contextPath}/resources/res/img/dragon.png" alt="Logo" title="Home"/>
         <h1 class="header-title">Trips</h1>
         <nav class="header-nav">
             <ul class="nav">
-                <li><a class="nav-link" href="../views/index.html" title="Home">Home</a></li>
-                <li><a class="nav-link" href="trips.html" title="">Trips</a></li>
-                <li><a class="nav-link" href="../html/Profiel.html" title="">Profiel</a></li>
-                <li><a class="selected nav-link" href="../html/Login.html" title="">Inloggen</a></li>
-                <li><a class="nav-link" href="../html/Contact.html" title="">Contact</a></li>
+                <li><a class="nav-link" href="/index" title="Home">Home</a></li>
+                <li><a class="nav-link" href="/trips" title="">Trips</a></li>
+                <li><a class="nav-link" href="/profile" title="">Profiel</a></li>
+                <li><a class="selected nav-link" href="/login" title="">Inloggen</a></li>
+                <li><a class="nav-link" href="/contact" title="">Contact</a></li>
             </ul>
         </nav>
     </header>
@@ -60,10 +60,10 @@
     <footer><p class="footer">Trips -   2013</p></footer>
 </div>
 </body>
-<script src="../js/jquery-1.9.0.min.js"></script>
-<script src="../js/knockout.js"></script>
-<script src="../js/login.js"></script>
+<script src="${pageContext.request.contextPath}/resources/js/jquery-1.9.0.min.js"></script>
+<script src="${pageContext.request.contextPath}/resources/js/knockout.js"></script>
+<script src="${pageContext.request.contextPath}/resources/js/login.js"></script>
 <!--[if lt IE 9]>
-<script src="../js/html5shiv.js"></script>
+<script src="${pageContext.request.contextPath}/resources/js/html5shiv.js"></script>
 <![endif]-->
 </html>

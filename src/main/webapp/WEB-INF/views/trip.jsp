@@ -1,14 +1,14 @@
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <html>
 <head>
-    <link rel="stylesheet" href="../css/main.css" />
-    <link rel="shortcut icon" href="../favicon.ico">
+    <link rel="stylesheet" href="${pageContext.request.contextPath}/resources/css/main.css" />
+    <link rel="shortcut icon" href="${pageContext.request.contextPath}/resources/res/favicon.ico">
     <title>Home</title>
 </head>
 <body>
 <div id="page">
     <header>
-        <img class="header-img" src="../res/img/dragon.png" alt="Logo" title="Home"/>
+        <img class="header-img" src="${pageContext.request.contextPath}/resources/res/img/dragon.png" alt="Logo" title="Home"/>
         <h1 class="header-title">Trips</h1>
         <nav class="header-nav">
             <ul class="nav">
@@ -52,10 +52,10 @@
     <footer><p class="footer">Trips -   2013</p></footer>
 </div>
 </body>
-<script src="../js/jquery-1.9.0.min.js"></script>
-<script src="../js/knockout.js"></script>
+<script src="${pageContext.request.contextPath}/resources/js/jquery-1.9.0.min.js"></script>
+<script src="${pageContext.request.contextPath}/resources/js/knockout.js"></script>
 
 <!--[if lt IE 9]>
-<script src="../js/html5shiv.js"></script>
+<script src="${pageContext.request.contextPath}/resources/js/html5shiv.js"></script>
 <![endif]-->
 </html>
