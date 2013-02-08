@@ -17,42 +17,53 @@
     <!-- Dependencies -->
     <dependencies>
 
-    <!-- JUnit -->
-    <dependency>
-        <groupId>junit</groupId>
-        <artifactId>junit</artifactId>
-        <version>4.11</version>
-        <scope>test</scope>
-    </dependency>
+        <dependency>
+            <groupId>javax.servlet</groupId>
+            <artifactId>jstl</artifactId>
+            <version>1.2</version>
+        </dependency>
+        <dependency>
+            <groupId>javax.servlet.jsp.jstl</groupId>
+            <artifactId>javax.servlet.jsp.jstl-api</artifactId>
+            <version>1.2.1</version>
+        </dependency>
 
-    <!-- JPA & Hibernate -->
-    <dependency>
-        <groupId>org.hibernate.java-persistence</groupId>
-        <artifactId>jpa-api</artifactId>
-        <version>2.0-cr-1</version>
-    </dependency>
-    <dependency>
-        <groupId>org.hibernate</groupId>
-        <artifactId>hibernate-entitymanager</artifactId>
-        <version>4.1.9.Final</version>
-    </dependency>
+        <!-- JUnit -->
+        <dependency>
+            <groupId>junit</groupId>
+            <artifactId>junit</artifactId>
+            <version>4.11</version>
+            <scope>test</scope>
+        </dependency>
 
-    <!-- Spring -->
-    <dependency>
-        <groupId>org.springframework</groupId>
-        <artifactId>spring-core</artifactId>
-        <version>${spring.version}</version>
-    </dependency>
-    <dependency>
-        <groupId>org.springframework</groupId>
-        <artifactId>spring-web</artifactId>
-        <version>${spring.version}</version>
-    </dependency>
-    <dependency>
-        <groupId>org.springframework</groupId>
-        <artifactId>spring-webmvc</artifactId>
-        <version>${spring.version}</version>
-    </dependency>
+        <!-- JPA & Hibernate -->
+        <dependency>
+            <groupId>org.hibernate.java-persistence</groupId>
+            <artifactId>jpa-api</artifactId>
+            <version>2.0-cr-1</version>
+        </dependency>
+        <dependency>
+            <groupId>org.hibernate</groupId>
+            <artifactId>hibernate-entitymanager</artifactId>
+            <version>4.1.9.Final</version>
+        </dependency>
+
+        <!-- Spring -->
+        <dependency>
+            <groupId>org.springframework</groupId>
+            <artifactId>spring-core</artifactId>
+            <version>${spring.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>org.springframework</groupId>
+            <artifactId>spring-web</artifactId>
+            <version>${spring.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>org.springframework</groupId>
+            <artifactId>spring-webmvc</artifactId>
+            <version>${spring.version}</version>
+        </dependency>
 
     </dependencies>
 
