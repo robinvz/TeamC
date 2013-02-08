@@ -16,7 +16,7 @@
         <h1 class="header-title">Trips</h1>
         <nav class="header-nav">
             <ul class="nav">
-                <li><a class="nav-link" href="/index" title="Home">Home</a></li>
+                <li><a class="nav-link" href="/" title="Home">Home</a></li>
                 <li><a class="nav-link" href="/trips" title="">Trips</a></li>
                 <li><a class="nav-link" href="/profile" title="">Profiel</a></li>
                 <li><a class="selected nav-link" href="/login" title="">Inloggen</a></li>

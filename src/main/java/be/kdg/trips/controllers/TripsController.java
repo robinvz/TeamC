@@ -6,16 +6,15 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.SessionAttributes;
 
 /**
- * Created with IntelliJ IDEA.
- * User: Robin
- * Date: 7/02/13
- * Time: 15:21
- * To change this template use File | Settings | File Templates.
+ * Subversion $Id$
+ * Project Application Development
+ * Karel de Grote-Hogeschool
+ * 2012-2013
  */
 @Controller
 @SessionAttributes
-public class ContactController {
-    @RequestMapping(value="/contact", method=RequestMethod.GET)
+public class TripsController {
+    @RequestMapping(value="/trips", method= RequestMethod.GET)
     public void doSomething(){
 
     }
