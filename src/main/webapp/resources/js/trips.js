@@ -12,7 +12,7 @@ $(document).ready(function(){
     );
 
     $("#trips tr").on('click', function(){
-       window.location = '../html/Trip.html';
+       window.location = '/trip';
     });
 
 });

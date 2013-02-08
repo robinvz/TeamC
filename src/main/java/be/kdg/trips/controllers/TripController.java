@@ -32,4 +32,8 @@ public class TripController {
         return "trip";
     }
 
+    @RequestMapping(value = "/trip", method = RequestMethod.GET)
+    public void doSomething(){
+
+    }
 }
