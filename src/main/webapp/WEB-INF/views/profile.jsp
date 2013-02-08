@@ -13,11 +13,11 @@
         <h1 class="header-title">Trips</h1>
         <nav class="header-nav">
             <ul class="nav">
-                <li><a class="nav-link" href="../views/index.html" title="Home">Home</a></li>
-                <li><a class="nav-link" href="trips.html" title="">Trips</a></li>
-                <li><a class="selected nav-link" href="../html/Profiel.html" title="">Profiel</a></li>
-                <li><a class="nav-link" href="../html/Login.html" title="">Inloggen</a></li>
-                <li><a class="nav-link" href="../html/Contact.html" title="">Contact</a></li>
+                <li><a class="nav-link" href="/" title="Home">Home</a></li>
+                <li><a class="nav-link" href="/trips" title="">Trips</a></li>
+                <li><a class="selected nav-link" href="/profile" title="">Profiel</a></li>
+                <li><a class="nav-link" href="/login" title="">Inloggen</a></li>
+                <li><a class="nav-link" href="/contact" title="">Contact</a></li>
             </ul>
         </nav>
     </header>
