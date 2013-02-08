@@ -4,23 +4,11 @@
     <link rel="stylesheet" href="${pageContext.request.contextPath}/resources/css/main.css" />
     <link rel="stylesheet" href="${pageContext.request.contextPath}/resources/css/profiel.css" />
     <link rel="shortcut icon" href="${pageContext.request.contextPath}/resources/res/favicon.ico">
-    <title>Home</title>
+    <title>Profile page</title>
 </head>
 <body>
 <div id="page">
-    <header>
-        <img class="header-img" src="${pageContext.request.contextPath}/resources/res/img/dragon.png" alt="Logo" title="Home"/>
-        <h1 class="header-title">Trips</h1>
-        <nav class="header-nav">
-            <ul class="nav">
-                <li><a class="nav-link" href="/" title="Home">Home</a></li>
-                <li><a class="nav-link" href="/trips" title="">Trips</a></li>
-                <li><a class="selected nav-link" href="/profile" title="">Profiel</a></li>
-                <li><a class="nav-link" href="/login" title="">Inloggen</a></li>
-                <li><a class="nav-link" href="/contact" title="">Contact</a></li>
-            </ul>
-        </nav>
-    </header>
+    <jsp:include page="header.jsp" />
 
     <div id="content">
         <aside>
@@ -57,7 +45,7 @@
         </div>
     </div>
 
-    <footer><p class="footer">Trips -   2013</p></footer>
+    <footer><p class="footer">Trips - 2013</p></footer>
 </div>
 </body>
 <script src="${pageContext.request.contextPath}/resources/js/jquery-1.9.0.min.js"></script>

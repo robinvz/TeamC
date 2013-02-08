@@ -1,28 +1,19 @@
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
+<%@taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
+
 <html>
 <head>
     <link rel="stylesheet" href="${pageContext.request.contextPath}/resources/css/main.css" />
     <link rel="stylesheet" href="${pageContext.request.contextPath}/resources/css/trips.css" />
     <link rel="shortcut icon" href="${pageContext.request.contextPath}/resources/res/favicon.ico">
-    <title>Home</title>
+    <title>Trip overview</title>
 </head>
 <body>
 <div id="page">
-    <header>
-        <img class="header-img" src="${pageContext.request.contextPath}/resources/res/img/dragon.png" alt="Logo" title="Home"/>
-        <h1 class="header-title">Trips</h1>
-        <nav class="header-nav">
-            <ul class="nav">
-                <li><a class="nav-link" href="/" title="Home">Home</a></li>
-                <li><a class="selected nav-link" href="/trips" title="">Trips</a></li>
-                <li><a class="nav-link" href="/profile" title="">Profiel</a></li>
-                <li><a class="nav-link" href="/login" title="">Inloggen</a></li>
-                <li><a class="nav-link" href="/contact" title="">Contact</a></li>
-            </ul>
-        </nav>
-    </header>
+    <jsp:include page="header.jsp" />
+
     <div id="trip-pic">
-        <h2>Overzicht trips</h2>
+        <h2>Trips</h2>
     </div>
 
     <div id="content">
@@ -32,52 +23,34 @@
                 <th>Trip</th>
                 <th>Locatie</th>
                 <th>Tijdstip</th>
-                <th>Privacy</th>
             </tr>
             </thead>
             <tbody id="trips-list">
-            <tr>
-                <td>tripnaam</td>
-                <td>Antwerpen</td>
-                <td>01/01/2013 - 02/01/2013</td>
-                <td>Openbaar</td>
-            </tr>
-            <tr>
-                <td>tripnaam</td>
-                <td>Antwerpen</td>
-                <td>01/01/2013 - 02/01/2013</td>
-                <td>Openbaar</td>
-            </tr>
-            <tr>
-                <td>tripnaam</td>
-                <td>Antwerpen</td>
-                <td>01/01/2013 - 02/01/2013</td>
-                <td>Openbaar</td>
-            </tr>
-            <tr>
-                <td>tripnaam</td>
-                <td>Antwerpen</td>
-                <td>01/01/2013 - 02/01/2013</td>
-                <td>Openbaar</td>
-            </tr>
-            <tr>
-                <td>tripnaam</td>
-                <td>Antwerpen</td>
-                <td>01/01/2013 - 02/01/2013</td>
-                <td>Openbaar</td>
-            </tr>
-            <tr>
-                <td>tripnaam</td>
-                <td>Antwerpen</td>
-                <td>01/01/2013 - 02/01/2013</td>
-                <td>Openbaar</td>
-            </tr>
-            <tr>
-                <td>tripnaam</td>
-                <td>Antwerpen</td>
-                <td>01/01/2013 - 02/01/2013</td>
-                <td>Openbaar</td>
-            </tr>
+
+            <c:if test="${not empty tripsList}">
+                <c:forEach items="${tripsList}" var="trip">
+                    <form action="/trip" method="GET">
+                        <fieldset>
+                            <tr>
+                            <div class="form-row">
+                                <td><label>Naam: ></label></td>
+                                <td><output>${trip.naam}></output></td>
+                                <td><label>Locatie: ></label></td>
+                                <td><output>${trip.locatie}></output></td>
+                                <td><label>Tijdstip: ></label></td>
+                                <td><output>${trip.tijdstip}></output></td>
+                            </div>
+                            <div class="form-buttons">
+                                <div class="button">
+                                    <td><input name="submit" type="submit" value="Select" /></td>
+                                </div>
+                            </div>
+                        </fieldset>
+                        </tr>
+                    </form>
+                </c:forEach>
+            </c:if>
+
             <tr>
                 <td>tripnaam</td>
                 <td>Antwerpen</td>
@@ -100,7 +73,7 @@
         </table>
     </div>
 
-    <footer><p class="footer">Trips -   2013</p></footer>
+    <footer><p class="footer">Trips - 2013</p></footer>
 </div>
 </body>
 <script src="${pageContext.request.contextPath}/resources/js/jquery-1.9.0.min.js"></script>

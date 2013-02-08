@@ -4,24 +4,12 @@
     <link rel="stylesheet" href="${pageContext.request.contextPath}/resources/css/main.css"/>
     <link rel="stylesheet" href="${pageContext.request.contextPath}/resources/css/trips.css"/>
     <link rel="shortcut icon" href="${pageContext.request.contextPath}/resources/res/favicon.ico">
-    <title>Home</title>
+    <title>Contact page</title>
 </head>
 <body>
 <div id="page">
-    <header>
-        <img class="header-img" src="${pageContext.request.contextPath}/resources/res/img/dragon.png" alt="Logo" title="Home"/>
+    <jsp:include page="header.jsp" />
 
-        <h1 class="header-title">Trips</h1>
-        <nav class="header-nav">
-            <ul class="nav">
-                <li><a class="nav-link" href="/" title="Home">Home</a></li>
-                <li><a class="nav-link" href="/trips" title="">Trips</a></li>
-                <li><a class="nav-link" href="/profile" title="">Profiel</a></li>
-                <li><a class="nav-link" href="/login" title="">Inloggen</a></li>
-                <li><a class="selected nav-link" href="/contact" title="">Contact</a></li>
-            </ul>
-        </nav>
-    </header>
     <div id="contact">
         <h2>Contact</h2>
     </div>
