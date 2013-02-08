@@ -11,7 +11,9 @@ public class User
     private String email;
     private String password;
 
-    public User()
+    public User(){}
+
+    public User(String email, String password)
     {
 
     }
@@ -34,5 +36,10 @@ public class User
     public void setPassword(String password)
     {
         this.password = password;
+    }
+
+    public void editCredentials(User modified) {
+
+
     }
 }
