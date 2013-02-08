@@ -16,10 +16,13 @@ import org.springframework.web.servlet.ModelAndView;
 @Controller
 @SessionAttributes
 public class ProfileController {
-
     @RequestMapping(method = RequestMethod.GET)
         public ModelAndView showProfile(){
             return new ModelAndView();
         }
 
+    @RequestMapping(value="/profile", method=RequestMethod.GET)
+    public void doSomething(){
+
+    }
 }
