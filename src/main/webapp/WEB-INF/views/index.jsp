@@ -26,7 +26,7 @@
         <div class="title-block">
             <h1>Trips</h1>
             <h1>${message}</h1>
-            <h2>De oplossing voor het plannen van uw uitstapen</h2>
+            <h2>Dé oplossing voor het plannen van uw uitstappen</h2>
         </div>
     </div>
     <footer><p class="footer">Trips -   2013</p></footer>
