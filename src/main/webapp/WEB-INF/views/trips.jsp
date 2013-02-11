@@ -13,7 +13,7 @@
     <jsp:include page="header.jsp" />
 
     <div id="trip-pic">
-        <h2>Trips</h2>
+        <h2>Overview</h2>
     </div>
 
     <div id="content">
@@ -29,7 +29,7 @@
 
             <c:if test="${not empty tripsList}">
                 <c:forEach items="${tripsList}" var="trip">
-                    <form action="/trip" method="GET">
+                    <form action="/selectTrip" method="GET">
                         <fieldset>
                             <tr>
                             <div class="form-row">

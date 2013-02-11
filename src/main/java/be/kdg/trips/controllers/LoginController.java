@@ -19,53 +19,33 @@ import java.nio.file.attribute.UserPrincipalLookupService;
  */
 @Controller
 public class LoginController {
-
-  //  @Autowired
-  //  private UserService userService;
+    //  @Autowired
+    //  private UserService userService;
 
     @Autowired
     private HttpSession session;
 
-    @RequestMapping(value = "/login",method = RequestMethod.GET)
+    @RequestMapping(value = "/login", method = RequestMethod.GET)
     public String login() {
         return "login";
     }
 
-    @RequestMapping(value = "/login",method = RequestMethod.POST)
+    @RequestMapping(value = "/login", method = RequestMethod.POST)
     public String handleLogin(HttpServletRequest request) {
-            String email = request.getParameter("email");
-            String password = request.getParameter("password");
-           // User user = null;                                       //TODO fix get from session
-            // user = userService.getUserByEmail(email);
-            User user = new User("alfred", "kwak")    ;
-
-            session.setAttribute("user", user);
-            return "index";
-
+        String email = request.getParameter("email");
+        String password = request.getParameter("password");
+        //User user = null;                                       //TODO fix get from session
+        //user = userService.getUserByEmail(email);
+        User user = new User("alfred", "kwak");
+        session.setAttribute("user", user);
+        return "profile";
     }
 
-    @RequestMapping(value = "/logout",method = RequestMethod.GET)
+    @RequestMapping(value = "/logout", method = RequestMethod.GET)
     public String logout() {
         session.removeAttribute("user");
+        session.invalidate();
         return "index";
     }
-
-
-    @RequestMapping(value = "/editCredentials",method = RequestMethod.GET)
-    public String editCredentials(User user) {
-        user = (User) session.getAttribute("user");
-        return "editCredentials";
-    }
-
-    @RequestMapping(value = "/editCredentials",method = RequestMethod.POST)
-    public String editCredentials(User user, HttpServletRequest request) {
-        user.getPassword();
-        //Save here in database       UserService.saveUser(session.get....);
-        return "index";
-
-    }
-
-
-
 
 }

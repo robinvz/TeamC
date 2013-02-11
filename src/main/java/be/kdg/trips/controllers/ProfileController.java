@@ -1,10 +1,13 @@
 package be.kdg.trips.controllers;
 
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.SessionAttributes;
 import org.springframework.web.servlet.ModelAndView;
+
+import javax.servlet.http.HttpServletRequest;
 
 /**
  * Created with IntelliJ IDEA.
@@ -16,13 +19,26 @@ import org.springframework.web.servlet.ModelAndView;
 @Controller
 @SessionAttributes
 public class ProfileController {
-    @RequestMapping(method = RequestMethod.GET)
-        public ModelAndView showProfile(){
-            return new ModelAndView();
-        }
-
     @RequestMapping(value="/profile", method=RequestMethod.GET)
-    public void doSomething(){
-
+    public String showProfile(){
+        return "profile";
     }
+
+    @RequestMapping(value = "/editCredentials", method = RequestMethod.GET)
+    public String showEditCredentials() {
+        return "editCredentials";
+    }
+
+    @RequestMapping(value = "/editCredentials", method = RequestMethod.POST)
+    public String editCredentials(HttpServletRequest request) {
+        //userService.saveUser(request.getParameter("password"););
+        return "index";
+    }
+
+    @RequestMapping(value = "/deleteProfile", method = RequestMethod.GET)
+    public String deleteProfile() {
+        //userService.deleteUser(user);
+        return "index";
+    }
+
 }

@@ -18,7 +18,6 @@ import sun.awt.ModalityListener;
  * To change this template use File | Settings | File Templates.
  */
 @Controller
-@SessionAttributes
 public class TripController {
 
     @RequestMapping(method = RequestMethod.GET)
@@ -26,14 +25,10 @@ public class TripController {
         return new ModelAndView();
     }
 
-    @RequestMapping(value = "/selectTrip", method = RequestMethod.POST)
+    @RequestMapping(value = "/selectTrip", method = RequestMethod.GET)
     public String selectTrip(@ModelAttribute("trip") Trip trip, BindingResult result) {
 
         return "trip";
     }
 
-    @RequestMapping(value = "/trip", method = RequestMethod.GET)
-    public void doSomething(){
-
-    }
 }

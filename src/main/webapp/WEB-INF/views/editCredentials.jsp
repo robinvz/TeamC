@@ -16,28 +16,20 @@
 </head>
 <body>
 <div id="page">
-    <jsp:include page="header.jsp" />
+    <jsp:include page="header.jsp"/>
 
     <div id="contact">
         <h2>Credentials</h2>
     </div>
     <c:if test="${not empty sessionScope.user}">
-        <form:form method="POST" modelAttribute="user">
-            <fieldset>
-                <legend>Edit Profile</legend>
-                <table>
-                    <tr>
-                        <td><form:label path="email">Email: </form:label></td>
-                        <td><form:input path="email"/></td>
-                    </tr>
-                    <tr>
-                        <td><form:label path="password">Password: </form:label></td>
-                        <td><form:input path="password"/></td>
-                    </tr>
-                </table>
-            </fieldset>
-            <button id="search">Save</button>
-        </form:form>
+        <fieldset id="form-login">
+            <legend>Change your password</legend>
+            <form action="/editCredentials" method="POST">
+                <label for="password">Password: </label>
+                    <input type="password" name="password" id="password">
+                <input type="submit" value="Save" class="btn-submit">
+            </form>
+        </fieldset>
     </c:if>
     <footer><p class="footer">Trips - 2013</p></footer>
 </div>

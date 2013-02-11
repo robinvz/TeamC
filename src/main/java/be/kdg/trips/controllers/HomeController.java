@@ -18,7 +18,6 @@ public class HomeController
     @RequestMapping(method = RequestMethod.GET)
     public String sayHello(ModelMap modelMap)
     {
-        modelMap.addAttribute("message", "Hello from Spring MVC.");
         return "index";
     }
 }
