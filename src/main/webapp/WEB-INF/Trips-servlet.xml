@@ -12,4 +12,11 @@
         <property name="suffix" value=".jsp" />
     </bean>
 
+
+    <bean id="UserService" class="org.springframework.remoting.rmi.RmiProxyFactoryBean">
+        <property name="serviceUrl" value="rmi://localhost:1199/UserService"/>
+        <property name="serviceInterface" value="be.kdg.trips.services.UserService"/>
+    </bean>
+
+
 </beans>

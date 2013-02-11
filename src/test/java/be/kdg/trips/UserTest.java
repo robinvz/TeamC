@@ -1,9 +1,7 @@
 package be.kdg.trips;
 
-import be.kdg.trips.model.User;
 import org.junit.Before;
 import org.junit.Test;
-import org.springframework.beans.factory.annotation.Autowired;
 
 import static junit.framework.Assert.assertEquals;
 import static junit.framework.Assert.assertNotNull;
