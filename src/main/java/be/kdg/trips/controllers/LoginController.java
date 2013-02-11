@@ -1,14 +1,15 @@
 package be.kdg.trips.controllers;
 
-import be.kdg.trips.model.User;
+import be.kdg.trips.exceptions.UserException;
+import be.kdg.trips.model.user.User;
+import be.kdg.trips.services.*;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.ApplicationContext;
 import org.springframework.stereotype.Controller;
-import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
-import java.nio.file.attribute.UserPrincipalLookupService;
 
 
 /**
@@ -20,52 +21,61 @@ import java.nio.file.attribute.UserPrincipalLookupService;
 @Controller
 public class LoginController {
 
-  //  @Autowired
-  //  private UserService userService;
+    //  @Autowired
+    //  private UserService userService;
 
     @Autowired
     private HttpSession session;
 
-    @RequestMapping(value = "/login",method = RequestMethod.GET)
+    @Autowired
+    ApplicationContext ctx;
+
+
+
+    @RequestMapping(value = "/login", method = RequestMethod.GET)
     public String login() {
         return "login";
     }
 
-    @RequestMapping(value = "/login",method = RequestMethod.POST)
+    @RequestMapping(value = "/login", method = RequestMethod.POST)
     public String handleLogin(HttpServletRequest request) {
-            String email = request.getParameter("email");
-            String password = request.getParameter("password");
-           // User user = null;                                       //TODO fix get from session
-            // user = userService.getUserByEmail(email);
-            User user = new User("alfred", "kwak")    ;
-
-            session.setAttribute("user", user);
+        String email = request.getParameter("email");
+        String password = request.getParameter("password");
+        UserService service = (UserService) ctx.getBean("UserService");
+        if (!service.checkLogin(email, password)) {  //wrong password, redirect to index
             return "index";
+        }
+        try {
+            User user = service.findUser(email);
+            session.setAttribute("user", user);
+
+        } catch (UserException e) {
+            //Login failed
+        }
+        return "index";
 
     }
 
-    @RequestMapping(value = "/logout",method = RequestMethod.GET)
+    @RequestMapping(value = "/logout", method = RequestMethod.GET)
     public String logout() {
         session.removeAttribute("user");
         return "index";
     }
 
 
-    @RequestMapping(value = "/editCredentials",method = RequestMethod.GET)
+    @RequestMapping(value = "/editCredentials", method = RequestMethod.GET)
     public String editCredentials(User user) {
         user = (User) session.getAttribute("user");
         return "editCredentials";
     }
 
-    @RequestMapping(value = "/editCredentials",method = RequestMethod.POST)
+    @RequestMapping(value = "/editCredentials", method = RequestMethod.POST)
     public String editCredentials(User user, HttpServletRequest request) {
         user.getPassword();
         //Save here in database       UserService.saveUser(session.get....);
         return "index";
 
     }
-
-
 
 
 }
