@@ -1,13 +1,14 @@
 package be.kdg.trips.controllers;
 
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.ApplicationContext;
 import org.springframework.stereotype.Controller;
-import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.SessionAttributes;
-import org.springframework.web.servlet.ModelAndView;
 
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpSession;
 
 /**
  * Created with IntelliJ IDEA.
@@ -19,6 +20,12 @@ import javax.servlet.http.HttpServletRequest;
 @Controller
 @SessionAttributes
 public class ProfileController {
+    @Autowired
+    ApplicationContext ctx;
+
+    @Autowired
+    private HttpSession session;
+
     @RequestMapping(value="/profile", method=RequestMethod.GET)
     public String showProfile(){
         return "profile";
@@ -31,13 +38,15 @@ public class ProfileController {
 
     @RequestMapping(value = "/editCredentials", method = RequestMethod.POST)
     public String editCredentials(HttpServletRequest request) {
-        //userService.saveUser(request.getParameter("password"););
+        //UserService service = (UserService) ctx.getBean("UserService");
+        //service.editPassword(request.getParameter("newPassword"););
         return "index";
     }
 
     @RequestMapping(value = "/deleteProfile", method = RequestMethod.GET)
     public String deleteProfile() {
-        //userService.deleteUser(user);
+        //UserService service = (UserService) ctx.getBean("UserService");
+        //service.deleteUser(session.getAttribute("user");
         return "index";
     }
 

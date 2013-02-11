@@ -20,7 +20,6 @@ import javax.servlet.http.HttpSession;
  */
 @Controller
 public class LoginController {
-
     //  @Autowired
     //  private UserService userService;
 
@@ -29,8 +28,6 @@ public class LoginController {
 
     @Autowired
     ApplicationContext ctx;
-
-
 
     @RequestMapping(value = "/login", method = RequestMethod.GET)
     public String login() {
@@ -48,34 +45,27 @@ public class LoginController {
         try {
             User user = service.findUser(email);
             session.setAttribute("user", user);
-
         } catch (UserException e) {
             //Login failed
         }
         return "index";
-
     }
 
     @RequestMapping(value = "/logout", method = RequestMethod.GET)
     public String logout() {
-        session.removeAttribute("user");
+        session.invalidate();
         return "index";
     }
 
-
-    @RequestMapping(value = "/editCredentials", method = RequestMethod.GET)
-    public String editCredentials(User user) {
-        user = (User) session.getAttribute("user");
-        return "editCredentials";
+    @RequestMapping(value = "/register", method = RequestMethod.POST)
+    public String register(HttpServletRequest request) {
+        UserService service = (UserService) ctx.getBean("UserService");
+        try{
+            service.addUser(request.getParameter("email"), request.getParameter("password"));
+        } catch (UserException e) {
+            //Register failed
+        }
+        return "login";
     }
-
-    @RequestMapping(value = "/editCredentials", method = RequestMethod.POST)
-    public String editCredentials(User user, HttpServletRequest request) {
-        user.getPassword();
-        //Save here in database       UserService.saveUser(session.get....);
-        return "index";
-
-    }
-
 
 }

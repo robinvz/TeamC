@@ -18,5 +18,9 @@
         <property name="serviceInterface" value="be.kdg.trips.services.UserService"/>
     </bean>
 
+    <bean id="TripService" class="org.springframework.remoting.rmi.RmiProxyFactoryBean">
+            <property name="serviceUrl" value="rmi://localhost:1199/TripService"/>
+            <property name="serviceInterface" value="be.kdg.trips.services.TripService"/>
+    </bean>
 
 </beans>

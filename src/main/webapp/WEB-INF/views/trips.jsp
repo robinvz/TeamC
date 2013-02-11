@@ -28,7 +28,7 @@
             <tbody id="trips-list">
 
             <c:if test="${not empty tripsList}">
-                <c:forEach items="${tripsList}" var="trip">
+                <c:forEach items="${sessionScope.tripsList}" var="trip">
                     <form action="/selectTrip" method="GET">
                         <fieldset>
                             <tr>

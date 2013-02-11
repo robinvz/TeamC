@@ -1,11 +1,11 @@
 package be.kdg.trips.model;
 
 /**
- * Subversion Id
+ * Subversion id
  * Project Application Development
  * Karel de Grote-Hogeschool
  * 2012-2013
  */
-public class Trip
-{
+public enum TripPrivacy {
+    PUBLIC, PROTECTED, PRIVATE
 }

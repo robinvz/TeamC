@@ -25,8 +25,8 @@
         <fieldset id="form-login">
             <legend>Change your password</legend>
             <form action="/editCredentials" method="POST">
-                <label for="password">Password: </label>
-                    <input type="password" name="password" id="password">
+                <label for="newPassword">New Password: </label>
+                    <input type="password" id="newPassword">
                 <input type="submit" value="Save" class="btn-submit">
             </form>
         </fieldset>

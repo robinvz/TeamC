@@ -1,6 +1,5 @@
 package be.kdg.trips;
 
-import be.kdg.trips.model.Trip;
 import org.junit.Test;
 
 import static junit.framework.Assert.assertEquals;
@@ -13,12 +12,9 @@ import static junit.framework.Assert.assertEquals;
  */
 public class TripTest
 {
-    private Trip trip;
-
     @Test
     public void stopplaatsNietNul(){
-
     //assertEquals(trip ,);
-
     }
+
 }

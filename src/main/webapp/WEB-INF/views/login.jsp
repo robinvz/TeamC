@@ -29,7 +29,7 @@
                 <input type="submit" value="Login" class="btn-submit">
             </form>
         </fieldset>
-        <form action="<c:url value="/login"/>" method="post">
+        <form action="/login" method="post">
             <fieldset>
                 <legend>Login</legend>
                 <table>

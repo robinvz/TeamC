@@ -1,14 +1,8 @@
 package be.kdg.trips.controllers;
 
-import be.kdg.trips.model.Trip;
 import org.springframework.stereotype.Controller;
-import org.springframework.validation.BindingResult;
-import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.SessionAttributes;
-import org.springframework.web.servlet.ModelAndView;
-import sun.awt.ModalityListener;
 
 /**
  * Created with IntelliJ IDEA.
@@ -20,14 +14,8 @@ import sun.awt.ModalityListener;
 @Controller
 public class TripController {
 
-    @RequestMapping(method = RequestMethod.GET)
-    public ModelAndView showTrips(){
-        return new ModelAndView();
-    }
-
     @RequestMapping(value = "/selectTrip", method = RequestMethod.GET)
-    public String selectTrip(@ModelAttribute("trip") Trip trip, BindingResult result) {
-
+    public String selectTrip() {
         return "trip";
     }
 
