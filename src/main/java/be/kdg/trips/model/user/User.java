@@ -6,6 +6,8 @@ import org.springframework.stereotype.Component;
 import javax.persistence.*;
 import java.io.Serializable;
 import java.util.Date;
+import java.util.HashSet;
+import java.util.Set;
 
 /**
  * Subversion id
@@ -21,11 +23,13 @@ public class User implements Nullable, Serializable {
     private String email;
     private String password;
     private Date registerDate;
+    //private Set<Enrollment> enrollments;
 
     public User(String email, String password) {
         this.email = email;
         this.password = password;
         this.registerDate = new Date();
+        //this.enrollments = new HashSet<>();
     }
 
     private User() {

@@ -10,8 +10,12 @@ import be.kdg.trips.model.user.User;
  * 2012-2013
  */
 public interface UserService {
-    public void addUser(String email, String password) throws UserException;
+    public void createUser(String email, String password) throws UserException;
+
     public User findUser(String email) throws UserException;
+
+    public void updateUser(User user) throws UserException;
+
     public boolean checkLogin(String email, String password);
 
 }

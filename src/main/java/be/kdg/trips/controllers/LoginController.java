@@ -61,7 +61,7 @@ public class LoginController {
     public String register(HttpServletRequest request) {
         UserService service = (UserService) ctx.getBean("UserService");
         try{
-            service.addUser(request.getParameter("email"), request.getParameter("password"));
+            service.createUser(request.getParameter("email"), request.getParameter("password"));
         } catch (UserException e) {
             //Register failed
         }

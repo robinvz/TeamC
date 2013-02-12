@@ -1,6 +1,8 @@
 package be.kdg.trips.services;
 
 import be.kdg.trips.exceptions.TripException;
+import be.kdg.trips.exceptions.UserException;
+import be.kdg.trips.model.Trip;
 import be.kdg.trips.model.TripPrivacy;
 import be.kdg.trips.model.user.User;
 
@@ -15,7 +17,16 @@ import java.util.List;
  */
 public interface TripService {
     public void createTimelessTrip(String title, String description, TripPrivacy privacy, User organizer);
-    public void createTimeBoundTrip(String title, String description, TripPrivacy privacy, User organizer, Date startDate, Date endDate);
-    public List findTripsByTitle(String stadswandeling) throws TripException;
-    public List findTripsByKeyword(String keyword) throws TripException;
+
+    public void createTimeBoundTrip(String title, String description, TripPrivacy privacy, User organizer, Date startDate, Date endDate) throws TripException;
+
+    public void addLabelToTrip(Trip trip, User organizer, String label) throws UserException;
+
+    public List findNonPrivateTripsByKeyword(String keyword) throws TripException;
+
+    public List findAllTimelessNonPrivateTrips() throws TripException;
+
+    public List findAllTimeBoundPublishedNonPrivateTrips() throws TripException;
+
+    public void publishTrip(Trip trip);
 }
