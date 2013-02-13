@@ -21,16 +21,21 @@
     <div id="contact">
         <h2>Credentials</h2>
     </div>
-    <c:if test="${not empty sessionScope.user}">
-        <fieldset id="form-login">
-            <legend>Change your password</legend>
-            <form action="/editCredentials" method="POST">
-                <label for="newPassword">New Password: </label>
+    <c:choose>
+        <c:when test="${not empty sessionScope.user}">
+            <fieldset id="form-login">
+                <legend>Change your password</legend>
+                <form action="/editCredentials" method="POST">
+                    <label for="newPassword">New Password: </label>
                     <input type="password" id="newPassword">
-                <input type="submit" value="Save" class="btn-submit">
-            </form>
-        </fieldset>
-    </c:if>
+                    <input type="submit" value="Save" class="btn-submit">
+                </form>
+            </fieldset>
+        </c:when>
+        <c:otherwise>
+            <h2>You must be logged in to modify your account.</h2>
+        </c:otherwise>
+    </c:choose>
     <footer><p class="footer">Trips - 2013</p></footer>
 </div>
 </body>

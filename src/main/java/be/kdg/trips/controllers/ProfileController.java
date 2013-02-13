@@ -39,7 +39,7 @@ public class ProfileController {
     @RequestMapping(value = "/editCredentials", method = RequestMethod.POST)
     public String editCredentials(HttpServletRequest request) {
         //UserService service = (UserService) ctx.getBean("UserService");
-        //service.editPassword(request.getParameter("newPassword"););
+        //service.updateUser(request.getParameter("newPassword"););
         return "index";
     }
 
