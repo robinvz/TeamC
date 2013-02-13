@@ -30,6 +30,7 @@
           <element id="library" level="project" name="Maven: org.springframework:spring-expression:3.2.1.RELEASE" />
           <element id="library" level="project" name="Maven: org.springframework:spring-webmvc:3.2.1.RELEASE" />
           <element id="library" level="project" name="Maven: javax.servlet:servlet-api:2.5" />
+          <element id="library" level="project" name="Maven: TripsModel:TripsModel:1.0-SNAPSHOT" />
         </element>
       </element>
     </root>
