@@ -1,9 +1,8 @@
 package be.kdg.trips.controllers;
 
-import be.kdg.trips.exceptions.TripException;
-import be.kdg.trips.services.TripService;
+import be.kdg.trips.exception.TripsException;
+import be.kdg.trips.services.interfaces.TripsService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.context.ApplicationContext;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
@@ -22,18 +21,17 @@ import java.util.List;
 @SessionAttributes
 public class TripsController {
     @Autowired
-    ApplicationContext ctx;
+    private TripsService tripsService;
 
     @Autowired
     private HttpSession session;
 
     @RequestMapping(value="/trips", method= RequestMethod.GET)
     public void showTrips(){
-        TripService service = (TripService) ctx.getBean("TripService");
         try {
-            List tripsList = service.findAllTimelessNonPrivateTrips();
+            List tripsList = tripsService.findAllTimelessNonPrivateTrips();
             session.setAttribute("tripsList", tripsList);
-        } catch (TripException e) {
+        } catch (TripsException e) {
             //failed to retrieve tripsList
         }
     }
