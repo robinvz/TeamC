@@ -3,7 +3,6 @@ package be.kdg.trips.controllers;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.SessionAttributes;
 
 /**
  * Created with IntelliJ IDEA.
@@ -13,7 +12,6 @@ import org.springframework.web.bind.annotation.SessionAttributes;
  * To change this template use File | Settings | File Templates.
  */
 @Controller
-@SessionAttributes
 public class ContactController {
     @RequestMapping(value="/contact", method=RequestMethod.GET)
     public void doSomething(){

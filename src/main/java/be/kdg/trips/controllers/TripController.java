@@ -1,11 +1,10 @@
 package be.kdg.trips.controllers;
 
-import be.kdg.trips.exceptions.TripException;
-import be.kdg.trips.model.TripPrivacy;
+import be.kdg.trips.exception.TripsException;
+import be.kdg.trips.model.trip.TripPrivacy;
 import be.kdg.trips.model.user.User;
-import be.kdg.trips.services.TripService;
+import be.kdg.trips.services.interfaces.TripsService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.context.ApplicationContext;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
@@ -24,7 +23,7 @@ import java.util.Date;
 @Controller
 public class TripController {
     @Autowired
-    ApplicationContext ctx;
+    private TripsService service;
 
     @Autowired
     private HttpSession session;
@@ -41,7 +40,6 @@ public class TripController {
 
     @RequestMapping(value = "/createTrip", method = RequestMethod.POST)
     public String createTrip(HttpServletRequest request) {
-        TripService service = (TripService) ctx.getBean("TripService");
 
         if (request.getParameter("tripDate1") == null && request.getParameter("tripDate2") == null) {
             service.createTimelessTrip(request.getParameter("tripTitle"), request.getParameter("tripDescription"),
@@ -53,7 +51,7 @@ public class TripController {
                         TripPrivacy.PUBLIC, (User) session.getAttribute("user"), new Date(), new Date());
                         //request.getParameter("tripDate1"), request.getParameter("tripDate2"));
                         //TODO: get Dates
-            } catch (TripException e) {
+            } catch (TripsException e) {
                 //failed to create timeBoundTrip
             }
         }
