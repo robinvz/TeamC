@@ -21,49 +21,53 @@
     <div id="contact">
         <h2>Create a trip</h2>
     </div>
-
-
-    <fieldset id="form-login">
-        <legend>Details</legend>
-        <form action="/createTrip" method="POST">
-            <table id="createTripTable">
-                <tr>
-                    <td><label for="tripTitle">Title: </label></td>
-                    <td><input id="tripTitle" type="text"></td>
-                </tr>
-                <tr>
-                    <td><label for="tripDescription">Description: </label></td>
-                    <td><input id="tripDescription" type="text"></td>
-                </tr>
-                <tr>
-                    <td><label id="tripPrivacy">Privacy: </label></td>
-                    <td><input id="tripPublic" value="Public" type="radio" checked='checked'/>
-                        <input id="tripProtected" name="Protected" value="Protected" type="radio"/>
-                        <input id="tripPrivate" name="Private" value="Private" type="radio"/></td>
-                </tr>
-                <tr>
-                    <!--Kenmerken van de trip kunnen ingeven & toevoegen aan lijst van labels-->
-                    <td><label for="tripLabels">Labels: </label></td>
-                    <td><input id="tripLabels" type="text"></td>
-                </tr>
-                <tr>
-                    <td><label id="tripInfo">If you want to make a timebound trip please enter 2 dates.</label></td>
-                </tr>
-                <tr>
-                    <td><label for="tripDates1">Start date: </label></td>
-                    <td><input id="tripDates1" type="date">
-                </tr>
-                <tr>
-                    <td><label for="tripDates2">End date: </label></td>
-                    <td><input id="tripDates2" type="date"></td></td>
-                </tr>
-                <tr>
-                    <td><input type="submit" value="Create" class="btn-submit"></td>
-                </tr>
-            </table>
-        </form>
-    </fieldset>
-
+    <c:choose>
+        <c:when test="${not empty sessionScope.user}">
+            <fieldset id="form-login">
+                <legend>Details</legend>
+                <form action="/createTrip" method="POST">
+                    <table id="createTripTable">
+                        <tr>
+                            <td><label for="tripTitle">Title: </label></td>
+                            <td><input id="tripTitle" type="text"></td>
+                        </tr>
+                        <tr>
+                            <td><label for="tripDescription">Description: </label></td>
+                            <td><input id="tripDescription" type="text"></td>
+                        </tr>
+                        <tr>
+                            <td><label id="tripPrivacy">Privacy: </label></td>
+                            <td><input id="tripPublic" value="Public" type="radio" checked='checked'/>
+                                <input id="tripProtected" name="Protected" value="Protected" type="radio"/>
+                                <input id="tripPrivate" name="Private" value="Private" type="radio"/></td>
+                        </tr>
+                        <tr>
+                            <!--Kenmerken van de trip kunnen ingeven & toevoegen aan lijst van labels-->
+                            <td><label for="tripLabels">Labels: </label></td>
+                            <td><input id="tripLabels" type="text"></td>
+                        </tr>
+                        <tr>
+                            <td><label id="tripInfo">If you want to make a timebound trip please enter 2 dates.</label></td>
+                        </tr>
+                        <tr>
+                            <td><label for="tripDates1">Start date: </label></td>
+                            <td><input id="tripDates1" type="date">
+                        </tr>
+                        <tr>
+                            <td><label for="tripDates2">End date: </label></td>
+                            <td><input id="tripDates2" type="date"></td></td>
+                        </tr>
+                        <tr>
+                            <td><input type="submit" value="Create" class="btn-submit"></td>
+                        </tr>
+                    </table>
+                </form>
+            </fieldset>
+        </c:when>
+        <c:otherwise>
+            <h2>You must be logged in to create trips.</h2>
+        </c:otherwise>
+    </c:choose>
 
     <footer><p class="footer">Trips - 2013</p></footer>
 </div>
