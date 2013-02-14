@@ -1,12 +1,12 @@
 package be.kdg.trips.controllers;
 
-import be.kdg.trips.exceptions.UserException;
+import be.kdg.trips.exception.TripsException;
 import be.kdg.trips.model.user.User;
-import be.kdg.trips.services.*;
+import be.kdg.trips.services.interfaces.TripsService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.context.ApplicationContext;
 import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
@@ -20,14 +20,11 @@ import javax.servlet.http.HttpSession;
  */
 @Controller
 public class LoginController {
-    //  @Autowired
-    //  private UserService userService;
+    @Autowired
+    private TripsService tripsService;
 
     @Autowired
     private HttpSession session;
-
-    @Autowired
-    ApplicationContext ctx;
 
     @RequestMapping(value = "/login", method = RequestMethod.GET)
     public String login() {
@@ -38,14 +35,14 @@ public class LoginController {
     public String handleLogin(HttpServletRequest request) {
         String email = request.getParameter("email");
         String password = request.getParameter("password");
-        UserService service = (UserService) ctx.getBean("UserService");
-        if (!service.checkLogin(email, password)) {  //wrong password, redirect to index
+
+        if (!tripsService.checkLogin(email, password)) {  //wrong password, redirect to index
             return "index";
         }
         try {
-            User user = service.findUser(email);
+            User user = tripsService.findUser(email);
             session.setAttribute("user", user);
-        } catch (UserException e) {
+        } catch (TripsException e) {
             //Login failed
         }
         return "index";
@@ -59,10 +56,9 @@ public class LoginController {
 
     @RequestMapping(value = "/register", method = RequestMethod.POST)
     public String register(HttpServletRequest request) {
-        UserService service = (UserService) ctx.getBean("UserService");
         try{
-            service.createUser(request.getParameter("email"), request.getParameter("password"));
-        } catch (UserException e) {
+            tripsService.createUser(request.getParameter("email"), request.getParameter("password"));
+        } catch (TripsException e) {
             //Register failed
         }
         return "login";
