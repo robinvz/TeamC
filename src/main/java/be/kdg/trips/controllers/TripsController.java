@@ -21,7 +21,7 @@ import java.util.List;
 @SessionAttributes
 public class TripsController {
     @Autowired
-    private TripsService service;
+    private TripsService tripsService;
 
     @Autowired
     private HttpSession session;
@@ -29,7 +29,7 @@ public class TripsController {
     @RequestMapping(value="/trips", method= RequestMethod.GET)
     public void showTrips(){
         try {
-            List tripsList = service.findAllTimelessNonPrivateTrips();
+            List tripsList = tripsService.findAllTimelessNonPrivateTrips();
             session.setAttribute("tripsList", tripsList);
         } catch (TripsException e) {
             //failed to retrieve tripsList

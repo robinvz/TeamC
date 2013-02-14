@@ -1,6 +1,5 @@
 package be.kdg.trips.controllers;
 
-import be.kdg.trips.services.interfaces.TripsService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -21,9 +20,6 @@ import javax.servlet.http.HttpSession;
 @SessionAttributes
 public class ProfileController {
     @Autowired
-    private TripsService service;
-
-    @Autowired
     private HttpSession session;
 
     @RequestMapping(value="/profile", method=RequestMethod.GET)
@@ -38,12 +34,14 @@ public class ProfileController {
 
     @RequestMapping(value = "/editCredentials", method = RequestMethod.POST)
     public String editCredentials(HttpServletRequest request) {
+        //UserService service = (UserService) ctx.getBean("UserService");
         //service.updateUser(request.getParameter("newPassword"););
         return "index";
     }
 
     @RequestMapping(value = "/deleteProfile", method = RequestMethod.GET)
     public String deleteProfile() {
+        //UserService service = (UserService) ctx.getBean("UserService");
         //service.deleteUser(session.getAttribute("user");
         return "index";
     }

@@ -23,10 +23,10 @@ import java.util.Date;
 @Controller
 public class TripController {
     @Autowired
-    private TripsService service;
+    private HttpSession session;
 
     @Autowired
-    private HttpSession session;
+    private TripsService tripsService;
 
     @RequestMapping(value = "/selectTrip", method = RequestMethod.GET)
     public String selectTrip() {
@@ -40,14 +40,13 @@ public class TripController {
 
     @RequestMapping(value = "/createTrip", method = RequestMethod.POST)
     public String createTrip(HttpServletRequest request) {
-
         if (request.getParameter("tripDate1") == null && request.getParameter("tripDate2") == null) {
-            service.createTimelessTrip(request.getParameter("tripTitle"), request.getParameter("tripDescription"),
+            tripsService.createTimelessTrip(request.getParameter("tripTitle"), request.getParameter("tripDescription"),
                     TripPrivacy.PUBLIC, (User) session.getAttribute("user"));
                     //TODO: get TripPrivacy
         } else {
             try {
-                service.createTimeBoundTrip(request.getParameter("tripTitle"), request.getParameter("tripDescription"),
+                tripsService.createTimeBoundTrip(request.getParameter("tripTitle"), request.getParameter("tripDescription"),
                         TripPrivacy.PUBLIC, (User) session.getAttribute("user"), new Date(), new Date());
                         //request.getParameter("tripDate1"), request.getParameter("tripDate2"));
                         //TODO: get Dates
