@@ -29,6 +29,7 @@
             <c:choose>
                 <c:when test="${empty sessionScope.user}">
                     <li><a class="nav-link" href="/login" title="">Log in</a></li>
+                    <li><a class="nav-link" href="/register" title="">Register</a></li>
                 </c:when>
                 <c:otherwise>
                     <li><a class="nav-link" href="/logout" title="">Log out</a></li>

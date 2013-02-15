@@ -35,7 +35,6 @@ public class LoginController {
     public String handleLogin(HttpServletRequest request) {
         String email = request.getParameter("email");
         String password = request.getParameter("password");
-
         if (!tripsService.checkLogin(email, password)) {  //wrong password, redirect to index
             return "index";
         }
@@ -54,10 +53,23 @@ public class LoginController {
         return "index";
     }
 
+    @RequestMapping(value = "/register", method = RequestMethod.GET)
+    public String register() {
+        session.invalidate();
+        return "register";
+    }
+
     @RequestMapping(value = "/register", method = RequestMethod.POST)
     public String register(HttpServletRequest request) {
-        try{
-            tripsService.createUser(request.getParameter("email"), request.getParameter("password"));
+        try {
+            String firstName = request.getParameter("firstName");
+            String lastName = request.getParameter("lastName");
+            String street = request.getParameter("street");
+            String houseNr = request.getParameter("houseNr");
+            String city = request.getParameter("city");
+            String country = request.getParameter("country");
+            User user = tripsService.createUser(request.getParameter("email"), request.getParameter("password"));
+            tripsService.updateUser(user, firstName, lastName, street, houseNr, city, country);
         } catch (TripsException e) {
             //Register failed
         }
