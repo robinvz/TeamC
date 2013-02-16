@@ -16,24 +16,25 @@
     <div id="content">
         <aside>
             <nav class="trip-nav">
-                <h3>Trips</h3>
+                <h3>Trip</h3>
                 <ul class="trip-nav">
                     <li><a href="#">Info</a></li>
-                    <li><a href="#">Benodigdheden</a></li>
-                    <li><a href="#">Stopplaatsen</a></li>
+                    <li><a href="#">Requirements</a></li>
+                    <li><a href="#">Stops</a></li>
                     <li><a href="#">Chat</a></li>
-                    <li><a href="#">Deelnemers</a></li>
-                    <li><a href="#">Resultaten</a></li>
-                    <li><a href="#">Trip starten</a></li>
-                    <li><a href="#">Aanpassen</a></li>
-                    <li><a href="#">Verwijderen</a></li>
+                    <li><a href="#">Participants</a></li>
+                    <li><a href="#">Results</a></li>
+                    <li><a href="#">Start</a></li>
+                    <li><a href="#">Edit</a></li>
+                    <li><a href="#">Delete</a></li>
                 </ul>
             </nav>
         </aside>
+
         <div class="inner-content">
             <section>
                 <article>
-                    <p>content</p>
+                    <p>CONTENT</p>
                 </article>
             </section>
         </div>

@@ -19,14 +19,16 @@
                     <nav class="trip-nav">
                         <ul class="trip-nav">
                             <li><a href="/profile">General</a></li>
-                            <li><a href="#">Contact</a></li>
-                            <li><a href="#">Import Facebook account</a></li>
                             <li><a href="#">Current trips</a></li>
                             <li><a href="#">Trips history</a></li>
+                            <li><a href="#">Edit picture</a></li>
                             <li><a href="/editCredentials">Edit password</a></li>
-                            <li><form id="deleteProfileForm" action="/deleteProfile" method="get">
-                                <button type="submit" id="deleteBtn">Delete profile</button>
-                            </form></li>
+                            <li><a href="#">Import Facebook account</a></li>
+                            <li>
+                                <form id="deleteProfileForm" action="/deleteProfile" method="get">
+                                    <button type="submit" id="deleteBtn">Delete profile</button>
+                                </form>
+                            </li>
                         </ul>
                     </nav>
                 </aside>
@@ -37,37 +39,54 @@
                         <article>
                             <h2>${sessionScope.user.email}</h2>
 
-                            <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Mauris dictum libero quis libero
-                                facilisis eu pharetra sem volutpat. Sed faucibus lectus vel diam dignissim vitae blandit
-                                nisl
-                                hendrerit. Praesent fringilla dui id dui mollis ultricies. Duis libero ligula, hendrerit
-                                cursus
-                                ultricies sed, pulvinar eu velit. Donec ut commodo nibh. Etiam placerat sem vel eros
-                                lacinia
-                                pretium. Vivamus malesuada, sapien quis rutrum eleifend, mi lacus cursus augue, non
-                                molestie
-                                felis nibh ac lacus. Nunc dapibus, augue vel consequat lacinia, urna arcu convallis
-                                turpis, quis
-                                malesuada magna mi a dolor. Phasellus vel nunc vel dui sodales tristique in tempor diam.
+                            <div class="profile-general">
+                                <table>
+                                    <tr>
+                                        <td>
+                                            <label>First name: </label>
+                                            <output>${sessionScope.user.firstName}</output>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td>
+                                            <label>Last name: </label>
+                                            <output>${sessionScope.user.lastName}</output>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td>
+                                            <label>Street: </label>
+                                            <output>${sessionScope.user.street}</output>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td>
+                                            <label>House number: </label>
+                                            <output>${sessionScope.user.houseNr}</output>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td>
+                                            <label>City: </label>
+                                            <output>${sessionScope.user.city}</output>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td>
+                                            <label>Country: </label>
+                                            <output>${sessionScope.user.country}</output>
+                                        </td>
+                                    </tr>
+                                </table>
+                            </div>
 
-                                Morbi lacinia libero eu velit pharetra pharetra id vel mi. Maecenas varius neque dolor,
-                                sed
-                                elementum dui. Nulla laoreet mauris non lectus feugiat a facilisis dolor commodo.
-                                Praesent
-                                faucibus, eros vel sagittis varius, elit leo egestas lacus, quis pulvinar est est at
-                                enim. Nulla
-                                a diam quis est pretium feugiat. Mauris et massa leo. Donec ac dolor at est porttitor
-                                tempor id
-                                vitae sem. Sed rutrum cursus sagittis. Nam posuere lorem ac augue placerat id ultricies
-                                turpis
-                                mollis. Etiam eu velit dolor. Aenean velit massa, pharetra nec sodales ut, interdum
-                                vitae leo.
-                                Aliquam erat volutpat. Aliquam fermentum, nisl eget laoreet placerat, mauris ligula
-                                lobortis
-                                sem, at pulvinar ante mi in nisi. Integer dolor ipsum, lacinia a euismod ut,
-                                pellentesque quis
-                                nulla.
-                            </p>
+                            <div class="profile-currentTrips">
+
+                            </div>
+
+                            <div class="profile-tripsHistory">
+
+                            </div>
 
                         </article>
                     </section>

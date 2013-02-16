@@ -53,6 +53,7 @@ public class ProfileController {
     public String deleteProfile() {
         try {
             tripsService.deleteUser((User) session.getAttribute("user"));
+            session.invalidate();
         } catch (TripsException e) {
             //failed to delete user
         }

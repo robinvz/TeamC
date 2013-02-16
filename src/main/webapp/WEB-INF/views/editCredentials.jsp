@@ -23,30 +23,33 @@
     </div>
     <c:choose>
         <c:when test="${not empty sessionScope.user}">
-            <fieldset id="form-login">
-                <legend>Change your password</legend>
-                <form action="/editCredentials" method="POST">
+            <form action="/editCredentials" method="POST">
+                <fieldset>
                     <table>
                         <tr>
                             <td>
                                 <label for="oldPassword">Old password: </label>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>
                                 <input type="password" id="oldPassword">
                             </td>
                         </tr>
                         <tr>
                             <td>
                                 <label for="newPassword">New password: </label>
-                                <input type="password" id="newPassword">
                             </td>
                         </tr>
                         <tr>
                             <td>
-                                <input type="submit" value="Save" class="btn-submit">
+                                <input type="password" id="newPassword">
                             </td>
                         </tr>
                     </table>
-                </form>
-            </fieldset>
+                </fieldset>
+                <input type="submit" value="Save" class="btn-submit">
+            </form>
         </c:when>
         <c:otherwise>
             <h2>You must be logged in to modify your account.</h2>

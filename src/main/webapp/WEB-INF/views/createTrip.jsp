@@ -6,6 +6,7 @@
   To change this template use File | Settings | File Templates.
 --%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+<%@ taglib prefix="form" uri="http://www.springframework.org/tags/form" %>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <html>
 <head>
@@ -19,27 +20,26 @@
     <jsp:include page="header.jsp"/>
 
     <div id="contact">
-        <h2>Create a trip</h2>
+        <h2>Create a timebound trip</h2>
     </div>
     <c:choose>
         <c:when test="${not empty sessionScope.user}">
-            <fieldset id="form-login">
-                <legend>Details</legend>
-                <form action="/createTrip" method="POST">
+            <form action="/createTrip" method="POST">
+                <fieldset>
                     <table id="createTripTable">
                         <tr>
                             <td><label for="tripTitle">Title: </label></td>
-                            <td><input id="tripTitle" type="text"></td>
+                            <td><input id="tripTitle" type="text" required="true"></td>
                         </tr>
                         <tr>
                             <td><label for="tripDescription">Description: </label></td>
-                            <td><input id="tripDescription" type="text"></td>
+                            <td><input id="tripDescription" type="text" required="true"></td>
                         </tr>
                         <tr>
                             <td><label id="tripPrivacy">Privacy: </label></td>
-                            <td><input id="tripPublic" value="Public" type="radio" checked='checked'/>
-                                <input id="tripProtected" name="Protected" value="Protected" type="radio"/>
-                                <input id="tripPrivate" name="Private" value="Private" type="radio"/></td>
+                            <td><input type="radio" name="radios" value="PUBLIC">Public</input>
+                                <input type="radio" name="radios" value="PROTECTED">Protected</input>
+                                <input type="radio" name="radios" value="PRIVATE">Private</td>
                         </tr>
                         <tr>
                             <!--Kenmerken van de trip kunnen ingeven & toevoegen aan lijst van labels-->
@@ -47,25 +47,21 @@
                             <td><input id="tripLabels" type="text"></td>
                         </tr>
                         <tr>
-                            <td><label id="tripInfo">If you want to make a timebound trip please enter 2 dates.</label></td>
+                            <td><label for="tripStartDate">Start date: </label></td>
+                            <td><input id="tripStartDate" type="date">
                         </tr>
                         <tr>
-                            <td><label for="tripDates1">Start date: </label></td>
-                            <td><input id="tripDates1" type="date">
-                        </tr>
-                        <tr>
-                            <td><label for="tripDates2">End date: </label></td>
-                            <td><input id="tripDates2" type="date"></td></td>
-                        </tr>
-                        <tr>
-                            <td><input type="submit" value="Create" class="btn-submit"></td>
+                            <td><label for="tripEndDate">End date: </label></td>
+                            <td><input id="tripEndDate" type="date"></td></td>
                         </tr>
                     </table>
-                </form>
+                </fieldset>
+                <input type="submit" value="Create" class="btn-submit">
+            </form>
             </fieldset>
         </c:when>
         <c:otherwise>
-            <h2>You must be logged in to create trips.</h2>
+            <h3>You must be logged in to create trips.</h3>
         </c:otherwise>
     </c:choose>
 
