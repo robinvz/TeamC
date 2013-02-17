@@ -18,32 +18,32 @@
 <div id="page">
     <jsp:include page="header.jsp"/>
 
-    <div id="contact">
-        <h2>Credentials</h2>
+    <div id="content">
     </div>
     <c:choose>
         <c:when test="${not empty sessionScope.user}">
             <form action="/editCredentials" method="POST">
                 <fieldset>
+                    <legend>Credentials</legend>
                     <table>
                         <tr>
                             <td>
-                                <label for="oldPassword">Old password: </label>
+                                <label>Old password</label>
                             </td>
                         </tr>
                         <tr>
                             <td>
-                                <input type="password" id="oldPassword">
+                                <input type="password" name="oldPassword">
                             </td>
                         </tr>
                         <tr>
                             <td>
-                                <label for="newPassword">New password: </label>
+                                <label>New password</label>
                             </td>
                         </tr>
                         <tr>
                             <td>
-                                <input type="password" id="newPassword">
+                                <input type="password" name="newPassword">
                             </td>
                         </tr>
                     </table>
@@ -55,6 +55,7 @@
             <h2>You must be logged in to modify your account.</h2>
         </c:otherwise>
     </c:choose>
+
     <footer><p class="footer">Trips - 2013</p></footer>
 </div>
 </body>

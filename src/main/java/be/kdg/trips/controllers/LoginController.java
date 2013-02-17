@@ -10,6 +10,7 @@ import org.springframework.web.bind.annotation.RequestMethod;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
+import java.util.Date;
 
 
 /**
@@ -62,14 +63,10 @@ public class LoginController {
     @RequestMapping(value = "/register", method = RequestMethod.POST)
     public String register(HttpServletRequest request) {
         try {
-            String firstName = request.getParameter("firstName");
-            String lastName = request.getParameter("lastName");
-            String street = request.getParameter("street");
-            String houseNr = request.getParameter("houseNr");
-            String city = request.getParameter("city");
-            String country = request.getParameter("country");
             User user = tripsService.createUser(request.getParameter("email"), request.getParameter("password"));
-            tripsService.updateUser(user, firstName, lastName, street, houseNr, city, country);
+            tripsService.updateUser(user, request.getParameter("firstName"), request.getParameter("lastName"), request.getParameter("street"),
+                    request.getParameter("houseNr"), request.getParameter("city"), request.getParameter("postalCode"),
+                    request.getParameter("province"), request.getParameter("country"));
         } catch (TripsException e) {
             //Register failed
         }

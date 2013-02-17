@@ -19,52 +19,51 @@
 <div id="page">
     <jsp:include page="header.jsp"/>
 
-    <div id="contact">
-        <h2>Create a timebound trip</h2>
-    </div>
-    <c:choose>
-        <c:when test="${not empty sessionScope.user}">
-            <form action="/createTrip" method="POST">
-                <fieldset>
-                    <table id="createTripTable">
-                        <tr>
-                            <td><label for="tripTitle">Title: </label></td>
-                            <td><input id="tripTitle" type="text" required="true"></td>
-                        </tr>
-                        <tr>
-                            <td><label for="tripDescription">Description: </label></td>
-                            <td><input id="tripDescription" type="text" required="true"></td>
-                        </tr>
-                        <tr>
-                            <td><label id="tripPrivacy">Privacy: </label></td>
-                            <td><input type="radio" name="radios" value="PUBLIC">Public</input>
-                                <input type="radio" name="radios" value="PROTECTED">Protected</input>
-                                <input type="radio" name="radios" value="PRIVATE">Private</td>
-                        </tr>
-                        <tr>
-                            <!--Kenmerken van de trip kunnen ingeven & toevoegen aan lijst van labels-->
-                            <td><label for="tripLabels">Labels: </label></td>
-                            <td><input id="tripLabels" type="text"></td>
-                        </tr>
-                        <tr>
-                            <td><label for="tripStartDate">Start date: </label></td>
-                            <td><input id="tripStartDate" type="date">
-                        </tr>
-                        <tr>
-                            <td><label for="tripEndDate">End date: </label></td>
-                            <td><input id="tripEndDate" type="date"></td></td>
-                        </tr>
-                    </table>
+    <div id="content">
+        <c:choose>
+            <c:when test="${not empty sessionScope.user}">
+                <form action="/createTrip" method="POST">
+                    <fieldset>
+                        <legend>Create a timebound trip</legend>
+                        <table>
+                            <tr>
+                                <td><label>Title: </label></td>
+                                <td><input type="text" name="tripTitle" required="true"></td>
+                            </tr>
+                            <tr>
+                                <td><label>Description: </label></td>
+                                <td><input type="text" name="tripDescription" required="true"></td>
+                            </tr>
+                            <tr>
+                                <td><label>Privacy: </label></td>
+                                <td><input type="radio" name="radios" value="PUBLIC">Public</input>
+                                    <input type="radio" name="radios" value="PROTECTED">Protected</input>
+                                    <input type="radio" name="radios" value="PRIVATE">Private</td>
+                            </tr>
+                            <tr>
+                                <!--Kenmerken van de trip kunnen ingeven & toevoegen aan lijst van labels-->
+                                <td><label>Labels: </label></td>
+                                <td><input type="text" name="tripLabels"></td>
+                            </tr>
+                            <tr>
+                                <td><label>Start date: </label></td>
+                                <td><input type="date" name="tripStartDate">
+                            </tr>
+                            <tr>
+                                <td><label>End date: </label></td>
+                                <td><input type="date" name="tripEndDate" ></td></td>
+                            </tr>
+                        </table>
+                    </fieldset>
+                    <input type="submit" value="Create" class="btn-submit">
+                </form>
                 </fieldset>
-                <input type="submit" value="Create" class="btn-submit">
-            </form>
-            </fieldset>
-        </c:when>
-        <c:otherwise>
-            <h3>You must be logged in to create trips.</h3>
-        </c:otherwise>
-    </c:choose>
-
+            </c:when>
+            <c:otherwise>
+                <h3>You must be logged in to create trips.</h3>
+            </c:otherwise>
+        </c:choose>
+    </div>
     <footer><p class="footer">Trips - 2013</p></footer>
 </div>
 </body>

@@ -14,6 +14,7 @@
     <div id="content">
         <form method="POST" action="register">
             <fieldset>
+                <legend>Required</legend>
                 <table>
                     <tr>
                         <td>
@@ -34,9 +35,9 @@
                 </table>
             </fieldset>
             <fieldset>
+                <legend>Optional</legend>
                 <header>Personal Information</header>
                 <table>
-
                     <tr>
                         <td>
                             <label>First Name</label>
@@ -79,20 +80,34 @@
                     </tr>
                     <tr>
                         <td>
+                            <label>Postal code</label>
+                        </td>
+                        <td>
+                            <input type="text" name="postalCode">
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>
+                            <label>Province</label>
+                        </td>
+                        <td>
+                            <input type="text" name="province">
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>
                             <label>Country</label>
                         </td>
                         <td>
                             <input type="text" name="country">
                         </td>
                     </tr>
-
-
                 </table>
             </fieldset>
-
-           <button type="submit">Register</button>
+            <button type="submit">Register</button>
         </form>
     </div>
+
     <footer><p class="footer">Trips - 2013</p></footer>
 </div>
 </body>

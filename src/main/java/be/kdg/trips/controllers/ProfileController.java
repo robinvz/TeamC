@@ -40,7 +40,7 @@ public class ProfileController {
 
     @RequestMapping(value = "/editCredentials", method = RequestMethod.POST)
     public String editCredentials(HttpServletRequest request) {
-        try {
+       try {
             tripsService.changePassword((User) session.getAttribute("user"), request.getParameter("oldPassword"),
                     request.getParameter("newPassword"));
         } catch (TripsException e) {

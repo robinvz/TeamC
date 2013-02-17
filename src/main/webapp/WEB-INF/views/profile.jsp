@@ -35,7 +35,6 @@
 
                 <div class="inner-content">
                     <section>
-
                         <article>
                             <h2>${sessionScope.user.email}</h2>
 
@@ -56,34 +55,46 @@
                                     <tr>
                                         <td>
                                             <label>Street: </label>
-                                            <output>${sessionScope.user.street}</output>
+                                            <output>${sessionScope.user.address.street}</output>
                                         </td>
                                     </tr>
                                     <tr>
                                         <td>
-                                            <label>House number: </label>
-                                            <output>${sessionScope.user.houseNr}</output>
+                                            <label>House nr: </label>
+                                            <output>${sessionScope.user.address.houseNr}</output>
                                         </td>
                                     </tr>
                                     <tr>
                                         <td>
                                             <label>City: </label>
-                                            <output>${sessionScope.user.city}</output>
+                                            <output>${sessionScope.user.address.city}</output>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td>
+                                            <label>Postal code: </label>
+                                            <output>${sessionScope.user.address.postalCode}</output>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td>
+                                            <label>Province: </label>
+                                            <output>${sessionScope.user.address.province}</output>
                                         </td>
                                     </tr>
                                     <tr>
                                         <td>
                                             <label>Country: </label>
-                                            <output>${sessionScope.user.country}</output>
+                                            <output>${sessionScope.user.address.country}</output>
                                         </td>
                                     </tr>
                                 </table>
                             </div>
-
+                           <!-- Only active trips -->
                             <div class="profile-currentTrips">
 
                             </div>
-
+                            <!-- Only non-active trips -->
                             <div class="profile-tripsHistory">
 
                             </div>

@@ -12,53 +12,45 @@
 <div id="page">
     <jsp:include page="header.jsp"/>
 
-    <div id="trip-pic">
-        <h2>Overview</h2>
-    </div>
-
+    <h2>Overview</h2>
+    <form action="/createTrip" method="GET">
+        <input type="submit" value="Create a timebound trip" class="btn-submit"></button>
+    </form>
     <div id="content">
         <table id="trips">
+            <!-- model heeft momenteel: type, id, description, privacy, published, title, userId -->
             <thead>
-            <!-- model heeft momenteel: type, id, description, privacy, published, title, userId
             <tr>
-                <th>Trip</th>
-                <th>Locatie</th>
-                <th>Tijdstip</th>
-            </tr>
-            -->
-            <tr>
-                <th>Trip</th>
-                <th>Beschrijving</th>
+                <th>Title</th>
+                <th>Description</th>
                 <th>Privacy</th>
             </tr>
             </thead>
 
             <tbody id="trips-list">
             <form action="/selectTrip" method="GET">
-                <fieldset>
-                    <c:if test="${not empty tripsList}">
-                        <c:forEach items="${sessionScope.tripsList}" var="trip">
-                            <tr>
-                                <div class="form-row">
-                                    <td>
-                                        <output>${trip.title}</output>
-                                    </td>
-                                    <td>
-                                        <output>${trip.description}</output>
-                                    </td>
-                                    <td>
-                                        <output>${trip.privacy}</output>
-                                    </td>
-                                </div>
-                                <div class="form-buttons">
-                                    <div class="button">
-                                        <td><input name="submit" type="submit" value="Select"/></td>
-                                    </div>
-                                </div>
-                            </tr>
-                        </c:forEach>
-                    </c:if>
-                </fieldset>
+                <c:if test="${not empty tripsList}">
+                    <c:forEach items="${sessionScope.tripsList}" var="trip">
+                        <tr>
+                            <div class="form-row">
+                                <td>
+                                    <output>${trip.title}</output>
+                                </td>
+                                <td>
+                                    <output>${trip.description}</output>
+                                </td>
+                                <td>
+                                    <output>${trip.privacy}</output>
+                                </td>
+                            </div>
+                            <!--  <div class="form-buttons">
+                                  <div class="button">
+                                      <td><input name="submit" type="submit" value="Select"/></td>
+                                  </div>
+                              </div>   -->
+                        </tr>
+                    </c:forEach>
+                </c:if>
             </form>
             </tbody>
         </table>
