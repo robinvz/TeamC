@@ -30,12 +30,12 @@ public class ProfileController {
 
     @RequestMapping(value="/profile", method=RequestMethod.GET)
     public String showProfile(){
-        return "profile";
+        return "users/profile";
     }
 
     @RequestMapping(value = "/editCredentials", method = RequestMethod.GET)
     public String showEditCredentials() {
-        return "editCredentials";
+        return "users/editCredentials";
     }
 
     @RequestMapping(value = "/editCredentials", method = RequestMethod.POST)

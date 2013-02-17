@@ -11,6 +11,10 @@
         <load-on-startup>1</load-on-startup>
     </servlet>
     <servlet-mapping>
+        <servlet-name>Trips</servlet-name>
+        <url-pattern>/</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
         <servlet-name>default</servlet-name>
         <url-pattern>*.css</url-pattern>
     </servlet-mapping>
@@ -39,11 +43,6 @@
         <url-pattern>*.woff</url-pattern>
     </servlet-mapping>
 
-    <servlet-mapping>
-        <servlet-name>Trips</servlet-name>
-        <url-pattern>/</url-pattern>
-    </servlet-mapping>
-
     <context-param>
         <param-name>contextConfigLocation</param-name>
         <param-value>/WEB-INF/Trips-servlet.xml</param-value>
@@ -52,4 +51,13 @@
     <listener>
         <listener-class>org.springframework.web.context.ContextLoaderListener</listener-class>
     </listener>
+
+    <filter>
+        <filter-name>LogFilter</filter-name>
+        <filter-class>be.kdg.trips.filters.LogFilter</filter-class>
+    </filter>
+    <filter-mapping>
+        <filter-name>LogFilter</filter-name>
+        <url-pattern>/users/*</url-pattern>
+    </filter-mapping>
 </web-app>

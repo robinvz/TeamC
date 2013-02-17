@@ -3,10 +3,6 @@ package be.kdg.trips;
 import org.junit.Before;
 import org.junit.Test;
 
-import static junit.framework.Assert.assertEquals;
-import static junit.framework.Assert.assertNotNull;
-import static junit.framework.Assert.assertNull;
-
 /**
  * Subversion ${Id}
  * Project Application Development
@@ -14,14 +10,12 @@ import static junit.framework.Assert.assertNull;
  * 2012-2013
  */
 public class UserTest {
-    //@Autowired
-    //private UserService userService;
     String email;
     String password;
 
     @Before
     public void initTest(){
-        email = "mathias.vandepol@student.kdg.be";
+        email = "mathias.vandepol@student.user.be";
     }
 
     @Test

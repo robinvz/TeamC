@@ -9,7 +9,7 @@
 </head>
 <body>
 <div id="page">
-    <jsp:include page="header.jsp"/>
+    <jsp:include page="../header.jsp"/>
 
     <div id="content">
         <c:choose>
@@ -88,9 +88,15 @@
                                             <output>${sessionScope.user.address.country}</output>
                                         </td>
                                     </tr>
+                                    <tr>
+                                        <td>
+                                            <label>Member since: </label>
+                                            <output>${sessionScope.user.registerDate}</output>
+                                        </td>
+                                    </tr>
                                 </table>
                             </div>
-                           <!-- Only active trips -->
+                            <!-- Only active trips -->
                             <div class="profile-currentTrips">
 
                             </div>

@@ -2,8 +2,6 @@ package be.kdg.trips;
 
 import org.junit.Test;
 
-import static junit.framework.Assert.assertEquals;
-
 /**
  * Subversion Id
  * Project Application Development

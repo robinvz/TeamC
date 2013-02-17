@@ -53,7 +53,7 @@ public class TripController {
 
     @RequestMapping(value = "/createTrip", method = RequestMethod.GET)
     public String createTrip() {
-        return "createTrip";
+        return "users/createTrip";
     }
 
     @RequestMapping(value = "/createTrip", method = RequestMethod.POST)

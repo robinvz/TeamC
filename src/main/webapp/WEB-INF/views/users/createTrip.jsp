@@ -17,11 +17,11 @@
 </head>
 <body>
 <div id="page">
-    <jsp:include page="header.jsp"/>
+    <jsp:include page="../header.jsp"/>
 
     <div id="content">
-        <c:choose>
-            <c:when test="${not empty sessionScope.user}">
+
+
                 <form action="/createTrip" method="POST">
                     <fieldset>
                         <legend>Create a timebound trip</legend>
@@ -58,12 +58,9 @@
                     <input type="submit" value="Create" class="btn-submit">
                 </form>
                 </fieldset>
-            </c:when>
-            <c:otherwise>
-                <h3>You must be logged in to create trips.</h3>
-            </c:otherwise>
-        </c:choose>
-    </div>
+
+
+     </div>
     <footer><p class="footer">Trips - 2013</p></footer>
 </div>
 </body>
