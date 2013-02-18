@@ -1,6 +1,7 @@
 package be.kdg.trips.controllers;
 
 import be.kdg.trips.exception.TripsException;
+import be.kdg.trips.model.trip.Trip;
 import be.kdg.trips.model.trip.TripPrivacy;
 import be.kdg.trips.model.user.User;
 import be.kdg.trips.services.interfaces.TripsService;
@@ -34,8 +35,10 @@ public class TripController {
     @RequestMapping(value="/trips", method= RequestMethod.GET)
     public void showTrips(){
         try {
-            List tripsList = tripsService.findAllTimelessNonPrivateTrips();
-            session.setAttribute("tripsList", tripsList);
+            List timelessTrips = tripsService.findAllTimelessNonPrivateTrips();
+            session.setAttribute("timelessTrips", timelessTrips);
+            List timeboundTrips = tripsService.findAllTimeBoundPublishedNonPrivateTrips();
+            session.setAttribute("timeboundTrips", timeboundTrips);
         } catch (TripsException e) {
             //failed to retrieve tripsList
         }
@@ -56,19 +59,33 @@ public class TripController {
         return "users/createTrip";
     }
 
-    @RequestMapping(value = "/createTrip", method = RequestMethod.POST)
-    public String createTrip(HttpServletRequest request) {
+    @RequestMapping(value = "/createTimeBoundTrip", method = RequestMethod.POST)
+    public String createTimeBoundTrip(HttpServletRequest request) {
         try {
-            String startDateString = request.getParameter("tripStartDate");
-            String endDateString = request.getParameter("tripEndDate");
-            Date startDate = new SimpleDateFormat("MMMM d, yyyy").parse(startDateString);
-            Date endDate = new SimpleDateFormat("MMMM d, yyyy").parse(endDateString);
-            tripsService.createTimeBoundTrip(request.getParameter("tripTitle"), request.getParameter("tripDescription"),
-                    TripPrivacy.valueOf(request.getParameter("radios")), (User) session.getAttribute("user"), startDate, endDate);
+
+            //Date startDate = new SimpleDateFormat("dd, MM, yyyy").parse(startDateString);
+            //Date endDate = new SimpleDateFormat("dd, MM, yyyy").parse(endDateString);
+            Trip test = tripsService.createTimeBoundTrip(request.getParameter("tripTitle"), request.getParameter("tripDescription"),
+                    TripPrivacy.valueOf(request.getParameter("radios")), (User) session.getAttribute("user"),
+                    (Date)request.getAttribute("tripStartDate"), (Date)request.getAttribute("tripEndDate"));
+            System.out.println(test);
         } catch (TripsException e) {
             //failed to create timeBoundTrip
-        } catch (ParseException e) {
+        /*} catch (ParseException e) {
             e.printStackTrace();  //To change body of catch statement use File | Settings | File Templates.
+        */
+        }
+        return "trips";
+    }
+
+    @RequestMapping(value = "/createTimeLessTrip", method = RequestMethod.POST)
+    public String createTimeLessTrip(HttpServletRequest request) {
+        try {
+            Trip trip = tripsService.createTimelessTrip(request.getParameter("tripTitle"), request.getParameter("tripDescription"),
+                    TripPrivacy.valueOf(request.getParameter("radios")), (User) session.getAttribute("user"));
+            System.out.println("privacy: "+trip.getPrivacy() +" // active: " +trip.isActive() + " // organizer: "+ trip.getOrganizer().getFirstName());
+        } catch (TripsException e) {
+            //failed to create timeLessTrip
         }
         return "trips";
     }

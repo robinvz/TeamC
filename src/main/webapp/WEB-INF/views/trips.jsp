@@ -13,9 +13,16 @@
     <jsp:include page="header.jsp"/>
 
     <h2>Overview</h2>
+
     <form action="/createTrip" method="GET">
-        <input type="submit" value="Create a timebound trip" class="btn-submit"></button>
+        <input type="submit" value="Create a trip" class="btn-submit"></button>
     </form>
+    <select name="filterTripsMenu">
+        <option>Filter</option>
+        <option value="">Repeating trips</option>
+        <option value="">Timebound trips</option>
+    </select>
+
     <div id="content">
         <table id="trips">
             <!-- model heeft momenteel: type, id, description, privacy, published, title, userId -->
@@ -29,28 +36,52 @@
 
             <tbody id="trips-list">
             <form action="/selectTrip" method="GET">
-                <c:if test="${not empty tripsList}">
-                    <c:forEach items="${sessionScope.tripsList}" var="trip">
-                        <tr>
-                            <div class="form-row">
-                                <td>
-                                    <output>${trip.title}</output>
-                                </td>
-                                <td>
-                                    <output>${trip.description}</output>
-                                </td>
-                                <td>
-                                    <output>${trip.privacy}</output>
-                                </td>
-                            </div>
-                            <!--  <div class="form-buttons">
-                                  <div class="button">
-                                      <td><input name="submit" type="submit" value="Select"/></td>
-                                  </div>
-                              </div>   -->
-                        </tr>
-                    </c:forEach>
-                </c:if>
+
+                <div id="timelessTrips">
+                    <c:if test="${not empty timelessTrips}">
+                        <c:forEach items="${sessionScope.timelessTrips}" var="timelessTrip">
+                            <tr>
+                                <div class="form-row">
+                                    <td>
+                                        <output>${timelessTrip.title}</output>
+                                    </td>
+                                    <td>
+                                        <output>${timelessTrip.description}</output>
+                                    </td>
+                                    <td>
+                                        <output>${timelessTrip.privacy}</output>
+                                    </td>
+                                </div>
+                                <!--  <div class="form-buttons">
+                                      <div class="button">
+                                          <td><input name="submit" type="submit" value="Select"/></td>
+                                      </div>
+                                  </div>   -->
+                            </tr>
+                        </c:forEach>
+                    </c:if>
+                </div>
+
+                <div id="timeboundTrips">
+                    <c:if test="${not empty timeboundTrips}">
+                        <c:forEach items="${sessionScope.timeboundTrips}" var="timeboundTrip">
+                            <tr>
+                                <div class="form-row">
+                                    <td>
+                                        <output>${timeboundTrip.title}</output>
+                                    </td>
+                                    <td>
+                                        <output>${timeboundTrip.description}</output>
+                                    </td>
+                                    <td>
+                                        <output>${timeboundTrip.privacy}</output>
+                                    </td>
+                                </div>
+                            </tr>
+                        </c:forEach>
+                    </c:if>
+                </div>
+
             </form>
             </tbody>
         </table>

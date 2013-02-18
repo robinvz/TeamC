@@ -22,45 +22,68 @@
     <div id="content">
 
 
-                <form action="/createTrip" method="POST">
-                    <fieldset>
-                        <legend>Create a timebound trip</legend>
-                        <table>
-                            <tr>
-                                <td><label>Title: </label></td>
-                                <td><input type="text" name="tripTitle" required="true"></td>
-                            </tr>
-                            <tr>
-                                <td><label>Description: </label></td>
-                                <td><input type="text" name="tripDescription" required="true"></td>
-                            </tr>
-                            <tr>
-                                <td><label>Privacy: </label></td>
-                                <td><input type="radio" name="radios" value="PUBLIC">Public</input>
-                                    <input type="radio" name="radios" value="PROTECTED">Protected</input>
-                                    <input type="radio" name="radios" value="PRIVATE">Private</td>
-                            </tr>
-                            <tr>
-                                <!--Kenmerken van de trip kunnen ingeven & toevoegen aan lijst van labels-->
-                                <td><label>Labels: </label></td>
-                                <td><input type="text" name="tripLabels"></td>
-                            </tr>
-                            <tr>
-                                <td><label>Start date: </label></td>
-                                <td><input type="date" name="tripStartDate">
-                            </tr>
-                            <tr>
-                                <td><label>End date: </label></td>
-                                <td><input type="date" name="tripEndDate" ></td></td>
-                            </tr>
-                        </table>
-                    </fieldset>
-                    <input type="submit" value="Create" class="btn-submit">
-                </form>
+        <div id="timeboundTrip">
+            <form action="/createTimeBoundTrip" method="POST">
+                <fieldset>
+                    <legend>Create a timebound trip</legend>
+                    <table>
+                        <tr>
+                            <td><label>Title: </label></td>
+                            <td><input type="text" name="tripTitle" required="true"></td>
+                        </tr>
+                        <tr>
+                            <td><label>Description: </label></td>
+                            <td><input type="text" name="tripDescription" required="true"></td>
+                        </tr>
+                        <tr>
+                            <td><label>Privacy: </label></td>
+                            <td><input type="radio" name="radios" value="PUBLIC">Public</input>
+                                <input type="radio" name="radios" value="PROTECTED">Protected</input>
+                                <input type="radio" name="radios" value="PRIVATE">Private</td>
+                        </tr>
+                        <tr>
+                            <td><label>Start date: </label></td>
+                            <td><input type="date" name="tripStartDate">
+                        </tr>
+                        <tr>
+                            <td><label>End date: </label></td>
+                            <td><input type="date" name="tripEndDate" ></td></td>
+                        </tr>
+                    </table>
                 </fieldset>
+                <input type="submit" value="Create" class="btn-submit">
+            </form>
+            </fieldset>
+        </div>
+
+        <div id="timelessTrip">
+            <form action="/createTimeLessTrip" method="POST">
+                <fieldset>
+                    <legend>Create a timeless trip</legend>
+                    <table>
+                        <tr>
+                            <td><label>Title: </label></td>
+                            <td><input type="text" name="tripTitle" required="true"></td>
+                        </tr>
+                        <tr>
+                            <td><label>Description: </label></td>
+                            <td><input type="text" name="tripDescription" required="true"></td>
+                        </tr>
+                        <tr>
+                            <td><label>Privacy: </label></td>
+                            <td><input type="radio" name="radios" value="PUBLIC">Public</input>
+                                <input type="radio" name="radios" value="PROTECTED">Protected</input>
+                                <input type="radio" name="radios" value="PRIVATE">Private</td>
+                        </tr>
+                    </table>
+                </fieldset>
+                <input type="submit" value="Create" class="btn-submit">
+            </form>
+            </fieldset>
+        </div>
 
 
-     </div>
+    </div>
     <footer><p class="footer">Trips - 2013</p></footer>
 </div>
 </body>
