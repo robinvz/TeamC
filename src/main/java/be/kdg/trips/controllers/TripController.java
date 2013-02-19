@@ -12,8 +12,6 @@ import org.springframework.web.bind.annotation.RequestMethod;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
-import java.text.ParseException;
-import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.List;
 
@@ -54,21 +52,22 @@ public class TripController {
         return "trip";
     }
 
-    @RequestMapping(value = "/createTrip", method = RequestMethod.GET)
+    @RequestMapping(value = "/users/createTrip", method = RequestMethod.GET)
     public String createTrip() {
-        return "users/createTrip";
+        return "/users/createTrip";
     }
 
     @RequestMapping(value = "/createTimeBoundTrip", method = RequestMethod.POST)
     public String createTimeBoundTrip(HttpServletRequest request) {
         try {
-
             //Date startDate = new SimpleDateFormat("dd, MM, yyyy").parse(startDateString);
             //Date endDate = new SimpleDateFormat("dd, MM, yyyy").parse(endDateString);
+            String stringDatum = request.getParameter("tripStartDate");
+
             Trip test = tripsService.createTimeBoundTrip(request.getParameter("tripTitle"), request.getParameter("tripDescription"),
                     TripPrivacy.valueOf(request.getParameter("radios")), (User) session.getAttribute("user"),
                     (Date)request.getAttribute("tripStartDate"), (Date)request.getAttribute("tripEndDate"));
-            System.out.println(test);
+            System.out.println("string: "+stringDatum);
         } catch (TripsException e) {
             //failed to create timeBoundTrip
         /*} catch (ParseException e) {
@@ -81,9 +80,8 @@ public class TripController {
     @RequestMapping(value = "/createTimeLessTrip", method = RequestMethod.POST)
     public String createTimeLessTrip(HttpServletRequest request) {
         try {
-            Trip trip = tripsService.createTimelessTrip(request.getParameter("tripTitle"), request.getParameter("tripDescription"),
+            tripsService.createTimelessTrip(request.getParameter("tripTitle"), request.getParameter("tripDescription"),
                     TripPrivacy.valueOf(request.getParameter("radios")), (User) session.getAttribute("user"));
-            System.out.println("privacy: "+trip.getPrivacy() +" // active: " +trip.isActive() + " // organizer: "+ trip.getOrganizer().getFirstName());
         } catch (TripsException e) {
             //failed to create timeLessTrip
         }

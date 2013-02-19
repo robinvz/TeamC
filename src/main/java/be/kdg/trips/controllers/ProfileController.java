@@ -28,17 +28,17 @@ public class ProfileController {
     @Autowired
     private HttpSession session;
 
-    @RequestMapping(value="/profile", method=RequestMethod.GET)
+    @RequestMapping(value="/users/profile", method=RequestMethod.GET)
     public String showProfile(){
-        return "users/profile";
+        return "/users/profile";
     }
 
-    @RequestMapping(value = "/editCredentials", method = RequestMethod.GET)
+    @RequestMapping(value = "/users/editCredentials", method = RequestMethod.GET)
     public String showEditCredentials() {
-        return "users/editCredentials";
+        return "/users/editCredentials";
     }
 
-    @RequestMapping(value = "/editCredentials", method = RequestMethod.POST)
+    @RequestMapping(value = "/users/editCredentials", method = RequestMethod.POST)
     public String editCredentials(HttpServletRequest request) {
        try {
             tripsService.changePassword((User) session.getAttribute("user"), request.getParameter("oldPassword"),

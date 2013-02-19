@@ -20,8 +20,6 @@
     <jsp:include page="../header.jsp"/>
 
     <div id="content">
-
-
         <div id="timeboundTrip">
             <form action="/createTimeBoundTrip" method="POST">
                 <fieldset>
@@ -59,7 +57,7 @@
         <div id="timelessTrip">
             <form action="/createTimeLessTrip" method="POST">
                 <fieldset>
-                    <legend>Create a timeless trip</legend>
+                    <legend>Create a repeating trip</legend>
                     <table>
                         <tr>
                             <td><label>Title: </label></td>
