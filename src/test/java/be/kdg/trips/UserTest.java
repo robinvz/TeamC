@@ -1,30 +1,23 @@
 package be.kdg.trips;
 
 import be.kdg.trips.controllers.LoginController;
-import be.kdg.trips.exception.TripsException;
 import be.kdg.trips.model.user.User;
 import be.kdg.trips.services.interfaces.TripsService;
-import junit.framework.Assert;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.context.ApplicationContext;
-import org.springframework.http.HttpRequest;
-import org.springframework.test.context.ContextConfiguration;
-import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
+import org.mockito.Mock;
+import org.mockito.MockitoAnnotations;
+import org.mockito.runners.MockitoJUnitRunner;
+import org.springframework.mock.web.MockHttpSession;
+import org.springframework.test.util.ReflectionTestUtils;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.RequestBuilder;
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
-import org.springframework.web.context.WebApplicationContext;
 
-import javax.servlet.http.HttpSession;
-
-import static junit.framework.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
-import static org.junit.Assert.assertNull;
-import static org.springframework.test.web.servlet.setup.MockMvcBuilders.standaloneSetup;
+import static org.mockito.Mockito.when;
 
 /**
  * Subversion ${Id}
@@ -32,34 +25,45 @@ import static org.springframework.test.web.servlet.setup.MockMvcBuilders.standal
  * Karel de Grote-Hogeschool
  * 2012-2013
  */
+
+@RunWith(MockitoJUnitRunner.class)
 public class UserTest {
+
+    @Mock
+    private TripsService tripsService;
+
+    private MockHttpSession mockHttpSession;
 
     private MockMvc mockMvc;
 
 
-    @Autowired
-    private HttpSession session;
-
     @Before
-    public void init(){
-        mockMvc = MockMvcBuilders.standaloneSetup(new LoginController()).build();
+    public void init() {
+        MockitoAnnotations.initMocks(this);
+        mockHttpSession = new MockHttpSession(null);
+        LoginController lg = new LoginController();
+        ReflectionTestUtils.setField(lg, "tripsService", tripsService);
+        ReflectionTestUtils.setField(lg, "session", mockHttpSession);
+        mockMvc = MockMvcBuilders.standaloneSetup(lg).build();
     }
 
     @Test
     public void userLoggedIn() throws Exception {
-        RequestBuilder requestBuilder = MockMvcRequestBuilders.get("/login?username=bob&password=bob");
-        this.mockMvc.perform(requestBuilder);
-        assertNotNull(session.getAttribute("user"));
+        RequestBuilder requestBuilder = MockMvcRequestBuilders.post("/login").param("email", "bob").param("password", "bob");
+        when(tripsService.checkLogin("bob", "bob")).thenReturn(true);
+        when(tripsService.findUser("bob")).thenReturn(new User("bob", "bob"));
+        mockMvc.perform(requestBuilder);
+        assertNotNull(mockHttpSession.getAttribute("user"));
     }
 
     @Test
-    public void loginUserCorrect(){
+    public void loginUserCorrect() {
         //User user = userService.getUserByEmail(email);
         //assertEquals(user.email, email);
     }
 
     @Test
-    public void changePasswordTest(){
+    public void changePasswordTest() {
      /*   User user = (User) session.getAttribute("user");
         String newPassword = "nieuw";
 
@@ -68,7 +72,7 @@ public class UserTest {
     }
 
     @Test
-    public void deleteUserTest(){
+    public void deleteUserTest() {
      /*   User user = (User) session.getAttribute("user");
 
         assertNull(session.getAttribute("user"));    */
