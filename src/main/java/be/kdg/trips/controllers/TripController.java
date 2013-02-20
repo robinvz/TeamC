@@ -7,14 +7,15 @@ import be.kdg.trips.model.user.User;
 import be.kdg.trips.services.interfaces.TripsService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.servlet.ModelAndView;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
-import java.util.Date;
-import java.util.List;
+import java.util.*;
 
 /**
  * Created with IntelliJ IDEA.
@@ -32,15 +33,23 @@ public class TripController {
     private TripsService tripsService;
 
     @RequestMapping(value="/trips", method= RequestMethod.GET)
-    public void showTrips(){
-        try {
-            List timelessTrips = tripsService.findAllTimelessNonPrivateTrips();
-            session.setAttribute("timelessTrips", timelessTrips);
-            List timeboundTrips = tripsService.findAllTimeBoundPublishedNonPrivateTrips();
-            session.setAttribute("timeboundTrips", timeboundTrips);
-        } catch (TripsException e) {
-            //failed to retrieve tripsList
+    public ModelAndView showTrips(){
+        List<Trip> timelessTrips = null;
+        List<Trip> timeboundTrips = null;
+        Map<String, List> parameters = new HashMap<String, List>();
+        try{
+            timelessTrips = tripsService.findAllTimelessNonPrivateTrips();
+        }catch (TripsException e) {
+            //No timeless trips
         }
+        try{
+            timeboundTrips =  tripsService.findAllTimeBoundPublishedNonPrivateTrips();
+        }catch (TripsException e) {
+            //No timebound trips
+        }
+        parameters.put("timelessTrips", timelessTrips);
+        parameters.put("timeboundTrips", timeboundTrips);
+        return new ModelAndView("trips", parameters);
     }
 
     @RequestMapping(value = "/trip", method = RequestMethod.GET)
@@ -89,4 +98,18 @@ public class TripController {
         return "trips";
     }
 
+   /*
+    @RequestMapping(value = "/addLocationToTrip", method = RequestMethod.POST)
+    public String addLocationToTrip(HttpServletRequest request){
+        try{
+          //  Trip trip = tripsService.addLocationToTrip((User) session.getAttribute("user"), (Trip) session.getAttribute("trip"),
+                    request.getParameter("latitude"), request.getParameter("longitude"), request.getParameter("street"), request.getParameter("houseNr"),
+                    request.getParameter("city"), request.getParameter("postalCode"), request.getParameter("province"), request.getParameter("country")
+                    , request.getParameter("tite"), request.getParameter("description"));
+            //Trip trip = tripsService.addLocationToTrip(user, trip, latitude, longitude, street, houseNr, city, postalCode, province, country, title, description, question, answer );
+        }catch (TripsException e){
+             //failed to add location to trip
+        }
+        return null;
+    }       */
 }
