@@ -13,7 +13,6 @@ import org.springframework.web.bind.annotation.ResponseBody;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
-import java.util.Date;
 
 
 /**
@@ -36,9 +35,11 @@ public class LoginController {
     }
 
     @RequestMapping(value = "/service/login", method = RequestMethod.GET)
-    public  @ResponseBody String loginService(@RequestParam String username, @RequestParam String password) throws TripsException {
+    public
+    @ResponseBody
+    String loginService(@RequestParam String username, @RequestParam String password) throws TripsException {
         JSONObject js = new JSONObject();
-        js.accumulate("valid",tripsService.checkLogin(username, password) ) ;
+        js.accumulate("valid", tripsService.checkLogin(username, password));
         return js.toString();
     }
 
@@ -46,14 +47,16 @@ public class LoginController {
     public String handleLogin(HttpServletRequest request) {
         String email = request.getParameter("email");
         String password = request.getParameter("password");
-        if (!tripsService.checkLogin(email, password)) {  //wrong password, redirect to index
-            return "index";
-        }
         try {
-            User user = tripsService.findUser(email);
-            session.setAttribute("user", user);
+            if (tripsService.checkLogin(email, password)) {  //wrong password, redirect to index
+                User user = tripsService.findUser(email);
+                session.setAttribute("user", user);
+            }
+            else{
+                return "redirect:login";
+            }
         } catch (TripsException e) {
-            //Login failed
+            //will never throw
         }
         return "index";
     }
@@ -77,10 +80,11 @@ public class LoginController {
             tripsService.updateUser(user, request.getParameter("firstName"), request.getParameter("lastName"), request.getParameter("street"),
                     request.getParameter("houseNr"), request.getParameter("city"), request.getParameter("postalCode"),
                     request.getParameter("province"), request.getParameter("country"));
+            return "login";
         } catch (TripsException e) {
             //Register failed
+            return "redirect:register";
         }
-        return "login";
     }
 
 }
