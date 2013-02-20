@@ -91,8 +91,10 @@ public class UserTest {
     @Test
     public void registerUserShortSuccess() throws Exception {
         RequestBuilder requestBuilder = MockMvcRequestBuilders.post("/register").param("email", "bobette@gmail.com").param("password", "bobb");
-        when(tripsService.createUser("bob", "bob")).thenThrow(new TripsException("User Exists"));
-        mockMvc.perform(requestBuilder).andExpect(view().name("login"));
+        User user = new User("bobette@gmail.com", "bobb");
+        when(tripsService.createUser("bobette@gmail.com", "bobb")).thenReturn(user);
+        mockMvc.perform(requestBuilder).andExpect(view().name("index"));
+        assertNotNull(mockHttpSession.getAttribute("user"));
     }
 
     @Test
@@ -100,6 +102,7 @@ public class UserTest {
         RequestBuilder requestBuilder = MockMvcRequestBuilders.post("/register").param("email", "bob").param("password", "bob");
         when(tripsService.createUser("bob", "bob")).thenThrow(new TripsException("User Exists"));
         mockMvc.perform(requestBuilder).andExpect(view().name("redirect:register"));
+        assertNull(mockHttpSession.getAttribute("user"));
     }
 
     @Test

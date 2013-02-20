@@ -51,8 +51,7 @@ public class LoginController {
             if (tripsService.checkLogin(email, password)) {  //wrong password, redirect to index
                 User user = tripsService.findUser(email);
                 session.setAttribute("user", user);
-            }
-            else{
+            } else {
                 return "redirect:login";
             }
         } catch (TripsException e) {
@@ -80,7 +79,8 @@ public class LoginController {
             tripsService.updateUser(user, request.getParameter("firstName"), request.getParameter("lastName"), request.getParameter("street"),
                     request.getParameter("houseNr"), request.getParameter("city"), request.getParameter("postalCode"),
                     request.getParameter("province"), request.getParameter("country"));
-            return "login";
+            session.setAttribute("user", user);
+            return "index";
         } catch (TripsException e) {
             //Register failed
             return "redirect:register";
