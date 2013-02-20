@@ -13,8 +13,9 @@ import org.springframework.web.bind.annotation.RequestMethod;
  */
 @Controller
 public class ErrorController {
-    @RequestMapping(value = "/loginError", method = RequestMethod.GET)
-    public String logout() {
-        return "errors/loginError";
+    @RequestMapping(value = "/errors/loginError", method = RequestMethod.GET)
+    public String showError() {
+        return "/errors/loginError";
     }
+
 }

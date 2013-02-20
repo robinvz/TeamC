@@ -3,10 +3,13 @@ package be.kdg.trips.controllers;
 import be.kdg.trips.exception.TripsException;
 import be.kdg.trips.model.user.User;
 import be.kdg.trips.services.interfaces.TripsService;
+import net.sf.json.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.ResponseBody;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
@@ -30,6 +33,13 @@ public class LoginController {
     @RequestMapping(value = "/login", method = RequestMethod.GET)
     public String login() {
         return "login";
+    }
+
+    @RequestMapping(value = "/service/login", method = RequestMethod.GET)
+    public  @ResponseBody String loginService(@RequestParam String username, @RequestParam String pass) throws TripsException {
+        JSONObject js = new JSONObject();
+        js.accumulate("valid",tripsService.checkLogin(username, pass) ) ;
+        return js.toString();
     }
 
     @RequestMapping(value = "/login", method = RequestMethod.POST)

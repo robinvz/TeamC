@@ -14,7 +14,7 @@
 
     <h2>Overview</h2>
 
-    <form action="/createTrip" method="GET">
+    <form action="/users/createTrip" method="GET">
         <input type="submit" value="Create a trip" class="btn-submit"></button>
     </form>
     <select name="filterTripsMenu">

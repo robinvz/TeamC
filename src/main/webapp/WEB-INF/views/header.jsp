@@ -24,7 +24,7 @@
             <li><a id="nav-home" class="nav-link" href="/" title="Home">Home</a></li>
             <li><a id="nav-trips" class="nav-link" href="/trips" title="">Trips</a></li>
             <c:if test="${not empty sessionScope.user}">
-                <li><a id="nav-profile" class="nav-link" href="/profile" title="">Profile</a></li>
+                <li><a id="nav-profile" class="nav-link" href="/users/profile" title="">Profile</a></li>
             </c:if>
             <c:choose>
                 <c:when test="${empty sessionScope.user}">
