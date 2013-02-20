@@ -17,6 +17,7 @@ import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 
 import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.assertNull;
 import static org.mockito.Mockito.when;
 
 /**
@@ -48,7 +49,7 @@ public class UserTest {
     }
 
     @Test
-    public void userLoggedIn() throws Exception {
+    public void loginUserCorrect() throws Exception {
         RequestBuilder requestBuilder = MockMvcRequestBuilders.post("/login").param("email", "bob").param("password", "bob");
         when(tripsService.checkLogin("bob", "bob")).thenReturn(true);
         when(tripsService.findUser("bob")).thenReturn(new User("bob", "bob"));
@@ -57,26 +58,21 @@ public class UserTest {
     }
 
     @Test
-    public void loginUserCorrect() {
-        //User user = userService.getUserByEmail(email);
-        //assertEquals(user.email, email);
+    public void loginUserWrong() throws Exception {
+        RequestBuilder requestBuilder = MockMvcRequestBuilders.post("/login").param("email", "bobette").param("password", "bob");
+        when(tripsService.checkLogin("bob", "bob")).thenReturn(true);
+        mockMvc.perform(requestBuilder);
+        assertNull(mockHttpSession.getAttribute("user"));
     }
 
     @Test
-    public void changePasswordTest() {
-     /*   User user = (User) session.getAttribute("user");
-        String newPassword = "nieuw";
-
-        session.setAttribute("user", user);
-        assertEquals(session.getAttribute("user"), "nieuw");  */
+    public void logOutUser() throws Exception {
+        mockHttpSession.setAttribute("user", new User("mathias", "mathias"));
+        RequestBuilder requestBuilder = MockMvcRequestBuilders.get("/logout");
+        mockMvc.perform(requestBuilder);
+        assertNull(mockHttpSession.getAttribute("user"));
     }
 
-    @Test
-    public void deleteUserTest() {
-     /*   User user = (User) session.getAttribute("user");
-
-        assertNull(session.getAttribute("user"));    */
-    }
 
 
 }
