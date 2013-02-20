@@ -36,9 +36,9 @@ public class LoginController {
     }
 
     @RequestMapping(value = "/service/login", method = RequestMethod.GET)
-    public  @ResponseBody String loginService(@RequestParam String username, @RequestParam String pass) throws TripsException {
+    public  @ResponseBody String loginService(@RequestParam String username, @RequestParam String password) throws TripsException {
         JSONObject js = new JSONObject();
-        js.accumulate("valid",tripsService.checkLogin(username, pass) ) ;
+        js.accumulate("valid",tripsService.checkLogin(username, password) ) ;
         return js.toString();
     }
 

@@ -8,6 +8,8 @@
     </JAVADOC>
     <SOURCES>
       <root url="jar://$MAVEN_REPOSITORY$/TripsModel/TripsModel/1.0-SNAPSHOT/TripsModel-1.0-SNAPSHOT-sources.jar!/" />
+      <root url="file://$USER_HOME$/git/Model/src/main/java" />
+      <root url="file://$USER_HOME$/git/Model/src/test/java" />
     </SOURCES>
   </library>
 </component>
