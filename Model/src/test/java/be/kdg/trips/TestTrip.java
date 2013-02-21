@@ -134,6 +134,16 @@ public class TestTrip {
         tripsService.findTripById(1000);
     }
 
+    @Test
+    public void successfulFindPrivateTrips() throws TripsException {
+        User organizer = tripsService.createUser("bobby.lobby@hotmail.com","xinus");
+        Trip trip = tripsService.createTimelessTrip("Trip","TripDescription",TripPrivacy.PRIVATE,organizer);
+        tripsService.publishTrip(trip, organizer);
+        User user = tripsService.createUser("gekke.trekke@hotmail.com","linus");
+        tripsService.invite(trip, organizer, user);
+        assertEquals(1, tripsService.findPrivateTrips(user).size());
+    }
+
     @Test(expected = TripsException.class)
     public void failedFindTripByKeyword() throws TripsException {
         tripsService.findNonPrivateTripsByKeyword("Nachtdropping");

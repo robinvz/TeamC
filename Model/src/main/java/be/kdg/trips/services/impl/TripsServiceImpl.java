@@ -95,6 +95,11 @@ public class TripsServiceImpl implements TripsService
     }
 
     @Override
+    public List findPrivateTrips(User loggedInUser) throws TripsException {
+        return tripController.findPrivateTrips(loggedInUser);
+    }
+
+    @Override
     public Trip findTripById(int id) throws TripsException {
         return tripController.findTripById(id);
     }
@@ -143,7 +148,7 @@ public class TripsServiceImpl implements TripsService
     }
 
     @Override
-    public Invitation invite(Trip trip, User user) throws TripsException {
-        return enrollmentController.invite(trip, user);
+    public Invitation invite(Trip trip, User organizer, User user) throws TripsException {
+        return enrollmentController.invite(trip, organizer, user);
     }
 }

@@ -106,7 +106,7 @@ public class TestEnrollment
         User user = tripsService.createUser("leopard@hotmail.com","pass");
         Trip trip = tripsService.createTimelessTrip("Spartacus run", "Lopen door de modder!", TripPrivacy.PRIVATE, organizer);
         tripsService.publishTrip(trip, organizer);
-        Invitation invitation = tripsService.invite(trip, user);
+        Invitation invitation = tripsService.invite(trip, organizer, user);
         assertEquals(1,tripsService.findUser("leopard@hotmail.com").getInvitations().size());
     }
 
@@ -115,6 +115,6 @@ public class TestEnrollment
         User user = tripsService.createUser("leopardo@hotmail.com","pass");
         Trip trip = tripsService.createTimelessTrip("Spartacus run", "Lopen door de modder!", TripPrivacy.PUBLIC, organizer);
         tripsService.publishTrip(trip, organizer);
-        Invitation invitation = tripsService.invite(trip, user);
+        Invitation invitation = tripsService.invite(trip, organizer, user);
     }
 }

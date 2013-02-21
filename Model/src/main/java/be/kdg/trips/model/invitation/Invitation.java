@@ -45,6 +45,10 @@ public class Invitation implements Nullable {
     private Invitation() {
     }
 
+    public Trip getTrip() {
+        return trip;
+    }
+
     @Override
     public boolean isNull() {
         return false;

@@ -58,10 +58,10 @@ public class EnrollmentBLImpl implements EnrollmentBL
     }
 
     @Override
-    public Invitation invite(Trip trip, User user) throws TripsException
+    public Invitation invite(Trip trip, User organizer, User user) throws TripsException
     {
         Invitation invitation = null;
-        if (userBL.isExistingUser(user.getEmail()) && tripBL.isExistingTrip(trip.getId()) && trip.isPublished() && !trip.isActive() && trip.getPrivacy()==TripPrivacy.PRIVATE)
+        if (userBL.isExistingUser(user.getEmail()) && userBL.isExistingUser(organizer.getEmail()) && tripBL.isOrganizer(trip, organizer) && tripBL.isExistingTrip(trip.getId()) && trip.isPublished() && !trip.isActive() && trip.getPrivacy()==TripPrivacy.PRIVATE)
         {
             if(!isExistingInvitation(user, trip)){
                 invitation = new Invitation(trip, user);

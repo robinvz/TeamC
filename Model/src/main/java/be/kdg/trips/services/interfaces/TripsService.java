@@ -38,6 +38,7 @@ public interface TripsService
 
     public List findNonPrivateTripsByKeyword(String keyword) throws TripsException;
     public List findAllNonPrivateTrips(User loggedInUser) throws TripsException;
+    public List findPrivateTrips(User loggedInUser) throws TripsException;
     public Trip findTripById(int id) throws TripsException;
 
     public void publishTrip(Trip trip, User organizer) throws TripsException;
@@ -53,5 +54,5 @@ public interface TripsService
     public List<Enrollment> findEnrollmentsByUser(User user) throws TripsException;
     public List<Enrollment> findEnrollmentsByTrip(Trip trip) throws TripsException;
 
-    public Invitation invite(Trip trip, User user) throws TripsException;
+    public Invitation invite(Trip trip, User organizer, User user) throws TripsException;
 }
