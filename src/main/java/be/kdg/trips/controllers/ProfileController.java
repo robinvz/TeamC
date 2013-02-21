@@ -30,23 +30,24 @@ public class ProfileController {
 
     @RequestMapping(value="/users/profile", method=RequestMethod.GET)
     public String showProfile(){
-        return "/users/profile";
+        return "/users/profileView";
     }
 
     @RequestMapping(value = "/users/editCredentials", method = RequestMethod.GET)
     public String showEditCredentials() {
-        return "/users/editCredentials";
+        return "/users/editCredentialsView";
     }
 
-    @RequestMapping(value = "/users/editCredentials", method = RequestMethod.POST)
+    @RequestMapping(value = "/users/editCredentialsView", method = RequestMethod.POST)
     public String editCredentials(HttpServletRequest request) {
        try {
             tripsService.changePassword((User) session.getAttribute("user"), request.getParameter("oldPassword"),
                     request.getParameter("newPassword"));
+            session.setAttribute("user", (session.getAttribute("user")));
         } catch (TripsException e) {
             //Failed to update password
         }
-        return "index";
+        return "/users/profileView";
     }
 
     @RequestMapping(value = "/deleteProfile", method = RequestMethod.GET)
@@ -57,7 +58,7 @@ public class ProfileController {
         } catch (TripsException e) {
             //failed to delete user
         }
-        return "index";
+        return "indexView";
     }
 
 }
