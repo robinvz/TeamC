@@ -7,10 +7,7 @@ import be.kdg.trips.model.trip.Trip;
 import org.hibernate.validator.constraints.Range;
 
 import javax.persistence.*;
-import javax.validation.constraints.DecimalMax;
-import javax.validation.constraints.DecimalMin;
-import javax.validation.constraints.Min;
-import javax.validation.constraints.Size;
+import javax.validation.constraints.*;
 import java.io.Serializable;
 
 /**
@@ -26,27 +23,29 @@ public class Location implements LocationInterface, Serializable
     @Id
     @GeneratedValue(strategy= GenerationType.IDENTITY)
     private int id;
-    @Column(nullable = false)
+    @NotNull
     @DecimalMin("-90.00")
     @DecimalMax("90.00")
     private double latitude;
-    @Column(nullable = false)
+    @NotNull
     @DecimalMin("-180.00")
     @DecimalMax("180.00")
     private double longitude;
-    @Column(nullable = false)
+    @NotNull
     @Size(min = 2, max = 50)
     private String title;
     @Size(max = 150)
     private String description;
     @OneToOne(cascade = CascadeType.ALL)
     @JoinColumn(name = "addressId")
+    @NotNull
     private Address address;
     @OneToOne(cascade = CascadeType.ALL)
     @JoinColumn(name = "questionId")
     private Question question;
     @ManyToOne
     @JoinColumn(name = "tripId")
+    @NotNull
     private Trip trip;
 
     public Location(Trip trip, double latitude, double longitude, Address address, String title, String description, Question question) {

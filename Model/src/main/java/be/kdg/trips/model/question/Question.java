@@ -6,6 +6,7 @@ import org.hibernate.validator.constraints.Range;
 import javax.persistence.*;
 import javax.validation.ConstraintViolationException;
 import javax.validation.constraints.Max;
+import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 import java.io.Serializable;
 import java.util.ArrayList;
@@ -26,9 +27,11 @@ public class Question implements QuestionInterface, Serializable
     @GeneratedValue(strategy= GenerationType.IDENTITY)
     private int id;
     @Size(max = 100)
+    @NotNull
     private String question;
     @ElementCollection(fetch = FetchType.EAGER)
     private List<String> possibleAnswers;
+    @NotNull
     private int correctAnswerIndex;
 
     public Question(String question, List<String> possibleAnswers, int correctAnswerIndex) {

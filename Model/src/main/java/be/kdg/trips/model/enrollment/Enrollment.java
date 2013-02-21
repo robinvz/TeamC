@@ -5,6 +5,7 @@ import be.kdg.trips.model.trip.Trip;
 import be.kdg.trips.model.user.User;
 
 import javax.persistence.*;
+import javax.validation.constraints.NotNull;
 import java.io.Serializable;
 import java.util.Date;
 
@@ -22,12 +23,14 @@ public class Enrollment implements EnrollmentInterface, Serializable, Nullable
     @GeneratedValue(strategy= GenerationType.IDENTITY)
     private int id;
     @OneToOne
-    @JoinColumn(name = "tripId", nullable = false)
+    @JoinColumn(name = "tripId")
+    @NotNull
     private Trip trip;
     @OneToOne
-    @JoinColumn(name = "userId", nullable = false)
+    @JoinColumn(name = "userId")
+    @NotNull
     private User user;
-    @Column(nullable = false)
+    @NotNull
     private Date date;
 
     public Enrollment(Trip trip, User user)

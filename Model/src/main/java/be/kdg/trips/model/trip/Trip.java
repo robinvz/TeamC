@@ -9,6 +9,7 @@ import org.hibernate.annotations.*;
 import javax.persistence.*;
 import javax.persistence.Entity;
 import javax.persistence.Table;
+import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 import java.io.Serializable;
 import java.util.ArrayList;
@@ -28,15 +29,15 @@ import java.util.Set;
 public abstract class Trip implements Serializable, TripInterface, Nullable {
     @Id
     private int id;
-    @Column(nullable = false)
+    @NotNull
     @Size(min = 2, max = 50)
     private String title;
-    @Column(nullable = false)
+    @NotNull
     @Size(min = 2, max = 150)
     private String description;
     @ElementCollection(fetch = FetchType.EAGER)
     private Set<String> labels;
-    @Column(nullable = false)
+    @NotNull
     private TripPrivacy privacy;
     @ManyToOne
     @JoinColumn(name = "userId")
