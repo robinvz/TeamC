@@ -38,12 +38,12 @@ public class ProfileController {
         return "/users/editCredentialsView";
     }
 
-    @RequestMapping(value = "/users/editCredentialsView", method = RequestMethod.POST)
+    @RequestMapping(value = "/users/editCredentials", method = RequestMethod.POST)
     public String editCredentials(HttpServletRequest request) {
        try {
             tripsService.changePassword((User) session.getAttribute("user"), request.getParameter("oldPassword"),
                     request.getParameter("newPassword"));
-            session.setAttribute("user", (session.getAttribute("user")));
+            session.setAttribute("user", tripsService.findUser(((User) session.getAttribute("user")).getEmail()));
         } catch (TripsException e) {
             //Failed to update password
         }

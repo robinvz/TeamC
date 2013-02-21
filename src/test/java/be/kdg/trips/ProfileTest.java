@@ -54,12 +54,12 @@ public class ProfileTest {
 
     @Test
     public void profileView() throws Exception {
-        assertEquals(pc.showProfile(), "/users/profile");
+        assertEquals(pc.showProfile(), "/users/profileView");
     }
 
     @Test
     public void editCredentialsView() throws Exception {
-        assertEquals(pc.showEditCredentials(), "/users/editCredentials");
+        assertEquals(pc.showEditCredentials(), "/users/editCredentialsView");
     }
 
     @Test
@@ -73,14 +73,20 @@ public class ProfileTest {
         assertTrue(((User) mockHttpSession.getAttribute("user")).checkPassword("newPassword"));
     }
 
-    /*@Test
+    @Test
     public void editCredentialsWrongPassword() throws Exception {
         mockHttpSession.setAttribute("user", testUser);
         RequestBuilder requestBuilder = MockMvcRequestBuilders.post("/users/editCredentials")
-                .param("oldPassword", "foutPaswoord").param("newPassword", "bobin");
-        when(tripsService.findUser(testUser.getEmail())).thenThrow(new TripsException("Failed to update password"));
-        mockMvc.perform(requestBuilder).andExpect(view().name("redirect:index"));
-        //assertNull(mockHttpSession.getAttribute("user"));
-    }  */
+                .param("oldPassword", "wrongPassword").param("newPassword", "newPassword");
+        User userWithSamePassword = new User("joel@student.kdg.be", "oldPassword");
+        when(tripsService.findUser(testUser.getEmail())).thenReturn(userWithSamePassword);
+        mockMvc.perform(requestBuilder).andExpect(view().name("/users/profileView"));
+        assertTrue(((User) mockHttpSession.getAttribute("user")).checkPassword("oldPassword"));
+    }
+
+    @Test
+    public void userDeleted(){
+
+    }
 
 }

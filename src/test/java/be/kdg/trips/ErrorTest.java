@@ -1,7 +1,6 @@
 package be.kdg.trips;
 
 import be.kdg.trips.controllers.ErrorController;
-import be.kdg.trips.controllers.HomeController;
 import org.junit.Before;
 import org.junit.Test;
 import org.mockito.MockitoAnnotations;
@@ -22,7 +21,6 @@ public class ErrorTest {
 
     ErrorController ec;
 
-
     @Before
     public void init() {
         MockitoAnnotations.initMocks(this);
@@ -34,4 +32,5 @@ public class ErrorTest {
     public void errorView() throws Exception {
         assertEquals(ec.showError(), "errors/loginErrorView");
     }
+
 }

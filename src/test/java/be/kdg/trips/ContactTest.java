@@ -33,4 +33,5 @@ public class ContactTest {
     public void contactView() throws Exception {
         assertEquals(cc.contact(), "contactView");
     }
+
 }
