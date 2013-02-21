@@ -40,7 +40,7 @@ public class ProfileTest {
 
     ProfileController pc;
 
-    User testUser = new User("robinvanzype@gmail.com", "robin");
+    User testUser = new User("joel@student.kdg.be", "oldPassword");
 
     @Before
     public void init() {
@@ -66,10 +66,11 @@ public class ProfileTest {
     public void editCredentialsCorrect() throws Exception {
         mockHttpSession.setAttribute("user", testUser);
         RequestBuilder requestBuilder = MockMvcRequestBuilders.post("/users/editCredentials")
-                .param("oldPassword", "robin").param("newPassword", "bobin");
-        //when(tripsService.changePassword((User)mockHttpSession.getAttribute("user"),"",""));
-        mockMvc.perform(requestBuilder).andExpect(view().name("index"));
-        assertTrue(((User)mockHttpSession.getAttribute("user")).checkPassword("bobin"));
+                .param("oldPassword", "oldPassword").param("newPassword", "newPassword");
+        User userWithNewPassword = new User("joel@student.kdg.be", "newPassword");
+        when(tripsService.findUser(testUser.getEmail())).thenReturn(userWithNewPassword);
+        mockMvc.perform(requestBuilder).andExpect(view().name("/users/profileView"));
+        assertTrue(((User) mockHttpSession.getAttribute("user")).checkPassword("newPassword"));
     }
 
     /*@Test
