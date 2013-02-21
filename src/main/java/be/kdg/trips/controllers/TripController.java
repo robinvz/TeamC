@@ -7,6 +7,7 @@ import be.kdg.trips.model.user.User;
 import be.kdg.trips.services.interfaces.TripsService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -34,34 +35,34 @@ public class TripController {
     @Autowired
     private TripsService tripsService;
 
-    @RequestMapping(value="/trips", method= RequestMethod.GET)
-    public ModelAndView showTrips(){
+    @RequestMapping(value = "/trips", method = RequestMethod.GET)
+    public ModelAndView showTrips() {
         List<Trip> timelessTrips = null;
         List<Trip> timeboundTrips = null;
         Map<String, List> parameters = new HashMap<String, List>();
-        try{
+        try {
             timelessTrips = tripsService.findAllTimelessNonPrivateTrips();
-        }catch (TripsException e) {
+        } catch (TripsException e) {
             //No timeless trips
         }
-        try{
-            timeboundTrips =  tripsService.findAllTimeBoundPublishedNonPrivateTrips();
-        }catch (TripsException e) {
+        try {
+            timeboundTrips = tripsService.findAllTimeBoundPublishedNonPrivateTrips();
+        } catch (TripsException e) {
             //No timebound trips
         }
         parameters.put("timelessTrips", timelessTrips);
         parameters.put("timeboundTrips", timeboundTrips);
-        return new ModelAndView("tripsView",parameters);
+        return new ModelAndView("tripsView", parameters);
     }
 
-    @RequestMapping(value = "/trip", method = RequestMethod.GET)
-    public String trip(@RequestParam String tripId) {
-        return "lol";
-    }
-
-    @RequestMapping(value = "/selectTrip", method = RequestMethod.GET)
-    public String selectTrip() {
-        return "tripView";
+    @RequestMapping(value = "/trip/{tripId}", method = RequestMethod.GET)
+    public ModelAndView getTrip(@PathVariable int tripId) {
+        try {
+            Trip trip = tripsService.findTripById(tripId);
+            return new ModelAndView("tripView", "trip", trip);
+        } catch (TripsException e) {
+            return new ModelAndView("tripsView");
+        }
     }
 
     @RequestMapping(value = "/users/createTrip", method = RequestMethod.GET)
@@ -79,25 +80,29 @@ public class TripController {
             User user = (User) session.getAttribute("user");
             Date startDate = sdf.parse(request.getParameter("startDate"));
             Date endDate = sdf.parse(request.getParameter("endDate"));
-            Trip test = tripsService.createTimeBoundTrip(title, description, privacy, user, startDate,endDate);
+            Trip test = tripsService.createTimeBoundTrip(title, description, privacy, user, startDate, endDate);
             String view = "trip/" + test.getId();
             return view;
 
         } catch (TripsException e) {
         } catch (ParseException e) {
         }
-        return  "createTimeBoundTripView";
+        return "/users/createTripView";
     }
 
     @RequestMapping(value = "/createTimeLessTrip", method = RequestMethod.POST)
     public String createTimeLessTrip(HttpServletRequest request) {
         try {
-            tripsService.createTimelessTrip(request.getParameter("tripTitle"), request.getParameter("tripDescription"),
-                    TripPrivacy.valueOf(request.getParameter("radios")), (User) session.getAttribute("user"));
+            String title = request.getParameter("title");
+            String description = request.getParameter("description");
+            TripPrivacy privacy = TripPrivacy.valueOf(request.getParameter("privacy"));
+            User user = (User) session.getAttribute("user");
+            Trip test = tripsService.createTimelessTrip(title, description, privacy, user);
+            String view = "redirect:trip/" + test.getId();
+            return view;
         } catch (TripsException e) {
-            //failed to create timeLessTrip
+            return "/errors/loginErrorView";
         }
-        return "tripsView";
     }
 
    /*

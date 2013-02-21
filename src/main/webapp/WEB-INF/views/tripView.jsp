@@ -10,7 +10,7 @@
     <jsp:include page="headerView.jsp" />
 
     <div id="trip-header">
-        <h2>${trip.naam}</h2>
+        <h2>${trip.title}</h2>
     </div>
 
     <div id="content">

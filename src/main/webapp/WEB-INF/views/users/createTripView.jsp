@@ -61,17 +61,17 @@
                     <table>
                         <tr>
                             <td><label>Title: </label></td>
-                            <td><input type="text" name="tripTitle" required="true"></td>
+                            <td><input type="text" name="title" required="true"></td>
                         </tr>
                         <tr>
                             <td><label>Description: </label></td>
-                            <td><input type="text" name="tripDescription" required="true"></td>
+                            <td><input type="text" name="description" required="true"></td>
                         </tr>
                         <tr>
                             <td><label>Privacy: </label></td>
-                            <td><input type="radio" name="radios" value="PUBLIC">Public</input>
-                                <input type="radio" name="radios" value="PROTECTED">Protected</input>
-                                <input type="radio" name="radios" value="PRIVATE">Private</td>
+                            <td><input type="radio" name="privacy" value="PUBLIC">Public</input>
+                                <input type="radio" name="privacy" value="PROTECTED">Protected</input>
+                                <input type="radio" name="privacy" value="PRIVATE">Private</td>
                         </tr>
                     </table>
                 </fieldset>

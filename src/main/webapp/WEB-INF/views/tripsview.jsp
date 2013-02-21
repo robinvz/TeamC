@@ -41,8 +41,11 @@
                             <a href="trip/${timelessTrip.id}">
                             <tr id="trip${timelessTrip.id}">
                                 <div class="form-row">
+
                                     <td>
-                                        <output>${timelessTrip.title}</output>
+                                        <a href="/trip/${timelessTrip.id}">
+                                                ${timelessTrip.title}
+                                        </a>
                                     </td>
                                     <td>
                                         <output>${timelessTrip.description}</output>
