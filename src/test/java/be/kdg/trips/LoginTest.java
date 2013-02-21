@@ -33,7 +33,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
  */
 
 @RunWith(MockitoJUnitRunner.class)
-public class UserTest {
+public class LoginTest {
 
     @Mock
     private TripsService tripsService;
