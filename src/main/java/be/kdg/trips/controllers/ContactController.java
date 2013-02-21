@@ -13,8 +13,9 @@ import org.springframework.web.bind.annotation.RequestMethod;
  */
 @Controller
 public class ContactController {
-    @RequestMapping(value="/contact", method=RequestMethod.GET)
-    public void doSomething(){
 
+    @RequestMapping(value="/contact", method=RequestMethod.GET)
+    public String contact() {
+        return "contact";
     }
 }
