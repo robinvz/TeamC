@@ -16,6 +16,6 @@ public class ContactController {
 
     @RequestMapping(value="/contact", method=RequestMethod.GET)
     public String contact() {
-        return "contact";
+        return "contactView";
     }
 }

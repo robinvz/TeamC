@@ -15,7 +15,7 @@ import org.springframework.web.bind.annotation.RequestMethod;
 public class ErrorController {
     @RequestMapping(value = "/errors/loginError", method = RequestMethod.GET)
     public String showError() {
-        return "/errors/loginError";
+        return "errors/loginErrorView";
     }
 
 }

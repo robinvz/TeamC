@@ -10,13 +10,13 @@
 </head>
 <body>
 <div id="page">
-    <jsp:include page="header.jsp"/>
+    <jsp:include page="headerView.jsp"/>
 
     <h2>Overview</h2>
 
     <form action="/users/createTrip" method="GET">
-        <input type="submit" value="Create a trip" class="btn-submit"></button>
-    </form>
+    <input type="submit" value="Create a trip" class="btn-submit"></button>
+</form>
     <select name="filterTripsMenu">
         <option>Filter</option>
         <option value="">Repeating trips</option>

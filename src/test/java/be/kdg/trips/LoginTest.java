@@ -57,12 +57,12 @@ public class LoginTest {
 
     @Test
     public void loginView() throws Exception {
-        assertEquals(lg.login(), "login");
+        assertEquals(lg.login(), "loginView");
     }
 
     @Test
     public void registerView() throws Exception {
-        assertEquals(lg.register(), "register");
+        assertEquals(lg.register(), "registerView");
     }
 
     @Test
@@ -93,7 +93,7 @@ public class LoginTest {
         RequestBuilder requestBuilder = MockMvcRequestBuilders.post("/register").param("email", "bobette@gmail.com").param("password", "bobb");
         User user = new User("bobette@gmail.com", "bobb");
         when(tripsService.createUser("bobette@gmail.com", "bobb")).thenReturn(user);
-        mockMvc.perform(requestBuilder).andExpect(view().name("index"));
+        mockMvc.perform(requestBuilder).andExpect(view().name("indexView"));
         assertNotNull(mockHttpSession.getAttribute("user"));
     }
 
@@ -101,7 +101,7 @@ public class LoginTest {
     public void registerUserShortFail() throws Exception {
         RequestBuilder requestBuilder = MockMvcRequestBuilders.post("/register").param("email", "bob").param("password", "bob");
         when(tripsService.createUser("bob", "bob")).thenThrow(new TripsException("User Exists"));
-        mockMvc.perform(requestBuilder).andExpect(view().name("redirect:register"));
+        mockMvc.perform(requestBuilder).andExpect(view().name("registerView"));
         assertNull(mockHttpSession.getAttribute("user"));
     }
 
@@ -109,7 +109,7 @@ public class LoginTest {
     public void loginUserWrong() throws Exception {
         RequestBuilder requestBuilder = MockMvcRequestBuilders.post("/login").param("email", "bob").param("password", "bobette");
         when(tripsService.checkLogin("bob", "bob")).thenReturn(true);
-        mockMvc.perform(requestBuilder).andExpect(view().name("redirect:login"));
+        mockMvc.perform(requestBuilder).andExpect(view().name("loginView"));
         assertNull(mockHttpSession.getAttribute("user"));
     }
 

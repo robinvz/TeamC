@@ -12,7 +12,7 @@
 </head>
 <body>
 <div id="page">
-    <jsp:include page="header.jsp" />
+    <jsp:include page="headerView.jsp" />
 
     <div id="trip-header">
         <h2>${trip.naam}</h2>

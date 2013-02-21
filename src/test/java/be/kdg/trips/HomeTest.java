@@ -37,6 +37,6 @@ public class HomeTest {
 
     @Test
     public void homeView() throws Exception {
-        assertEquals(hc.index(), "index");
+        assertEquals(hc.index(), "indexView");
     }
 }

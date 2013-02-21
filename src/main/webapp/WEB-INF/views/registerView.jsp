@@ -9,7 +9,7 @@
 <html>
 <head>
 <div id="page">
-    <jsp:include page="header.jsp"/>
+    <jsp:include page="headerView.jsp"/>
 
     <div id="content">
         <form method="POST" action="register">

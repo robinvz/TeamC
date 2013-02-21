@@ -7,7 +7,6 @@ import be.kdg.trips.model.user.User;
 import be.kdg.trips.services.interfaces.TripsService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
-import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -15,6 +14,8 @@ import org.springframework.web.servlet.ModelAndView;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.*;
 
 /**
@@ -25,6 +26,7 @@ import java.util.*;
  * To change this template use File | Settings | File Templates.
  */
 @Controller
+
 public class TripController {
     @Autowired
     private HttpSession session;
@@ -49,7 +51,7 @@ public class TripController {
         }
         parameters.put("timelessTrips", timelessTrips);
         parameters.put("timeboundTrips", timeboundTrips);
-        return new ModelAndView("trips", parameters);
+        return new ModelAndView("tripsView",parameters);
     }
 
     @RequestMapping(value = "/trip", method = RequestMethod.GET)
@@ -59,32 +61,32 @@ public class TripController {
 
     @RequestMapping(value = "/selectTrip", method = RequestMethod.GET)
     public String selectTrip() {
-        return "trip";
+        return "tripView";
     }
 
     @RequestMapping(value = "/users/createTrip", method = RequestMethod.GET)
     public String createTrip() {
-        return "/users/createTrip";
+        return "/users/createTripView";
     }
 
     @RequestMapping(value = "/createTimeBoundTrip", method = RequestMethod.POST)
     public String createTimeBoundTrip(HttpServletRequest request) {
         try {
-            //Date startDate = new SimpleDateFormat("dd, MM, yyyy").parse(startDateString);
-            //Date endDate = new SimpleDateFormat("dd, MM, yyyy").parse(endDateString);
-            String stringDatum = request.getParameter("tripStartDate");
+            String title = request.getParameter("title");
+            String description = request.getParameter("description");
+            TripPrivacy privacy = TripPrivacy.valueOf(request.getParameter("privacy"));
+            SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy HH:mm:ss");
+            User user = (User) session.getAttribute("user");
+            Date startDate = sdf.parse(request.getParameter("startDate"));
+            Date endDate = sdf.parse(request.getParameter("endDate"));
+            Trip test = tripsService.createTimeBoundTrip(title, description, privacy, user, startDate,endDate);
+            String view = "trip/" + test.getId();
+            return view;
 
-            Trip test = tripsService.createTimeBoundTrip(request.getParameter("tripTitle"), request.getParameter("tripDescription"),
-                    TripPrivacy.valueOf(request.getParameter("radios")), (User) session.getAttribute("user"),
-                    (Date)request.getAttribute("tripStartDate"), (Date)request.getAttribute("tripEndDate"));
-            System.out.println("string: "+stringDatum);
         } catch (TripsException e) {
-            //failed to create timeBoundTrip
-        /*} catch (ParseException e) {
-            e.printStackTrace();  //To change body of catch statement use File | Settings | File Templates.
-        */
+        } catch (ParseException e) {
         }
-        return "trips";
+        return  "createTimeBoundTripView";
     }
 
     @RequestMapping(value = "/createTimeLessTrip", method = RequestMethod.POST)
@@ -95,7 +97,7 @@ public class TripController {
         } catch (TripsException e) {
             //failed to create timeLessTrip
         }
-        return "trips";
+        return "tripsView";
     }
 
    /*

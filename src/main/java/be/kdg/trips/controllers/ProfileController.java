@@ -30,12 +30,12 @@ public class ProfileController {
 
     @RequestMapping(value="/users/profile", method=RequestMethod.GET)
     public String showProfile(){
-        return "/users/profile";
+        return "users/profileView";
     }
 
     @RequestMapping(value = "/users/editCredentials", method = RequestMethod.GET)
     public String showEditCredentials() {
-        return "/users/editCredentials";
+        return "users/editCredentialsView";
     }
 
     @RequestMapping(value = "/users/editCredentials", method = RequestMethod.POST)
@@ -46,7 +46,7 @@ public class ProfileController {
         } catch (TripsException e) {
             //Failed to update password
         }
-        return "index";
+        return "indexView";
     }
 
     @RequestMapping(value = "/deleteProfile", method = RequestMethod.GET)
@@ -57,7 +57,7 @@ public class ProfileController {
         } catch (TripsException e) {
             //failed to delete user
         }
-        return "index";
+        return "indexView";
     }
 
 }

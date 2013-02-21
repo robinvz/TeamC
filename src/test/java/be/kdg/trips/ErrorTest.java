@@ -32,6 +32,6 @@ public class ErrorTest {
 
     @Test
     public void errorView() throws Exception {
-        assertEquals(ec.showError(), "/errors/loginError");
+        assertEquals(ec.showError(), "errors/loginErrorView");
     }
 }

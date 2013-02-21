@@ -1,7 +1,11 @@
 package be.kdg.trips;
 
 import be.kdg.trips.controllers.LoginController;
+import be.kdg.trips.controllers.TripController;
 import be.kdg.trips.exception.TripsException;
+import be.kdg.trips.model.trip.TimeBoundTrip;
+import be.kdg.trips.model.trip.TripPrivacy;
+import be.kdg.trips.model.user.User;
 import be.kdg.trips.services.interfaces.TripsService;
 import org.junit.Before;
 import org.junit.Test;
@@ -11,13 +15,22 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.mock.web.MockHttpSession;
 import org.springframework.test.util.ReflectionTestUtils;
 import org.springframework.test.web.servlet.MockMvc;
+import org.springframework.test.web.servlet.RequestBuilder;
+import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 
 import javax.servlet.http.HttpSession;
 
+import java.text.SimpleDateFormat;
+import java.util.ArrayList;
+import java.util.Date;
+import java.util.HashMap;
 import java.util.List;
 
 import static org.junit.Assert.assertNotNull;
+import static org.mockito.Matchers.*;
+import static org.mockito.Mockito.when;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 
 
 /**
@@ -34,17 +47,50 @@ public class TripTest {
 
     private MockMvc mockMvc;
 
-    LoginController lg;
+    TripController tc;
 
 
     @Before
     public void init() {
         MockitoAnnotations.initMocks(this);
         mockHttpSession = new MockHttpSession(null);
-        lg = new LoginController();
-        ReflectionTestUtils.setField(lg, "tripsService", tripsService);
-        ReflectionTestUtils.setField(lg, "session", mockHttpSession);
-        mockMvc = MockMvcBuilders.standaloneSetup(lg).build();
+        tc = new TripController();
+        ReflectionTestUtils.setField(tc, "tripsService", tripsService);
+        ReflectionTestUtils.setField(tc, "session", mockHttpSession);
+        mockMvc = MockMvcBuilders.standaloneSetup(tc).build();
+    }
+
+    @Test
+    public void getTrips() throws Exception {
+        RequestBuilder requestBuilder = MockMvcRequestBuilders.get("/trips");
+        when(tripsService.findAllTimelessNonPrivateTrips()).thenReturn(new ArrayList());
+        when(tripsService.findAllTimeBoundPublishedNonPrivateTrips()).thenReturn(new ArrayList());
+        //mockMvc.perform(requestBuilder).andExpect(model().attribute("timelessTrips", anyListOf(ArrayList.class))).andExpect(model().attribute("timeboundTrips", anyListOf(ArrayList.class)));
+    }
+
+    @Test
+    public void createTrip() throws Exception {
+        RequestBuilder requestBuilder = MockMvcRequestBuilders.get("/users/createTrip");
+        mockMvc.perform(requestBuilder).andExpect(view().name("/users/createTripView"));
+    }
+
+    @Test
+    public void createTimeBoundTrip() throws Exception {
+        User user = new User("bob", "bob");
+        mockHttpSession.setAttribute("user", user);
+        String title= "Test Trip";
+        String description = "Dit is een test";
+        String privacy = "PUBLIC";
+        String startdate = "21/2/2013 08:00:00";
+        String enddate = "22/2/2013 08:00:00";
+        TripPrivacy pr = TripPrivacy.PUBLIC;
+        SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy HH:mm:ss");
+        Date startd = sdf.parse(startdate);
+        Date endd = sdf.parse(enddate);
+
+        RequestBuilder requestBuilder = MockMvcRequestBuilders.post("/createTimeBoundTrip").param("startDate", startdate).param("endDate",enddate ).param("title", title).param("description",description ).param("privacy", privacy);
+        when(tripsService.createTimeBoundTrip(title,description, pr, user, startd, endd)).thenReturn(new TimeBoundTrip(title, description, pr, user, startd, endd));
+        mockMvc.perform(requestBuilder).andExpect(view().name("trip/0"));
     }
 
 

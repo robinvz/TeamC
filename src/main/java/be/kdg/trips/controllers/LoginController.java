@@ -31,7 +31,7 @@ public class LoginController {
 
     @RequestMapping(value = "/login", method = RequestMethod.GET)
     public String login() {
-        return "login";
+        return "loginView";
     }
 
     @RequestMapping(value = "/service/login", method = RequestMethod.GET)
@@ -52,24 +52,24 @@ public class LoginController {
                 User user = tripsService.findUser(email);
                 session.setAttribute("user", user);
             } else {
-                return "redirect:login";
+                return "loginView";
             }
         } catch (TripsException e) {
             //will never throw
         }
-        return "index";
+        return "indexView";
     }
 
     @RequestMapping(value = "/logout", method = RequestMethod.GET)
     public String logout() {
         session.invalidate();
-        return "index";
+        return "indexView";
     }
 
     @RequestMapping(value = "/register", method = RequestMethod.GET)
     public String register() {
         session.invalidate();
-        return "register";
+        return "registerView";
     }
 
     @RequestMapping(value = "/register", method = RequestMethod.POST)
@@ -80,10 +80,10 @@ public class LoginController {
                     request.getParameter("houseNr"), request.getParameter("city"), request.getParameter("postalCode"),
                     request.getParameter("province"), request.getParameter("country"));
             session.setAttribute("user", user);
-            return "index";
+            return "indexView";
         } catch (TripsException e) {
             //Register failed
-            return "redirect:register";
+            return "registerView";
         }
     }
 
