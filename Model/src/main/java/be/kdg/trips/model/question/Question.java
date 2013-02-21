@@ -30,6 +30,7 @@ public class Question implements QuestionInterface, Serializable
     @NotNull
     private String question;
     @ElementCollection(fetch = FetchType.EAGER)
+    @CollectionTable(name = "T_QUESTION_POSSIBLEANSWER")
     private List<String> possibleAnswers;
     @NotNull
     private int correctAnswerIndex;

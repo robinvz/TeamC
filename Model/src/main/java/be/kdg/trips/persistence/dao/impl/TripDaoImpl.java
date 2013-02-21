@@ -85,7 +85,7 @@ public class TripDaoImpl implements TripDao{
 
         Transaction tx = session.beginTransaction();
 
-        Query query = session.createQuery("FROM Trip t WHERE lower(t.title) LIKE :keyword OR lower(t.description) LIKE :keyword");
+        Query query = session.createQuery("FROM Trip t LEFT OUTER JOIN t.labels label WHERE lower(t.title) LIKE :keyword OR lower(t.description) LIKE :keyword OR lower(label) LIKE :keyword");
         query.setParameter("keyword","%"+keyword+"%");
         List<Trip> trips = query.list();
         tx.commit();

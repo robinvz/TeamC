@@ -36,6 +36,8 @@ public abstract class Trip implements Serializable, TripInterface, Nullable {
     @Size(min = 2, max = 150)
     private String description;
     @ElementCollection(fetch = FetchType.EAGER)
+    @CollectionTable(name = "T_TRIP_LABEL")
+    @Column(nullable = true)
     private Set<String> labels;
     @NotNull
     private TripPrivacy privacy;

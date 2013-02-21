@@ -106,19 +106,19 @@ public class TestTrip {
     @Test
     public void successfulFindTripByKeywordInDescription() throws TripsException
     {
-        Trip createdTrip = tripsService.createTimelessTrip("Boswandeling", "Wandeling in bos", TripPrivacy.PROTECTED, user);
-        Trip foundTrip = (Trip) tripsService.findNonPrivateTripsByKeyword("wandeling in bos").get(FIRST_ELEMENT);
+        Trip createdTrip = tripsService.createTimelessTrip("GrasvlakteWandeling", "Wandeling in grasvlakte", TripPrivacy.PROTECTED, user);
+        Trip foundTrip = (Trip) tripsService.findNonPrivateTripsByKeyword("wandeling in grasvlakte").get(FIRST_ELEMENT);
         assertEquals(createdTrip, foundTrip);
     }
-    /*
+
     @Test
     public void succesfulFindTripByKeywordInLabel() throws TripsException
     {
-        Trip createdTrip = tripsService.createTimelessTrip("Boswandeling", "Wandeling in bos", TripPrivacy.PROTECTED, user);
-        Trip foundTrip = (Trip) tripsService.findNonPrivateTripsByKeyword("Boswandeling").get(FIRST_ELEMENT);
+        Trip createdTrip = tripsService.createTimelessTrip("Waterwandeling", "Wandeling in water", TripPrivacy.PROTECTED, user);
+        tripsService.addLabelToTrip(createdTrip, user, "WandelingWATER");
+        Trip foundTrip = (Trip) tripsService.findNonPrivateTripsByKeyword("ANdelingWAT").get(FIRST_ELEMENT);
         assertEquals(createdTrip, foundTrip);
     }
-    */
 
     @Test
     public void successfulFindTripById() throws TripsException

@@ -90,7 +90,7 @@ public class TripBLImpl implements TripBL
         }
         else
         {
-            throw new TripsException("Trip with keyword '"+keyword+"' in title or description doesn't exist");
+            throw new TripsException("Trip with keyword '"+keyword+"' in title, description or labels doesn't exist");
         }
     }
 
