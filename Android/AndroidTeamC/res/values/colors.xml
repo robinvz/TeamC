@@ -1,0 +1,9 @@
+<resources>
+	<color name="default_background">#F8F8F8</color>
+	
+	<color name="highlight">#00B9E6</color>
+	<color name="chat_divider">#D3D3D3</color>
+    
+    <color name="md__transparent">#00000000</color>
+    <color name="md__defaultBackground">#FF555555</color>
+</resources>

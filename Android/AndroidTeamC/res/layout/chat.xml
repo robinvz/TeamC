@@ -1,0 +1,58 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/chatRelativeLayout"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@drawable/background_9"
+    android:orientation="vertical" >
+
+    <ImageView
+        android:id="@+id/imgBackground"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_above="@+id/txtChatInput"
+        android:layout_alignParentTop="true"
+        android:contentDescription="@string/chat_background_description"
+        android:scaleType="centerCrop"
+        android:src="@drawable/img_antwerpen" />
+    
+    <View
+        android:id="@+id/viewBackgroundOverlay"
+        android:layout_width="fill_parent"
+        android:layout_height="match_parent"
+        android:layout_above="@+id/txtChatInput"
+        android:background="#88EBEBEB" />
+    
+    <View
+        android:id="@+id/viewChatInputOverlay"
+        android:layout_width="fill_parent"
+        android:layout_height="match_parent"
+        android:layout_alignParentBottom="true"
+        android:layout_alignTop="@+id/txtChatInput"
+        android:background="#EBEBEB" />
+
+    <EditText
+        android:id="@+id/txtChatInput"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentRight="true"
+        android:ems="10"
+        android:inputType="textMultiLine" >
+        <requestFocus />
+    </EditText>
+
+<ListView
+    android:id="@android:id/list"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_above="@+id/viewChatInputOverlay"
+    android:layout_alignParentLeft="true"
+    android:layout_alignParentTop="true"
+    android:divider="@color/chat_divider"
+    android:dividerHeight="1dp" >
+
+   </ListView>
+    
+</RelativeLayout>

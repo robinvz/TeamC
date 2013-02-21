@@ -1,0 +1,68 @@
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="#E8FFFF"
+    android:padding="20dp"
+    tools:context=".MainActivity" >
+
+    <Button
+        android:id="@+id/btnLogin"
+        android:layout_width="200dp"
+        android:layout_height="40dp"
+        android:layout_above="@+id/btnFacebookLogin"
+        android:layout_centerHorizontal="true"
+        android:layout_marginBottom="22dp"
+        android:background="@color/loginbutton"
+        android:text="@string/login"
+        android:textColor="#FFFFFF" />
+
+    <Button
+        android:id="@+id/btnFacebookLogin"
+        android:layout_width="200dp"
+        android:layout_height="40dp"
+        android:layout_alignParentBottom="true"
+        android:layout_centerHorizontal="true"
+        android:layout_marginBottom="42dp"
+        android:background="@color/facebookbutton"
+        android:gravity="right|center_vertical"
+        android:paddingRight="10dp"
+        android:text="@string/login_with_facebook"
+        android:textColor="#FFFFFF"
+        android:textSize="15sp" />
+
+    <EditText
+        android:id="@+id/txtPassword"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_above="@+id/btnLogin"
+        android:layout_alignLeft="@+id/txtUsername"
+        android:layout_marginBottom="46dp"
+        android:ems="10"
+        android:hint="@string/password"
+        android:inputType="textPassword" />
+
+    <EditText
+        android:id="@+id/txtUsername"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_above="@+id/txtPassword"
+        android:layout_alignLeft="@+id/btnFacebookLogin"
+        android:layout_marginBottom="24dp"
+        android:ems="10"
+        android:hint="@string/username" >
+
+        <requestFocus />
+
+    </EditText>
+
+    <ImageView
+        android:id="@+id/imageView1"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_above="@+id/txtUsername"
+        android:layout_alignParentLeft="true"
+        android:padding="10dp"
+        android:src="@drawable/logo" />
+
+</RelativeLayout>

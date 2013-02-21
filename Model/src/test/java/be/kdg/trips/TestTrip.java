@@ -1,0 +1,248 @@
+package be.kdg.trips;
+
+import be.kdg.trips.businessLogic.impl.TripBLImpl;
+import be.kdg.trips.businessLogic.interfaces.TripBL;
+import be.kdg.trips.exception.TripsException;
+import be.kdg.trips.model.trip.Trip;
+import be.kdg.trips.model.trip.TripPrivacy;
+import be.kdg.trips.model.user.User;
+import be.kdg.trips.services.impl.TripsServiceImpl;
+import be.kdg.trips.services.interfaces.TripsService;
+import org.junit.BeforeClass;
+import org.junit.Test;
+import org.springframework.context.support.ClassPathXmlApplicationContext;
+
+import javax.mail.MessagingException;
+import javax.validation.ConstraintViolationException;
+import java.text.DateFormat;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.ArrayList;
+import java.util.List;
+
+import static org.junit.Assert.*;
+
+/**
+ * Subversion id
+ * Project Application Development
+ * Karel de Grote-Hogeschool
+ * 2012-2013
+ */
+public class TestTrip {
+    private static TripsService tripsService;
+    private static User user;
+    private static DateFormat df;
+    private final int FIRST_ELEMENT = 0;
+
+    @BeforeClass
+    public static void createTripManager() throws TripsException
+    {
+        ClassPathXmlApplicationContext ctx = new ClassPathXmlApplicationContext("applicationContext.xml");
+        tripsService = (TripsServiceImpl)ctx.getBean("tripsService");
+        user = tripsService.createUser("Theofiel@student.kdg.be", "Leopold");
+        df = new SimpleDateFormat("dd/MM/yyyy");
+    }
+
+    @Test
+    public void successfulCreateTimelessTrip() throws TripsException {
+        Trip trip = tripsService.createTimelessTrip("Stadswandeling", "Wandeling in 't Stad", TripPrivacy.PUBLIC, user);
+        assertNotNull(trip);
+    }
+    /*
+    @Test
+    public void failedCreateTimelessTripNullValues() throws TripsException {
+        Trip trip = tripsService.createTimelessTrip(null, null, TripPrivacy.PUBLIC, user);
+        assertNotNull(trip);
+    }
+    */
+    @Test
+    public void successfulCreateTimeBoundTrip() throws TripsException, ParseException {
+        Trip trip = tripsService.createTimeBoundTrip("Langlauf", "Langlaufen in de Ardennen", TripPrivacy.PUBLIC, user, df.parse("14/12/2014"), df.parse("15/12/2014"));
+        assertNotNull(trip);
+    }
+    /*
+    @Test
+    public void failedCreateTimeBoundTripNullValues() throws TripsException, ParseException {
+        Trip trip = tripsService.createTimeBoundTrip(null, null, TripPrivacy.PUBLIC, user, df.parse("14/12/2014"), df.parse("15/12/2014"));
+        assertNotNull(trip);
+    }
+    */
+    /*
+    @Test
+    public void failedCreateTimeBoundTripInvalidDates() throws TripsException, ParseException {
+        Trip trip = tripsService.createTimeBoundTrip("Langlauf", "Langlaufen in de Ardennen", TripPrivacy.PUBLIC, user, df.parse("14/14/2014"), df.parse("15/14/2014"));
+        assertNotNull(trip);
+    }
+    */
+    @Test
+    public void successfulGuestFindAllTrips() throws TripsException
+    {
+        Trip trip1 = tripsService.createTimelessTrip("Marathon des sables", "N/A", TripPrivacy.PUBLIC, user);
+        Trip trip2 = tripsService.createTimelessTrip("Marathon des sables", "N/A", TripPrivacy.PROTECTED, user);
+        tripsService.publishTrip(trip1,user);
+        tripsService.publishTrip(trip2,user);
+        assertFalse(tripsService.findAllNonPrivateTrips(null).isEmpty());
+    }
+
+    @Test
+    public void successfulUserFindAllTrips() throws TripsException
+    {
+        Trip trip1 = tripsService.createTimelessTrip("Marathon des sables", "N/A", TripPrivacy.PUBLIC, user);
+        Trip trip2 = tripsService.createTimelessTrip("Marathon des sables", "N/A", TripPrivacy.PROTECTED, user);
+        tripsService.publishTrip(trip1,user);
+        tripsService.publishTrip(trip2,user);
+        User user = tripsService.createUser("test@gmail.com","kokelengerb");
+        assertFalse(tripsService.findAllNonPrivateTrips(user).isEmpty());
+    }
+
+    @Test
+    public void successfulFindTripByKeywordInTitle() throws TripsException
+    {
+        Trip createdTrip = tripsService.createTimelessTrip("Parkwandeling", "Wandeling in park", TripPrivacy.PROTECTED, user);
+        Trip foundTrip = (Trip) tripsService.findNonPrivateTripsByKeyword("Parkwandeling").get(FIRST_ELEMENT);
+        assertEquals(createdTrip, foundTrip);
+    }
+
+    @Test
+    public void successfulFindTripByKeywordInDescription() throws TripsException
+    {
+        Trip createdTrip = tripsService.createTimelessTrip("Boswandeling", "Wandeling in bos", TripPrivacy.PROTECTED, user);
+        Trip foundTrip = (Trip) tripsService.findNonPrivateTripsByKeyword("wandeling in bos").get(FIRST_ELEMENT);
+        assertEquals(createdTrip, foundTrip);
+    }
+    /*
+    @Test
+    public void succesfulFindTripByKeywordInLabel() throws TripsException
+    {
+        Trip createdTrip = tripsService.createTimelessTrip("Boswandeling", "Wandeling in bos", TripPrivacy.PROTECTED, user);
+        Trip foundTrip = (Trip) tripsService.findNonPrivateTripsByKeyword("Boswandeling").get(FIRST_ELEMENT);
+        assertEquals(createdTrip, foundTrip);
+    }
+    */
+
+    @Test
+    public void successfulFindTripById() throws TripsException
+    {
+        Trip createdTrip = tripsService.createTimelessTrip("Boswandeling 2", "Wandeling in bos", TripPrivacy.PROTECTED, user);
+        Trip foundTrip = (Trip) tripsService.findTripById(createdTrip.getId());
+        assertEquals(createdTrip, foundTrip);
+    }
+
+    @Test(expected = TripsException.class)
+    public void failedFindTripById() throws TripsException
+    {
+        tripsService.findTripById(1000);
+    }
+
+    @Test(expected = TripsException.class)
+    public void failedFindTripByKeyword() throws TripsException {
+        tripsService.findNonPrivateTripsByKeyword("Nachtdropping");
+    }
+
+    @Test
+    public void successfulAddLabelsToTrip() throws TripsException {
+        Trip trip = tripsService.createTimelessTrip("The Spartacus", "N/A", TripPrivacy.PUBLIC, user);
+        tripsService.addLabelToTrip(trip,user,"Modder");
+        tripsService.addLabelToTrip(trip,user,"Uitdaging");
+        assertEquals(2,trip.getLabels().size());
+    }
+
+    @Test(expected = TripsException.class)
+    public void failedAddLabelNoPermission() throws TripsException {
+        Trip trip = tripsService.createTimelessTrip("The Spartacus", "N/A", TripPrivacy.PUBLIC, user);
+        User otherUser = tripsService.createUser("johny@gmail.com", "terry");
+        tripsService.addLabelToTrip(trip,otherUser,"Modder");
+    }
+
+    @Test
+    public void successfulPublishTrip() throws TripsException, ParseException {
+        Trip trip = tripsService.createTimeBoundTrip("carnaval","carnaval met stoet",TripPrivacy.PROTECTED,user,df.parse("14/12/2014"), df.parse("15/12/2014"));
+        tripsService.publishTrip(trip, user);
+        assertTrue(trip.isPublished());
+    }
+
+    @Test(expected = TripsException.class)
+    public void failedPublishTripTwice() throws TripsException, ParseException
+    {
+        Trip trip = tripsService.createTimeBoundTrip("carnaval","carnaval met stoet",TripPrivacy.PUBLIC,user,df.parse("14/12/2014"), df.parse("15/12/2014"));
+        tripsService.publishTrip(trip, user);
+        tripsService.publishTrip(trip, user);
+    }
+
+    @Test(expected = TripsException.class)
+    public void failedPublishTripNoPermission() throws TripsException, ParseException
+    {
+        Trip trip = tripsService.createTimeBoundTrip("carnaval","carnaval met stoet",TripPrivacy.PUBLIC,user,df.parse("14/12/2014"), df.parse("15/12/2014"));
+        tripsService.publishTrip(trip, user);
+        User otherUser = tripsService.createUser("john@gmail.com", "terry");
+        tripsService.publishTrip(trip, otherUser);
+    }
+
+    @Test
+    public void successfulAddLocation() throws TripsException
+    {
+        Trip createdTrip = tripsService.createTimelessTrip("locationTripa", "trip with locations", TripPrivacy.PUBLIC, user);
+        tripsService.addLocationToTrip(user, createdTrip, 10.12131, 10.12131, "Nationalestraat", null, "Antwerp", "2000", "Antwerp", "Belgium", "Titel", "Lange straat met tramspoor");
+        tripsService.addLocationToTrip(user, createdTrip, 10.12121, 10.12123, "Groenplaats", "53", null, "2000", null, null, "Titel", "Groenplaats");
+        assertEquals(2,createdTrip.getLocations().size());
+    }
+
+    @Test(expected = TripsException.class)
+    public void failedAddLocationNoPermission() throws TripsException
+    {
+        Trip trip = tripsService.createTimelessTrip("locationTrip", "trip with locations", TripPrivacy.PUBLIC, user);
+        User otherUser = tripsService.createUser("jan.discart@hotmail.com", "janneman");
+        tripsService.addLocationToTrip(otherUser, trip, 131.131, 23.123, "Nationalestraat", null, "Antwerp", "2000", "Antwerp", "Belgium", "Titel", "Lange straat met tramspoor");
+    }
+
+    @Test(expected = ConstraintViolationException.class)
+    public void failedAddLocationInvalidLatitude() throws TripsException
+    {
+        Trip trip = tripsService.createTimelessTrip("trip", "trip with location", TripPrivacy.PUBLIC, user);
+        tripsService.addLocationToTrip(user, trip, 1930.02, 23.123, "Nationalestraat", null, "Antwerp", "2000", "Antwerp", "Belgium", "Titel", "Lange straat met tramspoor");
+    }
+
+    @Test(expected = TripsException.class)
+    public void failedAddLocationInvalidAnswer() throws TripsException
+    {
+        Trip createdTrip = tripsService.createTimelessTrip("Trip with loc with ?", "trip with location and question", TripPrivacy.PUBLIC, user);
+        List<String> possibleAnswers = new ArrayList<>();
+        possibleAnswers.add("Gijs");
+        possibleAnswers.add("Keke");
+        tripsService.addLocationToTrip(user, createdTrip, 10.12131, 10.12131, "Nationalestraat", null, "Antwerp", "2000", "Antwerp", "Belgium", "Titel", "Lange straat met tramspoor", "Who am I?", possibleAnswers, 4);
+    }
+
+    @Test
+    public void successfulGuessAnswer() throws TripsException
+    {
+        Trip createdTrip = tripsService.createTimelessTrip("Trip with loc with ?", "trip with location and question", TripPrivacy.PUBLIC, user);
+        List<String> possibleAnswers = new ArrayList<>();
+        possibleAnswers.add("Gijs");
+        possibleAnswers.add("Keke");
+        tripsService.addLocationToTrip(user, createdTrip, 10.12131, 10.12131, "Nationalestraat", null, "Antwerp", "2000", "Antwerp", "Belgium", "Titel", "Lange straat met tramspoor", "Who am I?", possibleAnswers, FIRST_ELEMENT);
+        assertTrue(createdTrip.getLocations().get(FIRST_ELEMENT).getQuestion().checkAnswer(FIRST_ELEMENT));
+    }
+
+    @Test
+    public void failGuessAnswer() throws TripsException
+    {
+        Trip createdTrip = tripsService.createTimelessTrip("Trip with loc with ?", "trip with location and question", TripPrivacy.PUBLIC, user);
+        List<String> possibleAnswers = new ArrayList<>();
+        possibleAnswers.add("Gijs");
+        possibleAnswers.add("Keke");
+        tripsService.addLocationToTrip(user, createdTrip, 10.12131, 10.12131, "Nationalestraat", null, "Antwerp", "2000", "Antwerp", "Belgium", "Titel", "Lange straat met tramspoor", "Who am I?", possibleAnswers, 0);
+        assertFalse(createdTrip.getLocations().get(FIRST_ELEMENT).getQuestion().checkAnswer(1));
+    }
+
+    @Test(expected = TripsException.class)
+    public void successfulDeleteTrip() throws TripsException, MessagingException, ParseException {
+        User organizer = tripsService.createUser("tripsteamc@gmail.com","SDProject");
+        Trip createdTrip = tripsService.createTimeBoundTrip("Deer hunting", "I will be deleted", TripPrivacy.PROTECTED, organizer, df.parse("20/05/2013"), df.parse("21/05/2013"));
+        tripsService.publishTrip(createdTrip, organizer);
+       // Second user could be added in order to check if both receive notification mail
+       // User user = tripsService.createUser("email2","x");
+       // tripsService.enroll(createdTrip,user);
+        tripsService.deleteTrip(createdTrip,organizer);
+        tripsService.findNonPrivateTripsByKeyword("deletetrip");
+    }
+}

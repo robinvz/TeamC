@@ -1,0 +1,1607 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="ChangeListManager">
+    <list default="true" id="6cc9e967-6287-45ff-b32e-25db8e38578d" name="Default" comment="" />
+    <ignored path="TripsModel.iws" />
+    <ignored path=".idea/workspace.xml" />
+    <file path="/TestUser.java" changelist="6cc9e967-6287-45ff-b32e-25db8e38578d" time="1361350314408" ignored="false" />
+    <file path="/pom.xml" changelist="6cc9e967-6287-45ff-b32e-25db8e38578d" time="1361303181789" ignored="false" />
+    <file path="/fragment.java" changelist="6cc9e967-6287-45ff-b32e-25db8e38578d" time="1361354932938" ignored="false" />
+    <file path="/TripManager.java" changelist="6cc9e967-6287-45ff-b32e-25db8e38578d" time="1360313585594" ignored="false" />
+    <file path="/User.java" changelist="6cc9e967-6287-45ff-b32e-25db8e38578d" time="1361359315771" ignored="false" />
+    <file path="/UserException.java" changelist="6cc9e967-6287-45ff-b32e-25db8e38578d" time="1360249474854" ignored="false" />
+    <file path="/UserController.java" changelist="6cc9e967-6287-45ff-b32e-25db8e38578d" time="1360313737801" ignored="false" />
+    <file path="/UserDAO.java" changelist="6cc9e967-6287-45ff-b32e-25db8e38578d" time="1360250987747" ignored="false" />
+    <file path="/UserDaoImpl.java" changelist="6cc9e967-6287-45ff-b32e-25db8e38578d" time="1360862077257" ignored="false" />
+    <file path="/NullUser.java" changelist="6cc9e967-6287-45ff-b32e-25db8e38578d" time="1360257099900" ignored="false" />
+    <file path="$USER_HOME$/Documents/School/3/BAGedistribueerdeSystemen/week2/voorbeeld CorbaOrigineel/src/be/kdg/componenten/client/Client.java" changelist="6cc9e967-6287-45ff-b32e-25db8e38578d" time="1360256910360" ignored="false" />
+    <file path="/a.java" changelist="6cc9e967-6287-45ff-b32e-25db8e38578d" time="1360258056897" ignored="false" />
+    <file path="/sample.java" changelist="6cc9e967-6287-45ff-b32e-25db8e38578d" time="1360258083312" ignored="false" />
+    <file path="/Dummy.txt" changelist="6cc9e967-6287-45ff-b32e-25db8e38578d" time="1361462067816" ignored="false" />
+    <file path="/UserService.java" changelist="6cc9e967-6287-45ff-b32e-25db8e38578d" time="1360710753759" ignored="false" />
+    <file path="/UserServerImpl.java" changelist="6cc9e967-6287-45ff-b32e-25db8e38578d" time="1360319945706" ignored="false" />
+    <file path="/spring-config.xml" changelist="6cc9e967-6287-45ff-b32e-25db8e38578d" time="1360320486615" ignored="false" />
+    <file path="/Demo.java" changelist="6cc9e967-6287-45ff-b32e-25db8e38578d" time="1360602294885" ignored="false" />
+    <file path="/applicationContext.xml" changelist="6cc9e967-6287-45ff-b32e-25db8e38578d" time="1360763147488" ignored="false" />
+    <file path="$PROJECT_DIR$/../groepC/TeamC/.idea/workspace.xml" changelist="6cc9e967-6287-45ff-b32e-25db8e38578d" time="1360364923962" ignored="false" />
+    <file path="/UserServiceImpl.java" changelist="6cc9e967-6287-45ff-b32e-25db8e38578d" time="1360710959881" ignored="false" />
+    <file path="/UserDao.java" changelist="6cc9e967-6287-45ff-b32e-25db8e38578d" time="1360710914516" ignored="false" />
+    <file path="/TestTrip.java" changelist="6cc9e967-6287-45ff-b32e-25db8e38578d" time="1361358669732" ignored="false" />
+    <file path="/Trip.java" changelist="6cc9e967-6287-45ff-b32e-25db8e38578d" time="1361359199480" ignored="false" />
+    <file path="/TripPrivacy.java" changelist="6cc9e967-6287-45ff-b32e-25db8e38578d" time="1360502347659" ignored="false" />
+    <file path="/TimeBoundTrip.java" changelist="6cc9e967-6287-45ff-b32e-25db8e38578d" time="1360623106297" ignored="false" />
+    <file path="/TimelessTrip.java" changelist="6cc9e967-6287-45ff-b32e-25db8e38578d" time="1360623070789" ignored="false" />
+    <file path="/TripService.java" changelist="6cc9e967-6287-45ff-b32e-25db8e38578d" time="1360709512263" ignored="false" />
+    <file path="/TripServiceImpl.java" changelist="6cc9e967-6287-45ff-b32e-25db8e38578d" time="1360709530031" ignored="false" />
+    <file path="/TripDaoImpl.java" changelist="6cc9e967-6287-45ff-b32e-25db8e38578d" time="1361288481311" ignored="false" />
+    <file path="/TripDao.java" changelist="6cc9e967-6287-45ff-b32e-25db8e38578d" time="1361049867111" ignored="false" />
+    <file path="/TripException.java" changelist="6cc9e967-6287-45ff-b32e-25db8e38578d" time="1360523254917" ignored="false" />
+    <file path="/NullTrip.java" changelist="6cc9e967-6287-45ff-b32e-25db8e38578d" time="1360863923780" ignored="false" />
+    <file path="$USER_HOME$/IdeaProjects/Client/src/main/java/Demo.java" changelist="6cc9e967-6287-45ff-b32e-25db8e38578d" time="1360591734517" ignored="false" />
+    <file path="$USER_HOME$/IdeaProjects/Client/src/main/resources/policyfile" changelist="6cc9e967-6287-45ff-b32e-25db8e38578d" time="1360534667238" ignored="false" />
+    <file path="/web.xml" changelist="6cc9e967-6287-45ff-b32e-25db8e38578d" time="1360535491725" ignored="false" />
+    <file path="$USER_HOME$/IdeaProjects/TestjeGit/TeamC/.idea/workspace.xml" changelist="6cc9e967-6287-45ff-b32e-25db8e38578d" time="1360596934848" ignored="false" />
+    <file path="$USER_HOME$/IdeaProjects/TestjeGit/TeamC/src/main/webapp/WEB-INF/Trips-servlet.xml" changelist="6cc9e967-6287-45ff-b32e-25db8e38578d" time="1361361005402" ignored="false" />
+    <file path="$USER_HOME$/IdeaProjects/TestjeGit/TeamC/src/main/java/be/kdg/trips/services/UserService.java" changelist="6cc9e967-6287-45ff-b32e-25db8e38578d" time="1360680791224" ignored="false" />
+    <file path="$USER_HOME$/IdeaProjects/TestjeGit/TeamC/src/main/java/be/kdg/trips/exceptions/UserException.java" changelist="6cc9e967-6287-45ff-b32e-25db8e38578d" time="1360591977493" ignored="false" />
+    <file path="$USER_HOME$/IdeaProjects/TestjeGit/TeamC/src/main/java/be/kdg/trips/controllers/LoginController.java" changelist="6cc9e967-6287-45ff-b32e-25db8e38578d" time="1361375207673" ignored="false" />
+    <file path="/LoginController.java" changelist="6cc9e967-6287-45ff-b32e-25db8e38578d" time="1361375199160" ignored="false" />
+    <file path="/Trips-servlet.xml" changelist="6cc9e967-6287-45ff-b32e-25db8e38578d" time="1360592352446" ignored="false" />
+    <file path="/UserInterface.java" changelist="6cc9e967-6287-45ff-b32e-25db8e38578d" time="1360954244948" ignored="false" />
+    <file path="$USER_HOME$/IdeaProjects/TestjeGit/TeamC/src/main/java/be/kdg/trips/model/UserInterface.java" changelist="6cc9e967-6287-45ff-b32e-25db8e38578d" time="1360593270667" ignored="false" />
+    <file path="$USER_HOME$/IdeaProjects/TestjeGit/TeamC/src/main/java/be/kdg/trips/model/User.java" changelist="6cc9e967-6287-45ff-b32e-25db8e38578d" time="1360596339670" ignored="false" />
+    <file path="/log4j.xml" changelist="6cc9e967-6287-45ff-b32e-25db8e38578d" time="1360627812731" ignored="false" />
+    <file path="$USER_HOME$/IdeaProjects/TestjeGit/springrmiexample-server/src/main/resources/log4j.xml" changelist="6cc9e967-6287-45ff-b32e-25db8e38578d" time="1360594607275" ignored="false" />
+    <file path="$USER_HOME$/IdeaProjects/TestjeGit/TeamC/src/main/java/be/kdg/trips/model/services/UserService.java" changelist="6cc9e967-6287-45ff-b32e-25db8e38578d" time="1360595864825" ignored="false" />
+    <file path="$USER_HOME$/IdeaProjects/TestjeGit/TeamC/src/main/java/be/kdg/trips/model/user/User.java" changelist="6cc9e967-6287-45ff-b32e-25db8e38578d" time="1360680757582" ignored="false" />
+    <file path="$USER_HOME$/IdeaProjects/TestjeGit/TeamC/src/test/java/be/kdg/trips/UserTest.java" changelist="6cc9e967-6287-45ff-b32e-25db8e38578d" time="1361375730745" ignored="false" />
+    <file path="$PROJECT_DIR$/../groepC/TeamC/src/main/webapp/WEB-INF/Trips-servlet.xml" changelist="6cc9e967-6287-45ff-b32e-25db8e38578d" time="1360602492922" ignored="false" />
+    <file path="$PROJECT_DIR$/../groepC/TeamC/src/main/java/be/kdg/trips/controllers/LoginController.java" changelist="6cc9e967-6287-45ff-b32e-25db8e38578d" time="1360602492922" ignored="false" />
+    <file path="/import.sql" changelist="6cc9e967-6287-45ff-b32e-25db8e38578d" time="1360615714151" ignored="false" />
+    <file path="$USER_HOME$/IdeaProjects/TestjeGit/TeamC/src/main/webapp/WEB-INF/views/login.jsp" changelist="6cc9e967-6287-45ff-b32e-25db8e38578d" time="1360678293836" ignored="false" />
+    <file path="$USER_HOME$/IdeaProjects/TestjeGit/TeamC/src/main/webapp/WEB-INF/views/register.jsp" changelist="6cc9e967-6287-45ff-b32e-25db8e38578d" time="1360679813952" ignored="false" />
+    <file path="/register.jsp" changelist="6cc9e967-6287-45ff-b32e-25db8e38578d" time="1360678848769" ignored="false" />
+    <file path="$USER_HOME$/IdeaProjects/TestjeGit/TeamC/src/main/java/be/kdg/trips/model/user/UserInterface.java" changelist="6cc9e967-6287-45ff-b32e-25db8e38578d" time="1360680713732" ignored="false" />
+    <file path="/Enrollment.java" changelist="6cc9e967-6287-45ff-b32e-25db8e38578d" time="1361279843337" ignored="false" />
+    <file path="/TestEnrollment.java" changelist="6cc9e967-6287-45ff-b32e-25db8e38578d" time="1361347981176" ignored="false" />
+    <file path="/TripsServiceImpl.java" changelist="6cc9e967-6287-45ff-b32e-25db8e38578d" time="1361354531392" ignored="false" />
+    <file path="/TripsService.java" changelist="6cc9e967-6287-45ff-b32e-25db8e38578d" time="1361354566954" ignored="false" />
+    <file path="/EnrollmentService.java" changelist="6cc9e967-6287-45ff-b32e-25db8e38578d" time="1360761334821" ignored="false" />
+    <file path="/UserControllerImpl.java" changelist="6cc9e967-6287-45ff-b32e-25db8e38578d" time="1360761479974" ignored="false" />
+    <file path="/EnrollmentController.java" changelist="6cc9e967-6287-45ff-b32e-25db8e38578d" time="1360768506764" ignored="false" />
+    <file path="/EnrollmentControllerImpl.java" changelist="6cc9e967-6287-45ff-b32e-25db8e38578d" time="1360768531060" ignored="false" />
+    <file path="$USER_HOME$/TeamC/src/main/java/be/kdg/trips/controllers/ProfileController.java" changelist="6cc9e967-6287-45ff-b32e-25db8e38578d" time="1360768688003" ignored="false" />
+    <file path="$USER_HOME$/TeamC/src/main/webapp/WEB-INF/views/trips.jsp" changelist="6cc9e967-6287-45ff-b32e-25db8e38578d" time="1360768688003" ignored="false" />
+    <file path="$USER_HOME$/TeamC/src/main/java/be/kdg/trips/controllers/LoginController.java" changelist="6cc9e967-6287-45ff-b32e-25db8e38578d" time="1360768688003" ignored="false" />
+    <file path="$USER_HOME$/TeamC/src/main/webapp/WEB-INF/views/index.jsp" changelist="6cc9e967-6287-45ff-b32e-25db8e38578d" time="1360768688003" ignored="false" />
+    <file path="$USER_HOME$/TeamC/src/main/webapp/WEB-INF/Trips-servlet.xml" changelist="6cc9e967-6287-45ff-b32e-25db8e38578d" time="1360768688003" ignored="false" />
+    <file path="$USER_HOME$/TeamC/src/main/webapp/WEB-INF/views/login.jsp" changelist="6cc9e967-6287-45ff-b32e-25db8e38578d" time="1360768688003" ignored="false" />
+    <file path="$USER_HOME$/TeamC/src/main/webapp/WEB-INF/views/profile.jsp" changelist="6cc9e967-6287-45ff-b32e-25db8e38578d" time="1360768688003" ignored="false" />
+    <file path="$USER_HOME$/TeamC/src/main/java/be/kdg/trips/controllers/TripsController.java" changelist="6cc9e967-6287-45ff-b32e-25db8e38578d" time="1360768688003" ignored="false" />
+    <file path="$USER_HOME$/TeamC/src/main/java/be/kdg/trips/model/user/User.java" changelist="6cc9e967-6287-45ff-b32e-25db8e38578d" time="1360768688003" ignored="false" />
+    <file path="$USER_HOME$/TeamC/src/main/java/be/kdg/trips/controllers/TripController.java" changelist="6cc9e967-6287-45ff-b32e-25db8e38578d" time="1360768688003" ignored="false" />
+    <file path="$USER_HOME$/TeamC/src/main/webapp/WEB-INF/views/editCredentials.jsp" changelist="6cc9e967-6287-45ff-b32e-25db8e38578d" time="1360768688003" ignored="false" />
+    <file path="$USER_HOME$/TeamC/src/main/webapp/WEB-INF/views/header.jsp" changelist="6cc9e967-6287-45ff-b32e-25db8e38578d" time="1360768688003" ignored="false" />
+    <file path="$USER_HOME$/TeamC/src/test/java/be/kdg/trips/TripTest.java" changelist="6cc9e967-6287-45ff-b32e-25db8e38578d" time="1360768688003" ignored="false" />
+    <file path="$USER_HOME$/TeamC/src/main/java/be/kdg/trips/controllers/HomeController.java" changelist="6cc9e967-6287-45ff-b32e-25db8e38578d" time="1360768688003" ignored="false" />
+    <file path="$USER_HOME$/IdeaProjects/TestjeGit/TeamC/pom.xml" changelist="6cc9e967-6287-45ff-b32e-25db8e38578d" time="1361366351833" ignored="false" />
+    <file path="/EnrollmentDao.java" changelist="6cc9e967-6287-45ff-b32e-25db8e38578d" time="1360884558790" ignored="false" />
+    <file path="/EnrollmentDaoImpl.java" changelist="6cc9e967-6287-45ff-b32e-25db8e38578d" time="1360884774225" ignored="false" />
+    <file path="/EnrollmentBLImpl.java" changelist="6cc9e967-6287-45ff-b32e-25db8e38578d" time="1360939497221" ignored="false" />
+    <file path="$USER_HOME$/teamCSite/TeamC/pom.xml" changelist="6cc9e967-6287-45ff-b32e-25db8e38578d" time="1361351336437" ignored="false" />
+    <file path="$USER_HOME$/teamCSite/TeamC/.idea/workspace.xml" changelist="6cc9e967-6287-45ff-b32e-25db8e38578d" time="1361351702520" ignored="false" />
+    <file path="/UserBLImpl.java" changelist="6cc9e967-6287-45ff-b32e-25db8e38578d" time="1361033018095" ignored="false" />
+    <file path="/UserBL.java" changelist="6cc9e967-6287-45ff-b32e-25db8e38578d" time="1360882264454" ignored="false" />
+    <file path="/TripsException.java" changelist="6cc9e967-6287-45ff-b32e-25db8e38578d" time="1360851084753" ignored="false" />
+    <file path="$USER_HOME$/teamCSite/TeamC/src/main/java/be/kdg/trips/controllers/ProfileController.java" changelist="6cc9e967-6287-45ff-b32e-25db8e38578d" time="1361351131322" ignored="false" />
+    <file path="$USER_HOME$/teamCSite/TeamC/src/main/java/be/kdg/trips/controllers/ContactController.java" changelist="6cc9e967-6287-45ff-b32e-25db8e38578d" time="1360860833591" ignored="false" />
+    <file path="$USER_HOME$/teamCSite/TeamC/src/main/java/be/kdg/trips/controllers/HomeController.java" changelist="6cc9e967-6287-45ff-b32e-25db8e38578d" time="1360860833591" ignored="false" />
+    <file path="$USER_HOME$/teamCSite/TeamC/src/main/java/be/kdg/trips/controllers/LoginController.java" changelist="6cc9e967-6287-45ff-b32e-25db8e38578d" time="1361351131322" ignored="false" />
+    <file path="$USER_HOME$/teamCSite/TeamC/src/main/java/be/kdg/trips/controllers/TripController.java" changelist="6cc9e967-6287-45ff-b32e-25db8e38578d" time="1361351131322" ignored="false" />
+    <file path="$USER_HOME$/teamCSite/TeamC/src/main/java/be/kdg/trips/controllers/TripsController.java" changelist="6cc9e967-6287-45ff-b32e-25db8e38578d" time="1360860833897" ignored="false" />
+    <file path="$USER_HOME$/teamCSite/TeamC/src/main/webapp/WEB-INF/Trips-servlet.xml" changelist="6cc9e967-6287-45ff-b32e-25db8e38578d" time="1360860916426" ignored="false" />
+    <file path="/TripBL.java" changelist="6cc9e967-6287-45ff-b32e-25db8e38578d" time="1361354461379" ignored="false" />
+    <file path="/TripBLImpl.java" changelist="6cc9e967-6287-45ff-b32e-25db8e38578d" time="1361358499328" ignored="false" />
+    <file path="/TripInterface.java" changelist="6cc9e967-6287-45ff-b32e-25db8e38578d" time="1361034003045" ignored="false" />
+    <file path="/NullEnrollment.java" changelist="6cc9e967-6287-45ff-b32e-25db8e38578d" time="1360884919702" ignored="false" />
+    <file path="/Location.java" changelist="6cc9e967-6287-45ff-b32e-25db8e38578d" time="1361356084330" ignored="false" />
+    <file path="/Address.java" changelist="6cc9e967-6287-45ff-b32e-25db8e38578d" time="1361353438037" ignored="false" />
+    <file path="/Question.java" changelist="6cc9e967-6287-45ff-b32e-25db8e38578d" time="1361358453065" ignored="false" />
+    <file path="/LocationInterface.java" changelist="6cc9e967-6287-45ff-b32e-25db8e38578d" time="1361032566648" ignored="false" />
+    <file path="$USER_HOME$/teamCSite/TeamC/src/main/webapp/WEB-INF/web.xml" changelist="6cc9e967-6287-45ff-b32e-25db8e38578d" time="1361351514708" ignored="false" />
+    <file path="$USER_HOME$/teamCSite/TeamC/src/main/java/be/kdg/trips/controllers/ErrorController.java" changelist="6cc9e967-6287-45ff-b32e-25db8e38578d" time="1361351131322" ignored="false" />
+    <file path="/QuestionInterface.java" changelist="6cc9e967-6287-45ff-b32e-25db8e38578d" time="1361354344120" ignored="false" />
+    <file path="$USER_HOME$/IdeaProjects/TestjeGit/TeamC/groepC.iml" changelist="6cc9e967-6287-45ff-b32e-25db8e38578d" time="1361361005110" ignored="false" />
+    <file path="$USER_HOME$/IdeaProjects/TestjeGit/TeamC/.idea/artifacts/groepC_war_exploded.xml" changelist="6cc9e967-6287-45ff-b32e-25db8e38578d" time="1361361005110" ignored="false" />
+    <file path="$USER_HOME$/IdeaProjects/TestjeGit/TeamC/src/main/webapp/WEB-INF/views/trip.jsp" changelist="6cc9e967-6287-45ff-b32e-25db8e38578d" time="1361361005402" ignored="false" />
+    <file path="$USER_HOME$/IdeaProjects/TestjeGit/TeamC/src/main/webapp/WEB-INF/views/trips.jsp" changelist="6cc9e967-6287-45ff-b32e-25db8e38578d" time="1361361005402" ignored="false" />
+    <file path="$USER_HOME$/IdeaProjects/TestjeGit/TeamC/src/main/webapp/WEB-INF/web.xml" changelist="6cc9e967-6287-45ff-b32e-25db8e38578d" time="1361361005402" ignored="false" />
+    <file path="$USER_HOME$/IdeaProjects/TestjeGit/TeamC/src/main/java/be/kdg/trips/controllers/TripController.java" changelist="6cc9e967-6287-45ff-b32e-25db8e38578d" time="1361376100856" ignored="false" />
+    <file path="$USER_HOME$/IdeaProjects/TestjeGit/TeamC/src/test/java/be/kdg/trips/TripTest.java" changelist="6cc9e967-6287-45ff-b32e-25db8e38578d" time="1361361249550" ignored="false" />
+    <file path="/UserTest.java" changelist="6cc9e967-6287-45ff-b32e-25db8e38578d" time="1361375528767" ignored="false" />
+    <file path="$USER_HOME$/IdeaProjects/TestjeGit/TeamC/src/test/java/be/kdg/trips/test-config.xml" changelist="6cc9e967-6287-45ff-b32e-25db8e38578d" time="1361368379980" ignored="false" />
+    <file path="/test-config.xml" changelist="6cc9e967-6287-45ff-b32e-25db8e38578d" time="1361368295018" ignored="false" />
+    <option name="TRACKING_ENABLED" value="true" />
+    <option name="SHOW_DIALOG" value="false" />
+    <option name="HIGHLIGHT_CONFLICTS" value="true" />
+    <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
+    <option name="LAST_RESOLUTION" value="IGNORE" />
+  </component>
+  <component name="ChangesViewManager" flattened_view="true" show_ignored="false" />
+  <component name="CreatePatchCommitExecutor">
+    <option name="PATCH_PATH" value="" />
+  </component>
+  <component name="DaemonCodeAnalyzer">
+    <disable_hints />
+  </component>
+  <component name="DebuggerManager">
+    <ui_properties default_suspend_policy="SuspendAll" default_condition_enabled="true" />
+    <line_breakpoints default_suspend_policy="SuspendAll" default_condition_enabled="true" />
+    <breakpoint_any default_suspend_policy="SuspendAll" default_condition_enabled="true">
+      <breakpoint>
+        <option name="NOTIFY_CAUGHT" value="true" />
+        <option name="NOTIFY_UNCAUGHT" value="true" />
+        <option name="ENABLED" value="false" />
+        <option name="LOG_ENABLED" value="false" />
+        <option name="LOG_EXPRESSION_ENABLED" value="false" />
+        <option name="SUSPEND_POLICY" value="SuspendAll" />
+        <option name="SUSPEND" value="true" />
+        <option name="COUNT_FILTER_ENABLED" value="false" />
+        <option name="COUNT_FILTER" value="0" />
+        <option name="CONDITION_ENABLED" value="true" />
+        <option name="CLASS_FILTERS_ENABLED" value="false" />
+        <option name="INSTANCE_FILTERS_ENABLED" value="false" />
+        <option name="CONDITION" value="" />
+        <option name="LOG_MESSAGE" value="" />
+      </breakpoint>
+      <breakpoint>
+        <option name="NOTIFY_CAUGHT" value="true" />
+        <option name="NOTIFY_UNCAUGHT" value="true" />
+        <option name="ENABLED" value="false" />
+        <option name="LOG_ENABLED" value="false" />
+        <option name="LOG_EXPRESSION_ENABLED" value="false" />
+        <option name="SUSPEND_POLICY" value="SuspendAll" />
+        <option name="SUSPEND" value="true" />
+        <option name="COUNT_FILTER_ENABLED" value="false" />
+        <option name="COUNT_FILTER" value="0" />
+        <option name="CONDITION_ENABLED" value="true" />
+        <option name="CLASS_FILTERS_ENABLED" value="false" />
+        <option name="INSTANCE_FILTERS_ENABLED" value="false" />
+        <option name="CONDITION" value="" />
+        <option name="LOG_MESSAGE" value="" />
+      </breakpoint>
+    </breakpoint_any>
+    <breakpoint_rules />
+    <ui_properties />
+  </component>
+  <component name="ExecutionTargetManager" SELECTED_TARGET="default_target" />
+  <component name="FavoritesManager">
+    <favorites_list name="TripsModel" />
+  </component>
+  <component name="FileEditorManager">
+    <leaf>
+      <file leaf-file-name="TimelessTrip.java" pinned="false" current="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/src/main/java/be/kdg/trips/model/trip/TimelessTrip.java">
+          <provider selected="true" editor-type-id="text-editor">
+            <state line="15" column="13" selection-start="290" selection-end="290" vertical-scroll-proportion="0.0">
+              <folding />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="Trip.java" pinned="false" current="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/src/main/java/be/kdg/trips/model/trip/Trip.java">
+          <provider selected="true" editor-type-id="text-editor">
+            <state line="34" column="26" selection-start="936" selection-end="936" vertical-scroll-proportion="0.0">
+              <folding />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="User.java" pinned="false" current="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/src/main/java/be/kdg/trips/model/user/User.java">
+          <provider selected="true" editor-type-id="text-editor">
+            <state line="44" column="17" selection-start="1216" selection-end="1216" vertical-scroll-proportion="0.0">
+              <folding />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="applicationContext.xml" pinned="false" current="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/src/main/resources/applicationContext.xml">
+          <provider selected="true" editor-type-id="text-editor">
+            <state line="0" column="0" selection-start="0" selection-end="0" vertical-scroll-proportion="0.0">
+              <folding />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="TripsService.java" pinned="false" current="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/src/main/java/be/kdg/trips/services/interfaces/TripsService.java">
+          <provider selected="true" editor-type-id="text-editor">
+            <state line="38" column="248" selection-start="1551" selection-end="1551" vertical-scroll-proportion="0.0">
+              <folding />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="TripsServiceImpl.java" pinned="false" current="true" current-in-tab="true">
+        <entry file="file://$PROJECT_DIR$/src/main/java/be/kdg/trips/services/impl/TripsServiceImpl.java">
+          <provider selected="true" editor-type-id="text-editor">
+            <state line="39" column="20" selection-start="1187" selection-end="1187" vertical-scroll-proportion="0.020262217">
+              <folding>
+                <element signature="imports" expanded="true" />
+              </folding>
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="UserDaoImpl.java" pinned="false" current="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/src/main/java/be/kdg/trips/persistence/dao/impl/UserDaoImpl.java">
+          <provider selected="true" editor-type-id="text-editor">
+            <state line="21" column="13" selection-start="688" selection-end="688" vertical-scroll-proportion="0.0">
+              <folding />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="TripDaoImpl.java" pinned="false" current="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/src/main/java/be/kdg/trips/persistence/dao/impl/TripDaoImpl.java">
+          <provider selected="true" editor-type-id="text-editor">
+            <state line="26" column="13" selection-start="810" selection-end="810" vertical-scroll-proportion="0.0">
+              <folding />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="EnrollmentDaoImpl.java" pinned="false" current="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/src/main/java/be/kdg/trips/persistence/dao/impl/EnrollmentDaoImpl.java">
+          <provider selected="true" editor-type-id="text-editor">
+            <state line="27" column="13" selection-start="983" selection-end="983" vertical-scroll-proportion="0.0">
+              <folding />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="Address.java" pinned="false" current="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/src/main/java/be/kdg/trips/model/address/Address.java">
+          <provider selected="true" editor-type-id="text-editor">
+            <state line="18" column="49" selection-start="439" selection-end="448" vertical-scroll-proportion="0.0">
+              <folding />
+            </state>
+          </provider>
+        </entry>
+      </file>
+    </leaf>
+  </component>
+  <component name="FindManager">
+    <FindUsagesManager>
+      <setting name="OPEN_NEW_TAB" value="false" />
+    </FindUsagesManager>
+  </component>
+  <component name="Git.Settings">
+    <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
+  </component>
+  <component name="GitLogSettings">
+    <option name="myDateState">
+      <MyDateState />
+    </option>
+  </component>
+  <component name="IdeDocumentHistory">
+    <option name="changedFiles">
+      <list>
+        <option value="$PROJECT_DIR$/src/main/java/be/kdg/trips/persistence/dao/impl/TripDaoImpl.java" />
+        <option value="$PROJECT_DIR$/pom.xml" />
+        <option value="$PROJECT_DIR$/src/test/java/be/kdg/trips/TestEnrollment.java" />
+        <option value="$PROJECT_DIR$/src/test/java/be/kdg/trips/TestUser.java" />
+        <option value="$PROJECT_DIR$/src/main/java/be/kdg/trips/model/address/Address.java" />
+        <option value="$PROJECT_DIR$/src/main/java/be/kdg/trips/model/question/QuestionInterface.java" />
+        <option value="$PROJECT_DIR$/src/main/java/be/kdg/trips/businessLogic/interfaces/TripBL.java" />
+        <option value="$PROJECT_DIR$/src/main/java/be/kdg/trips/services/impl/TripsServiceImpl.java" />
+        <option value="$PROJECT_DIR$/src/main/java/be/kdg/trips/services/interfaces/TripsService.java" />
+        <option value="$PROJECT_DIR$/src/main/java/be/kdg/trips/model/location/LocationInterface.java" />
+        <option value="$PROJECT_DIR$/src/main/java/be/kdg/trips/model/location/Location.java" />
+        <option value="$PROJECT_DIR$/src/main/java/be/kdg/trips/model/question/Question.java" />
+        <option value="$PROJECT_DIR$/src/main/java/be/kdg/trips/businessLogic/impl/TripBLImpl.java" />
+        <option value="$PROJECT_DIR$/src/test/java/be/kdg/trips/TestTrip.java" />
+        <option value="$PROJECT_DIR$/src/main/java/be/kdg/trips/model/trip/Trip.java" />
+        <option value="$PROJECT_DIR$/src/main/java/be/kdg/trips/model/user/User.java" />
+      </list>
+    </option>
+  </component>
+  <component name="MavenImportPreferences">
+    <option name="importingSettings">
+      <MavenImportingSettings>
+        <option name="importAutomatically" value="true" />
+      </MavenImportingSettings>
+    </option>
+  </component>
+  <component name="MavenProjectNavigator">
+    <treeState>
+      <PATH>
+        <PATH_ELEMENT>
+          <option name="myItemId" value="" />
+          <option name="myItemType" value="org.jetbrains.idea.maven.navigator.MavenProjectsStructure$RootNode" />
+        </PATH_ELEMENT>
+        <PATH_ELEMENT>
+          <option name="myItemId" value="TripsModel" />
+          <option name="myItemType" value="org.jetbrains.idea.maven.navigator.MavenProjectsStructure$ProjectNode" />
+        </PATH_ELEMENT>
+        <PATH_ELEMENT>
+          <option name="myItemId" value="Dependencies" />
+          <option name="myItemType" value="org.jetbrains.idea.maven.navigator.MavenProjectsStructure$DependenciesNode" />
+        </PATH_ELEMENT>
+      </PATH>
+      <PATH>
+        <PATH_ELEMENT>
+          <option name="myItemId" value="" />
+          <option name="myItemType" value="org.jetbrains.idea.maven.navigator.MavenProjectsStructure$RootNode" />
+        </PATH_ELEMENT>
+        <PATH_ELEMENT>
+          <option name="myItemId" value="TripsModel" />
+          <option name="myItemType" value="org.jetbrains.idea.maven.navigator.MavenProjectsStructure$ProjectNode" />
+        </PATH_ELEMENT>
+        <PATH_ELEMENT>
+          <option name="myItemId" value="Dependencies" />
+          <option name="myItemType" value="org.jetbrains.idea.maven.navigator.MavenProjectsStructure$DependenciesNode" />
+        </PATH_ELEMENT>
+        <PATH_ELEMENT>
+          <option name="myItemId" value="org.springframework:spring-context:3.2.1.RELEASE" />
+          <option name="myItemType" value="org.jetbrains.idea.maven.navigator.MavenProjectsStructure$DependencyNode" />
+        </PATH_ELEMENT>
+      </PATH>
+      <PATH>
+        <PATH_ELEMENT>
+          <option name="myItemId" value="" />
+          <option name="myItemType" value="org.jetbrains.idea.maven.navigator.MavenProjectsStructure$RootNode" />
+        </PATH_ELEMENT>
+        <PATH_ELEMENT>
+          <option name="myItemId" value="TripsModel" />
+          <option name="myItemType" value="org.jetbrains.idea.maven.navigator.MavenProjectsStructure$ProjectNode" />
+        </PATH_ELEMENT>
+        <PATH_ELEMENT>
+          <option name="myItemId" value="Dependencies" />
+          <option name="myItemType" value="org.jetbrains.idea.maven.navigator.MavenProjectsStructure$DependenciesNode" />
+        </PATH_ELEMENT>
+        <PATH_ELEMENT>
+          <option name="myItemId" value="org.springframework:spring-tx:3.2.1.RELEASE" />
+          <option name="myItemType" value="org.jetbrains.idea.maven.navigator.MavenProjectsStructure$DependencyNode" />
+        </PATH_ELEMENT>
+      </PATH>
+      <PATH>
+        <PATH_ELEMENT>
+          <option name="myItemId" value="" />
+          <option name="myItemType" value="org.jetbrains.idea.maven.navigator.MavenProjectsStructure$RootNode" />
+        </PATH_ELEMENT>
+        <PATH_ELEMENT>
+          <option name="myItemId" value="TripsModel" />
+          <option name="myItemType" value="org.jetbrains.idea.maven.navigator.MavenProjectsStructure$ProjectNode" />
+        </PATH_ELEMENT>
+        <PATH_ELEMENT>
+          <option name="myItemId" value="Dependencies" />
+          <option name="myItemType" value="org.jetbrains.idea.maven.navigator.MavenProjectsStructure$DependenciesNode" />
+        </PATH_ELEMENT>
+        <PATH_ELEMENT>
+          <option name="myItemId" value="org.springframework:spring-core:3.2.1.RELEASE" />
+          <option name="myItemType" value="org.jetbrains.idea.maven.navigator.MavenProjectsStructure$DependencyNode" />
+        </PATH_ELEMENT>
+      </PATH>
+      <PATH>
+        <PATH_ELEMENT>
+          <option name="myItemId" value="" />
+          <option name="myItemType" value="org.jetbrains.idea.maven.navigator.MavenProjectsStructure$RootNode" />
+        </PATH_ELEMENT>
+        <PATH_ELEMENT>
+          <option name="myItemId" value="TripsModel" />
+          <option name="myItemType" value="org.jetbrains.idea.maven.navigator.MavenProjectsStructure$ProjectNode" />
+        </PATH_ELEMENT>
+      </PATH>
+      <PATH>
+        <PATH_ELEMENT>
+          <option name="myItemId" value="" />
+          <option name="myItemType" value="org.jetbrains.idea.maven.navigator.MavenProjectsStructure$RootNode" />
+        </PATH_ELEMENT>
+        <PATH_ELEMENT>
+          <option name="myItemId" value="TripsModel" />
+          <option name="myItemType" value="org.jetbrains.idea.maven.navigator.MavenProjectsStructure$ProjectNode" />
+        </PATH_ELEMENT>
+        <PATH_ELEMENT>
+          <option name="myItemId" value="Lifecycle" />
+          <option name="myItemType" value="org.jetbrains.idea.maven.navigator.MavenProjectsStructure$LifecycleNode" />
+        </PATH_ELEMENT>
+      </PATH>
+    </treeState>
+  </component>
+  <component name="ProjectFrameBounds">
+    <option name="x" value="-8" />
+    <option name="y" value="-8" />
+    <option name="width" value="1936" />
+    <option name="height" value="1056" />
+  </component>
+  <component name="ProjectLevelVcsManager" settingsEditedManually="true">
+    <OptionsSetting value="true" id="Add" />
+    <OptionsSetting value="true" id="Remove" />
+    <OptionsSetting value="true" id="Checkout" />
+    <OptionsSetting value="true" id="Update" />
+    <OptionsSetting value="true" id="Status" />
+    <OptionsSetting value="true" id="Edit" />
+    <OptionsSetting value="true" id="Undo Check Out" />
+    <OptionsSetting value="true" id="Get Latest Version" />
+    <ConfirmationsSetting value="2" id="Add" />
+    <ConfirmationsSetting value="0" id="Remove" />
+  </component>
+  <component name="ProjectReloadState">
+    <option name="STATE" value="0" />
+  </component>
+  <component name="ProjectView">
+    <navigator currentView="ProjectPane" proportions="" version="1" splitterProportion="0.5">
+      <flattenPackages />
+      <showMembers />
+      <showModules />
+      <showLibraryContents />
+      <hideEmptyPackages />
+      <abbreviatePackageNames />
+      <autoscrollToSource />
+      <autoscrollFromSource />
+      <sortByType />
+    </navigator>
+    <panes>
+      <pane id="PackagesPane" />
+      <pane id="ProjectPane">
+        <subPane>
+          <PATH>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="TripsModel" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewProjectNode" />
+            </PATH_ELEMENT>
+          </PATH>
+          <PATH>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="TripsModel" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewProjectNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="Model" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+          </PATH>
+          <PATH>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="TripsModel" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewProjectNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="Model" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="src" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="test" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="java" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="trips" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+          </PATH>
+          <PATH>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="TripsModel" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewProjectNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="Model" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="src" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="main" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="resources" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+          </PATH>
+          <PATH>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="TripsModel" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewProjectNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="Model" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="src" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="main" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="java" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="trips" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="services" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="interfaces" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+          </PATH>
+          <PATH>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="TripsModel" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewProjectNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="Model" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="src" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="main" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="java" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="trips" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="services" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="impl" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+          </PATH>
+          <PATH>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="TripsModel" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewProjectNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="Model" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="src" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="main" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="java" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="trips" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="dao" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+          </PATH>
+          <PATH>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="TripsModel" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewProjectNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="Model" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="src" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="main" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="java" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="trips" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="dao" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="impl" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+          </PATH>
+          <PATH>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="TripsModel" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewProjectNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="Model" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="src" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="main" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="java" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="trips" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+          </PATH>
+        </subPane>
+      </pane>
+      <pane id="Scope" />
+    </panes>
+  </component>
+  <component name="PropertiesComponent">
+    <property name="project.structure.last.edited" value="Project" />
+    <property name="last_directory_selection" value="$PROJECT_DIR$/src/main/java/be/kdg/trips" />
+    <property name="GoToFile.includeJavaFiles" value="false" />
+    <property name="project.structure.proportion" value="0.15" />
+    <property name="OverrideImplement.combined" value="false" />
+    <property name="options.splitter.main.proportions" value="0.3" />
+    <property name="options.lastSelected" value="MavenSettings" />
+    <property name="recentsLimit" value="5" />
+    <property name="MemberChooser.sorted" value="false" />
+    <property name="last_opened_file_path" value="$USER_HOME$/teamCSite/TeamC" />
+    <property name="project.structure.side.proportion" value="0.2" />
+    <property name="MemberChooser.copyJavadoc" value="false" />
+    <property name="GoToClass.toSaveIncludeLibraries" value="false" />
+    <property name="WebServerToolWindowFactoryState" value="false" />
+    <property name="restartRequiresConfirmation" value="true" />
+    <property name="MemberChooser.showClasses" value="true" />
+    <property name="GoToClass.includeLibraries" value="false" />
+    <property name="options.searchVisible" value="true" />
+    <property name="options.splitter.details.proportions" value="0.2" />
+    <property name="dynamic.classpath" value="false" />
+  </component>
+  <component name="RecentsManager">
+    <key name="CopyFile.RECENT_KEYS">
+      <recent name="C:\Users\Gijs\Desktop\Model\src\main\java\be\kdg\trips" />
+      <recent name="C:\Users\Gijs\Desktop\Model\src\test\java\be\kdg\trips" />
+      <recent name="C:\Users\Gijs\Desktop\Model\src\main" />
+      <recent name="C:\Users\Mathias\git\Model\web\WEB-INF" />
+      <recent name="C:\Users\Gijs\Desktop\Model\src\main\resources" />
+    </key>
+    <key name="CreateClassDialog.RecentsKey">
+      <recent name="be.kdg.trips" />
+    </key>
+    <key name="MoveClassesOrPackagesDialog.RECENTS_KEY">
+      <recent name="be.kdg.trips" />
+    </key>
+    <key name="MoveFile.RECENT_KEYS">
+      <recent name="C:\Users\Mathias\IdeaProjects\TripsModel\src\main\java\be\kdg\trips" />
+    </key>
+  </component>
+  <component name="RunManager" selected="JUnit.TestTrip.failedAddLocationInvalidAnswer">
+    <configuration default="false" name="TestUser.successfulRegister" type="JUnit" factoryName="JUnit" temporary="true">
+      <extension name="coverage" enabled="false" merge="false" sample_coverage="true" runner="idea">
+        <pattern>
+          <option name="PATTERN" value="be.kdg.trips.*" />
+          <option name="ENABLED" value="true" />
+        </pattern>
+      </extension>
+      <module name="TripsModel" />
+      <option name="ALTERNATIVE_JRE_PATH_ENABLED" value="false" />
+      <option name="ALTERNATIVE_JRE_PATH" />
+      <option name="PACKAGE_NAME" value="be.kdg.trips" />
+      <option name="MAIN_CLASS_NAME" value="be.kdg.trips.TestUser" />
+      <option name="METHOD_NAME" value="successfulRegister" />
+      <option name="TEST_OBJECT" value="method" />
+      <option name="VM_PARAMETERS" value="-ea" />
+      <option name="PARAMETERS" />
+      <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$" />
+      <option name="ENV_VARIABLES" />
+      <option name="PASS_PARENT_ENVS" value="true" />
+      <option name="TEST_SEARCH_SCOPE">
+        <value defaultName="moduleWithDependencies" />
+      </option>
+      <envs />
+      <patterns />
+      <RunnerSettings RunnerId="Run" />
+      <ConfigurationWrapper RunnerId="Run" />
+      <method />
+    </configuration>
+    <configuration default="false" name="TestTrip.successfulAddLocationWithQuestion" type="JUnit" factoryName="JUnit" temporary="true">
+      <extension name="coverage" enabled="false" merge="false" sample_coverage="true" runner="idea">
+        <pattern>
+          <option name="PATTERN" value="be.kdg.trips.*" />
+          <option name="ENABLED" value="true" />
+        </pattern>
+      </extension>
+      <module name="TripsModel" />
+      <option name="ALTERNATIVE_JRE_PATH_ENABLED" value="false" />
+      <option name="ALTERNATIVE_JRE_PATH" />
+      <option name="PACKAGE_NAME" value="be.kdg.trips" />
+      <option name="MAIN_CLASS_NAME" value="be.kdg.trips.TestTrip" />
+      <option name="METHOD_NAME" value="successfulAddLocationWithQuestion" />
+      <option name="TEST_OBJECT" value="method" />
+      <option name="VM_PARAMETERS" value="-ea" />
+      <option name="PARAMETERS" />
+      <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$" />
+      <option name="ENV_VARIABLES" />
+      <option name="PASS_PARENT_ENVS" value="true" />
+      <option name="TEST_SEARCH_SCOPE">
+        <value defaultName="moduleWithDependencies" />
+      </option>
+      <envs />
+      <patterns />
+      <RunnerSettings RunnerId="Run" />
+      <ConfigurationWrapper RunnerId="Run" />
+      <method />
+    </configuration>
+    <configuration default="false" name="TestTrip.failGuessAnswer" type="JUnit" factoryName="JUnit" temporary="true">
+      <extension name="coverage" enabled="false" merge="false" sample_coverage="true" runner="idea">
+        <pattern>
+          <option name="PATTERN" value="be.kdg.trips.*" />
+          <option name="ENABLED" value="true" />
+        </pattern>
+      </extension>
+      <module name="TripsModel" />
+      <option name="ALTERNATIVE_JRE_PATH_ENABLED" value="false" />
+      <option name="ALTERNATIVE_JRE_PATH" />
+      <option name="PACKAGE_NAME" value="be.kdg.trips" />
+      <option name="MAIN_CLASS_NAME" value="be.kdg.trips.TestTrip" />
+      <option name="METHOD_NAME" value="failGuessAnswer" />
+      <option name="TEST_OBJECT" value="method" />
+      <option name="VM_PARAMETERS" value="-ea" />
+      <option name="PARAMETERS" />
+      <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$" />
+      <option name="ENV_VARIABLES" />
+      <option name="PASS_PARENT_ENVS" value="true" />
+      <option name="TEST_SEARCH_SCOPE">
+        <value defaultName="moduleWithDependencies" />
+      </option>
+      <envs />
+      <patterns />
+      <RunnerSettings RunnerId="Run" />
+      <ConfigurationWrapper RunnerId="Run" />
+      <method />
+    </configuration>
+    <configuration default="false" name="TestTrip.failedAddLocationInvalidLatitude" type="JUnit" factoryName="JUnit" temporary="true">
+      <extension name="coverage" enabled="false" merge="false" sample_coverage="true" runner="idea">
+        <pattern>
+          <option name="PATTERN" value="be.kdg.trips.*" />
+          <option name="ENABLED" value="true" />
+        </pattern>
+      </extension>
+      <module name="TripsModel" />
+      <option name="ALTERNATIVE_JRE_PATH_ENABLED" value="false" />
+      <option name="ALTERNATIVE_JRE_PATH" />
+      <option name="PACKAGE_NAME" value="be.kdg.trips" />
+      <option name="MAIN_CLASS_NAME" value="be.kdg.trips.TestTrip" />
+      <option name="METHOD_NAME" value="failedAddLocationInvalidLatitude" />
+      <option name="TEST_OBJECT" value="method" />
+      <option name="VM_PARAMETERS" value="-ea" />
+      <option name="PARAMETERS" />
+      <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$" />
+      <option name="ENV_VARIABLES" />
+      <option name="PASS_PARENT_ENVS" value="true" />
+      <option name="TEST_SEARCH_SCOPE">
+        <value defaultName="moduleWithDependencies" />
+      </option>
+      <envs />
+      <patterns />
+      <RunnerSettings RunnerId="Run" />
+      <ConfigurationWrapper RunnerId="Run" />
+      <method />
+    </configuration>
+    <configuration default="false" name="TestTrip.failedAddLocationInvalidAnswer" type="JUnit" factoryName="JUnit" temporary="true">
+      <extension name="coverage" enabled="false" merge="false" sample_coverage="true" runner="idea">
+        <pattern>
+          <option name="PATTERN" value="be.kdg.trips.*" />
+          <option name="ENABLED" value="true" />
+        </pattern>
+      </extension>
+      <module name="TripsModel" />
+      <option name="ALTERNATIVE_JRE_PATH_ENABLED" value="false" />
+      <option name="ALTERNATIVE_JRE_PATH" />
+      <option name="PACKAGE_NAME" value="be.kdg.trips" />
+      <option name="MAIN_CLASS_NAME" value="be.kdg.trips.TestTrip" />
+      <option name="METHOD_NAME" value="failedAddLocationInvalidAnswer" />
+      <option name="TEST_OBJECT" value="method" />
+      <option name="VM_PARAMETERS" value="-ea" />
+      <option name="PARAMETERS" />
+      <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$" />
+      <option name="ENV_VARIABLES" />
+      <option name="PASS_PARENT_ENVS" value="true" />
+      <option name="TEST_SEARCH_SCOPE">
+        <value defaultName="moduleWithDependencies" />
+      </option>
+      <envs />
+      <patterns />
+      <RunnerSettings RunnerId="Run" />
+      <ConfigurationWrapper RunnerId="Run" />
+      <method />
+    </configuration>
+    <configuration default="true" type="#org.jetbrains.idea.devkit.run.PluginConfigurationType" factoryName="Plugin">
+      <module name="" />
+      <option name="VM_PARAMETERS" value="-Xmx512m -Xms256m -XX:MaxPermSize=250m" />
+      <option name="PROGRAM_PARAMETERS" />
+      <method />
+    </configuration>
+    <configuration default="true" type="MavenRunConfiguration" factoryName="Maven">
+      <MavenSettings>
+        <option name="myGeneralSettings" />
+        <option name="myRunnerSettings" />
+        <option name="myRunnerParameters">
+          <MavenRunnerParameters>
+            <option name="profiles">
+              <set />
+            </option>
+            <option name="goals">
+              <list />
+            </option>
+            <option name="profilesMap">
+              <map />
+            </option>
+            <option name="workingDirPath" value="" />
+          </MavenRunnerParameters>
+        </option>
+      </MavenSettings>
+      <method />
+    </configuration>
+    <configuration default="true" type="Remote" factoryName="Remote">
+      <option name="USE_SOCKET_TRANSPORT" value="true" />
+      <option name="SERVER_MODE" value="false" />
+      <option name="SHMEM_ADDRESS" value="javadebug" />
+      <option name="HOST" value="localhost" />
+      <option name="PORT" value="5005" />
+      <method />
+    </configuration>
+    <configuration default="true" type="TestNG" factoryName="TestNG">
+      <extension name="coverage" enabled="false" merge="false" sample_coverage="true" runner="idea" />
+      <module name="" />
+      <option name="ALTERNATIVE_JRE_PATH_ENABLED" value="false" />
+      <option name="ALTERNATIVE_JRE_PATH" />
+      <option name="SUITE_NAME" />
+      <option name="PACKAGE_NAME" />
+      <option name="MAIN_CLASS_NAME" />
+      <option name="METHOD_NAME" />
+      <option name="GROUP_NAME" />
+      <option name="TEST_OBJECT" value="CLASS" />
+      <option name="VM_PARAMETERS" value="-ea" />
+      <option name="PARAMETERS" />
+      <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$" />
+      <option name="OUTPUT_DIRECTORY" />
+      <option name="ANNOTATION_TYPE" />
+      <option name="ENV_VARIABLES" />
+      <option name="PASS_PARENT_ENVS" value="true" />
+      <option name="TEST_SEARCH_SCOPE">
+        <value defaultName="moduleWithDependencies" />
+      </option>
+      <option name="USE_DEFAULT_REPORTERS" value="false" />
+      <option name="PROPERTIES_FILE" />
+      <envs />
+      <properties />
+      <listeners />
+      <method />
+    </configuration>
+    <configuration default="true" type="Applet" factoryName="Applet">
+      <module name="" />
+      <option name="MAIN_CLASS_NAME" />
+      <option name="HTML_FILE_NAME" />
+      <option name="HTML_USED" value="false" />
+      <option name="WIDTH" value="400" />
+      <option name="HEIGHT" value="300" />
+      <option name="POLICY_FILE" value="$APPLICATION_HOME_DIR$/bin/appletviewer.policy" />
+      <option name="VM_PARAMETERS" />
+      <option name="ALTERNATIVE_JRE_PATH_ENABLED" value="false" />
+      <option name="ALTERNATIVE_JRE_PATH" />
+      <method />
+    </configuration>
+    <configuration default="true" type="Application" factoryName="Application">
+      <extension name="coverage" enabled="false" merge="false" sample_coverage="true" runner="idea" />
+      <option name="MAIN_CLASS_NAME" />
+      <option name="VM_PARAMETERS" />
+      <option name="PROGRAM_PARAMETERS" />
+      <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$" />
+      <option name="ALTERNATIVE_JRE_PATH_ENABLED" value="false" />
+      <option name="ALTERNATIVE_JRE_PATH" />
+      <option name="ENABLE_SWING_INSPECTOR" value="false" />
+      <option name="ENV_VARIABLES" />
+      <option name="PASS_PARENT_ENVS" value="true" />
+      <module name="" />
+      <envs />
+      <method />
+    </configuration>
+    <configuration default="true" type="JUnit" factoryName="JUnit">
+      <extension name="coverage" enabled="false" merge="false" sample_coverage="true" runner="idea" />
+      <module name="" />
+      <option name="ALTERNATIVE_JRE_PATH_ENABLED" value="false" />
+      <option name="ALTERNATIVE_JRE_PATH" />
+      <option name="PACKAGE_NAME" />
+      <option name="MAIN_CLASS_NAME" />
+      <option name="METHOD_NAME" />
+      <option name="TEST_OBJECT" value="class" />
+      <option name="VM_PARAMETERS" value="-ea" />
+      <option name="PARAMETERS" />
+      <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$" />
+      <option name="ENV_VARIABLES" />
+      <option name="PASS_PARENT_ENVS" value="true" />
+      <option name="TEST_SEARCH_SCOPE">
+        <value defaultName="moduleWithDependencies" />
+      </option>
+      <envs />
+      <patterns />
+      <method />
+    </configuration>
+    <configuration default="true" type="#com.intellij.j2ee.web.tomcat.TomcatRunConfigurationFactory" factoryName="Local">
+      <deployment />
+      <server-settings />
+      <predefined_log_file id="Tomcat" enabled="true" />
+      <extension name="coverage" enabled="false" merge="false" sample_coverage="true" runner="idea" />
+      <method />
+    </configuration>
+    <configuration default="true" type="com.intellij.persistence.run.ConsoleRunConfigurationType" factoryName="Query Language Console">
+      <option name="VM_PARAMETERS" value="" />
+      <option name="USER_CFG_CLASS" />
+      <option name="CONTEXT_PROVIDER" />
+      <method />
+    </configuration>
+    <configuration default="false" name="TestTrip" type="JUnit" factoryName="JUnit">
+      <extension name="coverage" enabled="false" merge="false" sample_coverage="true" runner="idea">
+        <pattern>
+          <option name="PATTERN" value="be.kdg.trips.*" />
+          <option name="ENABLED" value="true" />
+        </pattern>
+      </extension>
+      <module name="TripsModel" />
+      <option name="ALTERNATIVE_JRE_PATH_ENABLED" value="false" />
+      <option name="ALTERNATIVE_JRE_PATH" value="" />
+      <option name="PACKAGE_NAME" value="be.kdg.trips" />
+      <option name="MAIN_CLASS_NAME" value="be.kdg.trips.TestTrip" />
+      <option name="METHOD_NAME" value="" />
+      <option name="TEST_OBJECT" value="class" />
+      <option name="VM_PARAMETERS" value="-ea" />
+      <option name="PARAMETERS" value="" />
+      <option name="WORKING_DIRECTORY" value="file://$PROJECT_DIR$" />
+      <option name="ENV_VARIABLES" />
+      <option name="PASS_PARENT_ENVS" value="true" />
+      <option name="TEST_SEARCH_SCOPE">
+        <value defaultName="moduleWithDependencies" />
+      </option>
+      <envs />
+      <patterns />
+      <RunnerSettings RunnerId="Debug">
+        <option name="DEBUG_PORT" value="" />
+        <option name="TRANSPORT" value="0" />
+        <option name="LOCAL" value="true" />
+      </RunnerSettings>
+      <RunnerSettings RunnerId="Run" />
+      <ConfigurationWrapper RunnerId="Debug" />
+      <ConfigurationWrapper RunnerId="Run" />
+      <method />
+    </configuration>
+    <configuration default="false" name="Tomcat 7.01" type="#com.intellij.j2ee.web.tomcat.TomcatRunConfigurationFactory" factoryName="Local" APPLICATION_SERVER_NAME="Tomcat 7.01">
+      <option name="UPDATING_POLICY" value="restart-server" />
+      <deployment>
+        <artifact name="TripsModel:war exploded">
+          <settings>
+            <option name="CONTEXT_PATH" value="/" />
+          </settings>
+        </artifact>
+      </deployment>
+      <server-settings>
+        <option name="BASE_DIRECTORY_NAME" value="Unnamed_TripsModel" />
+      </server-settings>
+      <predefined_log_file id="Tomcat" enabled="true" />
+      <extension name="coverage" enabled="false" merge="false" sample_coverage="true" runner="idea" />
+      <RunnerSettings RunnerId="Cover" />
+      <RunnerSettings RunnerId="Debug">
+        <option name="DEBUG_PORT" value="56973" />
+        <option name="TRANSPORT" value="0" />
+        <option name="LOCAL" value="true" />
+      </RunnerSettings>
+      <RunnerSettings RunnerId="Run" />
+      <ConfigurationWrapper VM_VAR="JAVA_OPTS" RunnerId="Cover">
+        <option name="USE_ENV_VARIABLES" value="true" />
+        <STARTUP>
+          <option name="USE_DEFAULT" value="true" />
+          <option name="SCRIPT" value="" />
+          <option name="VM_PARAMETERS" value="" />
+          <option name="PROGRAM_PARAMETERS" value="" />
+        </STARTUP>
+        <SHUTDOWN>
+          <option name="USE_DEFAULT" value="true" />
+          <option name="SCRIPT" value="" />
+          <option name="VM_PARAMETERS" value="" />
+          <option name="PROGRAM_PARAMETERS" value="" />
+        </SHUTDOWN>
+      </ConfigurationWrapper>
+      <ConfigurationWrapper VM_VAR="JAVA_OPTS" RunnerId="Debug">
+        <option name="USE_ENV_VARIABLES" value="true" />
+        <STARTUP>
+          <option name="USE_DEFAULT" value="true" />
+          <option name="SCRIPT" value="" />
+          <option name="VM_PARAMETERS" value="" />
+          <option name="PROGRAM_PARAMETERS" value="" />
+        </STARTUP>
+        <SHUTDOWN>
+          <option name="USE_DEFAULT" value="true" />
+          <option name="SCRIPT" value="" />
+          <option name="VM_PARAMETERS" value="" />
+          <option name="PROGRAM_PARAMETERS" value="" />
+        </SHUTDOWN>
+      </ConfigurationWrapper>
+      <ConfigurationWrapper VM_VAR="JAVA_OPTS" RunnerId="Run">
+        <option name="USE_ENV_VARIABLES" value="true" />
+        <STARTUP>
+          <option name="USE_DEFAULT" value="true" />
+          <option name="SCRIPT" value="" />
+          <option name="VM_PARAMETERS" value="" />
+          <option name="PROGRAM_PARAMETERS" value="" />
+        </STARTUP>
+        <SHUTDOWN>
+          <option name="USE_DEFAULT" value="true" />
+          <option name="SCRIPT" value="" />
+          <option name="VM_PARAMETERS" value="" />
+          <option name="PROGRAM_PARAMETERS" value="" />
+        </SHUTDOWN>
+      </ConfigurationWrapper>
+      <method>
+        <option name="BuildArtifacts" enabled="true">
+          <artifact name="TripsModel:war exploded" />
+        </option>
+      </method>
+    </configuration>
+    <list size="7">
+      <item index="0" class="java.lang.String" itemvalue="JUnit.TestTrip" />
+      <item index="1" class="java.lang.String" itemvalue="Tomcat Server.Tomcat 7.01" />
+      <item index="2" class="java.lang.String" itemvalue="JUnit.TestUser.successfulRegister" />
+      <item index="3" class="java.lang.String" itemvalue="JUnit.TestTrip.successfulAddLocationWithQuestion" />
+      <item index="4" class="java.lang.String" itemvalue="JUnit.TestTrip.failGuessAnswer" />
+      <item index="5" class="java.lang.String" itemvalue="JUnit.TestTrip.failedAddLocationInvalidLatitude" />
+      <item index="6" class="java.lang.String" itemvalue="JUnit.TestTrip.failedAddLocationInvalidAnswer" />
+    </list>
+    <recent_temporary>
+      <list size="5">
+        <item index="0" class="java.lang.String" itemvalue="JUnit.TestTrip.failedAddLocationInvalidAnswer" />
+        <item index="1" class="java.lang.String" itemvalue="JUnit.TestTrip.failedAddLocationInvalidLatitude" />
+        <item index="2" class="java.lang.String" itemvalue="JUnit.TestTrip.failGuessAnswer" />
+        <item index="3" class="java.lang.String" itemvalue="JUnit.TestTrip.successfulAddLocationWithQuestion" />
+        <item index="4" class="java.lang.String" itemvalue="JUnit.TestUser.successfulRegister" />
+      </list>
+    </recent_temporary>
+    <configuration name="&lt;template&gt;" type="WebApp" default="true" selected="false">
+      <Host>localhost</Host>
+      <Port>5050</Port>
+    </configuration>
+  </component>
+  <component name="ShelveChangesManager" show_recycled="false" />
+  <component name="SvnConfiguration" maxAnnotateRevisions="500" myUseAcceleration="nothing" myAutoUpdateAfterCommit="false" cleanupOnStartRun="false">
+    <option name="USER" value="" />
+    <option name="PASSWORD" value="" />
+    <option name="mySSHConnectionTimeout" value="30000" />
+    <option name="mySSHReadTimeout" value="30000" />
+    <option name="LAST_MERGED_REVISION" />
+    <option name="MERGE_DRY_RUN" value="false" />
+    <option name="MERGE_DIFF_USE_ANCESTRY" value="true" />
+    <option name="UPDATE_LOCK_ON_DEMAND" value="false" />
+    <option name="IGNORE_SPACES_IN_MERGE" value="false" />
+    <option name="DETECT_NESTED_COPIES" value="true" />
+    <option name="CHECK_NESTED_FOR_QUICK_MERGE" value="false" />
+    <option name="IGNORE_SPACES_IN_ANNOTATE" value="true" />
+    <option name="SHOW_MERGE_SOURCES_IN_ANNOTATE" value="true" />
+    <option name="FORCE_UPDATE" value="false" />
+    <option name="IGNORE_EXTERNALS" value="false" />
+    <myIsUseDefaultProxy>false</myIsUseDefaultProxy>
+  </component>
+  <component name="TaskManager">
+    <task active="true" id="Default" summary="Default task">
+      <changelist id="6cc9e967-6287-45ff-b32e-25db8e38578d" name="Default" comment="" />
+      <created>1360247003218</created>
+      <updated>1360247003218</updated>
+    </task>
+    <task id="LOCAL-00001" summary="initial tripsmodel">
+      <created>1360259950092</created>
+      <updated>1360259950092</updated>
+    </task>
+    <task id="LOCAL-00002" summary="initial tripsmodel v2">
+      <created>1360261553722</created>
+      <updated>1360261553722</updated>
+    </task>
+    <task id="LOCAL-00003" summary="initial tripsmodel">
+      <created>1360262754168</created>
+      <updated>1360262754168</updated>
+    </task>
+    <task id="LOCAL-00004" summary="initial tripsmodel v2">
+      <created>1360313249262</created>
+      <updated>1360313249262</updated>
+    </task>
+    <task id="LOCAL-00005" summary="register &amp; login">
+      <created>1360314615718</created>
+      <updated>1360314615718</updated>
+    </task>
+    <task id="LOCAL-00006" summary="register &amp; login">
+      <created>1360314928199</created>
+      <updated>1360314928199</updated>
+    </task>
+    <task id="LOCAL-00007" summary="webservice">
+      <created>1360318801802</created>
+      <updated>1360318801802</updated>
+    </task>
+    <task id="LOCAL-00008" summary="webservice">
+      <created>1360320721505</created>
+      <updated>1360320721505</updated>
+    </task>
+    <task id="LOCAL-00009" summary="webservice">
+      <created>1360324878504</created>
+      <updated>1360324878504</updated>
+    </task>
+    <task id="LOCAL-00010" summary="getUser &amp; addUser working + MySql database implemented">
+      <created>1360364388488</created>
+      <updated>1360364388488</updated>
+    </task>
+    <task id="LOCAL-00011" summary="getUser &amp; addUser working + MySql database implemented">
+      <created>1360364934735</created>
+      <updated>1360364934735</updated>
+    </task>
+    <task id="LOCAL-00012" summary="getUser &amp; addUser working + MySql database implemented">
+      <created>1360409689830</created>
+      <updated>1360409689830</updated>
+    </task>
+    <task id="LOCAL-00013" summary="Refactored">
+      <created>1360410956914</created>
+      <updated>1360410956914</updated>
+    </task>
+    <task id="LOCAL-00014" summary="Create timeless trip">
+      <created>1360512206253</created>
+      <updated>1360512206253</updated>
+    </task>
+    <task id="LOCAL-00015" summary="Services are working!">
+      <created>1360536916064</created>
+      <updated>1360536916064</updated>
+    </task>
+    <task id="LOCAL-00016" summary="AddLabel test modified">
+      <created>1360601540466</created>
+      <updated>1360601540466</updated>
+    </task>
+    <task id="LOCAL-00017" summary="method to publish a timebound trip added&#10;method to get all timeless trips added&#10;method to get all timebound, non active, published trips added">
+      <created>1360618667649</created>
+      <updated>1360618667649</updated>
+    </task>
+    <task id="LOCAL-00018" summary="method to publish a timebound trip updated&#10;method to get all timeless trips updated&#10;method to get all timebound, non active, published trips updated">
+      <created>1360622005819</created>
+      <updated>1360622005819</updated>
+    </task>
+    <task id="LOCAL-00019" summary="fix log4j&#10;">
+      <created>1360628009949</created>
+      <updated>1360628009949</updated>
+    </task>
+    <task id="LOCAL-00020" summary="big refactor&#10;">
+      <created>1360709894151</created>
+      <updated>1360709894151</updated>
+    </task>
+    <task id="LOCAL-00021" summary="CRUD user added">
+      <created>1360711881744</created>
+      <updated>1360711881744</updated>
+    </task>
+    <task id="LOCAL-00022" summary="CRUD user added">
+      <created>1360712213803</created>
+      <updated>1360712213803</updated>
+    </task>
+    <task id="LOCAL-00023" summary="Refactor v2">
+      <created>1360768623786</created>
+      <updated>1360768623786</updated>
+    </task>
+    <task id="LOCAL-00024" summary="equals &amp; hashcode &amp; getEnrollmentsByUser added">
+      <created>1360788797455</created>
+      <updated>1360788797455</updated>
+    </task>
+    <task id="LOCAL-00025" summary="getEnrollmentsByTrip added">
+      <created>1360792761638</created>
+      <updated>1360792761638</updated>
+    </task>
+    <task id="LOCAL-00026" summary="TripsException">
+      <created>1360852484472</created>
+      <updated>1360852484473</updated>
+    </task>
+    <task id="LOCAL-00027" summary="Big refactor">
+      <created>1360862332677</created>
+      <updated>1360862332677</updated>
+    </task>
+    <task id="LOCAL-00028" summary="organiser is enrolled when publishing">
+      <created>1360875560349</created>
+      <updated>1360875560349</updated>
+    </task>
+    <task id="LOCAL-00029" summary="refactor in BL classes">
+      <created>1360939859805</created>
+      <updated>1360939859805</updated>
+    </task>
+    <task id="LOCAL-00030" summary="addLocationToTrip added &#10;Questions added&#10;Address added">
+      <created>1361031621380</created>
+      <updated>1361031621380</updated>
+    </task>
+    <task id="LOCAL-00031" summary="refactor">
+      <created>1361033200400</created>
+      <updated>1361033200400</updated>
+    </task>
+    <task id="LOCAL-00032" summary="refactor">
+      <created>1361034131680</created>
+      <updated>1361034131680</updated>
+    </task>
+    <task id="LOCAL-00033" summary="deleteTrip added">
+      <created>1361202045346</created>
+      <updated>1361202045346</updated>
+    </task>
+    <task id="LOCAL-00034" summary="Refactor Tests">
+      <created>1361283771800</created>
+      <updated>1361283771800</updated>
+    </task>
+    <task id="LOCAL-00035" summary="DeleteTrip test added&#10;JSR303 added">
+      <created>1361312435799</created>
+      <updated>1361312435799</updated>
+    </task>
+    <task id="LOCAL-00036" summary="findTripById added">
+      <created>1361348388715</created>
+      <updated>1361348388715</updated>
+    </task>
+    <option name="localTasksCounter" value="37" />
+    <servers />
+  </component>
+  <component name="TodoView" selected-index="0">
+    <todo-panel id="selected-file">
+      <are-packages-shown value="false" />
+      <are-modules-shown value="false" />
+      <flatten-packages value="false" />
+      <is-autoscroll-to-source value="true" />
+    </todo-panel>
+    <todo-panel id="all">
+      <are-packages-shown value="true" />
+      <are-modules-shown value="false" />
+      <flatten-packages value="false" />
+      <is-autoscroll-to-source value="true" />
+    </todo-panel>
+    <todo-panel id="default-changelist">
+      <are-packages-shown value="false" />
+      <are-modules-shown value="false" />
+      <flatten-packages value="false" />
+      <is-autoscroll-to-source value="false" />
+    </todo-panel>
+  </component>
+  <component name="ToolWindowManager">
+    <frame x="-8" y="-8" width="1936" height="1056" extended-state="0" />
+    <editor active="true" />
+    <layout>
+      <window_info id="Changes" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.32998884" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
+      <window_info id="JetGradle" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
+      <window_info id="Palette" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
+      <window_info id="Database" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.12575758" sideWeight="0.66952056" order="3" side_tool="false" content_ui="tabs" />
+      <window_info id="Ant Build" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.25" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
+      <window_info id="Debug" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.47977686" sideWeight="0.5" order="6" side_tool="false" content_ui="tabs" />
+      <window_info id="IDEtalk Messages" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="8" side_tool="false" content_ui="tabs" />
+      <window_info id="Event Log" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.3270548" sideWeight="0.5037879" order="9" side_tool="true" content_ui="tabs" />
+      <window_info id="Favorites" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="2" side_tool="true" content_ui="tabs" />
+      <window_info id="IDEtalk" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
+      <window_info id="Version Control" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.32887402" sideWeight="0.5" order="10" side_tool="false" content_ui="tabs" />
+      <window_info id="TODO" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.32876712" sideWeight="0.5" order="5" side_tool="false" content_ui="tabs" />
+      <window_info id="Structure" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.2014157" sideWeight="0.45454547" order="1" side_tool="true" content_ui="tabs" />
+      <window_info id="Maven Projects" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" weight="0.19637139" sideWeight="0.67001116" order="3" side_tool="false" content_ui="tabs" />
+      <window_info id="Commander" active="false" anchor="right" auto_hide="false" internal_type="SLIDING" type="SLIDING" visible="false" weight="0.4" sideWeight="0.5" order="0" side_tool="false" content_ui="tabs" />
+      <window_info id="Application Servers" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.32998884" sideWeight="0.5" order="12" side_tool="false" content_ui="tabs" />
+      <window_info id="Project" active="true" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" weight="0.24439701" sideWeight="0.67001116" order="0" side_tool="false" content_ui="combo" />
+      <window_info id="Run" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.44685465" sideWeight="0.4909091" order="2" side_tool="false" content_ui="tabs" />
+      <window_info id="Hierarchy" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.25" sideWeight="0.5" order="2" side_tool="false" content_ui="combo" />
+      <window_info id="Cvs" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.25" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
+      <window_info id="Message" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="0" side_tool="false" content_ui="tabs" />
+      <window_info id="Find" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.3277592" sideWeight="0.49786553" order="1" side_tool="false" content_ui="tabs" />
+      <window_info id="Messages" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.49143836" sideWeight="0.5" order="11" side_tool="false" content_ui="tabs" />
+      <window_info id="Web" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="2" side_tool="true" content_ui="tabs" />
+      <window_info id="Inspection" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.4" sideWeight="0.5" order="4" side_tool="false" content_ui="tabs" />
+    </layout>
+  </component>
+  <component name="VcsContentAnnotationSettings">
+    <option name="myLimit" value="2678400000" />
+  </component>
+  <component name="VcsManagerConfiguration">
+    <option name="OFFER_MOVE_TO_ANOTHER_CHANGELIST_ON_PARTIAL_COMMIT" value="true" />
+    <option name="CHECK_CODE_SMELLS_BEFORE_PROJECT_COMMIT" value="true" />
+    <option name="CHECK_NEW_TODO" value="true" />
+    <option name="myTodoPanelSettings">
+      <value>
+        <are-packages-shown value="false" />
+        <are-modules-shown value="false" />
+        <flatten-packages value="false" />
+        <is-autoscroll-to-source value="false" />
+      </value>
+    </option>
+    <option name="PERFORM_UPDATE_IN_BACKGROUND" value="true" />
+    <option name="PERFORM_COMMIT_IN_BACKGROUND" value="true" />
+    <option name="PERFORM_EDIT_IN_BACKGROUND" value="true" />
+    <option name="PERFORM_CHECKOUT_IN_BACKGROUND" value="true" />
+    <option name="PERFORM_ADD_REMOVE_IN_BACKGROUND" value="true" />
+    <option name="PERFORM_ROLLBACK_IN_BACKGROUND" value="false" />
+    <option name="CHECK_LOCALLY_CHANGED_CONFLICTS_IN_BACKGROUND" value="false" />
+    <option name="CHANGED_ON_SERVER_INTERVAL" value="60" />
+    <option name="SHOW_ONLY_CHANGED_IN_SELECTION_DIFF" value="true" />
+    <option name="CHECK_COMMIT_MESSAGE_SPELLING" value="true" />
+    <option name="DEFAULT_PATCH_EXTENSION" value="patch" />
+    <option name="SHORT_DIFF_HORISONTALLY" value="true" />
+    <option name="SHORT_DIFF_EXTRA_LINES" value="2" />
+    <option name="SOFT_WRAPS_IN_SHORT_DIFF" value="true" />
+    <option name="INCLUDE_TEXT_INTO_PATCH" value="false" />
+    <option name="INCLUDE_TEXT_INTO_SHELF" value="false" />
+    <option name="SHOW_FILE_HISTORY_DETAILS" value="true" />
+    <option name="SHOW_VCS_ERROR_NOTIFICATIONS" value="true" />
+    <option name="SHOW_DIRTY_RECURSIVELY" value="false" />
+    <option name="LIMIT_HISTORY" value="true" />
+    <option name="MAXIMUM_HISTORY_ROWS" value="1000" />
+    <option name="FORCE_NON_EMPTY_COMMENT" value="false" />
+    <option name="CLEAR_INITIAL_COMMIT_MESSAGE" value="false" />
+    <option name="LAST_COMMIT_MESSAGE" value="findTripById added" />
+    <option name="MAKE_NEW_CHANGELIST_ACTIVE" value="false" />
+    <option name="OPTIMIZE_IMPORTS_BEFORE_PROJECT_COMMIT" value="false" />
+    <option name="CHECK_FILES_UP_TO_DATE_BEFORE_COMMIT" value="false" />
+    <option name="REFORMAT_BEFORE_PROJECT_COMMIT" value="false" />
+    <option name="REFORMAT_BEFORE_FILE_COMMIT" value="false" />
+    <option name="FILE_HISTORY_DIALOG_COMMENTS_SPLITTER_PROPORTION" value="0.8" />
+    <option name="FILE_HISTORY_DIALOG_SPLITTER_PROPORTION" value="0.5" />
+    <option name="ACTIVE_VCS_NAME" />
+    <option name="UPDATE_GROUP_BY_PACKAGES" value="false" />
+    <option name="UPDATE_GROUP_BY_CHANGELIST" value="false" />
+    <option name="SHOW_FILE_HISTORY_AS_TREE" value="false" />
+    <option name="FILE_HISTORY_SPLITTER_PROPORTION" value="0.6" />
+    <MESSAGE value="webservice" />
+    <MESSAGE value="getUser &amp; addUser working + MySql database implemented" />
+    <MESSAGE value="Refactored" />
+    <MESSAGE value="Create timeless trip" />
+    <MESSAGE value="Services are working!" />
+    <MESSAGE value="AddLabel test modified" />
+    <MESSAGE value="method to publish a timebound trip added&#10;method to get all timeless trips added&#10;method to get all timebound, non active, published trips added" />
+    <MESSAGE value="method to publish a timebound trip updated&#10;method to get all timeless trips updated&#10;method to get all timebound, non active, published trips updated" />
+    <MESSAGE value="fix log4j&#10;" />
+    <MESSAGE value="big refactor&#10;" />
+    <MESSAGE value="CRUD user" />
+    <MESSAGE value="CRUD user added" />
+    <MESSAGE value="Refactor v2" />
+    <MESSAGE value="equals &amp; hashcode &amp; getEnrollmentsByUser added" />
+    <MESSAGE value="getEnrollmentsByTrip added" />
+    <MESSAGE value="TripsException" />
+    <MESSAGE value="Big refactor" />
+    <MESSAGE value="organiser is enrolled when publishing" />
+    <MESSAGE value="refactor in BL classes" />
+    <MESSAGE value="addLocationToTrip added &#10;Questions added&#10;Address added" />
+    <MESSAGE value="refactor" />
+    <MESSAGE value="deleteTrip added" />
+    <MESSAGE value="Refactor Tests" />
+    <MESSAGE value="DeleteTrip test added&#10;JSR303 added" />
+    <MESSAGE value="findTripById added" />
+  </component>
+  <component name="XDebuggerManager">
+    <breakpoint-manager />
+  </component>
+  <component name="antWorkspaceConfiguration">
+    <option name="IS_AUTOSCROLL_TO_SOURCE" value="false" />
+    <option name="FILTER_TARGETS" value="false" />
+  </component>
+  <component name="editorHistoryManager">
+    <entry file="file://$PROJECT_DIR$/src/main/java/be/kdg/trips/businessLogic/impl/TripBLImpl.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="162" column="66" selection-start="5734" selection-end="5734" vertical-scroll-proportion="0.0">
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/test/java/be/kdg/trips/TestTrip.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="203" column="19" selection-start="9308" selection-end="9308" vertical-scroll-proportion="0.0">
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/main/java/be/kdg/trips/model/location/Location.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="23" column="13" selection-start="603" selection-end="603" vertical-scroll-proportion="0.0" />
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/main/java/be/kdg/trips/model/question/Question.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="36" column="53" selection-start="1075" selection-end="1075" vertical-scroll-proportion="0.0" />
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/main/java/be/kdg/trips/model/trip/NullTrip.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="11" column="13" selection-start="227" selection-end="227" vertical-scroll-proportion="0.0" />
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/main/java/be/kdg/trips/model/trip/TimeBoundTrip.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="17" column="13" selection-start="324" selection-end="324" vertical-scroll-proportion="0.0" />
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/main/java/be/kdg/trips/model/trip/TimelessTrip.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="15" column="13" selection-start="290" selection-end="290" vertical-scroll-proportion="0.0">
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/main/java/be/kdg/trips/model/trip/Trip.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="34" column="26" selection-start="936" selection-end="936" vertical-scroll-proportion="0.0">
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/main/java/be/kdg/trips/model/address/Address.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="18" column="49" selection-start="439" selection-end="448" vertical-scroll-proportion="0.0">
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/main/java/be/kdg/trips/model/user/User.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="44" column="17" selection-start="1216" selection-end="1216" vertical-scroll-proportion="0.0">
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/main/resources/applicationContext.xml">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="0" column="0" selection-start="0" selection-end="0" vertical-scroll-proportion="0.0">
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/main/java/be/kdg/trips/services/interfaces/TripsService.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="38" column="248" selection-start="1551" selection-end="1551" vertical-scroll-proportion="0.0">
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/main/java/be/kdg/trips/persistence/dao/impl/UserDaoImpl.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="21" column="13" selection-start="688" selection-end="688" vertical-scroll-proportion="0.0">
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/main/java/be/kdg/trips/persistence/dao/impl/TripDaoImpl.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="26" column="13" selection-start="810" selection-end="810" vertical-scroll-proportion="0.0">
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/main/java/be/kdg/trips/persistence/dao/impl/EnrollmentDaoImpl.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="27" column="13" selection-start="983" selection-end="983" vertical-scroll-proportion="0.0">
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/main/java/be/kdg/trips/services/impl/TripsServiceImpl.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="39" column="20" selection-start="1187" selection-end="1187" vertical-scroll-proportion="0.020262217">
+          <folding>
+            <element signature="imports" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+  </component>
+  <component name="masterDetails">
+    <states>
+      <state key="ArtifactsStructureConfigurable.UI">
+        <settings>
+          <artifact-editor />
+          <last-edited>TripsModel:war exploded</last-edited>
+          <splitter-proportions>
+            <option name="proportions">
+              <list>
+                <option value="0.2" />
+                <option value="0.5" />
+              </list>
+            </option>
+          </splitter-proportions>
+        </settings>
+      </state>
+      <state key="FacetStructureConfigurable.UI">
+        <settings>
+          <last-edited>Spring</last-edited>
+          <splitter-proportions>
+            <option name="proportions">
+              <list>
+                <option value="0.2" />
+              </list>
+            </option>
+          </splitter-proportions>
+        </settings>
+      </state>
+      <state key="GlobalLibrariesConfigurable.UI">
+        <settings>
+          <splitter-proportions>
+            <option name="proportions">
+              <list>
+                <option value="0.2" />
+              </list>
+            </option>
+          </splitter-proportions>
+        </settings>
+      </state>
+      <state key="JdkListConfigurable.UI">
+        <settings>
+          <last-edited>1.7</last-edited>
+          <splitter-proportions>
+            <option name="proportions">
+              <list>
+                <option value="0.2" />
+              </list>
+            </option>
+          </splitter-proportions>
+        </settings>
+      </state>
+      <state key="ModuleStructureConfigurable.UI">
+        <settings>
+          <last-edited>TripsModel</last-edited>
+          <splitter-proportions>
+            <option name="proportions">
+              <list>
+                <option value="0.2" />
+              </list>
+            </option>
+          </splitter-proportions>
+        </settings>
+      </state>
+      <state key="ProjectLibrariesConfigurable.UI">
+        <settings>
+          <last-edited>Maven: antlr:antlr:2.7.7</last-edited>
+          <splitter-proportions>
+            <option name="proportions">
+              <list>
+                <option value="0.2" />
+              </list>
+            </option>
+          </splitter-proportions>
+        </settings>
+      </state>
+    </states>
+  </component>
+</project>
+

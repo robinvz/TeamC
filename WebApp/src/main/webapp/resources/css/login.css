@@ -1,0 +1,49 @@
+#form-register, #form-login{
+    width: 310px;
+    margin: 20px auto;
+    display: none;
+}
+
+#login-title{
+    text-align: center;
+    margin-top: 10%;
+}
+
+
+label {
+    float: left;
+    width: 150px;
+}
+
+input, label {
+    display: inline-block;
+}
+
+.btn-submit{
+   float: right;
+}
+
+#login-facebook{
+    background-image: url('../res/img/icons/btn_fb_login.png');
+    width: 192px;
+    height: 34px;
+    border: none;
+    margin: 20px auto;
+}
+
+#login-facebook:active
+{
+    background-image: url('../res/img/icons/btn_fb_login_clicked.png');
+}
+
+#register-facebook{
+    background-image: url('../res/img/icons/btn_fb_signup.png');
+    width: 192px;
+    height: 34px;
+    border: none;
+    margin: 20px auto;
+}
+
+#register-facebook:active{
+    background-image: url('../res/img/icons/btn_fb_signup_clicked.png');
+}

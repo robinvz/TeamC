@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <PreferenceCategory 
+        android:title="Server Settings"
+        android:key="server_settings">
+
+        <EditTextPreference
+            android:key="server_ip"
+            android:title="Server Ip" 
+            android:summary="Define the server ip"
+            android:dialogTitle="Server Ip"
+            android:dialogMessage="Define the server ip"    
+            android:defaultValue="192.168.2.200" />
+
+           <EditTextPreference
+            android:key="server_port"
+            android:title="Server Port" 
+            android:summary="Define the server port"
+            android:dialogTitle="Server Port"
+            android:dialogMessage="Define the server port"    
+            android:defaultValue="8080" />
+    </PreferenceCategory>
+    
+</PreferenceScreen>
+

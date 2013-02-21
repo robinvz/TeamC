@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="utf-8"?>
+<manifest xmlns:android="http://schemas.android.com/apk/res/android"
+    package="be.kdg.groupcandroid"
+    android:versionCode="1"
+    android:versionName="1.0" >
+
+    <uses-sdk
+        android:minSdkVersion="12"
+        android:targetSdkVersion="17" />
+    
+    <uses-permission android:name="android.permission.INTERNET"/>
+
+    <application
+        android:allowBackup="true"
+        android:icon="@drawable/ic_launcher"
+        android:label="Trips"
+        android:logo="@drawable/logo"
+        android:theme="@style/SampleTheme" >
+        <activity
+            android:name="be.kdg.groupcandroid.MainActivity"
+            android:label="@string/app_name"
+            android:screenOrientation="portrait"
+            android:theme="@android:style/Theme.NoTitleBar" >
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+        </activity>
+        <activity
+            android:name="be.kdg.groupcandroid.MenuContent"
+            android:label="" >
+        </activity>
+        <activity
+            android:name="be.kdg.groupcandroid.TripsOverview"
+            android:label="" >
+        </activity>
+        <activity android:name=".Preferences" >
+        </activity>
+    </application>
+
+</manifest>
