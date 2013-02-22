@@ -42,6 +42,11 @@ public class TripsServiceImpl implements TripsService
     }
 
     @Override
+    public User createUser(User user) throws TripsException {
+        return userController.createUser(user);
+    }
+
+    @Override
     public User findUser(String email) throws TripsException
     {
         return userController.findUser(email);

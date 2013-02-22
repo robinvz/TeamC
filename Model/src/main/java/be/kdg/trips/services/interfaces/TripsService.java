@@ -22,6 +22,7 @@ public interface TripsService
 {
     //User Service
     public User createUser(String email, String password) throws TripsException;
+    public User createUser(User user) throws TripsException;
 
     public User findUser(String email) throws TripsException;
     public boolean checkLogin(String email, String password);

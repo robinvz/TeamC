@@ -109,6 +109,10 @@ public class User implements UserInterface, Serializable {
         return address;
     }
 
+    protected String getPassword() {
+        return password;
+    }
+
     @Override
     public void setAddress(Address address) {
         this.address = address;
