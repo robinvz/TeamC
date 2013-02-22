@@ -38,28 +38,26 @@
             <div id="timelessTrips">
                 <c:if test="${not empty allNonPrivateTrips}">
                     <c:forEach items="${allNonPrivateTrips}" var="allNonPrivateTrip">
-                        <a href="trip/${allNonPrivateTrip.id}">
-                            <tr id="trip${allNonPrivateTrip.id}">
-                                <div class="form-row">
-                                    <td>
-                                        <a href="/trip/${allNonPrivateTrip.id}">
-                                                ${allNonPrivateTrip.title}
-                                        </a>
-                                    </td>
-                                    <td>
-                                        <output>${allNonPrivateTrip.description}</output>
-                                    </td>
-                                    <td>
-                                        <output>${allNonPrivateTrip.privacy}</output>
-                                    </td>
-                                </div>
-                                <!--  <div class="form-buttons">
-                                      <div class="button">
-                                          <td><input name="submit" type="submit" value="Select"/></td>
-                                      </div>
-                                  </div>   -->
-                            </tr>
-                        </a>
+                        <tr id="trip${allNonPrivateTrip.id}">
+                            <div class="form-row">
+
+                                <td>
+                                   ${allNonPrivateTrip.title}
+                                </td>
+                                <td>
+                                    <output>${allNonPrivateTrip.description}</output>
+                                </td>
+                                <td>
+                                    <output>${allNonPrivateTrip.privacy}</output>
+                                </td>
+                            </div>
+                            <!--  <div class="form-buttons">
+                                  <div class="button">
+                                      <td><input name="submit" type="submit" value="Select"/></td>
+                                  </div>
+                              </div>   -->
+                        </tr>
+
                     </c:forEach>
                 </c:if>
             </div>
@@ -70,10 +68,11 @@
 
     <footer><p class="footer">Trips - 2013</p></footer>
 </div>
-</body>
 <script src="${pageContext.request.contextPath}/resources/js/jquery-1.9.0.min.js"></script>
 <script src="${pageContext.request.contextPath}/resources/js/knockout.js"></script>
+<script src="${pageContext.request.contextPath}/resources/js/trips.js"></script>
 <!--[if lt IE 9]>
 <script src="${pageContext.request.contextPath}/resources/js/html5shiv.js"></script>
 <![endif]-->
+</body>
 </html>
