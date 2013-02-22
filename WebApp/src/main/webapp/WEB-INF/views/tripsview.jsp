@@ -41,7 +41,6 @@
                         <a href="trip/${allNonPrivateTrip.id}">
                             <tr id="trip${allNonPrivateTrip.id}">
                                 <div class="form-row">
-
                                     <td>
                                         <a href="/trip/${allNonPrivateTrip.id}">
                                                 ${allNonPrivateTrip.title}
