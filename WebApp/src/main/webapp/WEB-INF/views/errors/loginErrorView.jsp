@@ -20,5 +20,8 @@
         <h3>Please log in first</h3>
     </div>
 </div>
+<!--[if lt IE 9]>
+<script src="${pageContext.request.contextPath}/resources/js/html5shiv.js"></script>
+<![endif]-->
 </body>
 </html>

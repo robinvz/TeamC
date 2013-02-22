@@ -58,5 +58,8 @@
 </div>
 <script src="${pageContext.request.contextPath}/resources/js/jquery-1.9.0.min.js"></script>
 <script src="${pageContext.request.contextPath}/resources/js/mapscript.js"></script>
+<!--[if lt IE 9]>
+<script src="${pageContext.request.contextPath}/resources/js/html5shiv.js"></script>
+<![endif]-->
 </body>
 </html>

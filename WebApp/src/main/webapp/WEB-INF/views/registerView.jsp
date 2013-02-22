@@ -106,5 +106,8 @@
 
     <footer><p class="footer">Trips - 2013</p></footer>
 </div>
+<!--[if lt IE 9]>
+<script src="${pageContext.request.contextPath}/resources/js/html5shiv.js"></script>
+<![endif]-->
 </body>
 </html>
