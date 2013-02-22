@@ -1,5 +1,6 @@
 package be.kdg.trips.persistence.dao.interfaces;
 
+import be.kdg.trips.exception.TripsException;
 import be.kdg.trips.model.trip.Trip;
 
 import java.util.List;
@@ -12,11 +13,15 @@ import java.util.List;
  */
 public interface TripDao {
     public void saveOrUpdateTrip(Trip trip);
+
     public List getPublicTrips();
     public List getProtectedTrips();
     public List getProtectedTripsWithoutDetails();
     public List getNonPrivateTripsByKeyword(String keyword);
-    public Trip getTrip(int id);
+    public Trip getTrip(int id) throws TripsException;
+
     public void deleteTrip(Trip trip);
+
+    public boolean isExistingTrip(int id) throws TripsException;
 }
 

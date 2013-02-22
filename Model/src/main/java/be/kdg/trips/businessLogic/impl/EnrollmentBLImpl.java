@@ -37,23 +37,18 @@ public class EnrollmentBLImpl implements EnrollmentBL
     public Enrollment enroll(Trip trip, User user) throws TripsException
     {
         Enrollment enrollment = null;
-        if (userBL.isExistingUser(user.getEmail()) && tripBL.isExistingTrip(trip.getId()) && trip.isPublished() && !trip.isActive() && trip.getPrivacy()!= TripPrivacy.PUBLIC)
+        if(isUnexistingEnrollment(user,trip))
         {
-            if(!isExistingEnrollment(user,trip))
+            if(trip.isPublished() && !trip.isActive() && trip.getPrivacy()!= TripPrivacy.PUBLIC)
             {
                 enrollment = new Enrollment(trip, user);
                 enrollmentDao.saveOrUpdateEnrollment(enrollment);
             }
             else
             {
-                throw new TripsException("User is already enrolled for the trip");
+                throw new TripsException("Trip is either not published, already active, or public");
             }
         }
-        else
-        {
-            throw new TripsException("Trip is either not published, already active, or public");
-        }
-
         return enrollment;
     }
 
@@ -61,20 +56,17 @@ public class EnrollmentBLImpl implements EnrollmentBL
     public Invitation invite(Trip trip, User organizer, User user) throws TripsException
     {
         Invitation invitation = null;
-        if (userBL.isExistingUser(user.getEmail()) && userBL.isExistingUser(organizer.getEmail()) && tripBL.isOrganizer(trip, organizer) && tripBL.isExistingTrip(trip.getId()) && trip.isPublished() && !trip.isActive() && trip.getPrivacy()==TripPrivacy.PRIVATE)
+        if(isUnexistingInvitation(user, trip))
         {
-            if(!isExistingInvitation(user, trip)){
+            if (userBL.isExistingUser(organizer.getEmail()) && tripBL.isOrganizer(trip, organizer) && trip.isPublished() && !trip.isActive() && trip.getPrivacy()==TripPrivacy.PRIVATE)
+            {
                 invitation = new Invitation(trip, user);
                 enrollmentDao.saveOrUpdateInvitation(invitation);
             }
             else
             {
-                throw new TripsException("User is already invited for the trip");
+                throw new TripsException("Trip is either not published, already active, private or organizer doesn't exist");
             }
-        }
-        else
-        {
-            throw new TripsException("Trip is either not published, already active, or private");
         }
         return invitation;
     }
@@ -110,39 +102,39 @@ public class EnrollmentBLImpl implements EnrollmentBL
         //To change body of implemented methods use File | Settings | File Templates.
     }
 
+    @Override
     public boolean isExistingEnrollment(User user, Trip trip) throws TripsException {
-        if(!enrollmentDao.getEnrollmentByUserAndTrip(user, trip).isNull())
+        if(userBL.isExistingUser(user.getEmail()) && tripBL.isExistingTrip(trip.getId()))
         {
-            throw new TripsException("Enrollment already exists");
+            return enrollmentDao.isExistingEnrollment(user, trip);
         }
         return false;
     }
 
-    public boolean isExistingInvitation(User user, Trip trip) throws TripsException {
-        if(!enrollmentDao.getInvitationByUserAndTrip(user, trip).isNull())
+    @Override
+    public boolean isUnexistingEnrollment(User user, Trip trip) throws TripsException {
+        if(userBL.isExistingUser(user.getEmail()) && tripBL.isExistingTrip(trip.getId()))
         {
-            throw new TripsException("Invitation already exists");
+            return enrollmentDao.isUnexistingEnrollment(user, trip);
         }
         return false;
     }
-    /*
-    private boolean checkUserAndTrip(User user, Trip trip) throws TripsException
-    {
+
+    @Override
+    public boolean isExistingInvitation(User user, Trip trip) throws TripsException {
         if(userBL.isExistingUser(user.getEmail()) && tripBL.isExistingTrip(trip.getId()))
         {
-            if (trip.isPublished() && !trip.isActive())
-            {
-                return true;
-            }
-            else
-            {
-                throw new TripsException("Trip is either unpublished or already active");
-            }
+            return enrollmentDao.isExistingInvitation(user, trip);
         }
-        else
-        {
-            throw new TripsException("User doesn't exist");
-        }
+        return false;
     }
-    */
+
+    @Override
+    public boolean isUnexistingInvitation(User user, Trip trip) throws TripsException {
+        if(userBL.isExistingUser(user.getEmail()) && tripBL.isExistingTrip(trip.getId()))
+        {
+            return enrollmentDao.isUnexistingInvitation(user, trip);
+        }
+        return false;
+    }
 }

@@ -1,16 +1,13 @@
 package be.kdg.trips.persistence.dao.impl;
 
 import be.kdg.trips.exception.TripsException;
-import be.kdg.trips.model.user.NullUser;
 import be.kdg.trips.model.user.User;
 import be.kdg.trips.persistence.dao.interfaces.UserDao;
 import org.hibernate.Query;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 import org.hibernate.Transaction;
-import org.hibernate.criterion.Restrictions;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Repository;
 
 /**
@@ -26,18 +23,15 @@ public class UserDaoImpl implements UserDao {
     private SessionFactory sessionFactory;
 
     @Override
-    public User getUser(String email) {
-        Session session = sessionFactory.openSession();
-        //PROBLEEM: werken met transactions!
-        //User user = (User) session.createCriteria(User.class).add(Restrictions.eq("email", email)).uniqueResult();
-        Query query = session.createQuery("SELECT DISTINCT u FROM User u LEFT JOIN FETCH u.enrollments LEFT JOIN FETCH u.invitations WHERE u.email = :email");        query.setParameter("email",email);
-        User user = (User) query.uniqueResult();
-        session.close();
-        if (user == null) {
-            user = NullUser.getInstance();
-        }
+    public User getUser(String email) throws TripsException
+    {
+        return queryUser(email.toLowerCase(), "FROM User u WHERE u.email = :email");
+    }
 
-        return user;
+    @Override
+    public User getUserWithDetails(String email) throws TripsException
+    {
+        return queryUser(email.toLowerCase(), "SELECT DISTINCT u FROM User u LEFT JOIN FETCH u.enrollments LEFT JOIN FETCH u.invitations WHERE u.email = :email");
     }
 
     @Override
@@ -52,12 +46,47 @@ public class UserDaoImpl implements UserDao {
     }
 
     @Override
-    public void deleteUser(User user) throws TripsException {
+    public void deleteUser(User user) throws TripsException
+    {
         Session session = sessionFactory.openSession();
         Transaction tx = session.getTransaction();
         tx.begin();
         session.delete(user);
         tx.commit();
         session.close();
+    }
+
+    @Override
+    public boolean isExistingUser(String email) throws TripsException {
+        getUser(email);
+        return true;
+    }
+
+    @Override
+    public boolean isUnexistingUser(String email) throws TripsException
+    {
+        try
+        {
+            getUser(email);
+        }
+        catch (TripsException ex)
+        {
+            return true;
+        }
+        throw new TripsException("User with email '"+email+"' already exists");
+    }
+
+    private User queryUser(String email, String queryString) throws TripsException
+    {
+        Session session = sessionFactory.openSession();
+        Query query = session.createQuery(queryString);
+        query.setParameter("email",email);
+        User user = (User) query.uniqueResult();
+        session.close();
+        if (user == null)
+        {
+            throw new TripsException("User with email '"+email+"' doesn't exist");
+        }
+        return user;
     }
 }

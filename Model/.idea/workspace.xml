@@ -2,30 +2,50 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="6cc9e967-6287-45ff-b32e-25db8e38578d" name="Default" comment="">
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/main/java/be/kdg/trips/model/question/Question.java" afterPath="$PROJECT_DIR$/src/main/java/be/kdg/trips/model/question/Question.java" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/.idea/dataSources.xml" />
+      <change type="DELETED" beforePath="C:\Users\Gijs\Desktop\teamCModel\TeamC\Model\src\main\java\be\kdg\trips\model\Nullable.java" afterPath="" />
+      <change type="DELETED" beforePath="C:\Users\Gijs\Desktop\teamCModel\TeamC\Model\src\main\java\be\kdg\trips\model\enrollment\NullEnrollment.java" afterPath="" />
+      <change type="DELETED" beforePath="C:\Users\Gijs\Desktop\teamCModel\TeamC\Model\src\main\java\be\kdg\trips\model\invitation\NullInvitation.java" afterPath="" />
+      <change type="DELETED" beforePath="C:\Users\Gijs\Desktop\teamCModel\TeamC\Model\src\main\java\be\kdg\trips\model\trip\NullTrip.java" afterPath="" />
+      <change type="DELETED" beforePath="C:\Users\Gijs\Desktop\teamCModel\TeamC\Model\src\main\java\be\kdg\trips\model\user\NullUser.java" afterPath="" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/main/java/be/kdg/trips/model/address/Address.java" afterPath="$PROJECT_DIR$/src/main/java/be/kdg/trips/model/address/Address.java" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/main/java/be/kdg/trips/model/enrollment/Enrollment.java" afterPath="$PROJECT_DIR$/src/main/java/be/kdg/trips/model/enrollment/Enrollment.java" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/main/java/be/kdg/trips/businessLogic/interfaces/EnrollmentBL.java" afterPath="$PROJECT_DIR$/src/main/java/be/kdg/trips/businessLogic/interfaces/EnrollmentBL.java" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/main/java/be/kdg/trips/businessLogic/impl/EnrollmentBLImpl.java" afterPath="$PROJECT_DIR$/src/main/java/be/kdg/trips/businessLogic/impl/EnrollmentBLImpl.java" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/main/java/be/kdg/trips/persistence/dao/interfaces/EnrollmentDao.java" afterPath="$PROJECT_DIR$/src/main/java/be/kdg/trips/persistence/dao/interfaces/EnrollmentDao.java" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/main/java/be/kdg/trips/persistence/dao/impl/EnrollmentDaoImpl.java" afterPath="$PROJECT_DIR$/src/main/java/be/kdg/trips/persistence/dao/impl/EnrollmentDaoImpl.java" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/main/java/be/kdg/trips/model/invitation/Invitation.java" afterPath="$PROJECT_DIR$/src/main/java/be/kdg/trips/model/invitation/Invitation.java" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/test/java/be/kdg/trips/TestEnrollment.java" afterPath="$PROJECT_DIR$/src/test/java/be/kdg/trips/TestEnrollment.java" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/test/java/be/kdg/trips/TestTrip.java" afterPath="$PROJECT_DIR$/src/test/java/be/kdg/trips/TestTrip.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/main/java/be/kdg/trips/model/trip/TimeBoundTrip.java" afterPath="$PROJECT_DIR$/src/main/java/be/kdg/trips/model/trip/TimeBoundTrip.java" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/main/java/be/kdg/trips/model/trip/Trip.java" afterPath="$PROJECT_DIR$/src/main/java/be/kdg/trips/model/trip/Trip.java" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/main/java/be/kdg/trips/businessLogic/interfaces/TripBL.java" afterPath="$PROJECT_DIR$/src/main/java/be/kdg/trips/businessLogic/interfaces/TripBL.java" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/main/java/be/kdg/trips/businessLogic/impl/TripBLImpl.java" afterPath="$PROJECT_DIR$/src/main/java/be/kdg/trips/businessLogic/impl/TripBLImpl.java" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/main/java/be/kdg/trips/persistence/dao/interfaces/TripDao.java" afterPath="$PROJECT_DIR$/src/main/java/be/kdg/trips/persistence/dao/interfaces/TripDao.java" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/main/java/be/kdg/trips/persistence/dao/impl/TripDaoImpl.java" afterPath="$PROJECT_DIR$/src/main/java/be/kdg/trips/persistence/dao/impl/TripDaoImpl.java" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/main/java/be/kdg/trips/model/user/User.java" afterPath="$PROJECT_DIR$/src/main/java/be/kdg/trips/model/user/User.java" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/main/java/be/kdg/trips/businessLogic/interfaces/UserBL.java" afterPath="$PROJECT_DIR$/src/main/java/be/kdg/trips/businessLogic/interfaces/UserBL.java" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/main/java/be/kdg/trips/businessLogic/impl/UserBLImpl.java" afterPath="$PROJECT_DIR$/src/main/java/be/kdg/trips/businessLogic/impl/UserBLImpl.java" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/main/java/be/kdg/trips/persistence/dao/interfaces/UserDao.java" afterPath="$PROJECT_DIR$/src/main/java/be/kdg/trips/persistence/dao/interfaces/UserDao.java" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/main/java/be/kdg/trips/persistence/dao/impl/UserDaoImpl.java" afterPath="$PROJECT_DIR$/src/main/java/be/kdg/trips/persistence/dao/impl/UserDaoImpl.java" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/main/java/be/kdg/trips/model/user/UserInterface.java" afterPath="$PROJECT_DIR$/src/main/java/be/kdg/trips/model/user/UserInterface.java" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/workspace.xml" afterPath="$PROJECT_DIR$/.idea/workspace.xml" />
     </list>
     <ignored path="TripsModel.iws" />
     <ignored path=".idea/workspace.xml" />
     <file path="/TestUser.java" changelist="6cc9e967-6287-45ff-b32e-25db8e38578d" time="1361350314408" ignored="false" />
     <file path="/pom.xml" changelist="6cc9e967-6287-45ff-b32e-25db8e38578d" time="1361303181789" ignored="false" />
-    <file path="/fragment.java" changelist="6cc9e967-6287-45ff-b32e-25db8e38578d" time="1361354932938" ignored="false" />
+    <file path="/fragment.java" changelist="6cc9e967-6287-45ff-b32e-25db8e38578d" time="1361525980880" ignored="false" />
     <file path="/TripManager.java" changelist="6cc9e967-6287-45ff-b32e-25db8e38578d" time="1360313585594" ignored="false" />
-    <file path="/User.java" changelist="6cc9e967-6287-45ff-b32e-25db8e38578d" time="1361359315771" ignored="false" />
+    <file path="/User.java" changelist="6cc9e967-6287-45ff-b32e-25db8e38578d" time="1361523525429" ignored="false" />
     <file path="/UserException.java" changelist="6cc9e967-6287-45ff-b32e-25db8e38578d" time="1360249474854" ignored="false" />
     <file path="/UserController.java" changelist="6cc9e967-6287-45ff-b32e-25db8e38578d" time="1360313737801" ignored="false" />
     <file path="/UserDAO.java" changelist="6cc9e967-6287-45ff-b32e-25db8e38578d" time="1360250987747" ignored="false" />
-    <file path="/UserDaoImpl.java" changelist="6cc9e967-6287-45ff-b32e-25db8e38578d" time="1360862077257" ignored="false" />
+    <file path="/UserDaoImpl.java" changelist="6cc9e967-6287-45ff-b32e-25db8e38578d" time="1361523088199" ignored="false" />
     <file path="/NullUser.java" changelist="6cc9e967-6287-45ff-b32e-25db8e38578d" time="1360257099900" ignored="false" />
     <file path="$USER_HOME$/Documents/School/3/BAGedistribueerdeSystemen/week2/voorbeeld CorbaOrigineel/src/be/kdg/componenten/client/Client.java" changelist="6cc9e967-6287-45ff-b32e-25db8e38578d" time="1360256910360" ignored="false" />
     <file path="/a.java" changelist="6cc9e967-6287-45ff-b32e-25db8e38578d" time="1360258056897" ignored="false" />
     <file path="/sample.java" changelist="6cc9e967-6287-45ff-b32e-25db8e38578d" time="1360258083312" ignored="false" />
-    <file path="/Dummy.txt" changelist="6cc9e967-6287-45ff-b32e-25db8e38578d" time="1361469818327" ignored="false" />
+    <file path="/Dummy.txt" changelist="6cc9e967-6287-45ff-b32e-25db8e38578d" time="1361520647845" ignored="false" />
     <file path="/UserService.java" changelist="6cc9e967-6287-45ff-b32e-25db8e38578d" time="1360710753759" ignored="false" />
     <file path="/UserServerImpl.java" changelist="6cc9e967-6287-45ff-b32e-25db8e38578d" time="1360319945706" ignored="false" />
     <file path="/spring-config.xml" changelist="6cc9e967-6287-45ff-b32e-25db8e38578d" time="1360320486615" ignored="false" />
@@ -33,18 +53,18 @@
     <file path="/applicationContext.xml" changelist="6cc9e967-6287-45ff-b32e-25db8e38578d" time="1360763147488" ignored="false" />
     <file path="$PROJECT_DIR$/../groepC/TeamC/.idea/workspace.xml" changelist="6cc9e967-6287-45ff-b32e-25db8e38578d" time="1360364923962" ignored="false" />
     <file path="/UserServiceImpl.java" changelist="6cc9e967-6287-45ff-b32e-25db8e38578d" time="1360710959881" ignored="false" />
-    <file path="/UserDao.java" changelist="6cc9e967-6287-45ff-b32e-25db8e38578d" time="1360710914516" ignored="false" />
-    <file path="/TestTrip.java" changelist="6cc9e967-6287-45ff-b32e-25db8e38578d" time="1361479558113" ignored="false" />
+    <file path="/UserDao.java" changelist="6cc9e967-6287-45ff-b32e-25db8e38578d" time="1361521953787" ignored="false" />
+    <file path="/TestTrip.java" changelist="6cc9e967-6287-45ff-b32e-25db8e38578d" time="1361527612123" ignored="false" />
     <file path="/Trip.java" changelist="6cc9e967-6287-45ff-b32e-25db8e38578d" time="1361479896124" ignored="false" />
     <file path="/TripPrivacy.java" changelist="6cc9e967-6287-45ff-b32e-25db8e38578d" time="1360502347659" ignored="false" />
     <file path="/TimeBoundTrip.java" changelist="6cc9e967-6287-45ff-b32e-25db8e38578d" time="1361470972222" ignored="false" />
     <file path="/TimelessTrip.java" changelist="6cc9e967-6287-45ff-b32e-25db8e38578d" time="1360623070789" ignored="false" />
     <file path="/TripService.java" changelist="6cc9e967-6287-45ff-b32e-25db8e38578d" time="1360709512263" ignored="false" />
     <file path="/TripServiceImpl.java" changelist="6cc9e967-6287-45ff-b32e-25db8e38578d" time="1360709530031" ignored="false" />
-    <file path="/TripDaoImpl.java" changelist="6cc9e967-6287-45ff-b32e-25db8e38578d" time="1361288481311" ignored="false" />
-    <file path="/TripDao.java" changelist="6cc9e967-6287-45ff-b32e-25db8e38578d" time="1361049867111" ignored="false" />
+    <file path="/TripDaoImpl.java" changelist="6cc9e967-6287-45ff-b32e-25db8e38578d" time="1361524448475" ignored="false" />
+    <file path="/TripDao.java" changelist="6cc9e967-6287-45ff-b32e-25db8e38578d" time="1361524465010" ignored="false" />
     <file path="/TripException.java" changelist="6cc9e967-6287-45ff-b32e-25db8e38578d" time="1360523254917" ignored="false" />
-    <file path="/NullTrip.java" changelist="6cc9e967-6287-45ff-b32e-25db8e38578d" time="1360863923780" ignored="false" />
+    <file path="/NullTrip.java" changelist="6cc9e967-6287-45ff-b32e-25db8e38578d" time="1361522946789" ignored="false" />
     <file path="$USER_HOME$/IdeaProjects/Client/src/main/java/Demo.java" changelist="6cc9e967-6287-45ff-b32e-25db8e38578d" time="1360591734517" ignored="false" />
     <file path="$USER_HOME$/IdeaProjects/Client/src/main/resources/policyfile" changelist="6cc9e967-6287-45ff-b32e-25db8e38578d" time="1360534667238" ignored="false" />
     <file path="/web.xml" changelist="6cc9e967-6287-45ff-b32e-25db8e38578d" time="1360535491725" ignored="false" />
@@ -71,7 +91,7 @@
     <file path="/register.jsp" changelist="6cc9e967-6287-45ff-b32e-25db8e38578d" time="1360678848769" ignored="false" />
     <file path="$USER_HOME$/IdeaProjects/TestjeGit/TeamC/src/main/java/be/kdg/trips/model/user/UserInterface.java" changelist="6cc9e967-6287-45ff-b32e-25db8e38578d" time="1360680713732" ignored="false" />
     <file path="/Enrollment.java" changelist="6cc9e967-6287-45ff-b32e-25db8e38578d" time="1361469578759" ignored="false" />
-    <file path="/TestEnrollment.java" changelist="6cc9e967-6287-45ff-b32e-25db8e38578d" time="1361468444913" ignored="false" />
+    <file path="/TestEnrollment.java" changelist="6cc9e967-6287-45ff-b32e-25db8e38578d" time="1361527783311" ignored="false" />
     <file path="/TripsServiceImpl.java" changelist="6cc9e967-6287-45ff-b32e-25db8e38578d" time="1361468290266" ignored="false" />
     <file path="/TripsService.java" changelist="6cc9e967-6287-45ff-b32e-25db8e38578d" time="1361468279792" ignored="false" />
     <file path="/EnrollmentService.java" changelist="6cc9e967-6287-45ff-b32e-25db8e38578d" time="1360761334821" ignored="false" />
@@ -93,13 +113,13 @@
     <file path="$USER_HOME$/TeamC/src/test/java/be/kdg/trips/TripTest.java" changelist="6cc9e967-6287-45ff-b32e-25db8e38578d" time="1360768688003" ignored="false" />
     <file path="$USER_HOME$/TeamC/src/main/java/be/kdg/trips/controllers/HomeController.java" changelist="6cc9e967-6287-45ff-b32e-25db8e38578d" time="1360768688003" ignored="false" />
     <file path="$USER_HOME$/IdeaProjects/TestjeGit/TeamC/pom.xml" changelist="6cc9e967-6287-45ff-b32e-25db8e38578d" time="1361366351833" ignored="false" />
-    <file path="/EnrollmentDao.java" changelist="6cc9e967-6287-45ff-b32e-25db8e38578d" time="1360884558790" ignored="false" />
-    <file path="/EnrollmentDaoImpl.java" changelist="6cc9e967-6287-45ff-b32e-25db8e38578d" time="1360884774225" ignored="false" />
-    <file path="/EnrollmentBLImpl.java" changelist="6cc9e967-6287-45ff-b32e-25db8e38578d" time="1361468372580" ignored="false" />
+    <file path="/EnrollmentDao.java" changelist="6cc9e967-6287-45ff-b32e-25db8e38578d" time="1361527505170" ignored="false" />
+    <file path="/EnrollmentDaoImpl.java" changelist="6cc9e967-6287-45ff-b32e-25db8e38578d" time="1361528040248" ignored="false" />
+    <file path="/EnrollmentBLImpl.java" changelist="6cc9e967-6287-45ff-b32e-25db8e38578d" time="1361527529487" ignored="false" />
     <file path="$USER_HOME$/teamCSite/TeamC/pom.xml" changelist="6cc9e967-6287-45ff-b32e-25db8e38578d" time="1361351336437" ignored="false" />
     <file path="$USER_HOME$/teamCSite/TeamC/.idea/workspace.xml" changelist="6cc9e967-6287-45ff-b32e-25db8e38578d" time="1361351702520" ignored="false" />
-    <file path="/UserBLImpl.java" changelist="6cc9e967-6287-45ff-b32e-25db8e38578d" time="1361033018095" ignored="false" />
-    <file path="/UserBL.java" changelist="6cc9e967-6287-45ff-b32e-25db8e38578d" time="1360882264454" ignored="false" />
+    <file path="/UserBLImpl.java" changelist="6cc9e967-6287-45ff-b32e-25db8e38578d" time="1361525378103" ignored="false" />
+    <file path="/UserBL.java" changelist="6cc9e967-6287-45ff-b32e-25db8e38578d" time="1361525390170" ignored="false" />
     <file path="/TripsException.java" changelist="6cc9e967-6287-45ff-b32e-25db8e38578d" time="1360851084753" ignored="false" />
     <file path="$USER_HOME$/teamCSite/TeamC/src/main/java/be/kdg/trips/controllers/ProfileController.java" changelist="6cc9e967-6287-45ff-b32e-25db8e38578d" time="1361351131322" ignored="false" />
     <file path="$USER_HOME$/teamCSite/TeamC/src/main/java/be/kdg/trips/controllers/ContactController.java" changelist="6cc9e967-6287-45ff-b32e-25db8e38578d" time="1360860833591" ignored="false" />
@@ -109,9 +129,9 @@
     <file path="$USER_HOME$/teamCSite/TeamC/src/main/java/be/kdg/trips/controllers/TripsController.java" changelist="6cc9e967-6287-45ff-b32e-25db8e38578d" time="1360860833897" ignored="false" />
     <file path="$USER_HOME$/teamCSite/TeamC/src/main/webapp/WEB-INF/Trips-servlet.xml" changelist="6cc9e967-6287-45ff-b32e-25db8e38578d" time="1360860916426" ignored="false" />
     <file path="/TripBL.java" changelist="6cc9e967-6287-45ff-b32e-25db8e38578d" time="1361466424510" ignored="false" />
-    <file path="/TripBLImpl.java" changelist="6cc9e967-6287-45ff-b32e-25db8e38578d" time="1361467412020" ignored="false" />
+    <file path="/TripBLImpl.java" changelist="6cc9e967-6287-45ff-b32e-25db8e38578d" time="1361525495017" ignored="false" />
     <file path="/TripInterface.java" changelist="6cc9e967-6287-45ff-b32e-25db8e38578d" time="1361034003045" ignored="false" />
-    <file path="/NullEnrollment.java" changelist="6cc9e967-6287-45ff-b32e-25db8e38578d" time="1360884919702" ignored="false" />
+    <file path="/NullEnrollment.java" changelist="6cc9e967-6287-45ff-b32e-25db8e38578d" time="1361525723042" ignored="false" />
     <file path="/Location.java" changelist="6cc9e967-6287-45ff-b32e-25db8e38578d" time="1361469637223" ignored="false" />
     <file path="/Address.java" changelist="6cc9e967-6287-45ff-b32e-25db8e38578d" time="1361353438037" ignored="false" />
     <file path="/Question.java" changelist="6cc9e967-6287-45ff-b32e-25db8e38578d" time="1361470133233" ignored="false" />
@@ -129,7 +149,9 @@
     <file path="/UserTest.java" changelist="6cc9e967-6287-45ff-b32e-25db8e38578d" time="1361375528767" ignored="false" />
     <file path="$USER_HOME$/IdeaProjects/TestjeGit/TeamC/src/test/java/be/kdg/trips/test-config.xml" changelist="6cc9e967-6287-45ff-b32e-25db8e38578d" time="1361368379980" ignored="false" />
     <file path="/test-config.xml" changelist="6cc9e967-6287-45ff-b32e-25db8e38578d" time="1361368295018" ignored="false" />
-    <file path="/EnrollmentBL.java" changelist="6cc9e967-6287-45ff-b32e-25db8e38578d" time="1361468392048" ignored="false" />
+    <file path="/EnrollmentBL.java" changelist="6cc9e967-6287-45ff-b32e-25db8e38578d" time="1361527359104" ignored="false" />
+    <file path="/NullInvitation.java" changelist="6cc9e967-6287-45ff-b32e-25db8e38578d" time="1361525717513" ignored="false" />
+    <file path="/Invitation.java" changelist="6cc9e967-6287-45ff-b32e-25db8e38578d" time="1361526868828" ignored="false" />
     <option name="TRACKING_ENABLED" value="true" />
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -143,9 +165,12 @@
   <component name="DaemonCodeAnalyzer">
     <disable_hints />
   </component>
+  <component name="DatabaseView">
+    <flatten value="false" />
+    <groupTables value="false" />
+    <sortChildren value="false" />
+  </component>
   <component name="DebuggerManager">
-    <ui_properties default_suspend_policy="SuspendAll" default_condition_enabled="true" />
-    <line_breakpoints default_suspend_policy="SuspendAll" default_condition_enabled="true" />
     <breakpoint_any default_suspend_policy="SuspendAll" default_condition_enabled="true">
       <breakpoint>
         <option name="NOTIFY_CAUGHT" value="true" />
@@ -180,6 +205,23 @@
         <option name="LOG_MESSAGE" value="" />
       </breakpoint>
     </breakpoint_any>
+    <line_breakpoints default_suspend_policy="SuspendAll" default_condition_enabled="true">
+      <breakpoint url="file://$PROJECT_DIR$/src/test/java/be/kdg/trips/TestEnrollment.java" line="75" class="be.kdg.trips.TestEnrollment" package="be.kdg.trips">
+        <option name="ENABLED" value="true" />
+        <option name="LOG_ENABLED" value="false" />
+        <option name="LOG_EXPRESSION_ENABLED" value="false" />
+        <option name="SUSPEND_POLICY" value="SuspendAll" />
+        <option name="SUSPEND" value="true" />
+        <option name="COUNT_FILTER_ENABLED" value="false" />
+        <option name="COUNT_FILTER" value="0" />
+        <option name="CONDITION_ENABLED" value="true" />
+        <option name="CLASS_FILTERS_ENABLED" value="false" />
+        <option name="INSTANCE_FILTERS_ENABLED" value="false" />
+        <option name="CONDITION" value="" />
+        <option name="LOG_MESSAGE" value="" />
+      </breakpoint>
+    </line_breakpoints>
+    <ui_properties default_suspend_policy="SuspendAll" default_condition_enabled="true" />
     <breakpoint_rules />
     <ui_properties />
   </component>
@@ -189,10 +231,10 @@
   </component>
   <component name="FileEditorManager">
     <leaf>
-      <file leaf-file-name="TestTrip.java" pinned="false" current="true" current-in-tab="true">
-        <entry file="file://$PROJECT_DIR$/src/test/java/be/kdg/trips/TestTrip.java">
+      <file leaf-file-name="User.java" pinned="false" current="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/src/main/java/be/kdg/trips/model/user/User.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state line="108" column="53" selection-start="4430" selection-end="4430" vertical-scroll-proportion="0.92045456">
+            <state line="114" column="5" selection-start="2714" selection-end="2714" vertical-scroll-proportion="0.0">
               <folding />
             </state>
           </provider>
@@ -201,7 +243,7 @@
       <file leaf-file-name="TestEnrollment.java" pinned="false" current="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/src/test/java/be/kdg/trips/TestEnrollment.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state line="115" column="18" selection-start="4966" selection-end="4966" vertical-scroll-proportion="0.0">
+            <state line="75" column="0" selection-start="2951" selection-end="2951" vertical-scroll-proportion="0.0">
               <folding />
             </state>
           </provider>
@@ -210,7 +252,16 @@
       <file leaf-file-name="TripsServiceImpl.java" pinned="false" current="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/src/main/java/be/kdg/trips/services/impl/TripsServiceImpl.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state line="88" column="0" selection-start="2860" selection-end="2860" vertical-scroll-proportion="0.0">
+            <state line="136" column="0" selection-start="4990" selection-end="4990" vertical-scroll-proportion="0.0">
+              <folding />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="EnrollmentBLImpl.java" pinned="false" current="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/src/main/java/be/kdg/trips/businessLogic/impl/EnrollmentBLImpl.java">
+          <provider selected="true" editor-type-id="text-editor">
+            <state line="117" column="55" selection-start="3835" selection-end="3857" vertical-scroll-proportion="0.0">
               <folding />
             </state>
           </provider>
@@ -219,63 +270,52 @@
       <file leaf-file-name="TripBLImpl.java" pinned="false" current="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/src/main/java/be/kdg/trips/businessLogic/impl/TripBLImpl.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state line="92" column="103" selection-start="3083" selection-end="3083" vertical-scroll-proportion="0.0">
+            <state line="36" column="13" selection-start="1242" selection-end="1242" vertical-scroll-proportion="0.0">
               <folding />
             </state>
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="TripDaoImpl.java" pinned="false" current="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/src/main/java/be/kdg/trips/persistence/dao/impl/TripDaoImpl.java">
+      <file leaf-file-name="TestTrip.java" pinned="false" current="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/src/test/java/be/kdg/trips/TestTrip.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state line="87" column="59" selection-start="3172" selection-end="3176" vertical-scroll-proportion="0.0">
+            <state line="258" column="30" selection-start="12582" selection-end="12582" vertical-scroll-proportion="0.0">
               <folding />
             </state>
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="UserBLImpl.java" pinned="false" current="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/src/main/java/be/kdg/trips/businessLogic/impl/UserBLImpl.java">
+      <file leaf-file-name="TripBL.java" pinned="false" current="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/src/main/java/be/kdg/trips/businessLogic/interfaces/TripBL.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state line="17" column="13" selection-start="516" selection-end="516" vertical-scroll-proportion="0.0">
+            <state line="17" column="17" selection-start="417" selection-end="417" vertical-scroll-proportion="0.0">
               <folding />
             </state>
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="Question.java" pinned="false" current="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/src/main/java/be/kdg/trips/model/question/Question.java">
+      <file leaf-file-name="EnrollmentBL.java" pinned="false" current="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/src/main/java/be/kdg/trips/businessLogic/interfaces/EnrollmentBL.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state line="32" column="68" selection-start="882" selection-end="882" vertical-scroll-proportion="0.0">
+            <state line="29" column="41" selection-start="1066" selection-end="1066" vertical-scroll-proportion="0.0">
               <folding />
             </state>
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="Trip.java" pinned="false" current="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/src/main/java/be/kdg/trips/model/trip/Trip.java">
+      <file leaf-file-name="EnrollmentDaoImpl.java" pinned="false" current="true" current-in-tab="true">
+        <entry file="file://$PROJECT_DIR$/src/main/java/be/kdg/trips/persistence/dao/impl/EnrollmentDaoImpl.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state line="37" column="29" selection-start="1012" selection-end="1012" vertical-scroll-proportion="0.0">
-              <folding>
-                <element signature="imports" expanded="true" />
-              </folding>
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="TimelessTrip.java" pinned="false" current="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/src/main/java/be/kdg/trips/model/trip/TimelessTrip.java">
-          <provider selected="true" editor-type-id="text-editor">
-            <state line="18" column="0" selection-start="494" selection-end="494" vertical-scroll-proportion="0.0">
+            <state line="110" column="39" selection-start="3872" selection-end="3872" vertical-scroll-proportion="0.63257575">
               <folding />
             </state>
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="TimeBoundTrip.java" pinned="false" current="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/src/main/java/be/kdg/trips/model/trip/TimeBoundTrip.java">
+      <file leaf-file-name="EnrollmentDao.java" pinned="false" current="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/src/main/java/be/kdg/trips/persistence/dao/interfaces/EnrollmentDao.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state line="19" column="28" selection-start="429" selection-end="453" vertical-scroll-proportion="0.0">
+            <state line="16" column="17" selection-start="412" selection-end="412" vertical-scroll-proportion="0.0">
               <folding />
             </state>
           </provider>
@@ -299,22 +339,22 @@
   <component name="IdeDocumentHistory">
     <option name="changedFiles">
       <list>
-        <option value="$PROJECT_DIR$/pom.xml" />
-        <option value="$PROJECT_DIR$/src/main/java/be/kdg/trips/businessLogic/interfaces/TripBL.java" />
-        <option value="$PROJECT_DIR$/src/main/java/be/kdg/trips/model/invitation/Invitation.java" />
-        <option value="$PROJECT_DIR$/src/main/java/be/kdg/trips/services/interfaces/TripsService.java" />
-        <option value="$PROJECT_DIR$/src/main/java/be/kdg/trips/services/impl/TripsServiceImpl.java" />
-        <option value="$PROJECT_DIR$/src/main/java/be/kdg/trips/businessLogic/impl/EnrollmentBLImpl.java" />
-        <option value="$PROJECT_DIR$/src/main/java/be/kdg/trips/businessLogic/interfaces/EnrollmentBL.java" />
-        <option value="$PROJECT_DIR$/src/test/java/be/kdg/trips/TestEnrollment.java" />
-        <option value="$PROJECT_DIR$/src/main/java/be/kdg/trips/model/enrollment/Enrollment.java" />
-        <option value="$PROJECT_DIR$/src/main/java/be/kdg/trips/model/location/Location.java" />
-        <option value="$PROJECT_DIR$/src/main/java/be/kdg/trips/model/question/Question.java" />
-        <option value="$PROJECT_DIR$/src/main/java/be/kdg/trips/model/trip/TimeBoundTrip.java" />
+        <option value="$PROJECT_DIR$/src/main/java/be/kdg/trips/persistence/dao/interfaces/TripDao.java" />
+        <option value="$PROJECT_DIR$/src/main/java/be/kdg/trips/businessLogic/impl/UserBLImpl.java" />
+        <option value="$PROJECT_DIR$/src/main/java/be/kdg/trips/businessLogic/interfaces/UserBL.java" />
         <option value="$PROJECT_DIR$/src/main/java/be/kdg/trips/businessLogic/impl/TripBLImpl.java" />
+        <option value="$PROJECT_DIR$/src/main/java/be/kdg/trips/model/invitation/NullInvitation.java" />
+        <option value="$PROJECT_DIR$/src/main/java/be/kdg/trips/model/enrollment/NullEnrollment.java" />
+        <option value="$PROJECT_DIR$/src/main/java/be/kdg/trips/model/enrollment/Enrollment.java" />
+        <option value="$PROJECT_DIR$/src/main/java/be/kdg/trips/model/invitation/Invitation.java" />
         <option value="$PROJECT_DIR$/src/main/java/be/kdg/trips/model/trip/Trip.java" />
+        <option value="$PROJECT_DIR$/src/main/java/be/kdg/trips/model/user/User.java" />
+        <option value="$PROJECT_DIR$/src/main/java/be/kdg/trips/businessLogic/interfaces/EnrollmentBL.java" />
+        <option value="$PROJECT_DIR$/src/main/java/be/kdg/trips/persistence/dao/interfaces/EnrollmentDao.java" />
+        <option value="$PROJECT_DIR$/src/main/java/be/kdg/trips/businessLogic/impl/EnrollmentBLImpl.java" />
         <option value="$PROJECT_DIR$/src/test/java/be/kdg/trips/TestTrip.java" />
-        <option value="$PROJECT_DIR$/src/main/java/be/kdg/trips/persistence/dao/impl/TripDaoImpl.java" />
+        <option value="$PROJECT_DIR$/src/test/java/be/kdg/trips/TestEnrollment.java" />
+        <option value="$PROJECT_DIR$/src/main/java/be/kdg/trips/persistence/dao/impl/EnrollmentDaoImpl.java" />
       </list>
     </option>
   </component>
@@ -387,6 +427,7 @@
       <sortByType />
     </navigator>
     <panes>
+      <pane id="PackagesPane" />
       <pane id="ProjectPane">
         <subPane>
           <PATH>
@@ -612,6 +653,10 @@
             </PATH_ELEMENT>
             <PATH_ELEMENT>
               <option name="myItemId" value="model" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="user" />
               <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
             </PATH_ELEMENT>
           </PATH>
@@ -916,7 +961,6 @@
         </subPane>
       </pane>
       <pane id="Scope" />
-      <pane id="PackagesPane" />
     </panes>
   </component>
   <component name="PropertiesComponent">
@@ -937,9 +981,9 @@
     <property name="restartRequiresConfirmation" value="true" />
     <property name="MemberChooser.showClasses" value="true" />
     <property name="GoToClass.includeLibraries" value="false" />
-    <property name="dynamic.classpath" value="false" />
-    <property name="options.splitter.details.proportions" value="0.2" />
     <property name="options.searchVisible" value="true" />
+    <property name="options.splitter.details.proportions" value="0.2" />
+    <property name="dynamic.classpath" value="false" />
   </component>
   <component name="RecentsManager">
     <key name="CopyFile.RECENT_KEYS">
@@ -952,15 +996,15 @@
     <key name="CreateClassDialog.RecentsKey">
       <recent name="be.kdg.trips" />
     </key>
-    <key name="MoveClassesOrPackagesDialog.RECENTS_KEY">
-      <recent name="be.kdg.trips" />
-    </key>
     <key name="MoveFile.RECENT_KEYS">
       <recent name="C:\Users\Mathias\IdeaProjects\TripsModel\src\main\java\be\kdg\trips" />
     </key>
+    <key name="MoveClassesOrPackagesDialog.RECENTS_KEY">
+      <recent name="be.kdg.trips" />
+    </key>
   </component>
-  <component name="RunManager" selected="JUnit.TestTrip.successfulFindTripByKeywordInDescription">
-    <configuration default="false" name="TestTrip.successfulFindPrivateTrips" type="JUnit" factoryName="JUnit" temporary="true">
+  <component name="RunManager" selected="JUnit.TestEnrollment.failedEnrollTwice">
+    <configuration default="false" name="TestUser" type="JUnit" factoryName="JUnit" temporary="true">
       <extension name="coverage" enabled="false" merge="false" sample_coverage="true" runner="idea">
         <pattern>
           <option name="PATTERN" value="be.kdg.trips.*" />
@@ -971,9 +1015,9 @@
       <option name="ALTERNATIVE_JRE_PATH_ENABLED" value="false" />
       <option name="ALTERNATIVE_JRE_PATH" />
       <option name="PACKAGE_NAME" value="be.kdg.trips" />
-      <option name="MAIN_CLASS_NAME" value="be.kdg.trips.TestTrip" />
-      <option name="METHOD_NAME" value="successfulFindPrivateTrips" />
-      <option name="TEST_OBJECT" value="method" />
+      <option name="MAIN_CLASS_NAME" value="be.kdg.trips.TestUser" />
+      <option name="METHOD_NAME" />
+      <option name="TEST_OBJECT" value="class" />
       <option name="VM_PARAMETERS" value="-ea" />
       <option name="PARAMETERS" />
       <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$" />
@@ -988,7 +1032,7 @@
       <ConfigurationWrapper RunnerId="Run" />
       <method />
     </configuration>
-    <configuration default="false" name="TestEnrollment.failedInviteInvalidTripPrivacy" type="JUnit" factoryName="JUnit" temporary="true">
+    <configuration default="false" name="TestEnrollment" type="JUnit" factoryName="JUnit" temporary="true">
       <extension name="coverage" enabled="false" merge="false" sample_coverage="true" runner="idea">
         <pattern>
           <option name="PATTERN" value="be.kdg.trips.*" />
@@ -1000,7 +1044,35 @@
       <option name="ALTERNATIVE_JRE_PATH" />
       <option name="PACKAGE_NAME" value="be.kdg.trips" />
       <option name="MAIN_CLASS_NAME" value="be.kdg.trips.TestEnrollment" />
-      <option name="METHOD_NAME" value="failedInviteInvalidTripPrivacy" />
+      <option name="METHOD_NAME" />
+      <option name="TEST_OBJECT" value="class" />
+      <option name="VM_PARAMETERS" value="-ea" />
+      <option name="PARAMETERS" />
+      <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$" />
+      <option name="ENV_VARIABLES" />
+      <option name="PASS_PARENT_ENVS" value="true" />
+      <option name="TEST_SEARCH_SCOPE">
+        <value defaultName="moduleWithDependencies" />
+      </option>
+      <envs />
+      <patterns />
+      <RunnerSettings RunnerId="Run" />
+      <ConfigurationWrapper RunnerId="Run" />
+      <method />
+    </configuration>
+    <configuration default="false" name="TestEnrollment.successfulEnroll" type="JUnit" factoryName="JUnit" temporary="true">
+      <extension name="coverage" enabled="false" merge="false" sample_coverage="true" runner="idea">
+        <pattern>
+          <option name="PATTERN" value="be.kdg.trips.*" />
+          <option name="ENABLED" value="true" />
+        </pattern>
+      </extension>
+      <module name="TripsModel" />
+      <option name="ALTERNATIVE_JRE_PATH_ENABLED" value="false" />
+      <option name="ALTERNATIVE_JRE_PATH" />
+      <option name="PACKAGE_NAME" value="be.kdg.trips" />
+      <option name="MAIN_CLASS_NAME" value="be.kdg.trips.TestEnrollment" />
+      <option name="METHOD_NAME" value="successfulEnroll" />
       <option name="TEST_OBJECT" value="method" />
       <option name="VM_PARAMETERS" value="-ea" />
       <option name="PARAMETERS" />
@@ -1016,7 +1088,7 @@
       <ConfigurationWrapper RunnerId="Run" />
       <method />
     </configuration>
-    <configuration default="false" name="TestTrip.successfulFindTripByKeywordInDescription" type="JUnit" factoryName="JUnit" temporary="true">
+    <configuration default="false" name="TestEnrollment.successfulInvite" type="JUnit" factoryName="JUnit" temporary="true">
       <extension name="coverage" enabled="false" merge="false" sample_coverage="true" runner="idea">
         <pattern>
           <option name="PATTERN" value="be.kdg.trips.*" />
@@ -1027,8 +1099,36 @@
       <option name="ALTERNATIVE_JRE_PATH_ENABLED" value="false" />
       <option name="ALTERNATIVE_JRE_PATH" />
       <option name="PACKAGE_NAME" value="be.kdg.trips" />
-      <option name="MAIN_CLASS_NAME" value="be.kdg.trips.TestTrip" />
-      <option name="METHOD_NAME" value="successfulFindTripByKeywordInDescription" />
+      <option name="MAIN_CLASS_NAME" value="be.kdg.trips.TestEnrollment" />
+      <option name="METHOD_NAME" value="successfulInvite" />
+      <option name="TEST_OBJECT" value="method" />
+      <option name="VM_PARAMETERS" value="-ea" />
+      <option name="PARAMETERS" />
+      <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$" />
+      <option name="ENV_VARIABLES" />
+      <option name="PASS_PARENT_ENVS" value="true" />
+      <option name="TEST_SEARCH_SCOPE">
+        <value defaultName="moduleWithDependencies" />
+      </option>
+      <envs />
+      <patterns />
+      <RunnerSettings RunnerId="Run" />
+      <ConfigurationWrapper RunnerId="Run" />
+      <method />
+    </configuration>
+    <configuration default="false" name="TestEnrollment.failedEnrollTwice" type="JUnit" factoryName="JUnit" temporary="true">
+      <extension name="coverage" enabled="false" merge="false" sample_coverage="true" runner="idea">
+        <pattern>
+          <option name="PATTERN" value="be.kdg.trips.*" />
+          <option name="ENABLED" value="true" />
+        </pattern>
+      </extension>
+      <module name="TripsModel" />
+      <option name="ALTERNATIVE_JRE_PATH_ENABLED" value="false" />
+      <option name="ALTERNATIVE_JRE_PATH" />
+      <option name="PACKAGE_NAME" value="be.kdg.trips" />
+      <option name="MAIN_CLASS_NAME" value="be.kdg.trips.TestEnrollment" />
+      <option name="METHOD_NAME" value="failedEnrollTwice" />
       <option name="TEST_OBJECT" value="method" />
       <option name="VM_PARAMETERS" value="-ea" />
       <option name="PARAMETERS" />
@@ -1047,68 +1147,6 @@
       </RunnerSettings>
       <RunnerSettings RunnerId="Run" />
       <ConfigurationWrapper RunnerId="Debug" />
-      <ConfigurationWrapper RunnerId="Run" />
-      <method />
-    </configuration>
-    <configuration default="false" name="TestTrip.succesfulFindTripByKeywordInLabel" type="JUnit" factoryName="JUnit" temporary="true">
-      <extension name="coverage" enabled="false" merge="false" sample_coverage="true" runner="idea">
-        <pattern>
-          <option name="PATTERN" value="be.kdg.trips.*" />
-          <option name="ENABLED" value="true" />
-        </pattern>
-      </extension>
-      <module name="TripsModel" />
-      <option name="ALTERNATIVE_JRE_PATH_ENABLED" value="false" />
-      <option name="ALTERNATIVE_JRE_PATH" />
-      <option name="PACKAGE_NAME" value="be.kdg.trips" />
-      <option name="MAIN_CLASS_NAME" value="be.kdg.trips.TestTrip" />
-      <option name="METHOD_NAME" value="succesfulFindTripByKeywordInLabel" />
-      <option name="TEST_OBJECT" value="method" />
-      <option name="VM_PARAMETERS" value="-ea" />
-      <option name="PARAMETERS" />
-      <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$" />
-      <option name="ENV_VARIABLES" />
-      <option name="PASS_PARENT_ENVS" value="true" />
-      <option name="TEST_SEARCH_SCOPE">
-        <value defaultName="moduleWithDependencies" />
-      </option>
-      <envs />
-      <patterns />
-      <RunnerSettings RunnerId="Debug">
-        <option name="DEBUG_PORT" value="" />
-        <option name="TRANSPORT" value="0" />
-        <option name="LOCAL" value="true" />
-      </RunnerSettings>
-      <RunnerSettings RunnerId="Run" />
-      <ConfigurationWrapper RunnerId="Debug" />
-      <ConfigurationWrapper RunnerId="Run" />
-      <method />
-    </configuration>
-    <configuration default="false" name="TestTrip.successfulFindTripByKeywordInTitle" type="JUnit" factoryName="JUnit" temporary="true">
-      <extension name="coverage" enabled="false" merge="false" sample_coverage="true" runner="idea">
-        <pattern>
-          <option name="PATTERN" value="be.kdg.trips.*" />
-          <option name="ENABLED" value="true" />
-        </pattern>
-      </extension>
-      <module name="TripsModel" />
-      <option name="ALTERNATIVE_JRE_PATH_ENABLED" value="false" />
-      <option name="ALTERNATIVE_JRE_PATH" />
-      <option name="PACKAGE_NAME" value="be.kdg.trips" />
-      <option name="MAIN_CLASS_NAME" value="be.kdg.trips.TestTrip" />
-      <option name="METHOD_NAME" value="successfulFindTripByKeywordInTitle" />
-      <option name="TEST_OBJECT" value="method" />
-      <option name="VM_PARAMETERS" value="-ea" />
-      <option name="PARAMETERS" />
-      <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$" />
-      <option name="ENV_VARIABLES" />
-      <option name="PASS_PARENT_ENVS" value="true" />
-      <option name="TEST_SEARCH_SCOPE">
-        <value defaultName="moduleWithDependencies" />
-      </option>
-      <envs />
-      <patterns />
-      <RunnerSettings RunnerId="Run" />
       <ConfigurationWrapper RunnerId="Run" />
       <method />
     </configuration>
@@ -1147,19 +1185,6 @@
       <option name="PORT" value="5005" />
       <method />
     </configuration>
-    <configuration default="true" type="Applet" factoryName="Applet">
-      <module name="" />
-      <option name="MAIN_CLASS_NAME" />
-      <option name="HTML_FILE_NAME" />
-      <option name="HTML_USED" value="false" />
-      <option name="WIDTH" value="400" />
-      <option name="HEIGHT" value="300" />
-      <option name="POLICY_FILE" value="$APPLICATION_HOME_DIR$/bin/appletviewer.policy" />
-      <option name="VM_PARAMETERS" />
-      <option name="ALTERNATIVE_JRE_PATH_ENABLED" value="false" />
-      <option name="ALTERNATIVE_JRE_PATH" />
-      <method />
-    </configuration>
     <configuration default="true" type="TestNG" factoryName="TestNG">
       <extension name="coverage" enabled="false" merge="false" sample_coverage="true" runner="idea" />
       <module name="" />
@@ -1186,6 +1211,19 @@
       <envs />
       <properties />
       <listeners />
+      <method />
+    </configuration>
+    <configuration default="true" type="Applet" factoryName="Applet">
+      <module name="" />
+      <option name="MAIN_CLASS_NAME" />
+      <option name="HTML_FILE_NAME" />
+      <option name="HTML_USED" value="false" />
+      <option name="WIDTH" value="400" />
+      <option name="HEIGHT" value="300" />
+      <option name="POLICY_FILE" value="$APPLICATION_HOME_DIR$/bin/appletviewer.policy" />
+      <option name="VM_PARAMETERS" />
+      <option name="ALTERNATIVE_JRE_PATH_ENABLED" value="false" />
+      <option name="ALTERNATIVE_JRE_PATH" />
       <method />
     </configuration>
     <configuration default="true" type="Application" factoryName="Application">
@@ -1224,17 +1262,17 @@
       <patterns />
       <method />
     </configuration>
-    <configuration default="true" type="com.intellij.persistence.run.ConsoleRunConfigurationType" factoryName="Query Language Console">
-      <option name="VM_PARAMETERS" value="" />
-      <option name="USER_CFG_CLASS" />
-      <option name="CONTEXT_PROVIDER" />
-      <method />
-    </configuration>
     <configuration default="true" type="#com.intellij.j2ee.web.tomcat.TomcatRunConfigurationFactory" factoryName="Local">
       <deployment />
       <server-settings />
       <predefined_log_file id="Tomcat" enabled="true" />
       <extension name="coverage" enabled="false" merge="false" sample_coverage="true" runner="idea" />
+      <method />
+    </configuration>
+    <configuration default="true" type="com.intellij.persistence.run.ConsoleRunConfigurationType" factoryName="Query Language Console">
+      <option name="VM_PARAMETERS" value="" />
+      <option name="USER_CFG_CLASS" />
+      <option name="CONTEXT_PROVIDER" />
       <method />
     </configuration>
     <configuration default="false" name="TestTrip" type="JUnit" factoryName="JUnit">
@@ -1346,19 +1384,19 @@
     <list size="7">
       <item index="0" class="java.lang.String" itemvalue="JUnit.TestTrip" />
       <item index="1" class="java.lang.String" itemvalue="Tomcat Server.Tomcat 7.01" />
-      <item index="2" class="java.lang.String" itemvalue="JUnit.TestTrip.successfulFindPrivateTrips" />
-      <item index="3" class="java.lang.String" itemvalue="JUnit.TestEnrollment.failedInviteInvalidTripPrivacy" />
-      <item index="4" class="java.lang.String" itemvalue="JUnit.TestTrip.successfulFindTripByKeywordInDescription" />
-      <item index="5" class="java.lang.String" itemvalue="JUnit.TestTrip.succesfulFindTripByKeywordInLabel" />
-      <item index="6" class="java.lang.String" itemvalue="JUnit.TestTrip.successfulFindTripByKeywordInTitle" />
+      <item index="2" class="java.lang.String" itemvalue="JUnit.TestUser" />
+      <item index="3" class="java.lang.String" itemvalue="JUnit.TestEnrollment" />
+      <item index="4" class="java.lang.String" itemvalue="JUnit.TestEnrollment.successfulEnroll" />
+      <item index="5" class="java.lang.String" itemvalue="JUnit.TestEnrollment.successfulInvite" />
+      <item index="6" class="java.lang.String" itemvalue="JUnit.TestEnrollment.failedEnrollTwice" />
     </list>
     <recent_temporary>
       <list size="5">
-        <item index="0" class="java.lang.String" itemvalue="JUnit.TestTrip.successfulFindTripByKeywordInDescription" />
-        <item index="1" class="java.lang.String" itemvalue="JUnit.TestTrip.successfulFindTripByKeywordInTitle" />
-        <item index="2" class="java.lang.String" itemvalue="JUnit.TestTrip.succesfulFindTripByKeywordInLabel" />
-        <item index="3" class="java.lang.String" itemvalue="JUnit.TestTrip.successfulFindPrivateTrips" />
-        <item index="4" class="java.lang.String" itemvalue="JUnit.TestEnrollment.failedInviteInvalidTripPrivacy" />
+        <item index="0" class="java.lang.String" itemvalue="JUnit.TestEnrollment.failedEnrollTwice" />
+        <item index="1" class="java.lang.String" itemvalue="JUnit.TestEnrollment.successfulInvite" />
+        <item index="2" class="java.lang.String" itemvalue="JUnit.TestEnrollment" />
+        <item index="3" class="java.lang.String" itemvalue="JUnit.TestEnrollment.successfulEnroll" />
+        <item index="4" class="java.lang.String" itemvalue="JUnit.TestUser" />
       </list>
     </recent_temporary>
     <configuration name="&lt;template&gt;" type="WebApp" default="true" selected="false">
@@ -1543,7 +1581,11 @@
       <created>1361469823516</created>
       <updated>1361469823516</updated>
     </task>
-    <option name="localTasksCounter" value="39" />
+    <task id="LOCAL-00039" summary="find keyword in labels work">
+      <created>1361481174936</created>
+      <updated>1361481174936</updated>
+    </task>
+    <option name="localTasksCounter" value="40" />
     <servers />
   </component>
   <component name="TodoView" selected-index="0">
@@ -1573,7 +1615,7 @@
       <window_info id="Changes" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.32876712" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
       <window_info id="JetGradle" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
       <window_info id="Palette" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
-      <window_info id="Database" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.12575758" sideWeight="0.66952056" order="3" side_tool="false" content_ui="tabs" />
+      <window_info id="Database" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.12575758" sideWeight="0.55479455" order="3" side_tool="false" content_ui="tabs" />
       <window_info id="Ant Build" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.25" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
       <window_info id="Debug" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.47945204" sideWeight="0.5" order="6" side_tool="false" content_ui="tabs" />
       <window_info id="IDEtalk Messages" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="8" side_tool="false" content_ui="tabs" />
@@ -1584,7 +1626,7 @@
       <window_info id="Messages" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.49143836" sideWeight="0.5" order="11" side_tool="false" content_ui="tabs" />
       <window_info id="TODO" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.32876712" sideWeight="0.5" order="5" side_tool="false" content_ui="tabs" />
       <window_info id="Structure" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.2014157" sideWeight="0.45454547" order="1" side_tool="true" content_ui="tabs" />
-      <window_info id="Maven Projects" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" weight="0.20530303" sideWeight="0.55479455" order="3" side_tool="false" content_ui="tabs" />
+      <window_info id="Maven Projects" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" weight="0.20833333" sideWeight="0.55479455" order="3" side_tool="false" content_ui="tabs" />
       <window_info id="Commander" active="false" anchor="right" auto_hide="false" internal_type="SLIDING" type="SLIDING" visible="false" weight="0.4" sideWeight="0.5" order="0" side_tool="false" content_ui="tabs" />
       <window_info id="Application Servers" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.32998884" sideWeight="0.5" order="12" side_tool="false" content_ui="tabs" />
       <window_info id="Project" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" weight="0.2439394" sideWeight="0.55479455" order="0" side_tool="false" content_ui="combo" />
@@ -1635,7 +1677,7 @@
     <option name="MAXIMUM_HISTORY_ROWS" value="1000" />
     <option name="FORCE_NON_EMPTY_COMMENT" value="false" />
     <option name="CLEAR_INITIAL_COMMIT_MESSAGE" value="false" />
-    <option name="LAST_COMMIT_MESSAGE" value="refactor" />
+    <option name="LAST_COMMIT_MESSAGE" value="find keyword in labels work" />
     <option name="MAKE_NEW_CHANGELIST_ACTIVE" value="false" />
     <option name="OPTIMIZE_IMPORTS_BEFORE_PROJECT_COMMIT" value="false" />
     <option name="CHECK_FILES_UP_TO_DATE_BEFORE_COMMIT" value="false" />
@@ -1648,7 +1690,6 @@
     <option name="UPDATE_GROUP_BY_CHANGELIST" value="false" />
     <option name="SHOW_FILE_HISTORY_AS_TREE" value="false" />
     <option name="FILE_HISTORY_SPLITTER_PROPORTION" value="0.6" />
-    <MESSAGE value="getUser &amp; addUser working + MySql database implemented" />
     <MESSAGE value="Refactored" />
     <MESSAGE value="Create timeless trip" />
     <MESSAGE value="Services are working!" />
@@ -1673,6 +1714,7 @@
     <MESSAGE value="findTripById added" />
     <MESSAGE value="findPrivateTrips added" />
     <MESSAGE value="refactor" />
+    <MESSAGE value="find keyword in labels work" />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager />
@@ -1682,116 +1724,116 @@
     <option name="FILTER_TARGETS" value="false" />
   </component>
   <component name="editorHistoryManager">
-    <entry file="file://$PROJECT_DIR$/src/main/java/be/kdg/trips/businessLogic/impl/EnrollmentBLImpl.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state line="63" column="139" selection-start="2085" selection-end="2085" vertical-scroll-proportion="0.0">
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/main/java/be/kdg/trips/model/address/Address.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state line="18" column="49" selection-start="439" selection-end="448" vertical-scroll-proportion="0.0">
-          <folding />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/src/main/java/be/kdg/trips/model/enrollment/Enrollment.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state line="55" column="25" selection-start="1144" selection-end="1144" vertical-scroll-proportion="0.0">
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/main/java/be/kdg/trips/model/invitation/Answer.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state line="8" column="12" selection-start="154" selection-end="154" vertical-scroll-proportion="0.0">
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/main/java/be/kdg/trips/model/invitation/Invitation.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state line="47" column="27" selection-start="1034" selection-end="1034" vertical-scroll-proportion="0.0">
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/main/java/be/kdg/trips/model/location/Location.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state line="29" column="12" selection-start="705" selection-end="705" vertical-scroll-proportion="0.0">
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/main/java/be/kdg/trips/model/question/Question.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state line="32" column="68" selection-start="882" selection-end="882" vertical-scroll-proportion="0.0">
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/main/java/be/kdg/trips/model/trip/TimelessTrip.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state line="18" column="0" selection-start="494" selection-end="494" vertical-scroll-proportion="0.0">
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/main/java/be/kdg/trips/services/impl/TripsServiceImpl.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state line="88" column="0" selection-start="2860" selection-end="2860" vertical-scroll-proportion="0.0">
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/main/java/be/kdg/trips/model/trip/TimeBoundTrip.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state line="19" column="28" selection-start="429" selection-end="453" vertical-scroll-proportion="0.0">
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/main/java/be/kdg/trips/businessLogic/impl/UserBLImpl.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state line="17" column="13" selection-start="516" selection-end="516" vertical-scroll-proportion="0.0">
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/main/java/be/kdg/trips/businessLogic/impl/TripBLImpl.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state line="92" column="103" selection-start="3083" selection-end="3083" vertical-scroll-proportion="0.0">
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/main/java/be/kdg/trips/model/trip/Trip.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state line="37" column="29" selection-start="1012" selection-end="1012" vertical-scroll-proportion="0.0">
+        <state line="98" column="5" selection-start="1990" selection-end="1990" vertical-scroll-proportion="0.0">
           <folding>
             <element signature="imports" expanded="true" />
           </folding>
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/test/java/be/kdg/trips/TestEnrollment.java">
+    <entry file="file://$PROJECT_DIR$/src/main/java/be/kdg/trips/model/invitation/Invitation.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state line="115" column="18" selection-start="4966" selection-end="4966" vertical-scroll-proportion="0.0">
+        <state line="49" column="5" selection-start="1058" selection-end="1058" vertical-scroll-proportion="0.0">
           <folding />
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/main/java/be/kdg/trips/persistence/dao/impl/TripDaoImpl.java">
+    <entry file="file://$PROJECT_DIR$/src/main/java/be/kdg/trips/model/location/Location.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state line="87" column="59" selection-start="3172" selection-end="3176" vertical-scroll-proportion="0.0">
+        <state line="20" column="13" selection-start="463" selection-end="463" vertical-scroll-proportion="0.0">
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/main/java/be/kdg/trips/model/question/Question.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="23" column="13" selection-start="578" selection-end="578" vertical-scroll-proportion="0.0">
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/main/java/be/kdg/trips/model/trip/TimeBoundTrip.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="17" column="13" selection-start="324" selection-end="324" vertical-scroll-proportion="0.0">
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/main/java/be/kdg/trips/model/trip/Trip.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="197" column="5" selection-start="4357" selection-end="4357" vertical-scroll-proportion="0.0">
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/main/java/be/kdg/trips/model/user/User.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="114" column="5" selection-start="2714" selection-end="2714" vertical-scroll-proportion="0.0">
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/main/java/be/kdg/trips/businessLogic/interfaces/TripBL.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="17" column="17" selection-start="417" selection-end="417" vertical-scroll-proportion="0.0">
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/main/java/be/kdg/trips/businessLogic/interfaces/EnrollmentBL.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="29" column="41" selection-start="1066" selection-end="1066" vertical-scroll-proportion="0.0">
           <folding />
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/src/test/java/be/kdg/trips/TestTrip.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state line="108" column="53" selection-start="4430" selection-end="4430" vertical-scroll-proportion="0.92045456">
+        <state line="258" column="30" selection-start="12582" selection-end="12582" vertical-scroll-proportion="0.0">
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/main/java/be/kdg/trips/businessLogic/impl/TripBLImpl.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="36" column="13" selection-start="1242" selection-end="1242" vertical-scroll-proportion="0.0">
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/test/java/be/kdg/trips/TestEnrollment.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="75" column="0" selection-start="2951" selection-end="2951" vertical-scroll-proportion="0.0">
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/main/java/be/kdg/trips/services/impl/TripsServiceImpl.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="136" column="0" selection-start="4990" selection-end="4990" vertical-scroll-proportion="0.0">
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/main/java/be/kdg/trips/businessLogic/impl/EnrollmentBLImpl.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="117" column="55" selection-start="3835" selection-end="3857" vertical-scroll-proportion="0.0">
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/main/java/be/kdg/trips/persistence/dao/interfaces/EnrollmentDao.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="16" column="17" selection-start="412" selection-end="412" vertical-scroll-proportion="0.0">
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/main/java/be/kdg/trips/persistence/dao/impl/EnrollmentDaoImpl.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="110" column="39" selection-start="3872" selection-end="3872" vertical-scroll-proportion="0.63257575">
           <folding />
         </state>
       </provider>

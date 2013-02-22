@@ -82,16 +82,9 @@ public class TripBLImpl implements TripBL
     }
 
     @Override
-    public List<Trip> findNonPrivateTripsByKeyword(String keyword) throws TripsException {
+    public List<Trip> findNonPrivateTripsByKeyword(String keyword) {
         List<Trip> trips = tripDao.getNonPrivateTripsByKeyword(keyword.toLowerCase());
-        if(!trips.isEmpty())
-        {
-            return trips;
-        }
-        else
-        {
-            throw new TripsException("Trip with keyword '"+keyword+"' in title, description or labels doesn't exist");
-        }
+        return trips;
     }
 
     @Override
@@ -117,27 +110,18 @@ public class TripBLImpl implements TripBL
     @Override
     public List<Trip> findPrivateTrips(User user) throws TripsException {
         List<Trip> trips = new ArrayList<>();
-        if(userBL.isExistingUser(user.getEmail()))
+        User foundUser = userBL.findUserWithDetails(user.getEmail());
+        for(Invitation invitation: user.getInvitations())
         {
-            for(Invitation invitation: user.getInvitations())
-            {
-                  trips.add(invitation.getTrip());
-            }
+            trips.add(invitation.getTrip());
         }
         return trips;
     }
 
     @Override
     public Trip findTripById(int id) throws TripsException {
-        Trip trip = tripDao.getTrip(id);
-        if(!trip.isNull())
-        {
-            return trip;
-        }
-        else
-        {
-            throw new TripsException("Trip doesn't exist");
-        }
+        return tripDao.getTrip(id);
+
     }
 
     @Override
@@ -243,11 +227,7 @@ public class TripBLImpl implements TripBL
 
     @Override
     public boolean isExistingTrip(int id) throws TripsException {
-        if(tripDao.getTrip(id).isNull())
-        {
-            throw new TripsException("Trip doesn't exist");
-        }
-        return true;
+        return tripDao.isExistingTrip(id);
     }
 
     @Override

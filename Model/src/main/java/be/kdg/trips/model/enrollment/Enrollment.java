@@ -1,6 +1,5 @@
 package be.kdg.trips.model.enrollment;
 
-import be.kdg.trips.model.Nullable;
 import be.kdg.trips.model.trip.Trip;
 import be.kdg.trips.model.user.User;
 
@@ -17,7 +16,7 @@ import java.util.Date;
  */
 @Entity
 @Table(name = "T_ENROLLMENT")
-public class Enrollment implements EnrollmentInterface, Serializable, Nullable
+public class Enrollment implements EnrollmentInterface, Serializable
 {
     @Id
     @GeneratedValue(strategy= GenerationType.IDENTITY)
@@ -97,10 +96,5 @@ public class Enrollment implements EnrollmentInterface, Serializable, Nullable
         int result = trip.hashCode();
         result = 31 * result + user.hashCode();
         return result;
-    }
-
-    @Override
-    public boolean isNull() {
-        return false;
     }
 }

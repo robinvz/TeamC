@@ -21,21 +21,21 @@ public class Address implements AddressInterface, Serializable
     @GeneratedValue(strategy= GenerationType.IDENTITY)
     private int id;
     @Pattern(regexp = noDigitsRegEx)
-    @Size(min=3, max=50)
+    @Size(max=50)
     private String street;
     //check number (+ 1 karakter)
-    @Size(min=1, max=9)
+    @Size(max=9)
     private String houseNr;
     @Pattern(regexp = noDigitsRegEx)
-    @Size(min=2, max=50)
+    @Size(max=50)
     private String city;
-    @Size(min=2, max=15)
+    @Size(max=15)
     private String postalCode;
     @Pattern(regexp = noDigitsRegEx)
-    @Size(min=2, max=50)
+    @Size(max=50)
     private String province;
     @Pattern(regexp = noDigitsRegEx)
-    @Size(min=2, max=50)
+    @Size(max=50)
     private String country;
 
     public Address(String street, String houseNr, String city, String postalCode, String province, String country) {
