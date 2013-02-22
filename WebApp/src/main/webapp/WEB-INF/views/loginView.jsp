@@ -3,7 +3,6 @@
 <%@taglib prefix="spring" uri="http://www.springframework.org/tags" %>
 
 <%@ taglib prefix="fmt" uri="http://www.springframework.org/tags" %>
-<%@ page contentType="text/html;charset=UTF-8" language="java" %>
 
 <html>
 <head>
@@ -57,11 +56,6 @@
 
     <footer><p class="footer">Trips - 2013</p></footer>
 </div>
-</body>
-<script src="${pageContext.request.contextPath}/resources/js/jquery-1.9.0.min.js"></script>
-<script src="${pageContext.request.contextPath}/resources/js/knockout.js"></script>
 <script src="${pageContext.request.contextPath}/resources/js/login.js"></script>
-<!--[if lt IE 9]>
-<script src="${pageContext.request.contextPath}/resources/js/html5shiv.js"></script>
-<![endif]-->
+</body>
 </html>

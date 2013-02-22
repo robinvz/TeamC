@@ -1,5 +1,3 @@
-
-
 $(document).ready(function(){
     $('#trips').fadeOut(0);
     $('#trips').slideDown(300);
@@ -11,4 +9,3 @@ $(document).ready(function(){
     });
 
 });
-

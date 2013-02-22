@@ -1,18 +1,12 @@
-<%--
-  Created by IntelliJ IDEA.
-  User: Joris
-  Date: 20/02/13
-  Time: 9:18
-  To change this template use File | Settings | File Templates.
---%>
-<%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <html>
 <head>
-    <title></title>
+    <link rel="stylesheet" href="${pageContext.request.contextPath}/resources/css/main.css"/>
+    <link rel="shortcut icon" href="${pageContext.request.contextPath}/resources/res/favicon.ico">
+    <title>Create location page</title>
 </head>
 <body>
 <div id="page">
-    <jsp:include page="headerView.jsp" />
+    <jsp:include page="headerView.jsp"/>
 
     <div id="trip-header">
         <h2>${trip.naam}</h2>
@@ -61,11 +55,7 @@
         </div>
     </div>
     <footer><p class="footer">Trips - 2013</p></footer>
-    <script src="${pageContext.request.contextPath}/resources/js/jquery-1.9.0.min.js"></script>
-    <script src="${pageContext.request.contextPath}/resources/js/mapscript.js"></script>
-    <!--[if lt IE 9]>
-    <script src="${pageContext.request.contextPath}/resources/js/html5shiv.js"></script>
-    <![endif]-->
 </div>
+<script src="${pageContext.request.contextPath}/resources/js/mapscript.js"></script>
 </body>
 </html>
