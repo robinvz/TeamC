@@ -47,7 +47,7 @@ public class Address implements AddressInterface, Serializable
         this.country = country;
     }
 
-    private Address() {
+    public Address() {
     }
 
 

@@ -62,7 +62,7 @@ public class LoginTest {
 
     @Test
     public void registerView() throws Exception {
-        assertEquals(lg.register(), "registerView");
+        assertEquals(lg.register(new User()), "registerView");
     }
 
     @Test
