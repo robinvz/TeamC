@@ -92,7 +92,7 @@
                             </tr>
                             <tr>
                                 <td><label>Last name: </label></td>
-                                <td><input type="text" name="lasttName"></td>
+                                <td><input type="text" name="lastName"></td>
                             </tr>
                             <tr>
                                 <td><label>Street: </label></td>
@@ -119,7 +119,7 @@
                                 <td><input type="text" name="country"></td>
                             </tr>
                         </table>
-                        <input type="submit" value="Edit">
+                        <input type="submit" value="Edit" class="btn-submit">
                     </form>
                 </div>
 
