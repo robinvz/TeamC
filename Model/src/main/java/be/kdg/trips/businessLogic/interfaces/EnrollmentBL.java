@@ -18,6 +18,8 @@ public interface EnrollmentBL
 {
     public Enrollment enroll(Trip trip, User user) throws TripsException;
     public Invitation invite(Trip trip, User organizer, User user) throws TripsException;
+    public Enrollment acceptInvitation(Trip trip, User user) throws TripsException;
+    public Enrollment subscribe(Trip trip, User user) throws TripsException;
 
     public List<Enrollment> getEnrollmentsByUser(User user) throws TripsException;
     public List<Enrollment> getEnrollmentsByTrip(Trip trip) throws TripsException;

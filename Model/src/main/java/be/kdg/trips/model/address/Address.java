@@ -23,7 +23,7 @@ public class Address implements AddressInterface, Serializable
     @Pattern(regexp = noDigitsRegEx)
     @Size(max=50)
     private String street;
-    //check number (+ 1 karakter)
+    @Pattern(regexp = "^\\d{1,}[a-zA-Z]{0,1}$")
     @Size(max=9)
     private String houseNr;
     @Pattern(regexp = noDigitsRegEx)
@@ -47,7 +47,7 @@ public class Address implements AddressInterface, Serializable
         this.country = country;
     }
 
-    private Address() {
+    public Address() {
     }
 
 

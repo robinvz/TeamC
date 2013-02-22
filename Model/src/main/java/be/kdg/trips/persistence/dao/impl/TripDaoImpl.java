@@ -59,7 +59,8 @@ public class TripDaoImpl implements TripDao{
     @Override
     public List getProtectedTripsByKeyword(String keyword)
     {
-        return queryTripByKeyword("FROM Trip t LEFT OUTER JOIN t.labels label  WHERE (lower(t.title) LIKE :keyword OR lower(t.description) LIKE :keyword OR lower(label) LIKE :keyword) AND t.privacy = 1 AND t.published = 1", keyword);
+        return queryTripByKeyword("FROM Trip t LEFT OUTER JOIN t.labels label WHERE lower(t.title) LIKE :keyword OR lower(t.description) LIKE :keyword OR lower(label) LIKE :keyword", keyword);
+        // AND t.privacy = 1 AND t.published = 1
     }
     //LEFT JOIN FETCH t.locations
     @Override

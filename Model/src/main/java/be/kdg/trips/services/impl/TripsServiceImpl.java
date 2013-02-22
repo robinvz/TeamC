@@ -137,9 +137,9 @@ public class TripsServiceImpl implements TripsService
 
     //Enrollment Service
     @Override
-    public Enrollment enroll(Trip trip, User user) throws TripsException
+    public Enrollment subscribe(Trip trip, User user) throws TripsException
     {
-        return enrollmentController.enroll(trip, user);
+        return enrollmentController.subscribe(trip, user);
     }
 
     @Override
@@ -155,5 +155,10 @@ public class TripsServiceImpl implements TripsService
     @Override
     public Invitation invite(Trip trip, User organizer, User user) throws TripsException {
         return enrollmentController.invite(trip, organizer, user);
+    }
+
+    @Override
+    public Enrollment acceptInvitation(Trip trip, User user) throws TripsException {
+        return enrollmentController.acceptInvitation(trip, user);
     }
 }

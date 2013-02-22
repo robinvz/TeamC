@@ -5,6 +5,7 @@ import be.kdg.trips.businessLogic.interfaces.TripBL;
 import be.kdg.trips.businessLogic.interfaces.UserBL;
 import be.kdg.trips.exception.TripsException;
 import be.kdg.trips.model.enrollment.Enrollment;
+import be.kdg.trips.model.invitation.Answer;
 import be.kdg.trips.model.invitation.Invitation;
 import be.kdg.trips.model.trip.Trip;
 import be.kdg.trips.model.trip.TripPrivacy;
@@ -39,14 +40,14 @@ public class EnrollmentBLImpl implements EnrollmentBL
         Enrollment enrollment = null;
         if(isUnexistingEnrollment(user,trip))
         {
-            if(trip.isPublished() && !trip.isActive() && trip.getPrivacy()!= TripPrivacy.PUBLIC)
+            if(trip.isPublished() && !trip.isActive())
             {
                 enrollment = new Enrollment(trip, user);
                 enrollmentDao.saveOrUpdateEnrollment(enrollment);
             }
             else
             {
-                throw new TripsException("Trip is either not published, already active, or public");
+                throw new TripsException("Trip is either not published, already active");
             }
         }
         return enrollment;
@@ -65,7 +66,7 @@ public class EnrollmentBLImpl implements EnrollmentBL
             }
             else
             {
-                throw new TripsException("Trip is either not published, already active, private or organizer doesn't exist");
+                throw new TripsException("Trip is either not published, already active, not private or organizer doesn't exist");
             }
         }
         return invitation;
@@ -74,7 +75,8 @@ public class EnrollmentBLImpl implements EnrollmentBL
     @Override
     public List<Enrollment> getEnrollmentsByUser(User user) throws TripsException {
         List<Enrollment> enrollments = null;
-        if(userBL.isExistingUser(user.getEmail())){
+        if(userBL.isExistingUser(user.getEmail()))
+        {
             enrollments = enrollmentDao.getEnrollmentsByUser(user);
         }
         return enrollments;
@@ -83,12 +85,12 @@ public class EnrollmentBLImpl implements EnrollmentBL
     @Override
     public List<Enrollment> getEnrollmentsByTrip(Trip trip) throws TripsException {
         List<Enrollment> enrollments = null;
-        if(tripBL.isExistingTrip(trip.getId())){
+        if(tripBL.isExistingTrip(trip.getId()))
+        {
             enrollments = enrollmentDao.getEnrollmentsByTrip(trip);
         }
         return enrollments;
     }
-
 
     @Override
     public void disenroll(Trip trip, User user)
@@ -136,5 +138,32 @@ public class EnrollmentBLImpl implements EnrollmentBL
             return enrollmentDao.isUnexistingInvitation(user, trip);
         }
         return false;
+    }
+
+    @Override
+    public Enrollment acceptInvitation(Trip trip, User user) throws TripsException {
+        Enrollment enrollment = null;
+        if(isExistingInvitation(user, trip))
+        {
+            enrollment = enroll(trip, user);
+            Invitation invitation = enrollmentDao.getInvitationByUserAndTrip(user, trip);
+            invitation.setAnswer(Answer.ACCEPTED);
+            enrollmentDao.saveOrUpdateInvitation(invitation);
+        }
+        return enrollment;
+    }
+
+    @Override
+    public Enrollment subscribe(Trip trip, User user) throws TripsException {
+        Enrollment enrollment = null;
+        if(trip.getPrivacy() == TripPrivacy.PROTECTED)
+        {
+            enrollment = enroll(trip, user);
+        }
+        else
+        {
+            throw new TripsException("You can't subscribe for a public or private trip");
+        }
+        return enrollment;
     }
 }
