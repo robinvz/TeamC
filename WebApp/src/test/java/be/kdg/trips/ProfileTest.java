@@ -2,6 +2,7 @@ package be.kdg.trips;
 
 import be.kdg.trips.controllers.ProfileController;
 import be.kdg.trips.exception.TripsException;
+import be.kdg.trips.model.address.Address;
 import be.kdg.trips.model.user.User;
 import be.kdg.trips.services.interfaces.TripsService;
 import org.junit.Before;
@@ -82,6 +83,23 @@ public class ProfileTest {
         when(tripsService.findUser(testUser.getEmail())).thenReturn(userWithSamePassword);
         mockMvc.perform(requestBuilder).andExpect(view().name("/users/profileView"));
         assertTrue(((User) mockHttpSession.getAttribute("user")).checkPassword("oldPassword"));
+    }
+
+    @Test
+    public void profileEdited() throws Exception {
+        mockHttpSession.setAttribute("user", testUser);
+        RequestBuilder requestBuilder = MockMvcRequestBuilders.post("/users/editProfile")
+                .param("firstName", "robke").param("lastName", "zype").param("street", "straat").param("houseNr", "22")
+                .param("city", "Brugge").param("postalCode", "3300").param("province", "Oost-Vlaanderen").param("country", "Belgie");
+
+        User userAfterEdit = new User("joel@student.kdg.be", "oldPassword");
+        userAfterEdit.setFirstName("robke");
+        userAfterEdit.setLastName("zype");
+        userAfterEdit.setAddress(new Address("street", "22","Brugge","3300","Oost-Vlaanderen","Belgie"));
+
+        when(tripsService.findUser(testUser.getEmail())).thenReturn(userAfterEdit);
+        mockMvc.perform(requestBuilder).andExpect(view().name("indexView"));
+        assertEquals((mockHttpSession.getAttribute("user")), userAfterEdit);
     }
 
     @Test
