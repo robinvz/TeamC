@@ -3,6 +3,8 @@ $(document).ready(function(){
     $('#trips').slideDown(300);
 
 
+
+
     $("#trips tr").not(':first').on('click', function(){
       var  ref = '/trip/'+$(this).attr('id').substr(4);
       window.location = ref;

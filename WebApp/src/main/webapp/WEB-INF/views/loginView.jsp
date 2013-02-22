@@ -56,6 +56,7 @@
 
     <footer><p class="footer">Trips - 2013</p></footer>
 </div>
+<script src="${pageContext.request.contextPath}/resources/js/jquery-1.9.0.min.js"></script>
 <script src="${pageContext.request.contextPath}/resources/js/login.js"></script>
 </body>
 </html>

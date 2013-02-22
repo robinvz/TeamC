@@ -1,7 +1,7 @@
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <header>
-    <img class="header-img" src="${pageContext.request.contextPath}/resources/res/img/logosite.png" alt="Logo"
-         title="Home"/>
+    <a href="/" title="Home"> <img class="header-img" src="${pageContext.request.contextPath}/resources/res/img/logosite.png" alt="Logo"
+         title="Home"/>     </a>
 
     <nav class="header-nav">
         <ul class="nav">

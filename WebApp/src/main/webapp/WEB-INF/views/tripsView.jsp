@@ -11,16 +11,16 @@
     <jsp:include page="headerView.jsp"/>
 
     <h2>Overview</h2>
-
+        <div id="control-bar">
     <form action="/users/createTrip" method="GET">
-        <input type="submit" value="Create a trip" class="btn-submit"></button>
+        <button id="btn-addtrip" type="submit" class="btn-submit">Create Trip</button>
     </form>
-    <select name="filterTripsMenu">
+    <select id="filter" name="filterTripsMenu">
         <option>Filter</option>
         <option value="">Repeating trips</option>
         <option value="">Timebound trips</option>
     </select>
-
+        </div>
     <div id="content">
         <table id="trips">
             <!-- model heeft momenteel: type, id, description, privacy, published, title, userId -->
@@ -36,7 +36,6 @@
             <div>
                 <c:if test="${not empty allNonPrivateTrips}">
                     <c:forEach items="${allNonPrivateTrips}" var="allNonPrivateTrip">
-                        <a href="trip/${allNonPrivateTrip.id}">
                             <tr id="trip${allNonPrivateTrip.id}">
                                 <div class="form-row">
                                     <td>
@@ -55,7 +54,6 @@
                                       </div>
                                   </div>   -->
                             </tr>
-                        </a>
                     </c:forEach>
                 </c:if>
             </div>
@@ -66,6 +64,7 @@
 
     <footer><p class="footer">Trips - 2013</p></footer>
 </div>
+<script src="${pageContext.request.contextPath}/resources/js/jquery-1.9.0.min.js"></script>
 <script src="${pageContext.request.contextPath}/resources/js/trips.js"></script>
 </body>
 </html>
