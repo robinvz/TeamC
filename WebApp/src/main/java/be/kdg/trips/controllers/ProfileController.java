@@ -40,7 +40,7 @@ public class ProfileController {
 
     @RequestMapping(value = "/users/editCredentials", method = RequestMethod.POST)
     public String editCredentials(HttpServletRequest request) {
-       try {
+        try {
             tripsService.changePassword((User) session.getAttribute("user"), request.getParameter("oldPassword"),
                     request.getParameter("newPassword"));
             session.setAttribute("user", tripsService.findUser(((User) session.getAttribute("user")).getEmail()));
@@ -49,6 +49,26 @@ public class ProfileController {
         }
         return "/users/profileView";
     }
+
+    @RequestMapping(value = "/users/editProfile", method = RequestMethod.POST)
+    public String editProfile(HttpServletRequest request) {
+        String firstName = request.getParameter("firstName");
+        String lastName = request.getParameter("lastName");
+        String street = request.getParameter("street");
+        String houseNr = request.getParameter("houseNr");
+        String city = request.getParameter("city");
+        String postalCode = request.getParameter("postalCode");
+        String province = request.getParameter("province");
+        String country = request.getParameter("country");
+        try {
+            tripsService.updateUser((User) session.getAttribute("user"), firstName, lastName, street, houseNr, city, postalCode, province, country);
+        } catch (TripsException e) {
+            return "/users/editProfileView";
+            //failed to edit user
+        }
+        return "indexView";
+    }
+
 
     @RequestMapping(value = "/deleteProfile", method = RequestMethod.GET)
     public String deleteProfile() {
