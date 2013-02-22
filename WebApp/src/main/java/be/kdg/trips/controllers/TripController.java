@@ -54,7 +54,7 @@ public class TripController {
     @RequestMapping(value = "/trip/{tripId}", method = RequestMethod.GET)
     public ModelAndView getTrip(@PathVariable int tripId) {
         try {
-            Trip trip = tripsService.findTripById(tripId);
+            Trip trip = tripsService.findTripById(tripId, (User) session.getAttribute("user"));
             return new ModelAndView("tripView", "trip", trip);
         } catch (TripsException e) {
             return new ModelAndView("tripsView");
