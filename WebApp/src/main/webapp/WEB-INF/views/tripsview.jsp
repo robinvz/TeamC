@@ -15,8 +15,8 @@
     <h2>Overview</h2>
 
     <form action="/users/createTrip" method="GET">
-    <input type="submit" value="Create a trip" class="btn-submit"></button>
-</form>
+        <input type="submit" value="Create a trip" class="btn-submit"></button>
+    </form>
     <select name="filterTripsMenu">
         <option>Filter</option>
         <option value="">Repeating trips</option>
@@ -35,23 +35,22 @@
             </thead>
 
             <tbody id="trips-list">
-                <div id="timelessTrips">
-                    <c:if test="${not empty timelessTrips}">
-                        <c:forEach items="${timelessTrips}" var="timelessTrip">
-                            <a href="trip/${timelessTrip.id}">
-                            <tr id="trip${timelessTrip.id}">
+            <div id="timelessTrips">
+                <c:if test="${not empty allNonPrivateTrips}">
+                    <c:forEach items="${allNonPrivateTrips}" var="allNonPrivateTrip">
+                        <a href="trip/${allNonPrivateTrip.id}">
+                            <tr id="trip${allNonPrivateTrip.id}">
                                 <div class="form-row">
-
                                     <td>
-                                        <a href="/trip/${timelessTrip.id}">
-                                                ${timelessTrip.title}
+                                        <a href="/trip/${allNonPrivateTrip.id}">
+                                                ${allNonPrivateTrip.title}
                                         </a>
                                     </td>
                                     <td>
-                                        <output>${timelessTrip.description}</output>
+                                        <output>${allNonPrivateTrip.description}</output>
                                     </td>
                                     <td>
-                                        <output>${timelessTrip.privacy}</output>
+                                        <output>${allNonPrivateTrip.privacy}</output>
                                     </td>
                                 </div>
                                 <!--  <div class="form-buttons">
@@ -60,31 +59,10 @@
                                       </div>
                                   </div>   -->
                             </tr>
-                            </a>
-                        </c:forEach>
-                    </c:if>
-                </div>
-
-                <div id="timeboundTrips">
-                    <c:if test="${not empty timeboundTrips}">
-                        <c:forEach items="${timeboundTrips}" var="timeboundTrip">
-                            <tr>
-                                <div class="form-row">
-                                    <td>
-                                        <output>${timeboundTrip.title}</output>
-                                    </td>
-                                    <td>
-                                        <output>${timeboundTrip.description}</output>
-                                    </td>
-                                    <td>
-                                        <output>${timeboundTrip.privacy}</output>
-                                    </td>
-                                </div>
-                            </tr>
-                        </c:forEach>
-                    </c:if>
-                </div>
-
+                        </a>
+                    </c:forEach>
+                </c:if>
+            </div>
             </form>
             </tbody>
         </table>

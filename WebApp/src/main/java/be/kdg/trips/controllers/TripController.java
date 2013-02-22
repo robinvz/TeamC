@@ -37,21 +37,18 @@ public class TripController {
 
     @RequestMapping(value = "/trips", method = RequestMethod.GET)
     public ModelAndView showTrips() {
-        List<Trip> timelessTrips = null;
-        List<Trip> timeboundTrips = null;
-        Map<String, List> parameters = new HashMap<String, List>();
+        List<Trip> allNonPrivateTrips = null;
+        Map<String, List> parameters = new HashMap();
         try {
-            timelessTrips = tripsService.findAllTimelessNonPrivateTrips();
+            if (session.getAttribute("user") != null) {
+                allNonPrivateTrips = tripsService.findAllNonPrivateTrips((User) session.getAttribute("user"));
+            } else {
+                allNonPrivateTrips = tripsService.findAllNonPrivateTrips(null);
+            }
         } catch (TripsException e) {
-            //No timeless trips
+            //No nonprivate trips
         }
-        try {
-            timeboundTrips = tripsService.findAllTimeBoundPublishedNonPrivateTrips();
-        } catch (TripsException e) {
-            //No timebound trips
-        }
-        parameters.put("timelessTrips", timelessTrips);
-        parameters.put("timeboundTrips", timeboundTrips);
+        parameters.put("allNonPrivateTrips", allNonPrivateTrips);
         return new ModelAndView("tripsView", parameters);
     }
 
