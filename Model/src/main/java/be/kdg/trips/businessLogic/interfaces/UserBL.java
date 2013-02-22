@@ -14,6 +14,7 @@ public interface UserBL
     public User createUser(String email, String password) throws TripsException;
 
     public User findUser(String email) throws TripsException;
+    public User findUserWithDetails(String email) throws TripsException;
     public boolean checkLogin(String email, String password);
 
     public void updateUser(User user, String firstName, String lastName, String street, String houseNr, String city, String postalCode, String province, String country) throws TripsException;
@@ -22,5 +23,5 @@ public interface UserBL
     public void deleteUser(User user) throws TripsException;
 
     public boolean isExistingUser(String email) throws TripsException;
-
+    public boolean isUnexistingUser(String email) throws TripsException;
 }

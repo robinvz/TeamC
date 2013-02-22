@@ -1,10 +1,8 @@
 package be.kdg.trips.model.user;
 
-import be.kdg.trips.model.Nullable;
 import be.kdg.trips.model.address.Address;
 import be.kdg.trips.model.enrollment.Enrollment;
 import be.kdg.trips.model.invitation.Invitation;
-import org.hibernate.annotations.Cascade;
 import org.hibernate.validator.constraints.Email;
 import org.springframework.stereotype.Component;
 
@@ -26,7 +24,7 @@ import java.util.Set;
 @Entity
 @Table(name="T_USER")
 @Component
-public class User implements UserInterface, Nullable, Serializable {
+public class User implements UserInterface, Serializable {
 
     @Id
     @GeneratedValue(strategy=GenerationType.IDENTITY)
@@ -58,6 +56,7 @@ public class User implements UserInterface, Nullable, Serializable {
         this.email = email;
         this.password = password;
         this.registerDate = new Date();
+        this.address = new Address(null,null,null,null,null,null);
         this.enrollments = new HashSet<>();
         this.invitations = new HashSet<>();
     }
@@ -113,11 +112,6 @@ public class User implements UserInterface, Nullable, Serializable {
     @Override
     public void setAddress(Address address) {
         this.address = address;
-    }
-
-    @Override
-    public boolean isNull() {
-        return false;
     }
 
     @Override

@@ -1,22 +1,16 @@
 package be.kdg.trips.persistence.dao.impl;
 
+import be.kdg.trips.exception.TripsException;
 import be.kdg.trips.model.enrollment.Enrollment;
-import be.kdg.trips.model.enrollment.NullEnrollment;
 import be.kdg.trips.model.invitation.Invitation;
-import be.kdg.trips.model.invitation.NullInvitation;
-import be.kdg.trips.model.trip.TimelessTrip;
 import be.kdg.trips.model.trip.Trip;
-import be.kdg.trips.model.trip.TripPrivacy;
 import be.kdg.trips.model.user.User;
 import be.kdg.trips.persistence.dao.interfaces.EnrollmentDao;
-import org.hibernate.Query;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 import org.hibernate.Transaction;
-import org.hibernate.criterion.Order;
 import org.hibernate.criterion.Restrictions;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;
@@ -61,7 +55,7 @@ public class EnrollmentDaoImpl implements EnrollmentDao
     }
 
     @Override
-    public Enrollment getEnrollmentByUserAndTrip(User user, Trip trip) {
+    public Enrollment getEnrollmentByUserAndTrip(User user, Trip trip) throws TripsException {
         Session session = sessionFactory.openSession();
         Enrollment enrollment = (Enrollment) session.createCriteria(Enrollment.class).add(Restrictions.conjunction()
                 .add(Restrictions.eq("trip", trip))
@@ -69,13 +63,13 @@ public class EnrollmentDaoImpl implements EnrollmentDao
         ).uniqueResult();
         session.close();
         if (enrollment == null) {
-            enrollment = NullEnrollment.getInstance();
+            throw new TripsException("Enrollment for user '"+user.getEmail()+"' in trip '"+trip.getTitle()+"' doesn't exist");
         }
         return enrollment;
     }
 
     @Override
-    public Invitation getInvitationByUserAndTrip(User user, Trip trip) {
+    public Invitation getInvitationByUserAndTrip(User user, Trip trip) throws TripsException {
         Session session = sessionFactory.openSession();
         Invitation invitation = (Invitation) session.createCriteria(Invitation.class).add(Restrictions.conjunction()
                 .add(Restrictions.eq("trip", trip))
@@ -83,7 +77,7 @@ public class EnrollmentDaoImpl implements EnrollmentDao
         ).uniqueResult();
         session.close();
         if (invitation == null) {
-            invitation = NullInvitation.getInstance();
+            throw new TripsException("Invitation for user '"+user.getEmail()+"' in trip '"+trip.getTitle()+"' doesn't exist");
         }
         return invitation;
     }
@@ -96,5 +90,43 @@ public class EnrollmentDaoImpl implements EnrollmentDao
         session.saveOrUpdate(invitation);
         tx.commit();
         session.close();
+    }
+
+    @Override
+    public boolean isExistingEnrollment(User user, Trip trip) throws TripsException {
+        getEnrollmentByUserAndTrip(user, trip);
+        return true;
+    }
+
+    @Override
+    public boolean isExistingInvitation(User user, Trip trip) throws TripsException {
+        getInvitationByUserAndTrip(user, trip);
+        return true;
+    }
+
+    @Override
+    public boolean isUnexistingEnrollment(User user, Trip trip) throws TripsException {
+        try
+        {
+            getEnrollmentByUserAndTrip(user, trip);
+        }
+        catch (TripsException ex)
+        {
+            return true;
+        }
+        throw new TripsException("Enrollment already exists");
+    }
+
+    @Override
+    public boolean isUnexistingInvitation(User user, Trip trip) throws TripsException {
+        try
+        {
+            getInvitationByUserAndTrip(user, trip);
+        }
+        catch (TripsException ex)
+        {
+            return true;
+        }
+        throw new TripsException("Invitation already exists");
     }
 }

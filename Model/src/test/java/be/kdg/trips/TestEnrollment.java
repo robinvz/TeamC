@@ -107,7 +107,7 @@ public class TestEnrollment
         Trip trip = tripsService.createTimelessTrip("Spartacus run", "Lopen door de modder!", TripPrivacy.PRIVATE, organizer);
         tripsService.publishTrip(trip, organizer);
         Invitation invitation = tripsService.invite(trip, organizer, user);
-        assertEquals(1,tripsService.findUser("leopard@hotmail.com").getInvitations().size());
+        assertEquals(1,tripsService.findPrivateTrips(user).size());
     }
 
     @Test(expected = TripsException.class)

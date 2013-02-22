@@ -32,31 +32,38 @@ public class UserBLImpl implements UserBL
     }
 
     @Override
-    public User findUser(String email) throws TripsException {
-        User user = getUser(email);
-        if(!user.isNull())
-        {
-            return user;
-        }
-        else
-        {
-            throw new TripsException("User with email '"+email+"' doesn't exist");
-        }
+    public User findUser(String email) throws TripsException
+    {
+        return userDao.getUser(email);
     }
 
     @Override
-    public boolean checkLogin(String email, String password){
-        User user = getUser(email);
-        if(!user.isNull() && user.checkPassword(password))
+    public User findUserWithDetails(String email) throws TripsException
+    {
+        return userDao.getUserWithDetails(email);
+    }
+
+    @Override
+    public boolean checkLogin(String email, String password)
+    {
+        try
         {
-            return true;
+            User user = userDao.getUser(email);
+            if(user.checkPassword(password))
+            {
+                return true;
+            }
+        }
+        catch (TripsException ex)
+        {
+
         }
         return false;
     }
 
     @Override
     public void updateUser(User user, String firstName, String lastName, String street, String houseNr, String city, String postalCode, String province, String country) throws TripsException {
-        if (isExistingUser(user.getEmail()))
+        if(isExistingUser(user.getEmail()))
         {
             if(firstName!=null)
             {
@@ -66,7 +73,30 @@ public class UserBLImpl implements UserBL
             {
                 user.setLastName(lastName);
             }
-            user.setAddress(new Address(street, houseNr, city, postalCode, province, country));
+            if(street!=null)
+            {
+                user.getAddress().setStreet(street);
+            }
+            if(houseNr!=null)
+            {
+                user.getAddress().setHouseNr(houseNr);
+            }
+            if(city!=null)
+            {
+                user.getAddress().setCity(city);
+            }
+            if(postalCode!=null)
+            {
+                user.getAddress().setPostalCode(postalCode);
+            }
+            if(province!=null)
+            {
+                user.getAddress().setProvince(province);
+            }
+            if(country!=null)
+            {
+                user.getAddress().setCountry(country);
+            }
             userDao.saveOrUpdateUser(user);
         }
     }
@@ -98,25 +128,14 @@ public class UserBLImpl implements UserBL
     }
 
     @Override
-    public boolean isExistingUser(String email) throws TripsException {
-        if(getUser(email).isNull())
-        {
-            throw new TripsException("User with email '"+email+"' doesn't exist");
-        }
-        return true;
+    public boolean isExistingUser(String email) throws TripsException
+    {
+        return userDao.isExistingUser(email);
     }
 
-    private User getUser(String email)
+    @Override
+    public boolean isUnexistingUser(String email) throws TripsException
     {
-        return userDao.getUser(email.toLowerCase());
-    }
-
-    private boolean isUnexistingUser(String email) throws TripsException
-    {
-        if(!getUser(email).isNull())
-        {
-            throw new TripsException("User with email '"+email+"' already exists");
-        }
-        return true;
+        return userDao.isUnexistingUser(email);
     }
 }

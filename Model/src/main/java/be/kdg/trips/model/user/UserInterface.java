@@ -1,14 +1,8 @@
 package be.kdg.trips.model.user;
 
-import be.kdg.trips.model.Nullable;
 import be.kdg.trips.model.address.Address;
 import be.kdg.trips.model.enrollment.Enrollment;
 
-import javax.persistence.Column;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
-import java.io.Serializable;
 import java.util.Date;
 
 /**

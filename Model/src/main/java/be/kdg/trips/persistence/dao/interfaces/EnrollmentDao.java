@@ -1,5 +1,6 @@
 package be.kdg.trips.persistence.dao.interfaces;
 
+import be.kdg.trips.exception.TripsException;
 import be.kdg.trips.model.enrollment.Enrollment;
 import be.kdg.trips.model.invitation.Invitation;
 import be.kdg.trips.model.trip.Trip;
@@ -16,9 +17,16 @@ import java.util.List;
 public interface EnrollmentDao
 {
     public void saveOrUpdateEnrollment(Enrollment enrollment);
+
     public List getEnrollmentsByUser(User user);
     public List getEnrollmentsByTrip(Trip trip);
-    public Enrollment getEnrollmentByUserAndTrip(User user, Trip trip);
-    public Invitation getInvitationByUserAndTrip(User user, Trip trip);
+    public Enrollment getEnrollmentByUserAndTrip(User user, Trip trip) throws TripsException;
+    public Invitation getInvitationByUserAndTrip(User user, Trip trip) throws TripsException;
+
     public void saveOrUpdateInvitation(Invitation invitation);
+
+    public boolean isExistingEnrollment(User user, Trip trip) throws TripsException;
+    public boolean isExistingInvitation(User user, Trip trip) throws TripsException;
+    public boolean isUnexistingEnrollment(User user, Trip trip) throws TripsException;
+    public boolean isUnexistingInvitation(User user, Trip trip) throws TripsException;
 }
