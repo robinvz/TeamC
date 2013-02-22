@@ -1,4 +1,4 @@
-<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+
 <html>
 <head>
     <link rel="stylesheet" href="${pageContext.request.contextPath}/resources/css/main.css"/>
@@ -43,5 +43,8 @@
 
     <footer><p class="footer">Trips - 2013</p></footer>
 </div>
+<!--[if lt IE 9]>
+<script src="${pageContext.request.contextPath}/resources/js/html5shiv.js"></script>
+<![endif]-->
 </body>
 </html>

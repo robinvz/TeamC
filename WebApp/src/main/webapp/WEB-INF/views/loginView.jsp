@@ -1,5 +1,5 @@
 <%@ taglib prefix="form" uri="http://www.springframework.org/tags/form" %>
-<%@taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+
 <%@taglib prefix="spring" uri="http://www.springframework.org/tags" %>
 
 <%@ taglib prefix="fmt" uri="http://www.springframework.org/tags" %>
@@ -58,5 +58,8 @@
 </div>
 <script src="${pageContext.request.contextPath}/resources/js/jquery-1.9.0.min.js"></script>
 <script src="${pageContext.request.contextPath}/resources/js/login.js"></script>
+<!--[if lt IE 9]>
+<script src="${pageContext.request.contextPath}/resources/js/html5shiv.js"></script>
+<![endif]-->
 </body>
 </html>

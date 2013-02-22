@@ -157,3 +157,15 @@ footer
     margin: 0 auto;
 
 }
+
+.errorblock{
+    color: #000;
+    background-color: #ffEEEE;
+    border: 3px solid #ff0000;
+    padding: 8px;
+    margin: 16px;
+}
+
+.error {
+    color: #ff0000;
+}

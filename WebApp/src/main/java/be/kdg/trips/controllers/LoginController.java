@@ -1,18 +1,22 @@
 package be.kdg.trips.controllers;
 
 import be.kdg.trips.exception.TripsException;
+import be.kdg.trips.model.address.Address;
 import be.kdg.trips.model.user.User;
 import be.kdg.trips.services.interfaces.TripsService;
 import net.sf.json.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.propertyeditors.StringTrimmerEditor;
+import org.springframework.scheduling.support.SimpleTriggerContext;
 import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.validation.BindingResult;
+import org.springframework.validation.ObjectError;
+import org.springframework.web.bind.ServletRequestDataBinder;
+import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
+import javax.validation.Valid;
 
 
 /**
@@ -22,7 +26,15 @@ import javax.servlet.http.HttpSession;
  * 2012-2013
  */
 @Controller
+//LoginController
 public class LoginController {
+
+    @InitBinder
+    protected void initBinder(HttpServletRequest request,
+                              ServletRequestDataBinder binder) throws Exception {
+        binder.registerCustomEditor(String.class, new StringTrimmerEditor(true));
+    }
+
     @Autowired
     private TripsService tripsService;
 
@@ -67,55 +79,33 @@ public class LoginController {
     }
 
     @RequestMapping(value = "/register", method = RequestMethod.GET)
-    public String register() {
+    public String register(User user) {
         session.invalidate();
         return "registerView";
     }
 
     @RequestMapping(value = "/register", method = RequestMethod.POST)
-    public String register(HttpServletRequest request) {
-        //changes
-        String firstName = request.getParameter("firstName");
-        String lastName = request.getParameter("lastName");
-        String street = request.getParameter("street");
-        String houseNr = request.getParameter("houseNr");
-        String city = request.getParameter("city");
-        String postalCode = request.getParameter("postalCode");
-        String province = request.getParameter("province");
-        String country = request.getParameter("country");
+    public String register(@Valid User validUser, BindingResult result, HttpServletRequest request) {
+        String pass = request.getParameter("password");
+        if (result.hasErrors()) {
+            return "registerView";
+        }
+        if (request.getParameter("password").isEmpty()) {
+            ObjectError objectError = new ObjectError("password", "Password is empty");
+            result.addError(objectError);
+            return "registerView";
+        }
         try {
-            User user = tripsService.createUser(request.getParameter("email"), request.getParameter("password"));
-            if(request.getParameter("firstName").isEmpty()){
-                firstName=null;
-            }
-            if(request.getParameter("lastName").isEmpty()){
-                lastName=null;
-            }
-            if(request.getParameter("street").isEmpty()){
-                street=null;
-            }
-            if(request.getParameter("houseNr").isEmpty()){
-                houseNr=null;
-            }
-            if(request.getParameter("city").isEmpty()){
-                city=null;
-            }
-            if(request.getParameter("postalCode").isEmpty()){
-                postalCode=null;
-            }
-            if(request.getParameter("province").isEmpty()){
-                province=null;
-            }
-            if(request.getParameter("country").isEmpty()){
-                country=null;
-            }
-            tripsService.updateUser(user, firstName, lastName, street,houseNr, city, postalCode,province, country);
+            validUser.setPassword(request.getParameter("password"));
+            User user = tripsService.createUser(validUser);
             session.setAttribute("user", user);
             return "indexView";
         } catch (TripsException e) {
-            //Register failed
+            ObjectError error = new ObjectError("email", "An account already exists for this email.");
+            result.addError(error);
             return "registerView";
         }
     }
+
 
 }

@@ -62,7 +62,7 @@ public class LoginTest {
 
     @Test
     public void registerView() throws Exception {
-        assertEquals(lg.register(), "registerView");
+        assertEquals(lg.register(new User()), "registerView");
     }
 
     @Test
@@ -92,7 +92,7 @@ public class LoginTest {
     public void registerUserShortSuccess() throws Exception {
         RequestBuilder requestBuilder = MockMvcRequestBuilders.post("/register").param("email", "bobette@gmail.com").param("password", "bobb");
         User user = new User("bobette@gmail.com", "bobb");
-        when(tripsService.createUser("bobette@gmail.com", "bobb")).thenReturn(user);
+        when(tripsService.createUser(user)).thenReturn(user);
         mockMvc.perform(requestBuilder).andExpect(view().name("indexView"));
         assertNotNull(mockHttpSession.getAttribute("user"));
     }

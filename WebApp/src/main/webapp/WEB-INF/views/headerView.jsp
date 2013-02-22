@@ -1,4 +1,4 @@
-<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %> <!---->
 <header>
     <a href="/" title="Home"> <img class="header-img" src="${pageContext.request.contextPath}/resources/res/img/logosite.png" alt="Logo"
          title="Home"/>     </a>

@@ -10,7 +10,6 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.ModelAndView;
 
 import javax.servlet.http.HttpServletRequest;
@@ -27,7 +26,7 @@ import java.util.*;
  * To change this template use File | Settings | File Templates.
  */
 @Controller
-
+//TripController
 public class TripController {
     @Autowired
     private HttpSession session;
@@ -55,7 +54,7 @@ public class TripController {
     @RequestMapping(value = "/trip/{tripId}", method = RequestMethod.GET)
     public ModelAndView getTrip(@PathVariable int tripId) {
         try {
-            Trip trip = tripsService.findTripById(tripId);
+            Trip trip = tripsService.findTripById(tripId, (User) session.getAttribute("user"));
             return new ModelAndView("tripView", "trip", trip);
         } catch (TripsException e) {
             return new ModelAndView("tripsView");

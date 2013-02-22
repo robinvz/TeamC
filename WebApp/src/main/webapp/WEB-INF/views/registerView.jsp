@@ -1,3 +1,5 @@
+<%@ taglib prefix="form" uri="http://www.springframework.org/tags/form" %>
+
 <html>
 <head>
     <link rel="stylesheet" href="${pageContext.request.contextPath}/resources/css/main.css"/>
@@ -8,7 +10,8 @@
     <jsp:include page="headerView.jsp"/>
 
     <div id="content">
-        <form method="POST" action="register">
+        <form:form method="POST" commandName="user" action="register">
+            <form:errors path="*" cssClass="errorblock" element="div" />
             <fieldset>
                 <legend>Required</legend>
                 <table>
@@ -17,7 +20,8 @@
                             <label>Email Address</label>
                         </td>
                         <td>
-                            <input type="text" name="email">
+                            <form:input path="email"></form:input>
+                            <form:errors path="email" cssClass="error"></form:errors>
                         </td>
                     </tr>
                     <tr>
@@ -39,7 +43,8 @@
                             <label>First Name</label>
                         </td>
                         <td>
-                            <input type="text" name="firstName">
+                            <form:input path="firstName"></form:input>
+                            <form:errors path="firstName" cssClass="error"></form:errors>
                         </td>
                     </tr>
                     <tr>
@@ -47,7 +52,8 @@
                             <label>Last Name</label>
                         </td>
                         <td>
-                            <input type="text" name="lastName">
+                            <form:input path="lastName"></form:input>
+                            <form:errors path="lastName" cssClass="error"></form:errors>
                         </td>
                     </tr>
                     <tr>
@@ -55,56 +61,59 @@
                             <label>Street</label>
                         </td>
                         <td>
-                            <input type="text" name="street">
-                        </td>
+                            <form:input path="address.street"></form:input>
+                            <form:errors path="address.street" cssClass="error"></form:errors></td>
                     </tr>
                     <tr>
                         <td>
                             <label>House Nr</label>
                         </td>
                         <td>
-                            <input type="text" name="houseNr">
-                        </td>
+                            <form:input path="address.houseNr"></form:input>
+                            <form:errors path="address.houseNr" cssClass="error"></form:errors></td>
                     </tr>
                     <tr>
                         <td>
                             <label>City</label>
                         </td>
                         <td>
-                            <input type="text" name="city">
-                        </td>
+                            <form:input path="address.city"></form:input>
+                            <form:errors path="address.city" cssClass="error"></form:errors></td>
                     </tr>
                     <tr>
                         <td>
                             <label>Postal code</label>
                         </td>
                         <td>
-                            <input type="text" name="postalCode">
-                        </td>
+                            <form:input path="address.postalCode"></form:input>
+                            <form:errors path="address.postalCode" cssClass="error"></form:errors></td>
                     </tr>
                     <tr>
                         <td>
                             <label>Province</label>
                         </td>
                         <td>
-                            <input type="text" name="province">
-                        </td>
+                            <form:input path="address.province"></form:input>
+                            <form:errors path="address.province" cssClass="error"></form:errors></td>
                     </tr>
                     <tr>
                         <td>
                             <label>Country</label>
                         </td>
                         <td>
-                            <input type="text" name="country">
-                        </td>
+                            <form:input path="address.country"></form:input>
+                            <form:errors path="address.country" cssClass="error"></form:errors></td>
                     </tr>
                 </table>
             </fieldset>
             <button type="submit">Register</button>
-        </form>
+        </form:form>
     </div>
 
     <footer><p class="footer">Trips - 2013</p></footer>
 </div>
+<!--[if lt IE 9]>
+<script src="${pageContext.request.contextPath}/resources/js/html5shiv.js"></script>
+<![endif]-->
 </body>
 </html>
