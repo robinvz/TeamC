@@ -122,7 +122,7 @@ public class ProfileTest {
         mockMvc.perform(requestBuilder).andExpect(view().name("indexView"));
         assertNull(mockHttpSession.getAttribute("user"));
     }
-
+    //CHANGED
     @Test
     public void userNotDeleted() throws Exception {
         mockHttpSession.setAttribute("user", testUser);
