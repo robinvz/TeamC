@@ -45,9 +45,10 @@ public class ProfileController {
                     request.getParameter("newPassword"));
             session.setAttribute("user", tripsService.findUser(((User) session.getAttribute("user")).getEmail()));
         } catch (TripsException e) {
+            return "/users/profileView";
             //Failed to update password
         }
-        return "/users/profileView";
+        return "indexView";
     }
 
     @RequestMapping(value = "/users/editProfile", method = RequestMethod.POST)
@@ -62,15 +63,16 @@ public class ProfileController {
         String country = request.getParameter("country");
         try {
             tripsService.updateUser((User) session.getAttribute("user"), firstName, lastName, street, houseNr, city, postalCode, province, country);
+            session.setAttribute("user", tripsService.findUser(((User) session.getAttribute("user")).getEmail()));
         } catch (TripsException e) {
-            return "/users/editProfileView";
+            return "/users/profileView";
             //failed to edit user
         }
         return "indexView";
     }
 
 
-    @RequestMapping(value = "/deleteProfile", method = RequestMethod.GET)
+    @RequestMapping(value = "/users/deleteProfile", method = RequestMethod.GET)
     public String deleteProfile() {
         try {
             tripsService.deleteUser((User) session.getAttribute("user"));
