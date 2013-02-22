@@ -75,22 +75,46 @@ public class TestTrip {
     @Test
     public void successfulGuestFindAllTrips() throws TripsException
     {
+        boolean check = true;
+        List<Trip> trips;
         Trip trip1 = tripsService.createTimelessTrip("Marathon des sables", "N/A", TripPrivacy.PUBLIC, user);
         Trip trip2 = tripsService.createTimelessTrip("Marathon des sables", "N/A", TripPrivacy.PROTECTED, user);
+        Trip trip3 = tripsService.createTimelessTrip("Marathon des sables", "N/A", TripPrivacy.PRIVATE, user);
         tripsService.publishTrip(trip1,user);
         tripsService.publishTrip(trip2,user);
-        assertFalse(tripsService.findAllNonPrivateTrips(null).isEmpty());
+        tripsService.publishTrip(trip3, user);
+        trips = tripsService.findAllNonPrivateTrips(null);
+        for(Trip trip : trips)
+        {
+            if(trip.getPrivacy() == TripPrivacy.PRIVATE)
+            {
+                check = false;
+            }
+        }
+        assertTrue(check);
     }
 
     @Test
     public void successfulUserFindAllTrips() throws TripsException
     {
+        boolean check = true;
+        List<Trip> trips;
         Trip trip1 = tripsService.createTimelessTrip("Marathon des sables", "N/A", TripPrivacy.PUBLIC, user);
         Trip trip2 = tripsService.createTimelessTrip("Marathon des sables", "N/A", TripPrivacy.PROTECTED, user);
+        Trip trip3 = tripsService.createTimelessTrip("Marathon des sables", "N/A", TripPrivacy.PRIVATE, user);
         tripsService.publishTrip(trip1,user);
         tripsService.publishTrip(trip2,user);
-        User user = tripsService.createUser("test@gmail.com","kokelengerb");
-        assertFalse(tripsService.findAllNonPrivateTrips(user).isEmpty());
+        tripsService.publishTrip(trip3, user);
+        User user1 = tripsService.createUser("test@gmail.com","kokelengerb");
+        trips = tripsService.findAllNonPrivateTrips(user1);
+        for(Trip trip : trips)
+        {
+            if(trip.getPrivacy() == TripPrivacy.PRIVATE)
+            {
+                check = false;
+            }
+        }
+        assertTrue(check);
     }
 
     @Test
@@ -129,7 +153,8 @@ public class TestTrip {
     @Test(expected = TripsException.class)
     public void failedFindTripById() throws TripsException
     {
-        tripsService.findTripById(1000);
+        Trip createdTrip = tripsService.createTimelessTrip("Boswandeling 3", "Wandeling in bos", TripPrivacy.PRIVATE, user);
+        Trip foundTrip = (Trip) tripsService.findTripById(createdTrip.getId());
     }
 
     @Test

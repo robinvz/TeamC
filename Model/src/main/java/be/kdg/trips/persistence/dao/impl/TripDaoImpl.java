@@ -54,7 +54,7 @@ public class TripDaoImpl implements TripDao{
     public List getNonPrivateTripsByKeyword(String keyword) {
         Session session = sessionFactory.openSession();
         Transaction tx = session.beginTransaction();
-        Query query = session.createQuery("FROM Trip t LEFT OUTER JOIN t.labels label WHERE lower(t.title) LIKE :keyword OR lower(t.description) LIKE :keyword OR lower(label) LIKE :keyword");
+        Query query = session.createQuery("FROM Trip t LEFT OUTER JOIN t.labels label WHERE (lower(t.title) LIKE :keyword OR lower(t.description) LIKE :keyword OR lower(label) LIKE :keyword) AND t.privacy <> 2");
         query.setParameter("keyword","%"+keyword+"%");
         List<Trip> trips = query.list();
         tx.commit();
