@@ -76,6 +76,7 @@ public class ProfileController {
             tripsService.deleteUser((User) session.getAttribute("user"));
             session.invalidate();
         } catch (TripsException e) {
+            return "/users/profileView";
             //failed to delete user
         }
         return "indexView";
