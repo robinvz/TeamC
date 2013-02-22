@@ -50,7 +50,8 @@ public interface TripsService
     public void deleteTrip(Trip trip, User organizer) throws TripsException, MessagingException;
 
     //Enrollment Service
-    public Enrollment enroll(Trip trip, User user) throws TripsException;
+    public Enrollment subscribe(Trip trip, User user) throws TripsException;
+    public Enrollment acceptInvitation(Trip trip, User user) throws TripsException;
 
     public List<Enrollment> findEnrollmentsByUser(User user) throws TripsException;
     public List<Enrollment> findEnrollmentsByTrip(Trip trip) throws TripsException;

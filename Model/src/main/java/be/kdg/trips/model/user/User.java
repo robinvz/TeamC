@@ -31,6 +31,7 @@ public class User implements UserInterface, Serializable {
     private int id;
     @Column(unique = true, nullable = false, updatable = false)
     @Email
+    @Size(min = 4, max = 50)
     private String email;
     @Column(nullable = false)
     @Size(min = 4, max = 30)
@@ -53,15 +54,16 @@ public class User implements UserInterface, Serializable {
 
 
     public User(String email, String password) {
+        this();
         this.email = email;
         this.password = password;
-        this.registerDate = new Date();
         this.address = new Address(null,null,null,null,null,null);
         this.enrollments = new HashSet<>();
         this.invitations = new HashSet<>();
     }
 
     public User() {
+        this.registerDate = new Date();
     }
 
     @Override

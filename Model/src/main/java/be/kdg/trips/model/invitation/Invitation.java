@@ -49,6 +49,22 @@ public class Invitation implements Serializable {
         return trip;
     }
 
+    public User getUser() {
+        return user;
+    }
+
+    public Date getDate() {
+        return date;
+    }
+
+    public Answer getAnswer() {
+        return answer;
+    }
+
+    public void setAnswer(Answer answer) {
+        this.answer = answer;
+    }
+
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
