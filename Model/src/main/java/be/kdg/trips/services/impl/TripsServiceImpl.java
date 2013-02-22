@@ -89,9 +89,9 @@ public class TripsServiceImpl implements TripsService
     }
 
     @Override
-    public List findNonPrivateTripsByKeyword(String keyword) throws TripsException
+    public List findNonPrivateTripsByKeyword(String keyword, User user) throws TripsException
     {
-        return tripController.findNonPrivateTripsByKeyword(keyword);
+        return tripController.findNonPrivateTripsByKeyword(keyword, user);
     }
 
     @Override
