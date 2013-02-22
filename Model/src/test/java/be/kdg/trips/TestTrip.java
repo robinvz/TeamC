@@ -142,9 +142,9 @@ public class TestTrip {
         assertEquals(1, tripsService.findPrivateTrips(user).size());
     }
 
-    @Test(expected = TripsException.class)
+    @Test
     public void failedFindTripByKeyword() throws TripsException {
-        tripsService.findNonPrivateTripsByKeyword("Nachtdropping");
+        assertEquals(0,tripsService.findNonPrivateTripsByKeyword("Nachtdropping").size());
     }
 
     @Test
@@ -242,7 +242,7 @@ public class TestTrip {
         assertFalse(createdTrip.getLocations().get(FIRST_ELEMENT).getQuestion().checkAnswer(1));
     }
 
-    @Test(expected = TripsException.class)
+    @Test
     public void successfulDeleteTrip() throws TripsException, MessagingException, ParseException {
         User organizer = tripsService.createUser("tripsteamc@gmail.com","SDProject");
         Trip createdTrip = tripsService.createTimeBoundTrip("Deer hunting", "I will be deleted", TripPrivacy.PROTECTED, organizer, df.parse("20/05/2013"), df.parse("21/05/2013"));
@@ -251,6 +251,6 @@ public class TestTrip {
        // User user = tripsService.createUser("email2","x");
        // tripsService.enroll(createdTrip,user);
         tripsService.deleteTrip(createdTrip,organizer);
-        tripsService.findNonPrivateTripsByKeyword("deletetrip");
+        assertEquals(0,tripsService.findNonPrivateTripsByKeyword("deletetrip").size());
     }
 }

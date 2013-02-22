@@ -20,7 +20,7 @@ public interface TripBL
     public Trip createTimelessTrip(String title, String description, TripPrivacy privacy, User organizer) throws TripsException;
     public Trip createTimeBoundTrip(String title, String description, TripPrivacy privacy, User organizer, Date startDate, Date endDate) throws TripsException;
 
-    public List<Trip> findNonPrivateTripsByKeyword(String keyword) throws TripsException;
+    public List<Trip> findNonPrivateTripsByKeyword(String keyword);
     public List<Trip> findAllNonPrivateTrips(User user) throws TripsException;
     public List<Trip> findPrivateTrips(User user) throws TripsException;
     public Trip findTripById(int id) throws TripsException;

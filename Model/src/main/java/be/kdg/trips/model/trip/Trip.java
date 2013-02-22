@@ -1,6 +1,5 @@
 package be.kdg.trips.model.trip;
 
-import be.kdg.trips.model.Nullable;
 import be.kdg.trips.model.enrollment.Enrollment;
 import be.kdg.trips.model.location.Location;
 import be.kdg.trips.model.user.User;
@@ -26,14 +25,14 @@ import java.util.Set;
 @Entity
 @Table(name = "T_TRIP")
 @Inheritance(strategy= InheritanceType.SINGLE_TABLE)
-public abstract class Trip implements Serializable, TripInterface, Nullable {
+public abstract class Trip implements Serializable, TripInterface {
     @Id
     private int id;
     @NotNull
-    @Size(min = 2, max = 50)
+    @Size(max = 50)
     private String title;
     @NotNull
-    @Size(min = 2, max = 150)
+    @Size(max = 150)
     private String description;
     @ElementCollection(fetch = FetchType.EAGER)
     @CollectionTable(name = "T_TRIP_LABEL")
@@ -196,10 +195,5 @@ public abstract class Trip implements Serializable, TripInterface, Nullable {
     @Override
     public int hashCode() {
         return id;
-    }
-
-    @Override
-    public boolean isNull(){
-        return false;
     }
 }

@@ -1,12 +1,12 @@
 package be.kdg.trips.model.invitation;
 
-import be.kdg.trips.model.Nullable;
 import be.kdg.trips.model.trip.Trip;
 import be.kdg.trips.model.user.User;
 
 
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
+import java.io.Serializable;
 import java.util.Date;
 
 /**
@@ -17,7 +17,7 @@ import java.util.Date;
  */
 @Entity
 @Table(name = "T_INVITATION")
-public class Invitation implements Nullable {
+public class Invitation implements Serializable {
     @Id
     @GeneratedValue(strategy= GenerationType.IDENTITY)
     private int id;
@@ -47,11 +47,6 @@ public class Invitation implements Nullable {
 
     public Trip getTrip() {
         return trip;
-    }
-
-    @Override
-    public boolean isNull() {
-        return false;
     }
 
     @Override
