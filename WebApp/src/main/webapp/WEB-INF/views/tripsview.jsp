@@ -34,30 +34,30 @@
             </tr>
             </thead>
 
-            <tbody id="trips-list">
-            <div id="timelessTrips">
+            <tbody>
+            <div>
                 <c:if test="${not empty allNonPrivateTrips}">
                     <c:forEach items="${allNonPrivateTrips}" var="allNonPrivateTrip">
-                        <tr id="trip${allNonPrivateTrip.id}">
-                            <div class="form-row">
-
-                                <td>
-                                   ${allNonPrivateTrip.title}
-                                </td>
-                                <td>
-                                    <output>${allNonPrivateTrip.description}</output>
-                                </td>
-                                <td>
-                                    <output>${allNonPrivateTrip.privacy}</output>
-                                </td>
-                            </div>
-                            <!--  <div class="form-buttons">
-                                  <div class="button">
-                                      <td><input name="submit" type="submit" value="Select"/></td>
-                                  </div>
-                              </div>   -->
-                        </tr>
-
+                        <a href="trip/${allNonPrivateTrip.id}">
+                            <tr id="trip${allNonPrivateTrip.id}">
+                                <div class="form-row">
+                                    <td>
+                                            ${allNonPrivateTrip.title}
+                                    </td>
+                                    <td>
+                                            ${allNonPrivateTrip.description}
+                                    </td>
+                                    <td>
+                                            ${allNonPrivateTrip.privacy}
+                                    </td>
+                                </div>
+                                <!--  <div class="form-buttons">
+                                      <div class="button">
+                                          <td><input name="submit" type="submit" value="Select"/></td>
+                                      </div>
+                                  </div>   -->
+                            </tr>
+                        </a>
                     </c:forEach>
                 </c:if>
             </div>

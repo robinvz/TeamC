@@ -1,7 +1,5 @@
 package be.kdg.trips;
 
-import be.kdg.trips.businessLogic.impl.TripBLImpl;
-import be.kdg.trips.businessLogic.interfaces.TripBL;
 import be.kdg.trips.exception.TripsException;
 import be.kdg.trips.model.trip.Trip;
 import be.kdg.trips.model.trip.TripPrivacy;
