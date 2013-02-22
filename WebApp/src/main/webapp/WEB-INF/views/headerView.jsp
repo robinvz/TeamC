@@ -15,10 +15,10 @@
 </head>
 <body>
 <header>
-    <img class="header-img" src="${pageContext.request.contextPath}/resources/res/img/dragon.png" alt="Logo"
+    <img class="header-img" src="${pageContext.request.contextPath}/resources/res/img/logosite.png" alt="Logo"
          title="Home"/>
 
-    <h1 class="header-title">Trips</h1>
+
     <nav class="header-nav">
         <ul class="nav">
             <li><a id="nav-home" class="nav-link" href="/" title="Home">Home</a></li>

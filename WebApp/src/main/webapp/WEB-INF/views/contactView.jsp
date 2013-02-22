@@ -2,7 +2,7 @@
 <html>
 <head>
     <link rel="stylesheet" href="${pageContext.request.contextPath}/resources/css/main.css"/>
-    <link rel="stylesheet" href="${pageContext.request.contextPath}/resources/css/trips.css"/>
+    <link rel="stylesheet" href="${pageContext.request.contextPath}/resources/css/contact.css"/>
     <link rel="shortcut icon" href="${pageContext.request.contextPath}/resources/res/favicon.ico">
     <title>Contact page</title>
 </head>
