@@ -59,28 +59,15 @@ public class TripDaoImpl implements TripDao{
     @Override
     public List getProtectedTripsByKeyword(String keyword)
     {
-        return queryTripByKeyword("FROM Trip t LEFT OUTER JOIN t.labels label WHERE lower(t.title) LIKE :keyword OR lower(t.description) LIKE :keyword OR lower(label) LIKE :keyword", keyword);
-        // AND t.privacy = 1 AND t.published = 1
+        return queryTripByKeyword("FROM Trip t LEFT OUTER JOIN t.labels label LEFT JOIN FETCH t.locations WHERE (lower(t.title) LIKE :keyword OR lower(t.description) LIKE :keyword OR lower(label) LIKE :keyword) AND t.privacy = 1 AND t.published = 1", keyword);
     }
-    //LEFT JOIN FETCH t.locations
+
     @Override
     public List getProtectedTripsWithoutDetailsByKeyword(String keyword)
     {
         return queryTripByKeyword("FROM Trip t LEFT OUTER JOIN t.labels label WHERE (lower(t.title) LIKE :keyword OR lower(t.description) LIKE :keyword OR lower(label) LIKE :keyword) AND t.privacy = 1 AND t.published = 1", keyword);
     }
-    /*
-    @Override
-    public List getNonPrivateTripsByKeyword(String keyword) {
-        Session session = sessionFactory.openSession();
-        Transaction tx = session.beginTransaction();
-        Query query = session.createQuery("FROM Trip t LEFT OUTER JOIN t.labels label WHERE (lower(t.title) LIKE :keyword OR lower(t.description) LIKE :keyword OR lower(label) LIKE :keyword) AND t.privacy <> 2");
-        query.setParameter("keyword","%"+keyword+"%");
-        List<Trip> trips = query.list();
-        tx.commit();
-        session.close();
-        return trips;
-    }
-    */
+
     @Override
     public Trip getTrip(int id) throws TripsException {
         Session session = sessionFactory.openSession();
@@ -121,7 +108,7 @@ public class TripDaoImpl implements TripDao{
     {
         Session session = sessionFactory.openSession();
         Query query = session.createQuery(queryString);
-        query.setParameter("keyword", keyword);
+        query.setParameter("keyword", "%"+keyword+"%");
         List<Trip> trips = query.list();
         session.close();
         return trips;

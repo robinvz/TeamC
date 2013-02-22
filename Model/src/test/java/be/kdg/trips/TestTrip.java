@@ -135,9 +135,9 @@ public class TestTrip {
         assertEquals(createdTrip, foundTrip);
     }
 
-    /*
+
     @Test
-    public void succesfulFindTripByKeywordInLabel() throws TripsException
+    public void successfulFindTripByKeywordInLabel() throws TripsException
     {
         Trip createdTrip = tripsService.createTimelessTrip("Waterwandeling", "Wandeling in water", TripPrivacy.PROTECTED, user);
         tripsService.addLabelToTrip(createdTrip, user, "WandelingWATER");
@@ -145,7 +145,7 @@ public class TestTrip {
         Trip foundTrip = (Trip) tripsService.findNonPrivateTripsByKeyword("ANdelingWAT", user).get(FIRST_ELEMENT);
         assertEquals(createdTrip, foundTrip);
     }
-     */
+
     @Test
     public void successfulFindTripById() throws TripsException
     {

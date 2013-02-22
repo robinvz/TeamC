@@ -31,18 +31,18 @@ public class User implements UserInterface, Serializable {
     private int id;
     @Column(unique = true, nullable = false, updatable = false)
     @Email
-    @Size(min = 4, max = 50)
+    @Size(min = 4, max = 50, message = "Email must be between 4 and 50 characters")
     private String email;
     @Column(nullable = false)
-    @Size(min = 4, max = 30)
+    @Size(min = 4, max = 30, message = "Password must be between 4 and 30 characters")
     private String password;
     @Column(updatable = false)
     private Date registerDate;
-    @Pattern(regexp =  "^\\D*$")
-    @Size(max = 50)
+    @Pattern(regexp =  "^\\D*$", message = "First name should only contain letters")
+    @Size(max = 50, message = "First name has a maximum amount of 50 characters")
     private String firstName;
-    @Pattern(regexp =  "^\\D*$")
-    @Size(max = 50)
+    @Pattern(regexp =  "^\\D*$", message = "Last name should only contain letters")
+    @Size(max = 50, message = "Last name has a maximum amount of 50 characters")
     private String lastName;
     @OneToOne(cascade = CascadeType.ALL)
     @JoinColumn(name = "addressId")
