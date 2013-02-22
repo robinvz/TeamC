@@ -7,4 +7,9 @@ div #profielfoto{
 
 aside{
     padding: 0px;
+    vertical-align: top;
+}
+
+.content {
+    display: inline-block;
 }

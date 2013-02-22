@@ -32,6 +32,15 @@ public class UserBLImpl implements UserBL
     }
 
     @Override
+    public User createUser(User user) throws TripsException {
+        if(isUnexistingUser(user.getEmail()))
+        {
+            userDao.saveOrUpdateUser(user);
+        }
+        return user;
+    }
+
+    @Override
     public User findUser(String email) throws TripsException
     {
         return userDao.getUser(email);

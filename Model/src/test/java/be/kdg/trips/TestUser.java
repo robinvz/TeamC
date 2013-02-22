@@ -19,7 +19,7 @@ import static org.junit.Assert.*;
  * 2012-2013
  */
 public class TestUser {
-    private static TripsService tripsService;
+   private static TripsService tripsService;
 
     @BeforeClass
     public static void createTripManager(){
@@ -27,79 +27,82 @@ public class TestUser {
         tripsService = (TripsServiceImpl)ctx.getBean("tripsService");
     }
 
-    @Test
-    public void successfulRegister() throws TripsException
-    {
-        User user = tripsService.createUser("gijs.muys@student.kdg.be", "pazw#rd");
-        assertNotNull(user);
-    }
+      @Test
+      public void successfulRegister() throws TripsException
+      {
+          User testUser = new User("gijs.muys@student.kdg.be", "pazw#rd");
+          User user = tripsService.createUser(testUser);
+          assertNotNull(user);
+      }
 
-    @Test(expected = TripsException.class)
-    public void failedRegisterExistingUser() throws TripsException {
-        User user1 = tripsService.createUser("keke.kokelenberg@student.kdg.be", "password");
-        User user2 = tripsService.createUser("keke.kokelenberg@student.kdg.be", "password");
-    }
+      @Test(expected = TripsException.class)
+      public void failedRegisterExistingUser() throws TripsException {
+          User testUser = new User("keke.kokelenberg@student.kdg.be", "password");
+          User user1 = tripsService.createUser(testUser);
+          User user2 = tripsService.createUser(testUser);
+      }
 
-    @Test(expected = ConstraintViolationException.class)
-    public void failedRegisterInvalidEmail() throws TripsException
-    {
-        User user = tripsService.createUser("jos", "password");
-    }
+      @Test(expected = ConstraintViolationException.class)
+      public void failedRegisterInvalidEmail() throws TripsException
+      {
+          User user = tripsService.createUser("jos", "password");
+      }
 
 
-    @Test(expected = ConstraintViolationException.class)
-    public void failedRegisterInvalidPassword() throws TripsException
-    {
-        User user = tripsService.createUser("robin.vanzype@student.kdg.be", "x");
-    }
+      @Test(expected = ConstraintViolationException.class)
+      public void failedRegisterInvalidPassword() throws TripsException
+      {
+          User user = tripsService.createUser("robin.vanzype@student.kdg.be", "x");
+      }
 
-    @Test
-    public void successfulFindUser() throws TripsException {
-        User createdUser = tripsService.createUser("mathias.vandepol@student.kdg.be", "password");
-        User foundUser = tripsService.findUser("mathias.vandepol@student.kdg.be");
-        assertEquals(createdUser, foundUser);
-    }
+      @Test
+      public void successfulFindUser() throws TripsException {
+          User createdUser = tripsService.createUser("mathias.vandepol@student.kdg.be", "password");
+          User foundUser = tripsService.findUser("mathias.vandepol@student.kdg.be");
+          assertEquals(createdUser, foundUser);
+      }
 
-    @Test(expected = TripsException.class)
-    public void failedFindUser() throws TripsException {
-        tripsService.findUser("mathias");
-    }
+      @Test(expected = TripsException.class)
+      public void failedFindUser() throws TripsException {
+          tripsService.findUser("mathias");
+      }
 
-    @Test
-    public void successfulUserUpdateNewValues() throws TripsException
-    {
-        User user = tripsService.createUser("tony.mertens@student.kdg.be","password");
-        tripsService.updateUser(user, "hans", "martens", "beerstraat", "11", "Antwerpen", "2000", "Antwerpen","België");
-        assertEquals(tripsService.findUser("tony.mertens@student.kdg.be").getFirstName(), "hans");
-    }
+      @Test
+      public void successfulUserUpdateNewValues() throws TripsException
+      {
+          User user = tripsService.createUser("tony.mertens@student.kdg.be","password");
+          tripsService.updateUser(user, "hans", "martens", "beerstraat", "11", "Antwerpen", "2000", "Antwerpen","België");
+          assertEquals(tripsService.findUser("tony.mertens@student.kdg.be").getFirstName(), "hans");
+      }
 
-    @Test
-    public void successfulUserUpdateNullValues() throws TripsException
-    {
-        User user = tripsService.createUser("tony.martens@student.kdg.be","password");
-        tripsService.updateUser(user, null, null, null, null, null, null, null, null);
-        assertEquals(tripsService.findUser("tony.martens@student.kdg.be").getFirstName(), null);
-    }
+      @Test
+      public void successfulUserUpdateNullValues() throws TripsException
+      {
+          User user = tripsService.createUser("tony.martens@student.kdg.be","password");
+          tripsService.updateUser(user, null, null, null, null, null, null, null, null);
+          assertEquals(tripsService.findUser("tony.martens@student.kdg.be").getFirstName(), null);
+      }
 
-    @Test(expected = ConstraintViolationException.class)
-    public void failedUserUpdateInvalidStreet() throws TripsException {
-        User user = tripsService.createUser("louis.martens@student.kdg.be","password");
-        tripsService.updateUser(user, null,null,"straat1212",null,null,null,null,null);
-    }
+      @Test(expected = ConstraintViolationException.class)
+      public void failedUserUpdateInvalidStreet() throws TripsException {
+          User user = tripsService.createUser("louis.martens@student.kdg.be","password");
+          tripsService.updateUser(user, null,null,"straat1212",null,null,null,null,null);
+      }
 
-    @Test(expected = TripsException.class)
-    public void successfulDeleteUser() throws TripsException {
-        User user = tripsService.createUser("email@hotmail.com","password");
-        tripsService.deleteUser(user);
-        tripsService.findUser("email@hotmail.com");
-    }
-    /*
-    @Test(expected = TripsException.class)
-    public void failedDeleteUser() throws TripsException
-    {
+      @Test(expected = TripsException.class)
+      public void successfulDeleteUser() throws TripsException {
+          User user = tripsService.createUser("email@hotmail.com","password");
+          tripsService.deleteUser(user);
+          tripsService.findUser("email@hotmail.com");
+      }
+      /*
+      @Test(expected = TripsException.class)
+      public void failedDeleteUser() throws TripsException
+      {
 
-    }
-    */
+      }
+      */
+
     @Test
     public void successfulLogin() throws TripsException {
         tripsService.createUser("joris@student.kdg.be", "password");

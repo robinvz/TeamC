@@ -74,11 +74,42 @@ public class LoginController {
 
     @RequestMapping(value = "/register", method = RequestMethod.POST)
     public String register(HttpServletRequest request) {
+        //changes
+        String firstName = request.getParameter("firstName");
+        String lastName = request.getParameter("lastName");
+        String street = request.getParameter("street");
+        String houseNr = request.getParameter("houseNr");
+        String city = request.getParameter("city");
+        String postalCode = request.getParameter("postalCode");
+        String province = request.getParameter("province");
+        String country = request.getParameter("country");
         try {
             User user = tripsService.createUser(request.getParameter("email"), request.getParameter("password"));
-            tripsService.updateUser(user, request.getParameter("firstName"), request.getParameter("lastName"), request.getParameter("street"),
-                    request.getParameter("houseNr"), request.getParameter("city"), request.getParameter("postalCode"),
-                    request.getParameter("province"), request.getParameter("country"));
+            if(request.getParameter("firstName").isEmpty()){
+                firstName=null;
+            }
+            if(request.getParameter("lastName").isEmpty()){
+                lastName=null;
+            }
+            if(request.getParameter("street").isEmpty()){
+                street=null;
+            }
+            if(request.getParameter("houseNr").isEmpty()){
+                houseNr=null;
+            }
+            if(request.getParameter("city").isEmpty()){
+                city=null;
+            }
+            if(request.getParameter("postalCode").isEmpty()){
+                postalCode=null;
+            }
+            if(request.getParameter("province").isEmpty()){
+                province=null;
+            }
+            if(request.getParameter("country").isEmpty()){
+                country=null;
+            }
+            tripsService.updateUser(user, firstName, lastName, street,houseNr, city, postalCode,province, country);
             session.setAttribute("user", user);
             return "indexView";
         } catch (TripsException e) {

@@ -1,23 +1,7 @@
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
-<%--
-  Created by IntelliJ IDEA.
-  User: Robin
-  Date: 8/02/13
-  Time: 12:26
-  To change this template use File | Settings | File Templates.
---%>
-<%@ page contentType="text/html;charset=UTF-8" language="java" %>
-<html>
-<head>
-    <link rel="stylesheet" href="${pageContext.request.contextPath}/resources/css/main.css"/>
-    <link rel="stylesheet" href="${pageContext.request.contextPath}/resources/css/profiel.css"/>
-    <link rel="shortcut icon" href="${pageContext.request.contextPath}/resources/res/favicon.ico">
-</head>
-<body>
 <header>
     <img class="header-img" src="${pageContext.request.contextPath}/resources/res/img/logosite.png" alt="Logo"
          title="Home"/>
-
 
     <nav class="header-nav">
         <ul class="nav">
@@ -39,8 +23,9 @@
         </ul>
     </nav>
 </header>
+
 <script src="${pageContext.request.contextPath}/resources/js/jquery-1.9.0.min.js"></script>
 <script src="${pageContext.request.contextPath}/resources/js/header.js"></script>
-
-</body>
-</html>
+<!--[if lt IE 9]>
+<script src="${pageContext.request.contextPath}/resources/js/html5shiv.js"></script>
+<![endif]-->

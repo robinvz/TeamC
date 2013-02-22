@@ -1,17 +1,8 @@
-<%--
-  Created by IntelliJ IDEA.
-  User: Robin
-  Date: 13/02/13
-  Time: 19:18
-  To change this template use File | Settings | File Templates.
---%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@ taglib prefix="form" uri="http://www.springframework.org/tags/form" %>
-<%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <html>
 <head>
     <link rel="stylesheet" href="${pageContext.request.contextPath}/resources/css/main.css"/>
-    <link rel="stylesheet" href="${pageContext.request.contextPath}/resources/css/profiel.css"/>
     <link rel="shortcut icon" href="${pageContext.request.contextPath}/resources/res/favicon.ico">
     <title>Create trip page</title>
 </head>
@@ -85,9 +76,4 @@
     <footer><p class="footer">Trips - 2013</p></footer>
 </div>
 </body>
-<script src="${pageContext.request.contextPath}/resources/js/jquery-1.9.0.min.js"></script>
-<script src="${pageContext.request.contextPath}/resources/js/knockout.js"></script>
-<!--[if lt IE 9]>
-<script src="${pageContext.request.contextPath}/resources/js/html5shiv.js"></script>
-<![endif]-->
 </html>
