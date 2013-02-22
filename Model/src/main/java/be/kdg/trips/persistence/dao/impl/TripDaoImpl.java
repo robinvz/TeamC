@@ -51,6 +51,24 @@ public class TripDaoImpl implements TripDao{
     }
 
     @Override
+    public List getPublicTripsByKeyword(String keyword)
+    {
+        return queryTripByKeyword("FROM Trip t LEFT OUTER JOIN t.labels label LEFT JOIN FETCH t.locations WHERE (lower(t.title) LIKE :keyword OR lower(t.description) LIKE :keyword OR lower(label) LIKE :keyword) AND t.privacy = 0 AND t.published = 1", keyword);
+    }
+
+    @Override
+    public List getProtectedTripsByKeyword(String keyword)
+    {
+        return queryTripByKeyword("FROM Trip t LEFT OUTER JOIN t.labels label  WHERE (lower(t.title) LIKE :keyword OR lower(t.description) LIKE :keyword OR lower(label) LIKE :keyword) AND t.privacy = 1 AND t.published = 1", keyword);
+    }
+    //LEFT JOIN FETCH t.locations
+    @Override
+    public List getProtectedTripsWithoutDetailsByKeyword(String keyword)
+    {
+        return queryTripByKeyword("FROM Trip t LEFT OUTER JOIN t.labels label WHERE (lower(t.title) LIKE :keyword OR lower(t.description) LIKE :keyword OR lower(label) LIKE :keyword) AND t.privacy = 1 AND t.published = 1", keyword);
+    }
+    /*
+    @Override
     public List getNonPrivateTripsByKeyword(String keyword) {
         Session session = sessionFactory.openSession();
         Transaction tx = session.beginTransaction();
@@ -61,7 +79,7 @@ public class TripDaoImpl implements TripDao{
         session.close();
         return trips;
     }
-
+    */
     @Override
     public Trip getTrip(int id) throws TripsException {
         Session session = sessionFactory.openSession();
@@ -98,5 +116,13 @@ public class TripDaoImpl implements TripDao{
         return trips;
     }
 
-
+    private List<Trip> queryTripByKeyword(String queryString, String keyword)
+    {
+        Session session = sessionFactory.openSession();
+        Query query = session.createQuery(queryString);
+        query.setParameter("keyword", keyword);
+        List<Trip> trips = query.list();
+        session.close();
+        return trips;
+    }
 }

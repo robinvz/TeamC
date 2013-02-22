@@ -37,7 +37,7 @@ public interface TripsService
     public Trip createTimelessTrip(String title, String description, TripPrivacy privacy, User organizer) throws TripsException;
     public Trip createTimeBoundTrip(String title, String description, TripPrivacy privacy, User organizer, Date startDate, Date endDate) throws TripsException;
 
-    public List findNonPrivateTripsByKeyword(String keyword) throws TripsException;
+    public List findNonPrivateTripsByKeyword(String keyword, User user) throws TripsException;
     public List findAllNonPrivateTrips(User user) throws TripsException;
     public List findPrivateTrips(User user) throws TripsException;
     public Trip findTripById(int id, User user) throws TripsException;

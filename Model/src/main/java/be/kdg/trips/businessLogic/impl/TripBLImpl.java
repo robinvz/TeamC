@@ -81,8 +81,19 @@ public class TripBLImpl implements TripBL
     }
 
     @Override
-    public List<Trip> findNonPrivateTripsByKeyword(String keyword) {
-        List<Trip> trips = tripDao.getNonPrivateTripsByKeyword(keyword.toLowerCase());
+    public List<Trip> findNonPrivateTripsByKeyword(String keyword, User user) throws TripsException
+    {
+        List<Trip> trips = new ArrayList<Trip>();
+        if(user == null)
+        {
+            trips.addAll(tripDao.getPublicTripsByKeyword(keyword.toLowerCase()));
+            trips.addAll(tripDao.getProtectedTripsWithoutDetailsByKeyword(keyword.toLowerCase()));
+        }
+        else if(userBL.isExistingUser(user.getEmail()))
+        {
+            trips.addAll(tripDao.getPublicTripsByKeyword(keyword.toLowerCase()));
+            trips.addAll(tripDao.getProtectedTripsByKeyword(keyword.toLowerCase()));
+        }
         return trips;
     }
 
@@ -91,17 +102,13 @@ public class TripBLImpl implements TripBL
         List trips = new ArrayList<Trip>();
         if(user==null)
         {
-            List<Trip> publicTripsWithLocations = tripDao.getPublicTrips();
-            List<Trip> protectedTripsWithoutLocations = tripDao.getProtectedTripsWithoutDetails();
-            trips.addAll(publicTripsWithLocations);
-            trips.addAll(protectedTripsWithoutLocations);
+            trips.addAll(tripDao.getPublicTrips());
+            trips.addAll(tripDao.getProtectedTripsWithoutDetails());
         }
         else if(userBL.isExistingUser(user.getEmail()))
         {
-            List<Trip> publicTripsWithLocations = tripDao.getPublicTrips();
-            List<Trip> protectedTripsWithLocations = tripDao.getProtectedTrips();
-            trips.addAll(publicTripsWithLocations);
-            trips.addAll(protectedTripsWithLocations);
+            trips.addAll(tripDao.getPublicTrips());
+            trips.addAll(tripDao.getProtectedTrips());
         }
         return trips;
     }
