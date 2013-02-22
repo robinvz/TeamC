@@ -146,7 +146,8 @@ public class TestTrip {
     public void successfulFindTripById() throws TripsException
     {
         Trip createdTrip = tripsService.createTimelessTrip("Boswandeling 2", "Wandeling in bos", TripPrivacy.PROTECTED, user);
-        Trip foundTrip = (Trip) tripsService.findTripById(createdTrip.getId());
+        User user1 = tripsService.createUser("lolzor@gmail.com", "lollol");
+        Trip foundTrip = (Trip) tripsService.findTripById(createdTrip.getId(), user1);
         assertEquals(createdTrip, foundTrip);
     }
 
@@ -154,7 +155,8 @@ public class TestTrip {
     public void failedFindTripById() throws TripsException
     {
         Trip createdTrip = tripsService.createTimelessTrip("Boswandeling 3", "Wandeling in bos", TripPrivacy.PRIVATE, user);
-        Trip foundTrip = (Trip) tripsService.findTripById(createdTrip.getId());
+        User user1 = tripsService.createUser("lalzar@gmail.com", "lallal");
+        Trip foundTrip = (Trip) tripsService.findTripById(createdTrip.getId(), user1);
     }
 
     @Test

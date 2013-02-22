@@ -118,10 +118,26 @@ public class TripBLImpl implements TripBL
     }
 
     @Override
-    public Trip findTripById(int id) throws TripsException
+    public Trip findTripById(int id, User user) throws TripsException
     {
-
-        return tripDao.getTrip(id);
+        Trip trip = tripDao.getTrip(id);
+        switch(trip.getPrivacy())
+        {
+            case PUBLIC:
+                return trip;
+            case PROTECTED:
+                if(userBL.isExistingUser(user.getEmail()))
+                {
+                    return trip;
+                }
+            break;
+            case PRIVATE:
+                if(enrollmentBL.isExistingInvitation(user, trip))
+                {
+                    return trip;
+                }
+        }
+        throw new TripsException("You do not have viewing rights for this trip");
     }
 
     @Override

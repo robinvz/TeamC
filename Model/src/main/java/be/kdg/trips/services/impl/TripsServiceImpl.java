@@ -95,18 +95,18 @@ public class TripsServiceImpl implements TripsService
     }
 
     @Override
-    public List findAllNonPrivateTrips(User loggedInUser) throws TripsException {
-        return tripController.findAllNonPrivateTrips(loggedInUser);
+    public List findAllNonPrivateTrips(User user) throws TripsException {
+        return tripController.findAllNonPrivateTrips(user);
     }
 
     @Override
-    public List findPrivateTrips(User loggedInUser) throws TripsException {
-        return tripController.findPrivateTrips(loggedInUser);
+    public List findPrivateTrips(User user) throws TripsException {
+        return tripController.findPrivateTrips(user);
     }
 
     @Override
-    public Trip findTripById(int id) throws TripsException {
-        return tripController.findTripById(id);
+    public Trip findTripById(int id, User user) throws TripsException {
+        return tripController.findTripById(id, user);
     }
 
     @Override

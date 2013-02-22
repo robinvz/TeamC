@@ -23,7 +23,7 @@ public interface TripBL
     public List<Trip> findNonPrivateTripsByKeyword(String keyword);
     public List<Trip> findAllNonPrivateTrips(User user) throws TripsException;
     public List<Trip> findPrivateTrips(User user) throws TripsException;
-    public Trip findTripById(int id) throws TripsException;
+    public Trip findTripById(int id, User user) throws TripsException;
 
     public void publishTrip(Trip trip, User user) throws TripsException;
     public void addLabelToTrip(Trip trip, User organizer, String label) throws TripsException;
