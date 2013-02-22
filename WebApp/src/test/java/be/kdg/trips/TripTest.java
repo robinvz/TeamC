@@ -123,10 +123,10 @@ public class TripTest {
         String description = "Dit is een test";
         String privacy = "PUBLIC";
         TripPrivacy pr = TripPrivacy.PUBLIC;
+        TimelessTrip t = new TimelessTrip(title, description, pr, user);
         RequestBuilder requestBuilder = MockMvcRequestBuilders.post("/createTimeLessTrip").param("title", title).param("description", description).param("privacy", privacy);
-        when(tripsService.createTimelessTrip(title, description, pr, user)).thenReturn(new TimelessTrip(title, description, pr, user));
-        ;
-        mockMvc.perform(requestBuilder).andExpect(view().name("redirect:trip/1"));
+        when(tripsService.createTimelessTrip(title, description, pr, user)).thenReturn(t);
+        mockMvc.perform(requestBuilder).andExpect(view().name("redirect:trip/" + t.getId()));
     }
 
     @Test
@@ -139,15 +139,26 @@ public class TripTest {
         TripPrivacy pr = TripPrivacy.PUBLIC;
         RequestBuilder requestBuilder = MockMvcRequestBuilders.post("/createTimeLessTrip").param("title", title).param("description", description).param("privacy", privacy);
         when(tripsService.createTimelessTrip(title, description, pr, user)).thenThrow(new TripsException("Users does not exist"));
-        ;
         mockMvc.perform(requestBuilder).andExpect(view().name("/errors/loginErrorView"));
     }
 
     @Test
-    public void getTrip() {
-
-
+    public void getTrip() throws Exception {
+        RequestBuilder requestBuilder = MockMvcRequestBuilders.get("/trip/0");
+        TimelessTrip t = new TimelessTrip("TestTrip", "hallo", TripPrivacy.PUBLIC, new User("ikke", "pass"));
+        when(tripsService.findTripById(0)).thenReturn(t);
+        mockMvc.perform(requestBuilder).andExpect(view().name("tripView")).andExpect(model().attribute("trip", t));
     }
+
+
+    @Test
+    public void getTripFail() throws Exception {
+        RequestBuilder requestBuilder = MockMvcRequestBuilders.get("/trip/-1");
+        TimelessTrip t = new TimelessTrip("TestTrip", "hallo", TripPrivacy.PUBLIC, new User("ikke", "pass"));
+        when(tripsService.findTripById(-1)).thenThrow(new TripsException("Could not find trip"));
+        mockMvc.perform(requestBuilder).andExpect(view().name("tripsView"));
+    }
+
 
 
 }
