@@ -74,6 +74,7 @@ public class LoginController {
 
     @RequestMapping(value = "/register", method = RequestMethod.POST)
     public String register(HttpServletRequest request) {
+        //changes
         String firstName = request.getParameter("firstName");
         String lastName = request.getParameter("lastName");
         String street = request.getParameter("street");
