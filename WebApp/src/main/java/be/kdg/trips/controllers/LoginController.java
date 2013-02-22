@@ -26,6 +26,7 @@ import javax.validation.Valid;
  * 2012-2013
  */
 @Controller
+//LoginController
 public class LoginController {
 
     @InitBinder

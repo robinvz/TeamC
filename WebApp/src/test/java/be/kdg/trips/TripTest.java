@@ -43,6 +43,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
  * 2012-2013
  */
 public class TripTest {
+
     @Mock
     private TripsService tripsService;
 
@@ -66,6 +67,7 @@ public class TripTest {
 
     @Test
     public void getTrips() throws Exception {
+
         RequestBuilder requestBuilder = MockMvcRequestBuilders.get("/trips");
         User user = new User("bob", "bob");
         when(tripsService.findAllNonPrivateTrips(user)).thenReturn(new ArrayList());
@@ -160,6 +162,16 @@ public class TripTest {
         TimelessTrip t = new TimelessTrip("TestTrip", "hallo", TripPrivacy.PUBLIC, user);
         RequestBuilder requestBuilder = MockMvcRequestBuilders.get("/trip/-1");
         when(tripsService.findTripById(-1, user)).thenThrow(new TripsException("Could not find trip"));
+        mockMvc.perform(requestBuilder).andExpect(view().name("tripsView"));
+    }
+
+    @Test
+    public void getTripUserNotAllowe() throws Exception {
+        User user = new User("ikke", "pass");
+        mockHttpSession.setAttribute("user", user);
+        TimelessTrip t = new TimelessTrip("TestTrip", "hallo", TripPrivacy.PRIVATE,  new User("hallo", "hallo"));
+        RequestBuilder requestBuilder = MockMvcRequestBuilders.get("/trip/" + t.getId());
+        when(tripsService.findTripById(t.getId(), user)).thenThrow(new TripsException("Could not find trip"));
         mockMvc.perform(requestBuilder).andExpect(view().name("tripsView"));
     }
 
