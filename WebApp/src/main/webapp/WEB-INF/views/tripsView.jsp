@@ -48,12 +48,24 @@
                                             ${allNonPrivateTrip.privacy}
                                     </td>
                                 </div>
-                                <!--  <div class="form-buttons">
-                                      <div class="button">
-                                          <td><input name="submit" type="submit" value="Select"/></td>
-                                      </div>
-                                  </div>   -->
                             </tr>
+                    </c:forEach>
+                </c:if>
+                <c:if test="${not empty allPrivateTrips}">
+                    <c:forEach items="${allPrivateTrips}" var="allPrivateTrip">
+                        <tr id="trip${allPrivateTrip.id}">
+                            <div class="form-row">
+                                <td>
+                                        ${allPrivateTrip.title}
+                                </td>
+                                <td>
+                                        ${allPrivateTrip.description}
+                                </td>
+                                <td>
+                                        ${allPrivateTrip.privacy}
+                                </td>
+                            </div>
+                        </tr>
                     </c:forEach>
                 </c:if>
             </div>

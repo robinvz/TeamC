@@ -67,11 +67,11 @@ public class TripTest {
 
     @Test
     public void getTrips() throws Exception {
-
         RequestBuilder requestBuilder = MockMvcRequestBuilders.get("/trips");
-        User user = new User("bob", "bob");
+        User user = tripsService.findUser("keke.kokelenberg@student.kdg.be");
         when(tripsService.findAllNonPrivateTrips(user)).thenReturn(new ArrayList());
-        mockMvc.perform(requestBuilder).andExpect(view().name("tripsView")).andExpect(model().attributeExists("allNonPrivateTrips"));
+        when(tripsService.findPrivateTrips(user)).thenReturn(new ArrayList());
+        mockMvc.perform(requestBuilder).andExpect(view().name("tripsView")).andExpect(model().attributeExists("allNonPrivateTrips")).andExpect(model().attributeExists("allPrivateTrips"));
     }
 
     @Test
