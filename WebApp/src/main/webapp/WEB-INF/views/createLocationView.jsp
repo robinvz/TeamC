@@ -6,7 +6,7 @@
 </head>
 <body>
 <div id="page">
-    <jsp:include page="headerView.jsp"/>
+    <jsp:include page="baseView.jsp"/>
 
     <div id="trip-header">
         <h2>${trip.naam}</h2>
@@ -54,12 +54,7 @@
             </div>
         </div>
     </div>
-    <footer><p class="footer">Trips - 2013</p></footer>
 </div>
-<script src="${pageContext.request.contextPath}/resources/js/jquery-1.9.0.min.js"></script>
 <script src="${pageContext.request.contextPath}/resources/js/mapscript.js"></script>
-<!--[if lt IE 9]>
-<script src="${pageContext.request.contextPath}/resources/js/html5shiv.js"></script>
-<![endif]-->
 </body>
 </html>

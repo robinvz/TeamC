@@ -7,7 +7,7 @@
     <link rel="stylesheet" href="${pageContext.request.contextPath}/resources/css/login.css"/>
 </head>
 <div id="page">
-    <jsp:include page="headerView.jsp"/>
+    <jsp:include page="baseView.jsp"/>
 
     <div id="content">
         <form:form method="POST" commandName="user" action="register">
@@ -109,11 +109,6 @@
             <button type="submit">Register</button>
         </form:form>
     </div>
-
-    <footer><p class="footer">Trips - 2013</p></footer>
 </div>
-<!--[if lt IE 9]>
-<script src="${pageContext.request.contextPath}/resources/js/html5shiv.js"></script>
-<![endif]-->
 </body>
 </html>

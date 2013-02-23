@@ -6,7 +6,7 @@
 </head>
 <body>
 <div id="page">
-    <jsp:include page="headerView.jsp"/>
+    <jsp:include page="baseView.jsp"/>
 
     <div id="content">
         <h2>Welcome</h2>
@@ -21,10 +21,6 @@
             remarks please consult our contact page.
         </p>
     </div>
-    <footer><p class="footer">Trips - 2013</p></footer>
 </div>
-<!--[if lt IE 9]>
-<script src="${pageContext.request.contextPath}/resources/js/html5shiv.js"></script>
-<![endif]-->
 </body>
 </html>

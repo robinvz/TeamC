@@ -1,7 +1,9 @@
-<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %> <!---->
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+<!---->
 <header>
-    <a href="/" title="Home"> <img class="header-img" src="${pageContext.request.contextPath}/resources/res/img/logosite.png" alt="Logo"
-         title="Home"/>     </a>
+    <a href="/" title="Home"> <img class="header-img"
+                                   src="${pageContext.request.contextPath}/resources/res/img/logosite.png" alt="Logo"
+                                   title="Home"/> </a>
 
     <nav class="header-nav">
         <ul class="nav">
@@ -23,6 +25,7 @@
         </ul>
     </nav>
 </header>
+<footer><p class="footer">Trips - 2013</p></footer>
 
 <script src="${pageContext.request.contextPath}/resources/js/jquery-1.9.0.min.js"></script>
 <script src="${pageContext.request.contextPath}/resources/js/header.js"></script>

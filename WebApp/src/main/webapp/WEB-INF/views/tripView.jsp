@@ -6,7 +6,7 @@
 </head>
 <body>
 <div id="page">
-    <jsp:include page="headerView.jsp"/>
+    <jsp:include page="baseView.jsp"/>
     <jsp:include page="tripHeaderView.jsp"/>
 
     <div class="inner-content">
@@ -16,10 +16,6 @@
             </article>
         </section>
     </div>
-    <footer><p class="footer">Trips - 2013</p></footer>
 </div>
-<!--[if lt IE 9]>
-<script src="${pageContext.request.contextPath}/resources/js/html5shiv.js"></script>
-<![endif]-->
 </body>
 </html>

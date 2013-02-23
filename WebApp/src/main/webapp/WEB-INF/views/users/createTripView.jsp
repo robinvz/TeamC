@@ -1,4 +1,3 @@
-
 <%@ taglib prefix="form" uri="http://www.springframework.org/tags/form" %>
 <html>
 <head>
@@ -8,7 +7,7 @@
 </head>
 <body>
 <div id="page">
-    <jsp:include page="../headerView.jsp"/>
+    <jsp:include page="../baseView.jsp"/>
 
     <div id="content">
         <div id="timeboundTrip">
@@ -28,7 +27,8 @@
                             <td><label>Privacy: </label></td>
                             <td><input type="radio" name="privacy" value="PUBLIC">Public</input>
                                 <input type="radio" name="privacy" value="PROTECTED">Protected</input>
-                                <input type="radio" name="privacy" value="PRIVATE">Private</td>
+                                <input type="radio" name="privacy" value="PRIVATE">Private
+                            </td>
                         </tr>
                         <tr>
                             <td><label>Start date: </label></td>
@@ -36,7 +36,8 @@
                         </tr>
                         <tr>
                             <td><label>End date: </label></td>
-                            <td><input type="date" name="endDate" ></td></td>
+                            <td><input type="date" name="endDate"></td>
+                            </td>
                         </tr>
                     </table>
                 </fieldset>
@@ -62,7 +63,8 @@
                             <td><label>Privacy: </label></td>
                             <td><input type="radio" name="privacy" value="PUBLIC">Public</input>
                                 <input type="radio" name="privacy" value="PROTECTED">Protected</input>
-                                <input type="radio" name="privacy" value="PRIVATE">Private</td>
+                                <input type="radio" name="privacy" value="PRIVATE">Private
+                            </td>
                         </tr>
                     </table>
                 </fieldset>
@@ -70,13 +72,7 @@
             </form>
             </fieldset>
         </div>
-
-
     </div>
-    <footer><p class="footer">Trips - 2013</p></footer>
 </div>
-<!--[if lt IE 9]>
-<script src="${pageContext.request.contextPath}/resources/js/html5shiv.js"></script>
-<![endif]-->
 </body>
 </html>

@@ -1,4 +1,3 @@
-
 <html>
 <head>
     <link rel="stylesheet" href="${pageContext.request.contextPath}/resources/css/main.css"/>
@@ -8,7 +7,7 @@
 </head>
 <body>
 <div id="page">
-    <jsp:include page="../headerView.jsp"/>
+    <jsp:include page="../baseView.jsp"/>
 
     <div id="content">
         <form action="/users/editCredentials" method="POST">
@@ -40,11 +39,6 @@
             <input type="submit" value="Save" class="btn-submit">
         </form>
     </div>
-
-    <footer><p class="footer">Trips - 2013</p></footer>
 </div>
-<!--[if lt IE 9]>
-<script src="${pageContext.request.contextPath}/resources/js/html5shiv.js"></script>
-<![endif]-->
 </body>
 </html>
