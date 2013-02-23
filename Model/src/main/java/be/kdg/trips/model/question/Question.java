@@ -26,7 +26,7 @@ public class Question implements QuestionInterface, Serializable
     @Id
     @GeneratedValue(strategy= GenerationType.IDENTITY)
     private int id;
-    @Size(max = 100)
+    @Size(max = 100, message = "Question has a maximum amount of 100 characters")
     @NotNull
     private String question;
     @ElementCollection(fetch = FetchType.EAGER)

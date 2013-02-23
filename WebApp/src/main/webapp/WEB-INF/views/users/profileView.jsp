@@ -1,5 +1,4 @@
 <%@ taglib prefix="form" uri="http://www.springframework.org/tags/form" %>
-<%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <html>
 <head>
     <link rel="stylesheet" href="${pageContext.request.contextPath}/resources/css/main.css"/>
@@ -9,7 +8,7 @@
 </head>
 <body>
 <div id="page">
-    <jsp:include page="../headerView.jsp"/>
+    <jsp:include page="../baseView.jsp"/>
     <jsp:include page="profileHeaderView.jsp"/>
     <div class="content">
         <section>
@@ -135,11 +134,6 @@
             </article>
         </section>
     </div>
-
-    <footer><p class="footer">Trips - 2013</p></footer>
 </div>
-<!--[if lt IE 9]>
-<script src="${pageContext.request.contextPath}/resources/js/html5shiv.js"></script>
-<![endif]-->
 </body>
 </html>

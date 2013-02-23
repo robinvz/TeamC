@@ -8,7 +8,7 @@
 </head>
 <body>
 <div id="page">
-    <jsp:include page="headerView.jsp"/>
+    <jsp:include page="baseView.jsp"/>
 
     <h2>Overview</h2>
         <div id="control-bar">
@@ -48,12 +48,24 @@
                                             ${allNonPrivateTrip.privacy}
                                     </td>
                                 </div>
-                                <!--  <div class="form-buttons">
-                                      <div class="button">
-                                          <td><input name="submit" type="submit" value="Select"/></td>
-                                      </div>
-                                  </div>   -->
                             </tr>
+                    </c:forEach>
+                </c:if>
+                <c:if test="${not empty allPrivateTrips}">
+                    <c:forEach items="${allPrivateTrips}" var="allPrivateTrip">
+                        <tr id="trip${allPrivateTrip.id}">
+                            <div class="form-row">
+                                <td>
+                                        ${allPrivateTrip.title}
+                                </td>
+                                <td>
+                                        ${allPrivateTrip.description}
+                                </td>
+                                <td>
+                                        ${allPrivateTrip.privacy}
+                                </td>
+                            </div>
+                        </tr>
                     </c:forEach>
                 </c:if>
             </div>
@@ -61,13 +73,7 @@
             </tbody>
         </table>
     </div>
-
-    <footer><p class="footer">Trips - 2013</p></footer>
 </div>
-<script src="${pageContext.request.contextPath}/resources/js/jquery-1.9.0.min.js"></script>
 <script src="${pageContext.request.contextPath}/resources/js/trips.js"></script>
-<!--[if lt IE 9]>
-<script src="${pageContext.request.contextPath}/resources/js/html5shiv.js"></script>
-<![endif]-->
 </body>
 </html>

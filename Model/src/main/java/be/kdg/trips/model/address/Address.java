@@ -20,22 +20,22 @@ public class Address implements AddressInterface, Serializable
     @Id
     @GeneratedValue(strategy= GenerationType.IDENTITY)
     private int id;
-    @Pattern(regexp = noDigitsRegEx)
-    @Size(max=50)
+    @Pattern(regexp = noDigitsRegEx, message = "Street should only contain letters")
+    @Size(max=50, message = "Street has a maximum amount of 50 characters")
     private String street;
-    @Pattern(regexp = "^\\d{1,}[a-zA-Z]{0,1}$")
-    @Size(max=9)
+    @Pattern(regexp = "^\\d{1,}[a-zA-Z]{0,1}$", message = "House number should a number with maximum one letter")
+    @Size(max=9, message = "House number has a maximum amount of 9 characters")
     private String houseNr;
-    @Pattern(regexp = noDigitsRegEx)
-    @Size(max=50)
+    @Pattern(regexp = noDigitsRegEx, message = "City should only contain letters")
+    @Size(max=50, message = "City has a maximum amount of 50 characters")
     private String city;
-    @Size(max=15)
+    @Size(max=15, message = "Postal code has a maximum amount of 15 characters")
     private String postalCode;
-    @Pattern(regexp = noDigitsRegEx)
-    @Size(max=50)
+    @Pattern(regexp = noDigitsRegEx, message = "Province should only contain letters")
+    @Size(max=50, message = "Province has a maximum amount of 50 characters")
     private String province;
-    @Pattern(regexp = noDigitsRegEx)
-    @Size(max=50)
+    @Pattern(regexp = noDigitsRegEx, message = "Country should only contain letters")
+    @Size(max=50, message = "Country has a maximum amount of 50 characters")
     private String country;
 
     public Address(String street, String houseNr, String city, String postalCode, String province, String country) {

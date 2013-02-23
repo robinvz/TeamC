@@ -24,17 +24,17 @@ public class Location implements LocationInterface, Serializable
     @GeneratedValue(strategy= GenerationType.IDENTITY)
     private int id;
     @NotNull
-    @DecimalMin("-90.00")
-    @DecimalMax("90.00")
+    @DecimalMin(value = "-90.00", message = "Latitude must be between -90 and 90")
+    @DecimalMax(value = "90.00", message = "Latitude must be between -90 and 90")
     private double latitude;
     @NotNull
-    @DecimalMin("-180.00")
-    @DecimalMax("180.00")
+    @DecimalMin(value = "-180.00", message = "Longitude must be between -180 and 180")
+    @DecimalMax(value = "180.00", message = "Longitude must be between -180 and 180")
     private double longitude;
     @NotNull
-    @Size(min = 2, max = 50)
+    @Size(max = 50, message = "Title has a maximum amount of 50 characters")
     private String title;
-    @Size(max = 150)
+    @Size(max = 150, message = "Description has a maximum amount of 150 characters")
     private String description;
     @OneToOne(cascade = CascadeType.ALL)
     @JoinColumn(name = "addressId")

@@ -37,17 +37,21 @@ public class TripController {
     @RequestMapping(value = "/trips", method = RequestMethod.GET)
     public ModelAndView showTrips() {
         List<Trip> allNonPrivateTrips = null;
+        List<Trip> allPrivateTrips = null;
         Map<String, List> parameters = new HashMap();
         try {
             if (session.getAttribute("user") != null) {
                 allNonPrivateTrips = tripsService.findAllNonPrivateTrips((User) session.getAttribute("user"));
+                allPrivateTrips = tripsService.findPrivateTrips((User) session.getAttribute("user"));
             } else {
                 allNonPrivateTrips = tripsService.findAllNonPrivateTrips(null);
+                allPrivateTrips = tripsService.findPrivateTrips(null);
             }
         } catch (TripsException e) {
-            //No nonprivate trips
+            //No (non)private trips
         }
         parameters.put("allNonPrivateTrips", allNonPrivateTrips);
+        parameters.put("allPrivateTrips", allPrivateTrips);
         return new ModelAndView("tripsView", parameters);
     }
 

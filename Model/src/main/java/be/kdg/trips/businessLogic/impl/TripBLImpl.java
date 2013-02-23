@@ -137,7 +137,7 @@ public class TripBLImpl implements TripBL
                 {
                     return trip;
                 }
-            break;
+                break;
             case PRIVATE:
                 if(enrollmentBL.isExistingInvitation(user, trip))
                 {
@@ -145,6 +145,16 @@ public class TripBLImpl implements TripBL
                 }
         }
         throw new TripsException("You do not have viewing rights for this trip");
+    }
+
+    @Override
+    public List<Trip> findTripsByOrganizer(User organizer) throws TripsException {
+        List<Trip> trips = new ArrayList<>();
+        if(userBL.isExistingUser(organizer.getEmail()))
+        {
+            trips = tripDao.getTripsByOrganizer(organizer);
+        }
+        return trips;
     }
 
     @Override

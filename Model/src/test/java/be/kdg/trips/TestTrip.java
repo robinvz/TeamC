@@ -135,9 +135,9 @@ public class TestTrip {
         assertEquals(createdTrip, foundTrip);
     }
 
-    /*
+
     @Test
-    public void succesfulFindTripByKeywordInLabel() throws TripsException
+    public void successfulFindTripByKeywordInLabel() throws TripsException
     {
         Trip createdTrip = tripsService.createTimelessTrip("Waterwandeling", "Wandeling in water", TripPrivacy.PROTECTED, user);
         tripsService.addLabelToTrip(createdTrip, user, "WandelingWATER");
@@ -145,7 +145,7 @@ public class TestTrip {
         Trip foundTrip = (Trip) tripsService.findNonPrivateTripsByKeyword("ANdelingWAT", user).get(FIRST_ELEMENT);
         assertEquals(createdTrip, foundTrip);
     }
-     */
+
     @Test
     public void successfulFindTripById() throws TripsException
     {
@@ -176,6 +176,22 @@ public class TestTrip {
     @Test
     public void failedFindTripByKeyword() throws TripsException {
         assertEquals(0,tripsService.findNonPrivateTripsByKeyword("Nachtdropping", user).size());
+    }
+
+    @Test
+    public void successfulFindTripsByOrganizer1() throws TripsException {
+        User organizer1 = tripsService.createUser("gerard.depardieu@hotmail.com","spint");
+        Trip trip1 = tripsService.createTimelessTrip("Trip1","TripDescription",TripPrivacy.PUBLIC,organizer1);
+        Trip trip2 = tripsService.createTimelessTrip("Trip2","TripDescription",TripPrivacy.PRIVATE,organizer1);
+        User organizer2 = tripsService.createUser("steven.spielberg@msn.com","oscar");
+        Trip trip3 = tripsService.createTimelessTrip("Trip3","TripDescription",TripPrivacy.PUBLIC,organizer2);
+        assertEquals(2,tripsService.findTripsByOrganizer(organizer1).size());
+    }
+
+    @Test
+    public void successfulFindTripsByOrganizer2() throws TripsException {
+        User organizer = tripsService.createUser("femke@hotmail.com","spint");
+        assertTrue(tripsService.findTripsByOrganizer(organizer).isEmpty());
     }
 
     @Test
