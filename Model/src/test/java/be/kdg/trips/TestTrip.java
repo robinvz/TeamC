@@ -179,6 +179,22 @@ public class TestTrip {
     }
 
     @Test
+    public void successfulFindTripsByOrganizer1() throws TripsException {
+        User organizer1 = tripsService.createUser("gerard.depardieu@hotmail.com","spint");
+        Trip trip1 = tripsService.createTimelessTrip("Trip1","TripDescription",TripPrivacy.PUBLIC,organizer1);
+        Trip trip2 = tripsService.createTimelessTrip("Trip2","TripDescription",TripPrivacy.PRIVATE,organizer1);
+        User organizer2 = tripsService.createUser("steven.spielberg@msn.com","oscar");
+        Trip trip3 = tripsService.createTimelessTrip("Trip3","TripDescription",TripPrivacy.PUBLIC,organizer2);
+        assertEquals(2,tripsService.findTripsByOrganizer(organizer1).size());
+    }
+
+    @Test
+    public void successfulFindTripsByOrganizer2() throws TripsException {
+        User organizer = tripsService.createUser("femke@hotmail.com","spint");
+        assertTrue(tripsService.findTripsByOrganizer(organizer).isEmpty());
+    }
+
+    @Test
     public void successfulAddLabelsToTrip() throws TripsException {
         Trip trip = tripsService.createTimelessTrip("The Spartacus", "N/A", TripPrivacy.PUBLIC, user);
         tripsService.addLabelToTrip(trip,user,"Modder");

@@ -2,6 +2,7 @@ package be.kdg.trips.persistence.dao.impl;
 
 import be.kdg.trips.exception.TripsException;
 import be.kdg.trips.model.trip.*;
+import be.kdg.trips.model.user.User;
 import be.kdg.trips.persistence.dao.interfaces.TripDao;
 import org.hibernate.Query;
 import org.hibernate.Session;
@@ -35,37 +36,47 @@ public class TripDaoImpl implements TripDao{
     }
 
 
-    public List getPublicTrips()
+    public List<Trip> getPublicTrips()
     {
         return queryTrip("SELECT DISTINCT t FROM Trip t LEFT JOIN FETCH t.locations WHERE t.privacy = 0 AND t.published = 1");
     }
 
-    public List getProtectedTrips()
+    public List<Trip> getProtectedTrips()
     {
         return queryTrip("SELECT DISTINCT t FROM Trip t LEFT JOIN FETCH t.locations WHERE t.privacy = 1 AND t.published = 1 ");
     }
 
-    public List getProtectedTripsWithoutDetails()
+    public List<Trip> getProtectedTripsWithoutDetails()
     {
         return queryTrip("FROM Trip t WHERE t.privacy = 1 AND t.published = 1");
     }
 
     @Override
-    public List getPublicTripsByKeyword(String keyword)
+    public List<Trip> getPublicTripsByKeyword(String keyword)
     {
-        return queryTripByKeyword("FROM Trip t LEFT OUTER JOIN t.labels label LEFT JOIN FETCH t.locations WHERE (lower(t.title) LIKE :keyword OR lower(t.description) LIKE :keyword OR lower(label) LIKE :keyword) AND t.privacy = 0 AND t.published = 1", keyword);
+        return queryTripByKeyword("SELECT DISTINCT t FROM Trip t LEFT OUTER JOIN t.labels label LEFT JOIN FETCH t.locations WHERE (lower(t.title) LIKE :keyword OR lower(t.description) LIKE :keyword OR lower(label) LIKE :keyword) AND t.privacy = 0 AND t.published = 1", keyword);
     }
 
     @Override
-    public List getProtectedTripsByKeyword(String keyword)
+    public List<Trip> getProtectedTripsByKeyword(String keyword)
     {
-        return queryTripByKeyword("FROM Trip t LEFT OUTER JOIN t.labels label LEFT JOIN FETCH t.locations WHERE (lower(t.title) LIKE :keyword OR lower(t.description) LIKE :keyword OR lower(label) LIKE :keyword) AND t.privacy = 1 AND t.published = 1", keyword);
+        return queryTripByKeyword("SELECT DISTINCT t FROM Trip t LEFT OUTER JOIN t.labels label LEFT JOIN FETCH t.locations WHERE (lower(t.title) LIKE :keyword OR lower(t.description) LIKE :keyword OR lower(label) LIKE :keyword) AND t.privacy = 1 AND t.published = 1", keyword);
     }
 
     @Override
-    public List getProtectedTripsWithoutDetailsByKeyword(String keyword)
+    public List<Trip> getProtectedTripsWithoutDetailsByKeyword(String keyword)
     {
         return queryTripByKeyword("FROM Trip t LEFT OUTER JOIN t.labels label WHERE (lower(t.title) LIKE :keyword OR lower(t.description) LIKE :keyword OR lower(label) LIKE :keyword) AND t.privacy = 1 AND t.published = 1", keyword);
+    }
+
+    @Override
+    public List<Trip> getTripsByOrganizer(User organizer) {
+        Session session = sessionFactory.openSession();
+        Query query = session.createQuery("SELECT DISTINCT t FROM Trip t LEFT JOIN FETCH t.labels LEFT JOIN FETCH t.locations LEFT JOIN FETCH t.enrollments WHERE t.organizer.email =  :email");
+        query.setParameter("email", organizer.getEmail());
+        List<Trip> trips = query.list();
+        session.close();
+        return trips;
     }
 
     @Override
