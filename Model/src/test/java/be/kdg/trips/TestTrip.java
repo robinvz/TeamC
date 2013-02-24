@@ -1,6 +1,7 @@
 package be.kdg.trips;
 
 import be.kdg.trips.exception.TripsException;
+import be.kdg.trips.model.trip.TimeBoundTrip;
 import be.kdg.trips.model.trip.Trip;
 import be.kdg.trips.model.trip.TripPrivacy;
 import be.kdg.trips.model.user.User;
@@ -246,7 +247,7 @@ public class TestTrip {
     public void failedAddLocationNoPermission() throws TripsException
     {
         Trip trip = tripsService.createTimelessTrip("locationTrip", "trip with locations", TripPrivacy.PUBLIC, user);
-        User otherUser = tripsService.createUser("jan.discart@hotmail.com", "janneman");
+        User otherUser = tripsService.createUser("jan.discort@hotmail.com", "janneman");
         tripsService.addLocationToTrip(otherUser, trip, 131.131, 23.123, "Nationalestraat", null, "Antwerp", "2000", "Antwerp", "Belgium", "Titel", "Lange straat met tramspoor");
     }
 
@@ -265,6 +266,23 @@ public class TestTrip {
         possibleAnswers.add("Gijs");
         possibleAnswers.add("Keke");
         tripsService.addLocationToTrip(user, createdTrip, 10.12131, 10.12131, "Nationalestraat", null, "Antwerp", "2000", "Antwerp", "Belgium", "Titel", "Lange straat met tramspoor", "Who am I?", possibleAnswers, 4);
+    }
+
+    @Test
+    public void succesfulAddDatesToTimeBoundTrip() throws ParseException, TripsException
+    {
+        Trip trip = tripsService.createTimeBoundTrip("trip met extra dates","extra dates",TripPrivacy.PROTECTED,user,df.parse("01/01/2014"), df.parse("01/02/2014"));
+        tripsService.publishTrip(trip, user);
+        tripsService.addDateToTimeBoundTrip(df.parse("01/03/2014"), df.parse("01/04/2014"), trip, user);
+        assertEquals(2, ((TimeBoundTrip)trip).getDates().size());
+    }
+
+    @Test(expected = TripsException.class)
+    public void failedAddDatesToTimeBoundTripOccupiedDate() throws ParseException, TripsException
+    {
+        Trip trip = tripsService.createTimeBoundTrip("trip met extra dates","extra dates",TripPrivacy.PROTECTED,user,df.parse("01/01/2014"), df.parse("01/02/2014"));
+        tripsService.publishTrip(trip, user);
+        tripsService.addDateToTimeBoundTrip(df.parse("15/01/2014"), df.parse("01/04/2014"), trip, user);
     }
 
     @Test

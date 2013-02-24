@@ -29,6 +29,7 @@ public interface TripInterface {
     public boolean isPublished();
     public void setPublished(boolean published);
     public boolean isActive();
+    public boolean isTimeBoundTrip();
     public void addLocation(Location location);
     public void removeLocation(Location location);
     public List<Location> getLocations();

@@ -21,10 +21,7 @@ import org.springframework.stereotype.Component;
 import javax.mail.*;
 import javax.mail.internet.InternetAddress;
 import javax.mail.internet.MimeMessage;
-import java.util.ArrayList;
-import java.util.Date;
-import java.util.List;
-import java.util.Properties;
+import java.util.*;
 
 /**
  * Subversion id
@@ -60,21 +57,10 @@ public class TripBLImpl implements TripBL
         Trip trip=null;
         if(userBL.isExistingUser(organizer.getEmail()))
         {
-            if(startDate.after(new Date()))
+            if(areDatesValid(startDate, endDate))
             {
-                if(startDate.before(endDate))
-                {
-                    trip = new TimeBoundTrip(title, description, privacy, organizer, startDate, endDate);
-                    tripDao.saveOrUpdateTrip(trip);
-                }
-                else
-                {
-                    throw new TripsException("Start date must be before end date");
-                }
-            }
-            else
-            {
-                throw new TripsException("Start date must be in the future");
+                trip = new TimeBoundTrip(title, description, privacy, organizer, startDate, endDate);
+                tripDao.saveOrUpdateTrip(trip);
             }
         }
         return trip;
@@ -214,6 +200,18 @@ public class TripBLImpl implements TripBL
     }
 
     @Override
+    public void addDateToTimeBoundTrip(Date startDate, Date endDate, Trip trip, User organizer) throws TripsException {
+        if(isExistingTrip(trip.getId()) && userBL.isExistingUser(organizer.getEmail()) && isOrganizer(trip, organizer))
+        {
+            if(areDatesUnoccupied(startDate, endDate, trip))
+            {
+                ((TimeBoundTrip) trip).addDates(startDate, endDate);
+                tripDao.saveOrUpdateTrip(trip);
+            }
+        }
+    }
+
+    @Override
     public void deleteTrip(Trip trip, User user) throws TripsException, MessagingException {
         if(isExistingTrip(trip.getId()) && userBL.isExistingUser(user.getEmail()) && isOrganizer(trip, user))
         {
@@ -225,6 +223,58 @@ public class TripBLImpl implements TripBL
             tripDao.deleteTrip(trip);
             sendMail("Trip '"+trip.getTitle()+ "'", "We regret to inform you that the following trip: '"+trip.getTitle()+" - "+trip.getDescription()+"' has been canceled by the organizer.", recipients);
         }
+    }
+
+    @Override
+    public boolean isExistingTrip(int id) throws TripsException {
+        return tripDao.isExistingTrip(id);
+    }
+
+    @Override
+    public boolean isOrganizer(Trip trip, User organizer) throws TripsException
+    {
+        if(trip.getOrganizer().getEmail().equals(organizer.getEmail()))
+        {
+            return true;
+        }
+        throw new TripsException("User with email '"+organizer.getEmail()+"' is not the organizer of the selected trip");
+    }
+
+    private boolean areDatesValid(Date startDate, Date endDate) throws TripsException {
+        if(startDate.after(new Date()))
+        {
+            if(startDate.before(endDate))
+            {
+                return true;
+            }
+            else
+            {
+                throw new TripsException("Start date must be before end date");
+            }
+        }
+        else
+        {
+            throw new TripsException("Start date must be in the future");
+        }
+    }
+
+    private boolean areDatesUnoccupied(Date startDate, Date endDate, Trip trip) throws TripsException {
+        if(trip.isTimeBoundTrip())
+        {
+            Map<Date, Date> dates = ((TimeBoundTrip) trip).getDates();
+            for(Map.Entry datePair : dates.entrySet())
+            {
+                if((((Date)datePair.getKey()).before(startDate) && ((Date)datePair.getValue()).after(startDate) || (((Date)datePair.getKey()).before(endDate) && ((Date)datePair.getValue()).after(endDate))))
+                {
+                    throw new TripsException("Dates are already occupied");
+                }
+            }
+        }
+        else
+        {
+            throw new TripsException("Trip is not a TimeBound trip");
+        }
+        return true;
     }
 
     private void sendMail(String subject, String text, List<InternetAddress[]> recipients) throws MessagingException {
@@ -256,20 +306,5 @@ public class TripBLImpl implements TripBL
         {
             throw new MessagingException("Failed to send email");
         }
-    }
-
-    @Override
-    public boolean isExistingTrip(int id) throws TripsException {
-        return tripDao.isExistingTrip(id);
-    }
-
-    @Override
-    public boolean isOrganizer(Trip trip, User organizer) throws TripsException
-    {
-        if(trip.getOrganizer().getEmail().equals(organizer.getEmail()))
-        {
-            return true;
-        }
-        throw new TripsException("User with email '"+organizer.getEmail()+"' is not the organizer of the selected trip");
     }
 }

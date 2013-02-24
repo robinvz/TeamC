@@ -25,7 +25,7 @@ public interface TripsService
     public User createUser(User user) throws TripsException;
 
     public User findUser(String email) throws TripsException;
-    public boolean checkLogin(String email, String password);
+    public boolean checkLogin(String email, String password) throws TripsException;
 
     public void updateUser(User user, String firstName, String lastName, String street, String houseNr, String city, String postalCode, String province, String country) throws TripsException;
     public void changePassword(User user, String oldPassword, String newPassword) throws TripsException;
@@ -47,6 +47,7 @@ public interface TripsService
     public void addLabelToTrip(Trip trip, User organizer, String label) throws TripsException;
     public void addLocationToTrip(User organizer, Trip trip, double latitude, double longitude, String street, String houseNr, String city, String postalCode, String province, String country, String title, String description) throws TripsException;
     public void addLocationToTrip(User organizer, Trip trip, double latitude, double longitude, String street, String houseNr, String city, String postalCode, String province, String country, String title, String description, String question, List<String> possibleAnswers, int correctAnswerIndex) throws TripsException;
+    public void addDateToTimeBoundTrip(Date startDate, Date endDate, Trip trip, User organizer) throws TripsException;
 
     public void deleteTrip(Trip trip, User organizer) throws TripsException, MessagingException;
 

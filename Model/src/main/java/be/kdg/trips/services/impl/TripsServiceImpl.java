@@ -53,8 +53,7 @@ public class TripsServiceImpl implements TripsService
     }
 
     @Override
-    public boolean checkLogin(String email, String password)
-    {
+    public boolean checkLogin(String email, String password) throws TripsException {
         return userController.checkLogin(email, password);
     }
 
@@ -133,6 +132,11 @@ public class TripsServiceImpl implements TripsService
     @Override
     public void addLocationToTrip(User organizer, Trip trip, double latitude, double longitude, String street, String houseNr, String city, String postalCode, String province, String country, String title, String description, String question, List<String> possibleAnswers, int correctAnswerIndex) throws TripsException {
         tripController.addLocationToTrip(organizer, trip, latitude, longitude, street, houseNr, city, postalCode, province, country, title, description, question, possibleAnswers, correctAnswerIndex);
+    }
+
+    @Override
+    public void addDateToTimeBoundTrip(Date startDate, Date endDate, Trip trip, User organizer) throws TripsException {
+        tripController.addDateToTimeBoundTrip(startDate, endDate, trip, organizer);
     }
 
     @Override
