@@ -18,8 +18,8 @@ public interface EnrollmentDao
 {
     public void saveOrUpdateEnrollment(Enrollment enrollment);
 
-    public List getEnrollmentsByUser(User user);
-    public List getEnrollmentsByTrip(Trip trip);
+    public List<Enrollment> getEnrollmentsByUser(User user);
+    public List<Enrollment> getEnrollmentsByTrip(Trip trip);
     public Enrollment getEnrollmentByUserAndTrip(User user, Trip trip) throws TripsException;
     public Invitation getInvitationByUserAndTrip(User user, Trip trip) throws TripsException;
 

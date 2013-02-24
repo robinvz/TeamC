@@ -53,8 +53,7 @@ public class TripsServiceImpl implements TripsService
     }
 
     @Override
-    public boolean checkLogin(String email, String password)
-    {
+    public boolean checkLogin(String email, String password) throws TripsException {
         return userController.checkLogin(email, password);
     }
 
