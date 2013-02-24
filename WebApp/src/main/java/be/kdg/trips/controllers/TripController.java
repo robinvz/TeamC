@@ -1,6 +1,7 @@
 package be.kdg.trips.controllers;
 
 import be.kdg.trips.exception.TripsException;
+import be.kdg.trips.model.trip.TimelessTrip;
 import be.kdg.trips.model.trip.Trip;
 import be.kdg.trips.model.trip.TripPrivacy;
 import be.kdg.trips.model.user.User;
@@ -12,6 +13,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.servlet.ModelAndView;
 
+import javax.mail.MessagingException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 import java.text.ParseException;
@@ -26,7 +28,6 @@ import java.util.*;
  * To change this template use File | Settings | File Templates.
  */
 @Controller
-//TripController
 public class TripController {
     @Autowired
     private HttpSession session;
@@ -45,7 +46,7 @@ public class TripController {
                 allPrivateTrips = tripsService.findPrivateTrips((User) session.getAttribute("user"));
             } else {
                 allNonPrivateTrips = tripsService.findAllNonPrivateTrips(null);
-                allPrivateTrips = tripsService.findPrivateTrips(null);
+                //allPrivateTrips = tripsService.findPrivateTrips(null);
             }
         } catch (TripsException e) {
             //No (non)private trips
@@ -103,6 +104,21 @@ public class TripController {
         } catch (TripsException e) {
             return "/errors/loginErrorView";
         }
+    }
+
+    @RequestMapping(value = "/deleteTrip", method = RequestMethod.GET)
+    public String deleteTrip(@PathVariable int tripId) {
+        try {
+            User user = (User) session.getAttribute("user");
+            Trip trip = tripsService.findTripById(tripId, user);
+            tripsService.deleteTrip(trip, user);
+        } catch (TripsException e) {
+            return "tripsView";
+            //return new ModelAndView("tripsView");
+        } catch (MessagingException e) {
+        }
+        return "indexView";
+        //return new ModelAndView("tripView", "trip", trip);
     }
 
    /*

@@ -10,11 +10,11 @@
 <div id="page">
     <jsp:include page="../baseView.jsp"/>
     <jsp:include page="profileHeaderView.jsp"/>
+
     <div class="content">
         <section>
             <article>
-                <h2>${sessionScope.user.email}</h2>
-
+                <h2>${user.email}</h2>
                 <div class="profile-general">
                     <table>
                         <tr>
@@ -71,14 +71,6 @@
                                 <output>${user.registerDate}</output>
                             </td>
                         </tr>
-                        <!-- Indien edit profile op andere pagina komt
-                            beter div profile general invisible maken en profile-edit visible?
-                        <tr>
-                            <td>
-                                <a href="/users/editProfile">Edit profile</a>
-                            </td>
-                        </tr>
-                        -->
                     </table>
                 </div>
 

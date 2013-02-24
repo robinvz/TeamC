@@ -1,3 +1,5 @@
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+
 <html>
 <head>
     <link rel="stylesheet" href="${pageContext.request.contextPath}/resources/css/main.css"/>
@@ -12,7 +14,52 @@
     <div class="inner-content">
         <section>
             <article>
-                <p>CONTENT</p>
+
+                <div class="trip-info">
+                    <table>
+                        <tr>
+                            <td><label>Description:</label></td>
+                            <td>${trip.description}</td>
+                        </tr>
+                        <tr>
+                            <td><label>Privacy:</label></td>
+                            <td>${trip.privacy}</td>
+                        </tr>
+                        <tr>
+                            <td><label>Active:</label></td>
+                            <td>${trip.active}</td>
+                        </tr>
+                        <tr>
+                            <td><label>Published:</label></td>
+                            <td>${trip.published}</td>
+                        </tr>
+                        <c:choose>
+                            <c:when test="${not empty trip.labels}">
+                                <c:forEach items="${trip.labels}" var="label">
+                                    <tr>
+                                        <td>${label}</td>
+                                    </tr>
+                                </c:forEach>
+                            </c:when>
+                            <c:otherwise>
+                                <label>Add labels here</label>
+                            </c:otherwise>
+                        </c:choose>
+                    </table>
+                </div>
+
+                <div class="trip-requirements">
+
+                </div>
+
+                <div class="trip-stops">
+
+                </div>
+
+                <div class="trip-participants">
+
+                </div>
+
             </article>
         </section>
     </div>

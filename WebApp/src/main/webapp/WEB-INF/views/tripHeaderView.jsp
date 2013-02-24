@@ -13,7 +13,11 @@
             <li><a href="#">Results</a></li>
             <li><a href="#">Start</a></li>
             <li><a href="#">Edit</a></li>
-            <li><a href="#">Delete</a></li>
+            <li>
+                <form id="deleteTripForm" action="/deleteTrip" method="GET">
+                    <button type="submit" id="deleteBtn">Delete</button>
+                </form>
+            </li>
         </ul>
     </nav>
 </aside>
