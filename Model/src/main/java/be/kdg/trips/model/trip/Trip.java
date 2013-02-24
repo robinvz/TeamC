@@ -143,6 +143,12 @@ public abstract class Trip implements Serializable, TripInterface {
     }
 
     @Override
+    public boolean isTimeBoundTrip()
+    {
+        return false;
+    }
+
+    @Override
     public void addLocation(Location location)
     {
         locations.add(location);

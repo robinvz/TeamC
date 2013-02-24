@@ -37,6 +37,11 @@ public class TimeBoundTrip extends Trip implements Serializable {
         this.dates = dates;
     }
 
+    public void addDates(Date startDate, Date endDate)
+    {
+        dates.put(startDate, endDate);
+    }
+
     @Override
     public boolean isActive(){
         Date now = new Date();
@@ -46,5 +51,11 @@ public class TimeBoundTrip extends Trip implements Serializable {
             }
         }
         return false;
+    }
+
+    @Override
+    public boolean isTimeBoundTrip()
+    {
+        return true;
     }
 }

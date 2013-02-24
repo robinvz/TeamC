@@ -135,6 +135,11 @@ public class TripsServiceImpl implements TripsService
     }
 
     @Override
+    public void addDateToTimeBoundTrip(Date startDate, Date endDate, Trip trip, User organizer) throws TripsException {
+        tripController.addDateToTimeBoundTrip(startDate, endDate, trip, organizer);
+    }
+
+    @Override
     public void deleteTrip(Trip trip, User organizer) throws TripsException, MessagingException {
         tripController.deleteTrip(trip, organizer);
     }
