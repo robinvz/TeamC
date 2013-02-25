@@ -14,7 +14,7 @@
             <li><a href="#">Start</a></li>
             <li><a href="#">Edit</a></li>
             <li>
-                <form id="deleteTripForm" action="/deleteTrip" method="GET">
+                <form id="deleteTripForm" action="/deleteTrip/${trip.id}" method="GET">
                     <button type="submit" id="deleteBtn">Delete</button>
                 </form>
             </li>

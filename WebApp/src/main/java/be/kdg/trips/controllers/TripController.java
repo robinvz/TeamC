@@ -1,7 +1,6 @@
 package be.kdg.trips.controllers;
 
 import be.kdg.trips.exception.TripsException;
-import be.kdg.trips.model.trip.TimelessTrip;
 import be.kdg.trips.model.trip.Trip;
 import be.kdg.trips.model.trip.TripPrivacy;
 import be.kdg.trips.model.user.User;
@@ -40,13 +39,14 @@ public class TripController {
         List<Trip> allNonPrivateTrips = null;
         List<Trip> allPrivateTrips = null;
         Map<String, List> parameters = new HashMap();
+        User user = (User) session.getAttribute("user");
         try {
             if (session.getAttribute("user") != null) {
-                allNonPrivateTrips = tripsService.findAllNonPrivateTrips((User) session.getAttribute("user"));
-                allPrivateTrips = tripsService.findPrivateTrips((User) session.getAttribute("user"));
+                allNonPrivateTrips = tripsService.findAllNonPrivateTrips(user);
+                allPrivateTrips = tripsService.findPrivateTrips(user);
             } else {
                 allNonPrivateTrips = tripsService.findAllNonPrivateTrips(null);
-                //allPrivateTrips = tripsService.findPrivateTrips(null);
+                allPrivateTrips = tripsService.findPrivateTrips(null);
             }
         } catch (TripsException e) {
             //No (non)private trips
@@ -106,19 +106,19 @@ public class TripController {
         }
     }
 
-    @RequestMapping(value = "/deleteTrip", method = RequestMethod.GET)
-    public String deleteTrip(@PathVariable int tripId) {
+    @RequestMapping(value = "/deleteTrip/{tripId}", method = RequestMethod.GET)
+    public ModelAndView deleteTrip(@PathVariable int tripId) throws TripsException {
+        User user = (User) session.getAttribute("user");
+        Trip trip = null;
         try {
-            User user = (User) session.getAttribute("user");
-            Trip trip = tripsService.findTripById(tripId, user);
+            trip = tripsService.findTripById(tripId, user);
             tripsService.deleteTrip(trip, user);
         } catch (TripsException e) {
-            return "tripsView";
-            //return new ModelAndView("tripsView");
+            //failed to delete trip
+            return new ModelAndView("tripView", "trip", trip);
         } catch (MessagingException e) {
         }
-        return "indexView";
-        //return new ModelAndView("tripView", "trip", trip);
+        return new ModelAndView("tripsView");
     }
 
    /*

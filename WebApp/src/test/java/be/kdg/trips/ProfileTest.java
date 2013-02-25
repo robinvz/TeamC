@@ -35,14 +35,10 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 public class ProfileTest {
     @Mock
     private TripsService tripsService;
-
     private MockHttpSession mockHttpSession;
-
     private MockMvc mockMvc;
-
-    ProfileController pc;
-
     User testUser = new User("joel@student.kdg.be", "oldPassword");
+    ProfileController pc;
 
     @Before
     public void init() {
@@ -101,7 +97,7 @@ public class ProfileTest {
     }
 
     @Test
-    public void userNotEdited() throws Exception {
+    public void profileNotEdited() throws Exception {
         testUser.setFirstName("jan");
         mockHttpSession.setAttribute("user", testUser);
         RequestBuilder requestBuilder = MockMvcRequestBuilders.post("/users/editProfile")
