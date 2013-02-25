@@ -82,7 +82,9 @@ public class TripDaoImpl implements TripDao{
     @Override
     public Trip getTrip(int id) throws TripsException {
         Session session = sessionFactory.openSession();
-        Trip trip = (Trip) session.createCriteria(Trip.class).add(Restrictions.eq("id", id)).uniqueResult();
+        Query query = session.createQuery("SELECT DISTINCT t FROM Trip t LEFT JOIN FETCH t.labels LEFT JOIN FETCH t.locations LEFT JOIN FETCH t.enrollments WHERE t.id = :id");
+        query.setParameter("id", id);
+        Trip trip =(Trip)query.uniqueResult();
         session.close();
         if (trip == null) {
             throw new TripsException("Trip with id '"+id+"' doesn't exist");

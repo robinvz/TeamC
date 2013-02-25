@@ -34,7 +34,7 @@ public abstract class Trip implements Serializable, TripInterface {
     @NotNull
     @Size(max = 150, message = "Description has a maximum amount of 150 characters")
     private String description;
-    @ElementCollection(fetch = FetchType.EAGER)
+    @ElementCollection
     @CollectionTable(name = "T_TRIP_LABEL")
     @Column(nullable = true)
     private Set<String> labels;
