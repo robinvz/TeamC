@@ -44,7 +44,7 @@
                     </tr>
                     <tr>
                         <td colspan="2" align="center">
-                            <button type="submit">Register</button>
+                            <button type="submit">Login</button>
                         </td>
                     </tr>
                 </table>
