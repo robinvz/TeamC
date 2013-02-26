@@ -155,7 +155,7 @@ public class TripController {
                 return new ModelAndView("tripView", map);
             }
         }
-        return new ModelAndView("login");
+        return new ModelAndView("loginView");
     }
 
    /*

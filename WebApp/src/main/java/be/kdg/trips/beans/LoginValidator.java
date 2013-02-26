@@ -32,14 +32,14 @@ public class LoginValidator implements Validator {
 
         LoginBean loginBean = (LoginBean) o;
         ValidationUtils.rejectIfEmpty(errors, "email", "NotEmpty.user.email");
-        ValidationUtils.rejectIfEmpty(errors, "password", "Email.user.email");
+        ValidationUtils.rejectIfEmpty(errors, "password", "NotEmpty.user.password");
         if (!errors.hasErrors()) {
             try {
                 if (!tripsService.checkLogin(loginBean.getEmail(), loginBean.getPassword())) {
-                    errors.reject("password", "WrongPassword");
+                    errors.rejectValue("password", "PasswordIncorrect.user");
                 }
             } catch (TripsException e) {
-                errors.reject("email", "");
+                errors.rejectValue("email", "UserIncorrect.user");
             }
         }
 
