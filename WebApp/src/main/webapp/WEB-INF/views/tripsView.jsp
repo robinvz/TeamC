@@ -97,7 +97,25 @@
                 </thead>
 
                 <tbody>
-
+                    <div>
+                        <c:if test="${not empty allEnrollments}">
+                        <c:forEach items="${allEnrollments}" var="enrollment">
+                            <tr id="trip${enrollment.id}">
+                                <div class="form-row">
+                                    <td>
+                                            ${enrollment.title}
+                                    </td>
+                                    <td>
+                                            ${enrollment.description}
+                                    </td>
+                                    <td>
+                                            ${enrollment.privacy}
+                                    </td>
+                                </div>
+                            </tr>
+                        </c:forEach>
+                    </c:if>
+                    </div>
                 </tbody>
             </table>
             <table >
@@ -107,6 +125,7 @@
                     <th>Title</th>
                     <th>Description</th>
                     <th>Privacy</th>
+                    <th>Published</th>
                 </tr>
                 </thead>
 
@@ -124,6 +143,15 @@
                                     </td>
                                     <td>
                                             ${organisedTrip.privacy}
+                                    </td>
+                                    <td>
+                                        <c:if test="${organisedTrip.published == true}">
+                                            <img src="${pageContext.request.contextPath}/resources/res/img/icons/checked.png" alt="Yes" title="Published">
+                                        </c:if>
+                                        <c:if test="${organisedTrip.published == false}">
+                                            <img src="${pageContext.request.contextPath}/resources/res/img/icons/false.png" alt="No" title="Not Published">
+                                        </c:if>
+
                                     </td>
                                 </div>
                             </tr>

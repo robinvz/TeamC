@@ -1,6 +1,7 @@
 package be.kdg.trips.controllers;
 
 import be.kdg.trips.exception.TripsException;
+import be.kdg.trips.model.enrollment.Enrollment;
 import be.kdg.trips.model.trip.Trip;
 import be.kdg.trips.model.trip.TripPrivacy;
 import be.kdg.trips.model.user.User;
@@ -40,6 +41,7 @@ public class TripController {
         List<Trip> allNonPrivateTrips = null;
         List<Trip> allPrivateTrips = null;
         List<Trip> allOrganisedTrips = null;
+        List<Enrollment> allEnrollments = null;
         Map<String, List> parameters = new HashMap();
         User user = (User) session.getAttribute("user");
         try {
@@ -47,6 +49,7 @@ public class TripController {
                 allNonPrivateTrips = tripsService.findAllNonPrivateTrips(user);
                 allPrivateTrips = tripsService.findPrivateTrips(user);
                allOrganisedTrips = tripsService.findTripsByOrganizer(user);
+                allEnrollments = tripsService.findEnrollmentsByUser(user);
             } else {
                 allNonPrivateTrips = tripsService.findAllNonPrivateTrips(null);
             }
@@ -56,6 +59,7 @@ public class TripController {
         parameters.put("allNonPrivateTrips", allNonPrivateTrips);
         parameters.put("allPrivateTrips", allPrivateTrips);
         parameters.put("allOrganisedTrips", allOrganisedTrips);
+        parameters.put("allEnrollments", allEnrollments);
         return new ModelAndView("tripsView", parameters);
     }
 
