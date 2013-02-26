@@ -39,14 +39,14 @@ public class TripController {
     public ModelAndView showTrips() {
         List<Trip> allNonPrivateTrips = null;
         List<Trip> allPrivateTrips = null;
-      //  List<Trip> allOrganisedTrips = null;
+        List<Trip> allOrganisedTrips = null;
         Map<String, List> parameters = new HashMap();
         User user = (User) session.getAttribute("user");
         try {
             if (session.getAttribute("user") != null) {
                 allNonPrivateTrips = tripsService.findAllNonPrivateTrips(user);
                 allPrivateTrips = tripsService.findPrivateTrips(user);
-         //       allOrganisedTrips = tripsService.findTripsByOrganizer(user);
+               allOrganisedTrips = tripsService.findTripsByOrganizer(user);
             } else {
                 allNonPrivateTrips = tripsService.findAllNonPrivateTrips(null);
             }
@@ -55,7 +55,7 @@ public class TripController {
         }
         parameters.put("allNonPrivateTrips", allNonPrivateTrips);
         parameters.put("allPrivateTrips", allPrivateTrips);
-      //  parameters.put("allOrganisedTrips", allOrganisedTrips);
+        parameters.put("allOrganisedTrips", allOrganisedTrips);
         return new ModelAndView("tripsView", parameters);
     }
 

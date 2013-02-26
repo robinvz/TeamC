@@ -109,7 +109,25 @@
                 </thead>
 
                 <tbody>
-
+                <div>
+                <c:if test="${not empty allOrganisedTrips}">
+                    <c:forEach items="${allOrganisedTrips}" var="organisedTrip">
+                        <tr id="trip${organisedTrip.id}">
+                            <div class="form-row">
+                                <td>
+                                        ${organisedTrip.title}
+                                </td>
+                                <td>
+                                        ${organisedTrip.description}
+                                </td>
+                                <td>
+                                        ${organisedTrip.privacy}
+                                </td>
+                            </div>
+                        </tr>
+                    </c:forEach>
+                </c:if>
+                </div>
                 </tbody>
             </table>
         </div>
