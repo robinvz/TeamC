@@ -43,7 +43,7 @@ public class TripDaoImpl implements TripDao{
 
     public List<Trip> getProtectedTrips()
     {
-        return queryTrip("SELECT DISTINCT t FROM Trip t LEFT JOIN FETCH t.locations WHERE t.privacy = 1 AND t.published = 1 ");
+        return queryTrip("SELECT DISTINCT t FROM Trip t LEFT JOIN FETCH t.locations LEFT JOIN FETCH t.enrollments WHERE t.privacy = 1 AND t.published = 1 ");
     }
 
     public List<Trip> getProtectedTripsWithoutDetails()
@@ -60,7 +60,7 @@ public class TripDaoImpl implements TripDao{
     @Override
     public List<Trip> getProtectedTripsByKeyword(String keyword)
     {
-        return queryTripByKeyword("SELECT DISTINCT t FROM Trip t LEFT OUTER JOIN t.labels label LEFT JOIN FETCH t.locations WHERE (lower(t.title) LIKE :keyword OR lower(t.description) LIKE :keyword OR lower(label) LIKE :keyword) AND t.privacy = 1 AND t.published = 1", keyword);
+        return queryTripByKeyword("SELECT DISTINCT t FROM Trip t LEFT OUTER JOIN t.labels label LEFT JOIN FETCH t.locations LEFT JOIN FETCH t.enrollments WHERE (lower(t.title) LIKE :keyword OR lower(t.description) LIKE :keyword OR lower(label) LIKE :keyword) AND t.privacy = 1 AND t.published = 1", keyword);
     }
 
     @Override
@@ -82,7 +82,7 @@ public class TripDaoImpl implements TripDao{
     @Override
     public Trip getTrip(int id) throws TripsException {
         Session session = sessionFactory.openSession();
-        Query query = session.createQuery("SELECT DISTINCT t FROM Trip t LEFT JOIN FETCH t.labels LEFT JOIN FETCH t.locations LEFT JOIN FETCH t.enrollments WHERE t.id = :id");
+        Query query = session.createQuery("SELECT DISTINCT t FROM Trip t LEFT JOIN FETCH t.locations LEFT JOIN FETCH t.enrollments WHERE t.id = :id");
         query.setParameter("id", id);
         Trip trip =(Trip)query.uniqueResult();
         session.close();
@@ -90,16 +90,6 @@ public class TripDaoImpl implements TripDao{
             throw new TripsException("Trip with id '"+id+"' doesn't exist");
         }
         return trip;
-    }
-
-    @Override
-    public List<Trip> getAttendingTrips(User user) {
-        Session session = sessionFactory.openSession();
-        Query query = session.createQuery("FROM Enrollment e WHERE e.user = :user");
-        query.setParameter("user", user);
-        List<Trip> trips = query.list();
-        session.close();
-        return trips;
     }
 
     @Override

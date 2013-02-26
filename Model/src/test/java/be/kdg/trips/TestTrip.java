@@ -38,7 +38,7 @@ public class TestTrip {
     {
         ClassPathXmlApplicationContext ctx = new ClassPathXmlApplicationContext("applicationContext.xml");
         tripsService = (TripsServiceImpl)ctx.getBean("tripsService");
-        user = tripsService.createUser("Theofiel@student.kdg.be", "Leopold");
+        user = tripsService.createUser(new User("Theofiel@student.kdg.be", "Leopold"));
         df = new SimpleDateFormat("dd/MM/yyyy");
     }
 
@@ -106,7 +106,7 @@ public class TestTrip {
         tripsService.publishTrip(trip1,user);
         tripsService.publishTrip(trip2,user);
         tripsService.publishTrip(trip3, user);
-        User user1 = tripsService.createUser("test@gmail.com","kokelengerb");
+        User user1 = tripsService.createUser(new User("test@gmail.com","kokelengerb"));
         trips = tripsService.findAllNonPrivateTrips(user1);
         for(Trip trip : trips)
         {
@@ -151,7 +151,7 @@ public class TestTrip {
     public void successfulFindTripById() throws TripsException
     {
         Trip createdTrip = tripsService.createTimelessTrip("Boswandeling 2", "Wandeling in bos", TripPrivacy.PROTECTED, user);
-        User user1 = tripsService.createUser("lolzor@gmail.com", "lollol");
+        User user1 = tripsService.createUser(new User("lolzor@gmail.com", "lollol"));
         Trip foundTrip = (Trip) tripsService.findTripById(createdTrip.getId(), user1);
         assertEquals(createdTrip, foundTrip);
     }
@@ -160,16 +160,16 @@ public class TestTrip {
     public void failedFindTripById() throws TripsException
     {
         Trip createdTrip = tripsService.createTimelessTrip("Boswandeling 3", "Wandeling in bos", TripPrivacy.PRIVATE, user);
-        User user1 = tripsService.createUser("lalzar@gmail.com", "lallal");
+        User user1 = tripsService.createUser(new User("lalzar@gmail.com", "lallal"));
         Trip foundTrip = (Trip) tripsService.findTripById(createdTrip.getId(), user1);
     }
 
     @Test
     public void successfulFindPrivateTrips() throws TripsException {
-        User organizer = tripsService.createUser("bobby.lobby@hotmail.com","xinus");
+        User organizer = tripsService.createUser(new User("bobby.lobby@hotmail.com","xinus"));
         Trip trip = tripsService.createTimelessTrip("Trip","TripDescription",TripPrivacy.PRIVATE,organizer);
         tripsService.publishTrip(trip, organizer);
-        User user = tripsService.createUser("gekke.trekke@hotmail.com","linus");
+        User user = tripsService.createUser(new User("gekke.trekke@hotmail.com","linus"));
         tripsService.invite(trip, organizer, user);
         assertEquals(1, tripsService.findPrivateTrips(user).size());
     }
@@ -181,38 +181,18 @@ public class TestTrip {
 
     @Test
     public void successfulFindTripsByOrganizer1() throws TripsException {
-        User organizer1 = tripsService.createUser("gerard.depardieu@hotmail.com","spint");
+        User organizer1 = tripsService.createUser(new User("gerard.depardieu@hotmail.com","spint"));
         Trip trip1 = tripsService.createTimelessTrip("Trip1","TripDescription",TripPrivacy.PUBLIC,organizer1);
         Trip trip2 = tripsService.createTimelessTrip("Trip2","TripDescription",TripPrivacy.PRIVATE,organizer1);
-        User organizer2 = tripsService.createUser("steven.spielberg@msn.com","oscar");
+        User organizer2 = tripsService.createUser(new User("steven.spielberg@msn.com","oscar"));
         Trip trip3 = tripsService.createTimelessTrip("Trip3","TripDescription",TripPrivacy.PUBLIC,organizer2);
         assertEquals(2,tripsService.findTripsByOrganizer(organizer1).size());
     }
 
     @Test
     public void successfulFindTripsByOrganizer2() throws TripsException {
-        User organizer = tripsService.createUser("femke@hotmail.com","spint");
+        User organizer = tripsService.createUser(new User("femke@hotmail.com","spint"));
         assertTrue(tripsService.findTripsByOrganizer(organizer).isEmpty());
-    }
-
-    @Test
-    public void successfulFindAttendingTrips1() throws TripsException {
-        User organizer1 = tripsService.createUser("elke@hotmail.com","spint");
-        Trip trip1 = tripsService.createTimelessTrip("Trip","TripDescription",TripPrivacy.PROTECTED,organizer1);
-        User organizer2 = tripsService.createUser("irati@hotmail.com","spint");
-        Trip trip2 = tripsService.createTimelessTrip("Trip","TripDescription",TripPrivacy.PROTECTED,organizer2);
-        tripsService.publishTrip(trip1, organizer1);
-        tripsService.publishTrip(trip2, organizer2);
-        User user = tripsService.createUser("nele@hotmail.com","spint");
-        tripsService.subscribe(trip1, user);
-        tripsService.subscribe(trip2, user);
-        assertEquals(2, tripsService.findAttendingTrips(user).size());
-    }
-
-    @Test
-    public void successfulFindAttendingTrips2() throws TripsException {
-        User user = tripsService.createUser("ariane@hotmail.com","spint");
-        assertTrue(tripsService.findAttendingTrips(user).isEmpty());
     }
 
     @Test
@@ -226,7 +206,7 @@ public class TestTrip {
     @Test(expected = TripsException.class)
     public void failedAddLabelNoPermission() throws TripsException {
         Trip trip = tripsService.createTimelessTrip("The Spartacus", "N/A", TripPrivacy.PUBLIC, user);
-        User otherUser = tripsService.createUser("johny@gmail.com", "terry");
+        User otherUser = tripsService.createUser(new User("johny@gmail.com", "terry"));
         tripsService.addLabelToTrip(trip,otherUser,"Modder");
     }
 
@@ -250,7 +230,7 @@ public class TestTrip {
     {
         Trip trip = tripsService.createTimeBoundTrip("carnaval","carnaval met stoet",TripPrivacy.PUBLIC,user,df.parse("14/12/2014"), df.parse("15/12/2014"));
         tripsService.publishTrip(trip, user);
-        User otherUser = tripsService.createUser("john@gmail.com", "terry");
+        User otherUser = tripsService.createUser(new User("john@gmail.com", "terry"));
         tripsService.publishTrip(trip, otherUser);
     }
 
@@ -267,7 +247,7 @@ public class TestTrip {
     public void failedAddLocationNoPermission() throws TripsException
     {
         Trip trip = tripsService.createTimelessTrip("locationTrip", "trip with locations", TripPrivacy.PUBLIC, user);
-        User otherUser = tripsService.createUser("jan.discort@hotmail.com", "janneman");
+        User otherUser = tripsService.createUser(new User("jan.discort@hotmail.com", "janneman"));
         tripsService.addLocationToTrip(otherUser, trip, 131.131, 23.123, "Nationalestraat", null, "Antwerp", "2000", "Antwerp", "Belgium", "Titel", "Lange straat met tramspoor");
     }
 
@@ -329,7 +309,7 @@ public class TestTrip {
 
     @Test
     public void successfulDeleteTrip() throws TripsException, MessagingException, ParseException {
-        User organizer = tripsService.createUser("tripsteamc@gmail.com","SDProject");
+        User organizer = tripsService.createUser(new User("tripsteamc@gmail.com","SDProject"));
         Trip createdTrip = tripsService.createTimeBoundTrip("Deer hunting", "I will be deleted", TripPrivacy.PROTECTED, organizer, df.parse("20/05/2013"), df.parse("21/05/2013"));
         tripsService.publishTrip(createdTrip, organizer);
        // Second user could be added in order to check if both receive notification mail

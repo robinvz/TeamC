@@ -36,12 +36,6 @@ public class TripsServiceImpl implements TripsService
 
     //User Service
     @Override
-    public User createUser(String email, String password) throws TripsException
-    {
-        return userController.createUser(email, password);
-    }
-
-    @Override
     public User createUser(User user) throws TripsException {
         return userController.createUser(user);
     }
@@ -111,11 +105,6 @@ public class TripsServiceImpl implements TripsService
     @Override
     public List<Trip> findTripsByOrganizer(User organizer) throws TripsException {
         return tripController.findTripsByOrganizer(organizer);
-    }
-
-    @Override
-    public List<Trip> findAttendingTrips(User user) throws TripsException {
-        return tripController.findAttendingTrips(user);
     }
 
     @Override

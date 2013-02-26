@@ -11,7 +11,6 @@ import be.kdg.trips.model.user.User;
  */
 public interface UserBL
 {
-    public User createUser(String email, String password) throws TripsException;
     public User createUser(User user) throws TripsException;
 
     public User findUser(String email) throws TripsException;

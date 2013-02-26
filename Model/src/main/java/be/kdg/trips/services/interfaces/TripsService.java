@@ -21,7 +21,6 @@ import java.util.List;
 public interface TripsService
 {
     //User Service
-    public User createUser(String email, String password) throws TripsException;
     public User createUser(User user) throws TripsException;
 
     public User findUser(String email) throws TripsException;
@@ -42,7 +41,6 @@ public interface TripsService
     public List<Trip> findPrivateTrips(User user) throws TripsException;
     public Trip findTripById(int id, User user) throws TripsException;
     public List<Trip> findTripsByOrganizer(User organizer) throws TripsException;
-    public List<Trip> findAttendingTrips(User user) throws TripsException;
 
     public void publishTrip(Trip trip, User organizer) throws TripsException;
     public void addLabelToTrip(Trip trip, User organizer, String label) throws TripsException;
