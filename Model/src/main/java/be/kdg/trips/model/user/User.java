@@ -51,7 +51,7 @@ public class User implements UserInterface, Serializable {
     private Address address;
     @OneToMany(mappedBy = "user")
     private Set<Enrollment> enrollments;
-    @OneToMany(mappedBy = "user", fetch = FetchType.EAGER)
+    @OneToMany(mappedBy = "user")
     private Set<Invitation> invitations;
 
 

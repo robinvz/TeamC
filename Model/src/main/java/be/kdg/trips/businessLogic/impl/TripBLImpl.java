@@ -103,7 +103,7 @@ public class TripBLImpl implements TripBL
     public List<Trip> findPrivateTrips(User user) throws TripsException {
         List<Trip> trips = new ArrayList<>();
         User foundUser = userBL.findUserWithDetails(user.getEmail());
-        for(Invitation invitation: user.getInvitations())
+        for(Invitation invitation: foundUser.getInvitations())
         {
             trips.add(invitation.getTrip());
         }
