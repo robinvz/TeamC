@@ -46,7 +46,6 @@ public class TripController {
                 allPrivateTrips = tripsService.findPrivateTrips(user);
             } else {
                 allNonPrivateTrips = tripsService.findAllNonPrivateTrips(null);
-                allPrivateTrips = tripsService.findPrivateTrips(null);
             }
         } catch (TripsException e) {
             //No (non)private trips
