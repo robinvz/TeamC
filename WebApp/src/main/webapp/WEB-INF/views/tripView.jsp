@@ -14,7 +14,7 @@
     <div class="inner-content">
         <section>
             <article>
-
+                <span class="errorblock">${error}</span>
                 <div class="trip-info">
                     <table>
                         <tr>
@@ -29,6 +29,7 @@
                             <td><label>Active:</label></td>
                             <td>${trip.active}</td>
                         </tr>
+
                         <tr>
                             <td><label>Published:</label></td>
                             <td>${trip.published}</td>
@@ -59,7 +60,12 @@
                 <div class="trip-participants">
 
                 </div>
-
+                <c:if test="${trip.privacy == 'PROTECTED'}">
+                    <a href="/subscribe?id=${trip.id}">
+                        <img id="subscribeButton"
+                             src="${pageContext.request.contextPath}/resources/res/img/subscribe.jpg">
+                    </a>
+                </c:if>
             </article>
         </section>
     </div>

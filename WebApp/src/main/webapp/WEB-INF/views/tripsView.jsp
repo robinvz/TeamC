@@ -11,6 +11,13 @@
     <jsp:include page="baseView.jsp"/>
 
     <h2>Overview</h2>
+    <nav class="inner-nav">
+        <ul class="nav">
+            <li id="btn-trips" class="inner-nav-link inner-selected">Display all trips</li>
+            <li id="btn-trips-participating" class="inner-nav-link">Show my enrolled trips</li>
+            <li id="btn-trips-organised" class="inner-nav-link">Show trips organised by me</li>
+        </ul>
+    </nav>
 
     <div id="control-bar">
         <c:if test="${not empty user}">
@@ -26,56 +33,86 @@
     </div>
 
     <div id="content">
-        <table id="trips">
-            <!-- model heeft momenteel: type, id, description, privacy, published, title, userId -->
-            <thead>
-            <tr>
-                <th>Title</th>
-                <th>Description</th>
-                <th>Privacy</th>
-            </tr>
-            </thead>
+        <div id="inner-content">
+            <table>
+                <!-- model heeft momenteel: type, id, description, privacy, published, title, userId -->
+                <thead>
+                <tr>
+                    <th>Title</th>
+                    <th>Description</th>
+                    <th>Privacy</th>
+                </tr>
+                </thead>
 
-            <tbody>
-            <div>
-                <c:if test="${not empty allNonPrivateTrips}">
-                    <c:forEach items="${allNonPrivateTrips}" var="allNonPrivateTrip">
-                        <tr id="trip${allNonPrivateTrip.id}">
-                            <div class="form-row">
-                                <td>
-                                        ${allNonPrivateTrip.title}
-                                </td>
-                                <td>
-                                        ${allNonPrivateTrip.description}
-                                </td>
-                                <td>
-                                        ${allNonPrivateTrip.privacy}
-                                </td>
-                            </div>
-                        </tr>
-                    </c:forEach>
-                </c:if>
-                <c:if test="${not empty allPrivateTrips}">
-                    <c:forEach items="${allPrivateTrips}" var="allPrivateTrip">
-                        <tr id="trip${allPrivateTrip.id}">
-                            <div class="form-row">
-                                <td>
-                                        ${allPrivateTrip.title}
-                                </td>
-                                <td>
-                                        ${allPrivateTrip.description}
-                                </td>
-                                <td>
-                                        ${allPrivateTrip.privacy}
-                                </td>
-                            </div>
-                        </tr>
-                    </c:forEach>
-                </c:if>
-            </div>
-            </form>
-            </tbody>
-        </table>
+                <tbody>
+                <div>
+                    <c:if test="${not empty allNonPrivateTrips}">
+                        <c:forEach items="${allNonPrivateTrips}" var="allNonPrivateTrip">
+                            <tr id="trip${allNonPrivateTrip.id}">
+                                <div class="form-row">
+                                    <td>
+                                            ${allNonPrivateTrip.title}
+                                    </td>
+                                    <td>
+                                            ${allNonPrivateTrip.description}
+                                    </td>
+                                    <td>
+                                            ${allNonPrivateTrip.privacy}
+                                    </td>
+                                </div>
+                            </tr>
+                        </c:forEach>
+                    </c:if>
+                    <c:if test="${not empty allPrivateTrips}">
+                        <c:forEach items="${allPrivateTrips}" var="allPrivateTrip">
+                            <tr id="trip${allPrivateTrip.id}">
+                                <div class="form-row">
+                                    <td>
+                                            ${allPrivateTrip.title}
+                                    </td>
+                                    <td>
+                                            ${allPrivateTrip.description}
+                                    </td>
+                                    <td>
+                                            ${allPrivateTrip.privacy}
+                                    </td>
+                                </div>
+                            </tr>
+                        </c:forEach>
+                    </c:if>
+                </div>
+                </form>
+                </tbody>
+            </table>
+            <table >
+                <!-- model heeft momenteel: type, id, description, privacy, published, title, userId -->
+                <thead>
+                <tr>
+                    <th>Title</th>
+                    <th>Description</th>
+                    <th>Privacy</th>
+                </tr>
+                </thead>
+
+                <tbody>
+
+                </tbody>
+            </table>
+            <table >
+                <!-- model heeft momenteel: type, id, description, privacy, published, title, userId -->
+                <thead>
+                <tr>
+                    <th>Title</th>
+                    <th>Description</th>
+                    <th>Privacy</th>
+                </tr>
+                </thead>
+
+                <tbody>
+
+                </tbody>
+            </table>
+        </div>
     </div>
 
 </div>

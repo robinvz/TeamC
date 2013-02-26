@@ -1,5 +1,7 @@
 package be.kdg.trips.controllers;
 
+import be.kdg.trips.beans.LoginBean;
+import be.kdg.trips.beans.LoginValidator;
 import be.kdg.trips.exception.TripsException;
 import be.kdg.trips.model.address.Address;
 import be.kdg.trips.model.user.User;
@@ -12,7 +14,9 @@ import org.springframework.stereotype.Controller;
 import org.springframework.validation.BindingResult;
 import org.springframework.validation.ObjectError;
 import org.springframework.web.bind.ServletRequestDataBinder;
+import org.springframework.web.bind.WebDataBinder;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.servlet.ModelAndView;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
@@ -29,10 +33,21 @@ import javax.validation.Valid;
 //LoginController
 public class LoginController {
 
+    @Autowired LoginValidator loginValidator;
+
     @InitBinder
     protected void initBinder(HttpServletRequest request,
                               ServletRequestDataBinder binder) throws Exception {
         binder.registerCustomEditor(String.class, new StringTrimmerEditor(true));
+
+    }
+
+    @InitBinder()
+    protected void loginBinder( WebDataBinder binder) throws Exception {
+        if (binder.getTarget() instanceof LoginBean) {
+            binder.setValidator(loginValidator);
+
+        }
     }
 
     @Autowired
@@ -42,8 +57,8 @@ public class LoginController {
     private HttpSession session;
 
     @RequestMapping(value = "/login", method = RequestMethod.GET)
-    public String login() {
-        return "loginView";
+    public ModelAndView login() {
+        return new ModelAndView("loginView", "loginBean", new LoginBean());
     }
 
     @RequestMapping(value = "/service/login", method = RequestMethod.GET)
@@ -56,7 +71,10 @@ public class LoginController {
     }
 
     @RequestMapping(value = "/login", method = RequestMethod.POST)
-    public String handleLogin(HttpServletRequest request) {
+    public String handleLogin(@Valid LoginBean loginBean, BindingResult result, HttpServletRequest request) {
+        if (result.hasErrors()){
+            return "loginView";
+        }
         String email = request.getParameter("email");
         String password = request.getParameter("password");
         try {
@@ -64,6 +82,8 @@ public class LoginController {
                 User user = tripsService.findUser(email);
                 session.setAttribute("user", user);
             } else {
+                ObjectError error = new ObjectError("login", "Invalid login credentials.");
+                result.addError(error);
                 return "loginView";
             }
         } catch (TripsException e) {

@@ -119,7 +119,13 @@ public class TripBLImpl implements TripBL
             case PUBLIC:
                 return trip;
             case PROTECTED:
-                if(userBL.isExistingUser(user.getEmail()))
+                if(user == null)
+                {
+                    trip.setLocations(null);
+                    trip.setEnrollments(null);
+                    return trip;
+                }
+                else if(userBL.isExistingUser(user.getEmail()))
                 {
                     return trip;
                 }
