@@ -7,6 +7,7 @@ import org.hibernate.validator.constraints.Email;
 import org.springframework.stereotype.Component;
 
 import javax.persistence.*;
+import javax.validation.Valid;
 import javax.validation.constraints.Pattern;
 import javax.validation.constraints.Size;
 import java.io.Serializable;
@@ -46,10 +47,11 @@ public class User implements UserInterface, Serializable {
     private String lastName;
     @OneToOne(cascade = CascadeType.ALL)
     @JoinColumn(name = "addressId")
+    @Valid
     private Address address;
     @OneToMany(mappedBy = "user")
     private Set<Enrollment> enrollments;
-    @OneToMany(mappedBy = "user")
+    @OneToMany(mappedBy = "user", fetch = FetchType.EAGER)
     private Set<Invitation> invitations;
 
 
