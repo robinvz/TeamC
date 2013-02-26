@@ -91,8 +91,9 @@
                 <thead>
                 <tr>
                     <th>Trip</th>
-                    <th>Date</th>
-
+                    <th>Description</th>
+                    <th>Privacy</th>
+                    <th>Start</th>
                 </tr>
                 </thead>
 
@@ -104,6 +105,12 @@
                                 <div class="form-row">
                                     <td>
                                             ${enrollment.trip.title}
+                                    </td>
+                                    <td>
+                                            ${enrollment.trip.description}
+                                    </td>
+                                    <td>
+                                            ${enrollment.trip.privacy}
                                     </td>
                                     <td>
                                             ${enrollment.date}
