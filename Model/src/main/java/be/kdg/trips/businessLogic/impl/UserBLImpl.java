@@ -21,20 +21,10 @@ public class UserBLImpl implements UserBL
     private UserDao userDao;
 
     @Override
-    public User createUser(String email, String password) throws TripsException {
-        User user = null;
-        if(isUnexistingUser(email))
-        {
-            user = new User(email.toLowerCase(),password);
-            userDao.saveOrUpdateUser(user);
-        }
-        return user;
-    }
-
-    @Override
     public User createUser(User user) throws TripsException {
         if(isUnexistingUser(user.getEmail()))
         {
+            user.setEmail(user.getEmail().toLowerCase());
             userDao.saveOrUpdateUser(user);
         }
         return user;
