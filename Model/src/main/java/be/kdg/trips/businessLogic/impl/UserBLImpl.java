@@ -64,35 +64,35 @@ public class UserBLImpl implements UserBL
     public void updateUser(User user, String firstName, String lastName, String street, String houseNr, String city, String postalCode, String province, String country) throws TripsException {
         if(isExistingUser(user.getEmail()))
         {
-            if(!firstName.isEmpty())
+            if(!firstName.equals(""))
             {
                 user.setFirstName(firstName);
             }
-            if(!lastName.isEmpty())
+            if(!lastName.equals(""))
             {
                 user.setLastName(lastName);
             }
-            if(!street.isEmpty())
+            if(!street.equals(""))
             {
                 user.getAddress().setStreet(street);
             }
-            if(!houseNr.isEmpty())
+            if(!houseNr.equals(""))
             {
                 user.getAddress().setHouseNr(houseNr);
             }
-            if(!city.isEmpty())
+            if(!city.equals(""))
             {
                 user.getAddress().setCity(city);
             }
-            if(!postalCode.isEmpty())
+            if(!postalCode.equals(""))
             {
                 user.getAddress().setPostalCode(postalCode);
             }
-            if(!province.isEmpty())
+            if(!province.equals(""))
             {
                 user.getAddress().setProvince(province);
             }
-            if(!country.isEmpty())
+            if(!country.equals(""))
             {
                 user.getAddress().setCountry(country);
             }
