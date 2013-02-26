@@ -11,16 +11,20 @@
     <jsp:include page="baseView.jsp"/>
 
     <h2>Overview</h2>
-        <div id="control-bar">
-    <form action="/users/createTrip" method="GET">
-        <button id="btn-addtrip" type="submit" class="btn-submit">Create Trip</button>
-    </form>
-    <select id="filter" name="filterTripsMenu">
-        <option>Filter</option>
-        <option value="">Repeating trips</option>
-        <option value="">Timebound trips</option>
-    </select>
-        </div>
+
+    <div id="control-bar">
+        <c:if test="${not empty user}">
+            <form action="/users/createTrip" method="GET">
+                <button id="btn-addtrip" type="submit" class="btn-submit">Create Trip</button>
+            </form>
+        </c:if>
+        <select id="filter" name="filterTripsMenu">
+            <option>Filter</option>
+            <option value="">Repeating trips</option>
+            <option value="">Timebound trips</option>
+        </select>
+    </div>
+
     <div id="content">
         <table id="trips">
             <!-- model heeft momenteel: type, id, description, privacy, published, title, userId -->
@@ -36,19 +40,19 @@
             <div>
                 <c:if test="${not empty allNonPrivateTrips}">
                     <c:forEach items="${allNonPrivateTrips}" var="allNonPrivateTrip">
-                            <tr id="trip${allNonPrivateTrip.id}">
-                                <div class="form-row">
-                                    <td>
-                                            ${allNonPrivateTrip.title}
-                                    </td>
-                                    <td>
-                                            ${allNonPrivateTrip.description}
-                                    </td>
-                                    <td>
-                                            ${allNonPrivateTrip.privacy}
-                                    </td>
-                                </div>
-                            </tr>
+                        <tr id="trip${allNonPrivateTrip.id}">
+                            <div class="form-row">
+                                <td>
+                                        ${allNonPrivateTrip.title}
+                                </td>
+                                <td>
+                                        ${allNonPrivateTrip.description}
+                                </td>
+                                <td>
+                                        ${allNonPrivateTrip.privacy}
+                                </td>
+                            </div>
+                        </tr>
                     </c:forEach>
                 </c:if>
                 <c:if test="${not empty allPrivateTrips}">
@@ -73,6 +77,7 @@
             </tbody>
         </table>
     </div>
+
 </div>
 <script src="${pageContext.request.contextPath}/resources/js/jquery-1.9.0.min.js"></script>
 <script src="${pageContext.request.contextPath}/resources/js/trips.js"></script>
