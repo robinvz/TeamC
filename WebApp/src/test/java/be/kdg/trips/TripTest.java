@@ -11,6 +11,7 @@ import be.kdg.trips.services.interfaces.TripsService;
 import org.junit.Before;
 import org.junit.Test;
 import org.mockito.Mock;
+import org.mockito.Mockito;
 import org.mockito.MockitoAnnotations;
 import org.springframework.mock.web.MockHttpSession;
 import org.springframework.test.util.ReflectionTestUtils;
@@ -24,6 +25,7 @@ import java.util.ArrayList;
 import java.util.Date;
 
 import static org.junit.Assert.*;
+import static org.mockito.Matchers.any;
 import static org.mockito.Mockito.when;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 
@@ -137,35 +139,37 @@ public class TripTest {
         when(tripsService.findTripById(t.getId(), testUser)).thenThrow(new TripsException("Could not find trip"));
         mockMvc.perform(requestBuilder).andExpect(view().name("tripsView"));
     }
-    /*
+
     @Test
     public void timelessTripDeleted() throws Exception {
         mockHttpSession.setAttribute("user", testUser);
-        TimelessTrip t = new TimelessTrip(title, description, privacy, testUser);
-        tripsService.enroll(t, testUser);
+        Trip t = new TimelessTrip(title, description, privacy, testUser);
         RequestBuilder requestBuilder = MockMvcRequestBuilders.get("/deleteTrip/" + t.getId());
         mockMvc.perform(requestBuilder).andExpect(view().name("tripsView"));
-        assertEquals(tripsService.findAllNonPrivateTrips(testUser), new Trip[]{});
-    }
-
-    @Test
-    public void timelessTripNotDeleted() throws Exception {
-        mockHttpSession.setAttribute("user", testUser);
-        Trip t = tripsService.createTimelessTrip(title,description,privacy,testUser);
-        tripsService.enroll(t, testUser);
-        RequestBuilder requestBuilder = MockMvcRequestBuilders.get("/deleteTrip/" + t.getId());
-        mockMvc.perform(requestBuilder).andExpect(view().name("tripView"));
-        assertEquals(t, tripsService.findAllNonPrivateTrips(testUser).get(0));
+        assertEquals(0, tripsService.findAllNonPrivateTrips(testUser).size());
     }
 
     @Test
     public void timeboundTripDeleted() throws Exception {
         mockHttpSession.setAttribute("user", testUser);
-        TimeBoundTrip t = new TimeBoundTrip(title, description, privacy, testUser, sdf.parse(startdate), sdf.parse(enddate));
-        tripsService.enroll(t, testUser);
+        Date startd = sdf.parse(enddate);
+        Date endd = sdf.parse(startdate);
+        Trip t = new TimeBoundTrip(title, description, privacy, testUser, startd, endd);
         RequestBuilder requestBuilder = MockMvcRequestBuilders.get("/deleteTrip/" + t.getId());
         mockMvc.perform(requestBuilder).andExpect(view().name("tripsView"));
-        assertEquals(tripsService.findAllNonPrivateTrips(testUser), new Trip[]{});
+        assertEquals(0, tripsService.findAllNonPrivateTrips(testUser).size());
+    }
+    /*
+    @Test
+    public void timelessTripNotDeleted() throws Exception {
+        User user = new User("ik ben geen organizer", "password");
+        mockHttpSession.setAttribute("user", user);
+        Trip t = new TimelessTrip(title, description, privacy, testUser);
+        RequestBuilder requestBuilder = MockMvcRequestBuilders.get("/deleteTrip/" + t.getId());
+        mockMvc.perform(requestBuilder).andExpect(view().name("tripView"));
+        assertNotNull(t);
     }
     */
+
+
 }
