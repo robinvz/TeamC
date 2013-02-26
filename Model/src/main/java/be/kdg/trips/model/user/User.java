@@ -59,13 +59,14 @@ public class User implements UserInterface, Serializable {
         this();
         this.email = email;
         this.password = password;
-        this.address = new Address(null,null,null,null,null,null);
-        this.enrollments = new HashSet<>();
-        this.invitations = new HashSet<>();
+
     }
 
     public User() {
         this.registerDate = new Date();
+        this.enrollments = new HashSet<>();
+        this.invitations = new HashSet<>();
+        this.address = new Address(null,null,null,null,null,null);
     }
 
     @Override
