@@ -21,37 +21,35 @@
             <button id="register-facebook"></button>
         </div>
         <h2 id="login-title"></h2>
-        <fieldset id="form-login">
-            <form>
-                <label for="email"> Email: </label> <input type="text" name="email" id="email">
-                <label for="password"> Password: </label> <input type="password" name="password" id="password">
-                <input type="submit" value="Login" class="btn-submit">
-            </form>
-        </fieldset>
-        <form action="/login" method="post">
+
+        <form:form action="/login" commandName="loginBean" method="post" id="loginform" name="loginform" dir="loginform">
             <fieldset>
+                <form:errors path="*" cssClass="errorblock" element="div" />
+
                 <legend>Login</legend>
                 <table>
                     <tr>
                         <td>Email</td>
                         <td>
-                            <input type="text" id="emailLogin" name="email"
-                                   placeholder="Email"/></td>
+                            <form:input path="email"/></td>
+                        <form:errors path="email"></form:errors>
                     </tr>
                     <tr>
                         <td>Password</td>
                         <td>
-                            <input type="password" id="passwordLogin" name="password"
-                                   email="Password"/></td>
+                            <form:input path="password"/></td>
+                        <form:errors path="password"></form:errors>
+
+                        </td>
                     </tr>
                     <tr>
                         <td colspan="2" align="center">
-                            <button id="login">Login</button>
+                            <button type="submit">Register</button>
                         </td>
                     </tr>
                 </table>
             </fieldset>
-        </form>
+        </form:form>
     </div>
 </div>
 <script src="${pageContext.request.contextPath}/resources/js/login.js"></script>

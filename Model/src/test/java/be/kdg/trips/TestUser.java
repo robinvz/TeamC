@@ -96,21 +96,21 @@ public class TestUser {
     {
         User user = tripsService.createUser(new User("tony.mertens@student.kdg.be","password"));
         tripsService.updateUser(user, "hans", "martens", "beerstraat", "11", "Antwerpen", "2000", "Antwerpen","België");
-        assertEquals(tripsService.findUser("tony.mertens@student.kdg.be").getFirstName(), "hans");
+        assertEquals("hans", tripsService.findUser("tony.mertens@student.kdg.be").getFirstName());
     }
 
     @Test
     public void successfulUserUpdateNullValues() throws TripsException
     {
         User user = tripsService.createUser(new User("tony.martens@student.kdg.be","password"));
-        tripsService.updateUser(user, null, null, null, null, null, null, null, null);
+        tripsService.updateUser(user, "", "", "", "","", "", "", "");
         assertEquals(tripsService.findUser("tony.martens@student.kdg.be").getFirstName(), null);
     }
 
     @Test(expected = ConstraintViolationException.class)
     public void failedUserUpdateInvalidStreet() throws TripsException {
         User user = tripsService.createUser(new User("louis.martens@student.kdg.be","password"));
-        tripsService.updateUser(user, null,null,"straat1212",null,null,null,null,null);
+        tripsService.updateUser(user, "","","straat1212","","","","","");
     }
 
     @Test(expected = TripsException.class)

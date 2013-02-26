@@ -10,6 +10,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.ModelAndView;
 
 import javax.mail.MessagingException;
@@ -136,6 +137,25 @@ public class TripController {
         } catch (MessagingException e) {
         }
         return new ModelAndView("tripsView");
+    }
+
+    @RequestMapping(value = "/subscribe", method = RequestMethod.GET)
+    public ModelAndView subscribe(@RequestParam int id){
+        User user = (User) session.getAttribute("user");
+        if (user != null){
+            try {
+                tripsService.subscribe(tripsService.findTripById(id, user), user);
+            } catch (TripsException e) {
+                Map map = new HashMap();
+                try {
+                    map.put("trip", tripsService.findTripById(id, user));
+                    map.put("error", "Could not subscribe to the trip.");
+                } catch (TripsException e1) {
+                }
+                return new ModelAndView("tripView", map);
+            }
+        }
+        return new ModelAndView("login");
     }
 
    /*
