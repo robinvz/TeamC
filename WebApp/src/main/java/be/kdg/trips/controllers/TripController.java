@@ -80,14 +80,16 @@ public class TripController {
             User user = (User) session.getAttribute("user");
             Date startDate = sdf.parse(request.getParameter("startDate"));
             Date endDate = sdf.parse(request.getParameter("endDate"));
-            Trip test = tripsService.createTimeBoundTrip(title, description, privacy, user, startDate, endDate);
-            String view = "trip/" + test.getId();
+            Trip timeBoundTrip = tripsService.createTimeBoundTrip(title, description, privacy, user, startDate, endDate);
+            String view = "redirect:trip/" + timeBoundTrip.getId();
             return view;
-
         } catch (TripsException e) {
+            //failed to create timelessTrip
+            return "/users/createTripView";
         } catch (ParseException e) {
+            //failed to parse dates
+            return "/users/createTripView";
         }
-        return "/users/createTripView";
     }
 
     @RequestMapping(value = "/createTimeLessTrip", method = RequestMethod.POST)
@@ -97,11 +99,12 @@ public class TripController {
             String description = request.getParameter("description");
             TripPrivacy privacy = TripPrivacy.valueOf(request.getParameter("privacy"));
             User user = (User) session.getAttribute("user");
-            Trip test = tripsService.createTimelessTrip(title, description, privacy, user);
-            String view = "redirect:trip/" + test.getId();
+            Trip timelessTrip = tripsService.createTimelessTrip(title, description, privacy, user);
+            String view = "redirect:trip/" + timelessTrip.getId();
             return view;
         } catch (TripsException e) {
-            return "/errors/loginErrorView";
+            //failed to create timelessTrip
+            return "/users/createTripView";
         }
     }
 
@@ -119,6 +122,7 @@ public class TripController {
         }
         return new ModelAndView("tripsView");
     }
+
 
    /*
     @RequestMapping(value = "/addLocationToTrip", method = RequestMethod.POST)
