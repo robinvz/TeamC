@@ -144,6 +144,16 @@ public class TripBLImpl implements TripBL
     }
 
     @Override
+    public List<Trip> findAttendingTrips(User user) throws TripsException {
+        List<Trip> trips = new ArrayList<>();
+        if(userBL.isExistingUser(user.getEmail()))
+        {
+            trips = tripDao.getAttendingTrips(user);
+        }
+        return trips;
+    }
+
+    @Override
     public void publishTrip(Trip trip, User user) throws TripsException {
         if(isExistingTrip(trip.getId()) && userBL.isExistingUser(user.getEmail()) && isOrganizer(trip, user))
         {

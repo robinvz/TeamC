@@ -196,6 +196,26 @@ public class TestTrip {
     }
 
     @Test
+    public void successfulFindAttendingTrips1() throws TripsException {
+        User organizer1 = tripsService.createUser("elke@hotmail.com","spint");
+        Trip trip1 = tripsService.createTimelessTrip("Trip","TripDescription",TripPrivacy.PROTECTED,organizer1);
+        User organizer2 = tripsService.createUser("irati@hotmail.com","spint");
+        Trip trip2 = tripsService.createTimelessTrip("Trip","TripDescription",TripPrivacy.PROTECTED,organizer2);
+        tripsService.publishTrip(trip1, organizer1);
+        tripsService.publishTrip(trip2, organizer2);
+        User user = tripsService.createUser("nele@hotmail.com","spint");
+        tripsService.subscribe(trip1, user);
+        tripsService.subscribe(trip2, user);
+        assertEquals(2, tripsService.findAttendingTrips(user).size());
+    }
+
+    @Test
+    public void successfulFindAttendingTrips2() throws TripsException {
+        User user = tripsService.createUser("ariane@hotmail.com","spint");
+        assertTrue(tripsService.findAttendingTrips(user).isEmpty());
+    }
+
+    @Test
     public void successfulAddLabelsToTrip() throws TripsException {
         Trip trip = tripsService.createTimelessTrip("The Spartacus", "N/A", TripPrivacy.PUBLIC, user);
         tripsService.addLabelToTrip(trip,user,"Modder");
@@ -269,7 +289,7 @@ public class TestTrip {
     }
 
     @Test
-    public void succesfulAddDatesToTimeBoundTrip() throws ParseException, TripsException
+    public void successfulAddDatesToTimeBoundTrip() throws ParseException, TripsException
     {
         Trip trip = tripsService.createTimeBoundTrip("trip met extra dates","extra dates",TripPrivacy.PROTECTED,user,df.parse("01/01/2014"), df.parse("01/02/2014"));
         tripsService.publishTrip(trip, user);

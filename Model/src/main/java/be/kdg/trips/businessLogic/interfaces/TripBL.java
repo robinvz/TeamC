@@ -25,6 +25,7 @@ public interface TripBL
     public List<Trip> findPrivateTrips(User user) throws TripsException;
     public Trip findTripById(int id, User user) throws TripsException;
     public List<Trip> findTripsByOrganizer(User organizer) throws TripsException;
+    public List<Trip> findAttendingTrips(User user) throws TripsException;
 
     public void publishTrip(Trip trip, User user) throws TripsException;
     public void addLabelToTrip(Trip trip, User organizer, String label) throws TripsException;

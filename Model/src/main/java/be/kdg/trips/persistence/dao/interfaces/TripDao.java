@@ -24,6 +24,7 @@ public interface TripDao {
     public List<Trip> getProtectedTripsWithoutDetailsByKeyword(String keyword);
     public List<Trip> getTripsByOrganizer(User organizer);
     public Trip getTrip(int id) throws TripsException;
+    public List<Trip> getAttendingTrips(User user);
 
     public void deleteTrip(Trip trip);
 

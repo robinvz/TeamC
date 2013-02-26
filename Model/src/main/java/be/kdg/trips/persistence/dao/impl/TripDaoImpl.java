@@ -93,6 +93,16 @@ public class TripDaoImpl implements TripDao{
     }
 
     @Override
+    public List<Trip> getAttendingTrips(User user) {
+        Session session = sessionFactory.openSession();
+        Query query = session.createQuery("FROM Enrollment e WHERE e.user = :user");
+        query.setParameter("user", user);
+        List<Trip> trips = query.list();
+        session.close();
+        return trips;
+    }
+
+    @Override
     public void deleteTrip(Trip trip) {
         Session session = sessionFactory.openSession();
         Transaction tx = session.getTransaction();

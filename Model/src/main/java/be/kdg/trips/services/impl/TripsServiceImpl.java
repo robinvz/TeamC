@@ -114,6 +114,11 @@ public class TripsServiceImpl implements TripsService
     }
 
     @Override
+    public List<Trip> findAttendingTrips(User user) throws TripsException {
+        return tripController.findAttendingTrips(user);
+    }
+
+    @Override
     public void publishTrip(Trip trip, User organizer) throws TripsException {
         tripController.publishTrip(trip, organizer);
     }
