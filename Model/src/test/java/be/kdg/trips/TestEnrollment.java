@@ -19,6 +19,7 @@ import java.text.SimpleDateFormat;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.assertTrue;
 
 /**
  * Subversion id
@@ -95,10 +96,16 @@ public class TestEnrollment
     }
 
     @Test
-    public void successfulFindEnrollmentByUser() throws TripsException, ParseException {
+    public void successfulFindEnrollmentByUser1() throws TripsException, ParseException {
         User user = tripsService.createUser("sergeant@kdg.be","pass");
         Enrollment enrollment = tripsService.subscribe(trip, user);
         assertEquals(1, tripsService.findEnrollmentsByUser(user).size());
+    }
+
+    @Test
+    public void successfulFindEnrollmentByUser2() throws TripsException, ParseException {
+        User user = tripsService.createUser("zolow@kdg.be","pass");
+        assertTrue(tripsService.findEnrollmentsByUser(user).isEmpty());
     }
 
     @Test
