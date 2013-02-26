@@ -182,6 +182,14 @@ public abstract class Trip implements Serializable, TripInterface {
         enrollments.remove(enrollment);
     }
 
+    public void setLocations(List<Location> locations) {
+        this.locations = locations;
+    }
+
+    public void setEnrollments(Set<Enrollment> enrollments) {
+        this.enrollments = enrollments;
+    }
+
     private synchronized int getNextId() {
         return counter++;
     }
