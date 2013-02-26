@@ -20,6 +20,7 @@ import org.springframework.test.web.servlet.RequestBuilder;
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 
+import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
@@ -170,6 +171,17 @@ public class TripTest {
         assertNotNull(t);
     }
     */
+
+    @Test
+    public void subscribeTrip() throws Exception {
+        mockHttpSession.setAttribute("user", testUser);
+        Date startd = sdf.parse(enddate);
+        Date endd = sdf.parse(startdate);
+        Trip t = new TimeBoundTrip(title, description, privacy, testUser, startd, endd);
+        RequestBuilder requestBuilder = MockMvcRequestBuilders.get("/subscribe/" + t.getId());
+        mockMvc.perform(requestBuilder).andExpect(view().name("tripsView"));
+        assertEquals(0, tripsService.findAllNonPrivateTrips(testUser).size());
+    }
 
 
 }
