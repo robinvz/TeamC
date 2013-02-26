@@ -90,9 +90,9 @@
                 <!-- model heeft momenteel: type, id, description, privacy, published, title, userId -->
                 <thead>
                 <tr>
-                    <th>Title</th>
-                    <th>Description</th>
-                    <th>Privacy</th>
+                    <th>Trip</th>
+                    <th>Date</th>
+
                 </tr>
                 </thead>
 
@@ -100,16 +100,13 @@
                     <div>
                         <c:if test="${not empty allEnrollments}">
                         <c:forEach items="${allEnrollments}" var="enrollment">
-                            <tr id="trip${enrollment.id}">
+                            <tr id="trip${enrollment.trip.id}">
                                 <div class="form-row">
                                     <td>
-                                            ${enrollment.title}
+                                            ${enrollment.trip.title}
                                     </td>
                                     <td>
-                                            ${enrollment.description}
-                                    </td>
-                                    <td>
-                                            ${enrollment.privacy}
+                                            ${enrollment.date}
                                     </td>
                                 </div>
                             </tr>
