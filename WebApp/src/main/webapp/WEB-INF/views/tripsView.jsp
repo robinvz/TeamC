@@ -11,13 +11,15 @@
     <jsp:include page="baseView.jsp"/>
 
     <h2>Overview</h2>
-    <nav class="inner-nav">
-        <ul class="nav">
-            <li id="btn-trips" class="inner-nav-link inner-selected">Display all trips</li>
-            <li id="btn-trips-participating" class="inner-nav-link">Show my enrolled trips</li>
-            <li id="btn-trips-organised" class="inner-nav-link">Show trips organised by me</li>
-        </ul>
-    </nav>
+    <c:if test="${not empty user}">
+        <nav class="inner-nav">
+            <ul class="nav">
+                <li id="btn-trips" class="inner-nav-link inner-selected">Display all trips</li>
+                <li id="btn-trips-participating" class="inner-nav-link">Show my enrolled trips</li>
+                <li id="btn-trips-organised" class="inner-nav-link">Show trips organised by me</li>
+            </ul>
+        </nav>
+    </c:if>
 
     <div id="control-bar">
         <c:if test="${not empty user}">
@@ -110,23 +112,23 @@
 
                 <tbody>
                 <div>
-                <c:if test="${not empty allOrganisedTrips}">
-                    <c:forEach items="${allOrganisedTrips}" var="organisedTrip">
-                        <tr id="trip${organisedTrip.id}">
-                            <div class="form-row">
-                                <td>
-                                        ${organisedTrip.title}
-                                </td>
-                                <td>
-                                        ${organisedTrip.description}
-                                </td>
-                                <td>
-                                        ${organisedTrip.privacy}
-                                </td>
-                            </div>
-                        </tr>
-                    </c:forEach>
-                </c:if>
+                    <c:if test="${not empty allOrganisedTrips}">
+                        <c:forEach items="${allOrganisedTrips}" var="organisedTrip">
+                            <tr id="trip${organisedTrip.id}">
+                                <div class="form-row">
+                                    <td>
+                                            ${organisedTrip.title}
+                                    </td>
+                                    <td>
+                                            ${organisedTrip.description}
+                                    </td>
+                                    <td>
+                                            ${organisedTrip.privacy}
+                                    </td>
+                                </div>
+                            </tr>
+                        </c:forEach>
+                    </c:if>
                 </div>
                 </tbody>
             </table>
