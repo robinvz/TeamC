@@ -1,4 +1,4 @@
-
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <html>
 <head>
     <link rel="stylesheet" href="${pageContext.request.contextPath}/resources/css/main.css"/>
@@ -74,6 +74,7 @@
         </table>
     </div>
 </div>
+<script src="${pageContext.request.contextPath}/resources/js/jquery-1.9.0.min.js"></script>
 <script src="${pageContext.request.contextPath}/resources/js/trips.js"></script>
 </body>
 </html>
