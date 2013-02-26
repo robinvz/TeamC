@@ -49,7 +49,7 @@
         <div id="timelessTrip">
             <form action="/createTimeLessTrip" method="POST">
                 <fieldset>
-                    <legend>Create a repeating trip</legend>
+                    <legend>Create a timeless trip</legend>
                     <table>
                         <tr>
                             <td><label>Title: </label></td>
