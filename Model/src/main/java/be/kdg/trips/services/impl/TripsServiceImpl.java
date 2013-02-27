@@ -48,6 +48,11 @@ public class TripsServiceImpl implements TripsService
     }
 
     @Override
+    public List<User> findUsersByKeyword(String keyword, User user) throws TripsException {
+        return userController.findUsersByKeyword(keyword, user);
+    }
+
+    @Override
     public boolean checkLogin(String email, String password) throws TripsException {
         return userController.checkLogin(email, password);
     }

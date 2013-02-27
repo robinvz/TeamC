@@ -25,6 +25,7 @@ public interface TripsService
     public User createUser(User user) throws TripsException;
 
     public User findUser(String email) throws TripsException;
+    public List<User> findUsersByKeyword(String keyword, User user) throws TripsException;
     public boolean checkLogin(String email, String password) throws TripsException;
 
     public void updateUser(User user, String firstName, String lastName, String street, String houseNr, String city, String postalCode, String province, String country, byte[] profilePicture) throws TripsException;

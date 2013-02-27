@@ -10,6 +10,9 @@ import org.hibernate.Transaction;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
+import java.util.List;
+import java.util.Set;
+
 /**
  * Subversion id
  * Project Application Development
@@ -32,6 +35,17 @@ public class UserDaoImpl implements UserDao {
     public User getUserWithDetails(String email) throws TripsException
     {
         return queryUser(email.toLowerCase(), "SELECT DISTINCT u FROM User u LEFT JOIN FETCH u.enrollments LEFT JOIN FETCH u.invitations WHERE u.email = :email");
+    }
+
+    @Override
+    public List<User> getUsersByKeyword(String keyword, User user) {
+        Session session = sessionFactory.openSession();
+        Query query = session.createQuery("FROM User u WHERE (lower(u.email) LIKE :keyword OR lower(u.firstName) LIKE :keyword OR lower(u.lastName) LIKE :keyword) AND u <> :user");
+        query.setParameter("keyword", "%"+keyword+"%");
+        query.setParameter("user", user);
+        List<User> users = query.list();
+        session.close();
+        return users;
     }
 
     @Override
