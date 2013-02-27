@@ -21,7 +21,6 @@
                 </form>
             </li>
             </c:if>
-
             <li>
                 <form id="deleteTripForm" action="/deleteTrip/${trip.id}" method="GET">
                     <button type="submit" id="deleteBtn">Delete</button>

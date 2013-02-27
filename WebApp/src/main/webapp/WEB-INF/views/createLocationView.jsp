@@ -19,10 +19,8 @@
             <form:form action="createLocation" method="POST">
                 <div class="page">
                     <h2>Select the location of your point of interest</h2>
-
                     <div id="mapcanvas" class="map-canvas"></div>
                     <div id="addressfields">
-
                         <div id="latlng">
                             <input id="latitude" name="latitude" type="text">
                             <input id="longitude" name="longitude" type="text">

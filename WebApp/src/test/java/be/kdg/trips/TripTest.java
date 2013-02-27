@@ -34,7 +34,6 @@ import static org.mockito.Matchers.any;
 import static org.mockito.Mockito.when;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 
-
 /**
  * Subversion Id
  * Project Application Development
@@ -202,7 +201,7 @@ public class TripTest {
         RequestBuilder requestBuilder = MockMvcRequestBuilders.post("/trip/" + t.getId() + "/createLocation").param("user", "testUser").param("trip", "t")
                 .param("latitude", "1.00").param("longitude", "1.00").param("street", "testStreet").param("houseNr", "1").param("city", "testCity")
                 .param("postalCode", "2000").param("province", "testProvince").param("country", "testCountry").param("title", "testTitle").param("description", "testDescription");
-        mockMvc.perform(requestBuilder).andExpect(view().name("redirect:trip/" + t.getId()));
+        mockMvc.perform(requestBuilder).andExpect(view().name("redirect:/trip/" + t.getId()));
         t.addLocation(new Location(t, 1.00, 1.00, new Address("street", "1", "city", "2000", "province", "country"), title, description));
         assertEquals(1, t.getLocations().size());
     }

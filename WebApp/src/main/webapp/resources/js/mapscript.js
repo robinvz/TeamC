@@ -44,7 +44,6 @@ function initializeMap() {
     });
 
     var marker;
-
     function placeMarker(location) {
         if (marker) { //verify if the marker exists
             marker.setPosition(location); //cange the position
