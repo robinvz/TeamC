@@ -1,13 +1,15 @@
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+<%@ taglib prefix="spring" uri="http://www.springframework.org/tags" %>
 <!---->
 <header>
     <a href="/" title="Home"> <img class="header-img"
                                    src="${pageContext.request.contextPath}/resources/res/img/logosite.png" alt="Logo"
                                    title="Home"/> </a>
+    <a href="?lang=en">English</a>|<a href="?lang=nl">Nederlands</a>
 
     <nav class="header-nav">
         <ul class="nav">
-            <li><a id="nav-home" class="nav-link" href="/" title="Home">Home</a></li>
+            <li><a id="nav-home" class="nav-link" href="/" title="Home"><spring:message code="Home" /></a></li>
             <li><a id="nav-trips" class="nav-link" href="/trips" title="">Trips</a></li>
             <c:if test="${not empty sessionScope.user}">
                 <li><a id="nav-profile" class="nav-link" href="/users/profile" title="">Profile</a></li>

@@ -53,6 +53,8 @@ public class User implements UserInterface, Serializable {
     private Set<Enrollment> enrollments;
     @OneToMany(mappedBy = "user")
     private Set<Invitation> invitations;
+    @Lob
+    private byte[] profilePicture;
 
 
     public User(String email, String password) {
@@ -147,6 +149,14 @@ public class User implements UserInterface, Serializable {
     public void removeInvitation(Invitation invitation)
     {
         invitations.remove(invitation);
+    }
+
+    public byte[] getProfilePicture() {
+        return profilePicture;
+    }
+
+    public void setProfilePicture(byte[] profilePicture) {
+        this.profilePicture = profilePicture;
     }
 
     public boolean checkPassword(String password)

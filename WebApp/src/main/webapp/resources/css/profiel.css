@@ -12,4 +12,45 @@ aside{
 
 .content {
     display: inline-block;
+    width: 630px;
+    float: right;
 }
+
+
+
+#btn-edit{
+    float:right;
+    background: rgb(15,55,255);
+    width: 150px;
+    height: 30px;
+    border-radius: 8px;
+    border: none;
+    color: #ffffff;
+    font-size: 1.1em;
+    font-family: webfontbold;
+}
+
+#btn-save{
+    float:right;
+    background: rgb(15,55,255);
+    width: 150px;
+    height: 30px;
+    border-radius: 8px;
+    border: none;
+    color: #ffffff;
+    font-size: 1.1em;
+    font-family: webfontbold;
+}
+
+h2{
+    margin-bottom: 10px;
+}
+
+fieldset{
+    border: 0;
+}
+
+legend{
+    display: none;
+}
+

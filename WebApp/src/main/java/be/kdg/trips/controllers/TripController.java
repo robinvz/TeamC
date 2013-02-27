@@ -7,13 +7,12 @@ import be.kdg.trips.model.trip.Trip;
 import be.kdg.trips.model.trip.TripPrivacy;
 import be.kdg.trips.model.user.User;
 import be.kdg.trips.services.interfaces.TripsService;
+import net.sf.json.JSONArray;
+import net.sf.json.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.MessageSource;
 import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
 
 import javax.mail.MessagingException;
@@ -41,6 +40,59 @@ public class TripController {
 
     @Autowired
     private MessageSource messageSource;
+
+    @RequestMapping(value = "/service/alltrips", method = RequestMethod.GET)
+    public
+    @ResponseBody
+    String allTripsService(@RequestParam String username, @RequestParam String password) throws TripsException {
+        JSONObject js = new JSONObject();
+        js.accumulate("valid", tripsService.checkLogin(username, password));
+        if (tripsService.checkLogin(username, password)){
+            User user = tripsService.findUser(username);
+            JSONArray jsonArray = new JSONArray();
+            for (Trip trip : tripsService.findAllNonPrivateTrips(user)){
+                jsonArray.add(trip.getTitle());
+            }
+            js.accumulate("trips", jsonArray);
+        }
+        return js.toString();
+    }
+
+    @RequestMapping(value = "/service/enrolledtrips", method = RequestMethod.GET)
+    public
+    @ResponseBody
+    String enrolledTripsService(@RequestParam String username, @RequestParam String password) throws TripsException {
+        JSONObject js = new JSONObject();
+        js.accumulate("valid", tripsService.checkLogin(username, password));
+        if (tripsService.checkLogin(username, password)){
+            User user = tripsService.findUser(username);
+            JSONArray jsonArray = new JSONArray();
+            for (Enrollment enrollment : tripsService.findEnrollmentsByUser(user)){
+                jsonArray.add(enrollment.getTrip().getTitle());
+            }
+            js.accumulate("trips", jsonArray);
+        }
+        return js.toString();
+    }
+
+    @RequestMapping(value = "/service/createdTrips", method = RequestMethod.GET)
+    public
+    @ResponseBody
+    String createdTripsService(@RequestParam String username, @RequestParam String password) throws TripsException {
+        JSONObject js = new JSONObject();
+        js.accumulate("valid", tripsService.checkLogin(username, password));
+        if (tripsService.checkLogin(username, password)){
+            User user = tripsService.findUser(username);
+            JSONArray jsonArray = new JSONArray();
+            for (Trip trip : tripsService.findTripsByOrganizer(user)){
+                jsonArray.add(trip.getTitle());
+            }
+            js.accumulate("trips", jsonArray);
+        }
+        return js.toString();
+    }
+
+
 
     @RequestMapping(value = "/trips", method = RequestMethod.GET)
     public ModelAndView showTrips() {

@@ -14,106 +14,100 @@
     <div class="content">
         <section>
             <article>
-                <h2>${user.email}</h2>
+                <h2>${user.firstName} ${user.lastName}</h2>
                 <div class="profile-general">
-                    <table>
+                     <button id="btn-edit" class="profile-view">Edit</button>
+                    <form id="profile-form" action="/users/editProfile" method="POST">
+                    <table id="profile-data">
+
                         <tr>
+
                             <td>
                                 <label>First name: </label>
-                                <output>${user.firstName}</output>
+                            </td>
+                            <td>
+                                <output class="profile-view">${user.firstName}</output>
+                                <input class="profile-edit" type="text" name="firstName">
                             </td>
                         </tr>
                         <tr>
                             <td>
                                 <label>Last name: </label>
-                                <output>${user.lastName}</output>
+                            </td>
+                            <td>
+                                <output class="profile-view">${user.lastName}</output>
+                                <input class="profile-edit" type="text" name="lastName">
                             </td>
                         </tr>
                         <tr>
                             <td>
                                 <label>Street: </label>
-                                <output>${user.address.street}</output>
+                            </td>
+                            <td>
+                                <output class="profile-view">${user.address.street}</output>
+                                <input class="profile-edit" type="text" name="street">
                             </td>
                         </tr>
                         <tr>
                             <td>
                                 <label>House nr: </label>
-                                <output>${user.address.houseNr}</output>
+                            </td>
+                            <td>
+                                <output class="profile-view">${user.address.houseNr}</output>
+                                <input class="profile-edit" type="text" name="houseNr">
                             </td>
                         </tr>
                         <tr>
                             <td>
                                 <label>City: </label>
-                                <output>${user.address.city}</output>
+                            </td>
+                            <td>
+                                <output class="profile-view">${user.address.city}</output>
+                                <input class="profile-edit" type="text" name="city">
                             </td>
                         </tr>
                         <tr>
                             <td>
                                 <label>Postal code: </label>
-                                <output>${user.address.postalCode}</output>
+                            </td>
+                            <td>
+                                <output class="profile-view">${user.address.postalCode}</output>
+                                <input class="profile-edit" type="text" name="postalCode">
                             </td>
                         </tr>
                         <tr>
                             <td>
                                 <label>Province: </label>
-                                <output>${user.address.province}</output>
+                            </td>
+                            <td>
+                                <output class="profile-view">${user.address.province}</output>
+                                <input class="profile-edit" type="text" name="province">
                             </td>
                         </tr>
                         <tr>
                             <td>
                                 <label>Country: </label>
-                                <output>${user.address.country}</output>
+                            </td>
+                            <td>
+                                <output class="profile-view">${user.address.country}</output>
+                                <input class="profile-edit" type="text" name="country">
                             </td>
                         </tr>
                         <tr>
                             <td>
                                 <label>Member since: </label>
+                            </td>
+                            <td>
                                 <output>${user.registerDate}</output>
+                                <input style="display: none" type="text">
                             </td>
                         </tr>
+                        <tr>
+                            <input id="btn-save" type="submit" value="Save changes" class="btn-submit profile-edit">
+                        </tr>
                     </table>
-                </div>
-
-                <div class="profile-edit">
-                    <form action="/users/editProfile" method="POST">
-                        <table>
-                            <tr>
-                                <td><label>First name: </label></td>
-                                <td><input type="text" name="firstName"></td>
-                            </tr>
-                            <tr>
-                                <td><label>Last name: </label></td>
-                                <td><input type="text" name="lastName"></td>
-                            </tr>
-                            <tr>
-                                <td><label>Street: </label></td>
-                                <td><input type="text" name="street"></td>
-                            </tr>
-                            <tr>
-                                <td><label>House nr: </label></td>
-                                <td><input type="text" name="houseNr"></td>
-                            </tr>
-                            <tr>
-                                <td><label>City: </label></td>
-                                <td><input type="text" name="city"></td>
-                            </tr>
-                            <tr>
-                                <td><label>Postal code: </label></td>
-                                <td><input type="text" name="postalCode"></td>
-                            </tr>
-                            <tr>
-                                <td><label>Province: </label></td>
-                                <td><input type="text" name="province"></td>
-                            </tr>
-                            <tr>
-                                <td><label>Country: </label></td>
-                                <td><input type="text" name="country"></td>
-                            </tr>
-                        </table>
-                        <input type="submit" value="Edit" class="btn-submit">
                     </form>
                 </div>
-
                 <!-- Only active trips -->
                 <div class="profile-currentTrips">
 
@@ -127,5 +121,7 @@
         </section>
     </div>
 </div>
+<script src="${pageContext.request.contextPath}/resources/js/jquery-1.9.0.min.js"></script>
+<script src="${pageContext.request.contextPath}/resources/js/profile.js"></script>
 </body>
 </html>

@@ -68,7 +68,9 @@ public class ProfileController {
             return "/users/profileView";
             //failed to edit user
         }
-        return "indexView";
+        //TODO test for return to /users/profileView
+        return "/users/profileView";
+        //return "indexView";
     }
 
 

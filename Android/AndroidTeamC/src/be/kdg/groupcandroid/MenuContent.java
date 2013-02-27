@@ -6,6 +6,7 @@ import android.os.Build;
 import android.os.Bundle;
 import android.support.v4.app.FragmentActivity;
 import android.support.v4.app.FragmentTransaction;
+import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
@@ -130,16 +131,6 @@ public class MenuContent extends FragmentActivity {
         outState.putString(STATE_CONTENT_TEXT, mContentText);
     }
 
-    @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
-        switch (item.getItemId()) {
-            case android.R.id.home:
-                mMenuDrawer.toggleMenu();
-                return true;
-        }
-
-        return super.onOptionsItemSelected(item);
-    }
 
     @Override
     public void onBackPressed() {
@@ -229,4 +220,23 @@ public class MenuContent extends FragmentActivity {
             return v;
         }
     }
+	@Override
+	public boolean onCreateOptionsMenu(Menu menu) {
+		// Inflate the menu; this adds items to the action bar if it is present.
+		getMenuInflater().inflate(R.menu.activity_main, menu);
+		return true;
+	}
+
+	@Override
+	public boolean onOptionsItemSelected(MenuItem item) {
+		if (item.getItemId() == R.id.menu_settings) {
+			Intent intent = new Intent(this, Preferences.class);
+			startActivity(intent);
+		}
+		else if(item.getItemId() == R.id.logout){
+			SessionManager sm = new SessionManager(getBaseContext());
+			sm.logoutUser();
+		}
+		return super.onOptionsItemSelected(item);
+	}
 }
