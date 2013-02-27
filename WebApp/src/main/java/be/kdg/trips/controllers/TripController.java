@@ -50,7 +50,10 @@ public class TripController {
             User user = tripsService.findUser(username);
             JSONArray jsonArray = new JSONArray();
             for (Trip trip : tripsService.findAllNonPrivateTrips(user)){
-                jsonArray.add(trip.getTitle());
+                JSONObject obj = new JSONObject();
+                obj.accumulate("title", trip.getTitle());
+                obj.accumulate("id", trip.getId());
+                jsonArray.add(obj);
             }
             js.accumulate("trips", jsonArray);
         }
@@ -67,14 +70,17 @@ public class TripController {
             User user = tripsService.findUser(username);
             JSONArray jsonArray = new JSONArray();
             for (Enrollment enrollment : tripsService.findEnrollmentsByUser(user)){
-                jsonArray.add(enrollment.getTrip().getTitle());
+                JSONObject obj = new JSONObject();
+                obj.accumulate("title", enrollment.getTrip().getTitle());
+                obj.accumulate("id", enrollment.getTrip().getId());
+                jsonArray.add(obj);
             }
             js.accumulate("trips", jsonArray);
         }
         return js.toString();
     }
 
-    @RequestMapping(value = "/service/createdTrips", method = RequestMethod.GET)
+    @RequestMapping(value = "/service/createdtrips", method = RequestMethod.GET)
     public
     @ResponseBody
     String createdTripsService(@RequestParam String username, @RequestParam String password) throws TripsException {
@@ -84,13 +90,32 @@ public class TripController {
             User user = tripsService.findUser(username);
             JSONArray jsonArray = new JSONArray();
             for (Trip trip : tripsService.findTripsByOrganizer(user)){
-                jsonArray.add(trip.getTitle());
-            }
+                JSONObject obj = new JSONObject();
+                obj.accumulate("title", trip.getTitle());
+                obj.accumulate("id", trip.getId());
+                jsonArray.add(obj);            }
             js.accumulate("trips", jsonArray);
         }
         return js.toString();
     }
 
+    @RequestMapping(value = "/service/trip", method = RequestMethod.GET)
+    public
+    @ResponseBody
+    String tripByIdService(@RequestParam int id, @RequestParam String username, @RequestParam String password) throws TripsException {
+        JSONObject js = new JSONObject();
+        js.accumulate("valid", tripsService.checkLogin(username, password));
+        if (tripsService.checkLogin(username, password)){
+            User user = tripsService.findUser(username);
+            Trip trip = tripsService.findTripById(id, user);
+            js.accumulate("title", trip.getTitle());
+            js.accumulate("description", trip.getDescription()) ;
+            js.accumulate("enrollments", trip.getEnrollments().size()) ;
+      //      js.accumulate("organizer", trip.getOrganizer()) ;
+            js.accumulate("privacy", trip.getPrivacy()) ;
+        }
+        return js.toString();
+    }
 
 
     @RequestMapping(value = "/trips", method = RequestMethod.GET)
