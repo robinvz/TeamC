@@ -156,9 +156,10 @@ public class EnrollmentBLImpl implements EnrollmentBL
     @Override
     public Enrollment subscribe(Trip trip, User user) throws TripsException {
         Enrollment enrollment = null;
+        User userWithDetails = userBL.findUserWithDetails(user.getEmail());
         if(trip.getPrivacy() == TripPrivacy.PROTECTED)
         {
-            enrollment = enroll(trip, user);
+            enrollment = enroll(trip, userWithDetails);
         }
         else
         {
