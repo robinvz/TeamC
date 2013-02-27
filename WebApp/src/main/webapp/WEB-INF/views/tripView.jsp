@@ -63,7 +63,7 @@
 
                 </div>
                 <c:if test="${trip.privacy == 'PROTECTED' and user != null}">
-                    <a href="/subscribe?id=${trip.id}">
+                    <a href="/subscribe?tripId=${trip.id}">
                         <img id="subscribeButton"
                              src="${pageContext.request.contextPath}/resources/res/img/subscribe.jpg">
                     </a>
