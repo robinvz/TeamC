@@ -55,6 +55,7 @@ public interface TripsService
     //Enrollment Service
     public Enrollment subscribe(Trip trip, User user) throws TripsException;
     public Enrollment acceptInvitation(Trip trip, User user) throws TripsException;
+    public void declineInvitation(Trip trip, User user) throws TripsException;
     public void disenroll(Trip trip, User user) throws TripsException;
     public void setLastLocationVisited(Trip trip, User user, Location location) throws TripsException;
 

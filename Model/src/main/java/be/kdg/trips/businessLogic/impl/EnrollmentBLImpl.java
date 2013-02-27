@@ -62,7 +62,7 @@ public class EnrollmentBLImpl implements EnrollmentBL
             if(trip.getPrivacy()==TripPrivacy.PRIVATE)
             {
                 Invitation invitation = enrollmentDao.getInvitationByUserAndTrip(user, trip);
-                invitation.setAnswer(Answer.UNANSWERED);
+                invitation.setAnswer(Answer.DECLINED);
                 enrollmentDao.saveOrUpdateInvitation(invitation);
             }
             enrollmentDao.deleteEnrollment(enrollment);
@@ -181,6 +181,24 @@ public class EnrollmentBLImpl implements EnrollmentBL
             enrollmentDao.saveOrUpdateInvitation(invitation);
         }
         return enrollment;
+    }
+
+    @Override
+    public void declineInvitation(Trip trip, User user) throws TripsException {
+        if(isExistingInvitation(user, trip) && isUnexistingEnrollment(user, trip))
+        {
+            Invitation invitation = enrollmentDao.getInvitationByUserAndTrip(user, trip);
+            if(invitation.getAnswer()!=Answer.DECLINED)
+            {
+                invitation.setAnswer(Answer.DECLINED);
+                enrollmentDao.saveOrUpdateInvitation(invitation);
+            }
+            else
+            {
+                throw new TripsException("Invitation is already declined");
+            }
+
+        }
     }
 
     @Override

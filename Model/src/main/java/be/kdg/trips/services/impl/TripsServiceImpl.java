@@ -157,6 +157,11 @@ public class TripsServiceImpl implements TripsService
     }
 
     @Override
+    public void declineInvitation(Trip trip, User loggedInUser) throws TripsException {
+        enrollmentController.declineInvitation(trip, loggedInUser);
+    }
+
+    @Override
     public void disenroll(Trip trip, User user) throws TripsException {
         enrollmentController.disenroll(trip, user);
     }
