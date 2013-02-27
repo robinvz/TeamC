@@ -180,22 +180,25 @@ public class TripBLImpl implements TripBL
     }
 
     @Override
-    public void addLocationToTrip(User user, Trip trip, double latitude, double longitude, String street, String houseNr, String city, String postalCode, String province, String country, String title, String description) throws TripsException {
+    public Location addLocationToTrip(User user, Trip trip, double latitude, double longitude, String street, String houseNr, String city, String postalCode, String province, String country, String title, String description) throws TripsException {
+        Location location = null;
         if(isExistingTrip(trip.getId()) && userBL.isExistingUser(user.getEmail()) && isOrganizer(trip, user))
         {
-            Location location =  new Location(trip, latitude, longitude, new Address(street, houseNr, city, postalCode, province, country), title, description, trip.getLocations().size()+1);
+            location =  new Location(trip, latitude, longitude, new Address(street, houseNr, city, postalCode, province, country), title, description, trip.getLocations().size()+1);
             trip.addLocation(location);
             tripDao.saveOrUpdateTrip(trip);
         }
+        return location;
     }
 
     @Override
-    public void addLocationToTrip(User user, Trip trip, double latitude, double longitude, String street, String houseNr, String city, String postalCode, String province, String country, String title, String description, String question, List<String> possibleAnswers, int correctAnswerIndex) throws TripsException {
+    public Location addLocationToTrip(User user, Trip trip, double latitude, double longitude, String street, String houseNr, String city, String postalCode, String province, String country, String title, String description, String question, List<String> possibleAnswers, int correctAnswerIndex) throws TripsException {
+        Location location = null;
         if(isExistingTrip(trip.getId()) && userBL.isExistingUser(user.getEmail()) && isOrganizer(trip, user))
         {
             if(correctAnswerIndex<possibleAnswers.size())
             {
-                Location location =  new Location(trip, latitude, longitude, new Address(street, houseNr, city, postalCode, province, country), title, description,trip.getLocations().size()+1, new Question(question, possibleAnswers, correctAnswerIndex));
+                location =  new Location(trip, latitude, longitude, new Address(street, houseNr, city, postalCode, province, country), title, description,trip.getLocations().size()+1, new Question(question, possibleAnswers, correctAnswerIndex));
                 trip.addLocation(location);
                 tripDao.saveOrUpdateTrip(trip);
             }
@@ -204,6 +207,7 @@ public class TripBLImpl implements TripBL
                 throw new TripsException("The answer doesn't exist");
             }
         }
+        return location;
     }
 
     @Override

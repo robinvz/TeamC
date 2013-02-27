@@ -3,6 +3,7 @@ package be.kdg.trips;
 import be.kdg.trips.exception.TripsException;
 import be.kdg.trips.model.enrollment.Enrollment;
 import be.kdg.trips.model.invitation.Invitation;
+import be.kdg.trips.model.location.Location;
 import be.kdg.trips.model.trip.TimeBoundTrip;
 import be.kdg.trips.model.trip.Trip;
 import be.kdg.trips.model.trip.TripPrivacy;
@@ -17,9 +18,7 @@ import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertNotNull;
-import static org.junit.Assert.assertTrue;
+import static org.junit.Assert.*;
 
 /**
  * Subversion id
@@ -171,5 +170,16 @@ public class TestEnrollment
         Invitation invitation = tripsService.invite(trip, organizer, invitee);
         tripsService.acceptInvitation(trip, invitee);
         tripsService.acceptInvitation(trip, invitee);
+    }
+
+    @Test
+    public void successfulSetLastLocationVisited() throws TripsException {
+        User user = tripsService.createUser(new User("lampekap@hotmail.com","pass"));
+        Trip trip = tripsService.createTimelessTrip("Spartacus run", "Lopen door de modder!", TripPrivacy.PROTECTED, organizer);
+        Location loc1 = tripsService.addLocationToTrip(organizer, trip, 12.00, 160.00, null, null, null, null, null, null, "Loc1","Location1");
+        Location loc2 = tripsService.addLocationToTrip(organizer, trip, 12.00, 160.00, null, null, null, null, null, null, "Loc2","Location2");
+        tripsService.publishTrip(trip,organizer);
+        tripsService.subscribe(trip, user);
+        tripsService.setLastLocationVisited(trip, user, loc1);
     }
 }

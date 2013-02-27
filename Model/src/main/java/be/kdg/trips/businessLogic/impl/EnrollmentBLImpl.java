@@ -7,6 +7,7 @@ import be.kdg.trips.exception.TripsException;
 import be.kdg.trips.model.enrollment.Enrollment;
 import be.kdg.trips.model.invitation.Answer;
 import be.kdg.trips.model.invitation.Invitation;
+import be.kdg.trips.model.location.Location;
 import be.kdg.trips.model.trip.Trip;
 import be.kdg.trips.model.trip.TripPrivacy;
 import be.kdg.trips.model.user.User;
@@ -167,5 +168,29 @@ public class EnrollmentBLImpl implements EnrollmentBL
             throw new TripsException("You can't subscribe for a public or private trip");
         }
         return enrollment;
+    }
+
+    @Override
+    public void setLastLocationVisited(Trip trip, User user, Location location) throws TripsException {
+        if(isExistingEnrollment(user, trip))
+        {
+            boolean locationExists=false;
+            for(Location tripLocations: trip.getLocations())
+            {
+                if(tripLocations.equals(location))
+                {
+                    locationExists = true;
+                }
+            }
+            if(locationExists){
+                Enrollment enrollment = enrollmentDao.getEnrollmentByUserAndTrip(user, trip);
+                enrollment.setLastLocationVisited(location);
+                enrollmentDao.saveOrUpdateEnrollment(enrollment);
+            }
+            else
+            {
+                throw new TripsException("Location doesn't exist in selected trip");
+            }
+        }
     }
 }
