@@ -47,8 +47,10 @@ public class Location implements LocationInterface, Serializable
     @JoinColumn(name = "tripId")
     @NotNull
     private Trip trip;
+    @NotNull
+    private int sequence;
 
-    public Location(Trip trip, double latitude, double longitude, Address address, String title, String description, Question question) {
+    public Location(Trip trip, double latitude, double longitude, Address address, String title, String description, int sequence, Question question) {
         this.latitude = latitude;
         this.longitude = longitude;
         this.title = title;
@@ -56,15 +58,17 @@ public class Location implements LocationInterface, Serializable
         this.address = address;
         this.question = question;
         this.trip = trip;
+        this.sequence = sequence;
     }
 
-    public Location(Trip trip, double latitude, double longitude, Address address, String title, String description) {
+    public Location(Trip trip, double latitude, double longitude, Address address, String title, String description, int sequence) {
         this.latitude = latitude;
         this.longitude = longitude;
         this.title = title;
         this.description = description;
         this.address = address;
         this.trip = trip;
+        this.sequence = sequence;
     }
 
     private Location() {
@@ -118,5 +122,41 @@ public class Location implements LocationInterface, Serializable
     @Override
     public void setQuestion(Question question) {
         this.question = question;
+    }
+
+    public int getSequence() {
+        return sequence;
+    }
+
+    public void setSequence(int sequence) {
+        this.sequence = sequence;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+
+        Location location = (Location) o;
+
+        if (Double.compare(location.latitude, latitude) != 0) return false;
+        if (Double.compare(location.longitude, longitude) != 0) return false;
+        if (sequence != location.sequence) return false;
+        if (!trip.equals(location.trip)) return false;
+
+        return true;
+    }
+
+    @Override
+    public int hashCode() {
+        int result;
+        long temp;
+        temp = latitude != +0.0d ? Double.doubleToLongBits(latitude) : 0L;
+        result = (int) (temp ^ (temp >>> 32));
+        temp = longitude != +0.0d ? Double.doubleToLongBits(longitude) : 0L;
+        result = 31 * result + (int) (temp ^ (temp >>> 32));
+        result = 31 * result + trip.hashCode();
+        result = 31 * result + sequence;
+        return result;
     }
 }

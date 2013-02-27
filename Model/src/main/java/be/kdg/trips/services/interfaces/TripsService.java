@@ -47,6 +47,7 @@ public interface TripsService
     public void addLocationToTrip(User organizer, Trip trip, double latitude, double longitude, String street, String houseNr, String city, String postalCode, String province, String country, String title, String description) throws TripsException;
     public void addLocationToTrip(User organizer, Trip trip, double latitude, double longitude, String street, String houseNr, String city, String postalCode, String province, String country, String title, String description, String question, List<String> possibleAnswers, int correctAnswerIndex) throws TripsException;
     public void addDateToTimeBoundTrip(Date startDate, Date endDate, Trip trip, User organizer) throws TripsException;
+    public void switchLocationSequence(Trip trip, User user, int location1, int location2) throws TripsException;
 
     public void deleteTrip(Trip trip, User organizer) throws TripsException, MessagingException;
 
