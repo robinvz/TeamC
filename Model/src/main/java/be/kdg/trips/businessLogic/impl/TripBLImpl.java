@@ -158,7 +158,8 @@ public class TripBLImpl implements TripBL
                 trip.setPublished(true);
                 if(trip.getPrivacy()!=TripPrivacy.PUBLIC)
                 {
-                    enrollmentBL.enroll(trip,trip.getOrganizer());
+                    User organizer = userBL.findUserWithDetails(user.getEmail());
+                    enrollmentBL.enroll(trip, organizer);
                 }
                 tripDao.saveOrUpdateTrip(trip);
             }
@@ -179,22 +180,25 @@ public class TripBLImpl implements TripBL
     }
 
     @Override
-    public void addLocationToTrip(User user, Trip trip, double latitude, double longitude, String street, String houseNr, String city, String postalCode, String province, String country, String title, String description) throws TripsException {
+    public Location addLocationToTrip(User user, Trip trip, double latitude, double longitude, String street, String houseNr, String city, String postalCode, String province, String country, String title, String description) throws TripsException {
+        Location location = null;
         if(isExistingTrip(trip.getId()) && userBL.isExistingUser(user.getEmail()) && isOrganizer(trip, user))
         {
-            Location location =  new Location(trip, latitude, longitude, new Address(street, houseNr, city, postalCode, province, country), title, description);
+            location =  new Location(trip, latitude, longitude, new Address(street, houseNr, city, postalCode, province, country), title, description, trip.getLocations().size()+1);
             trip.addLocation(location);
             tripDao.saveOrUpdateTrip(trip);
         }
+        return location;
     }
 
     @Override
-    public void addLocationToTrip(User user, Trip trip, double latitude, double longitude, String street, String houseNr, String city, String postalCode, String province, String country, String title, String description, String question, List<String> possibleAnswers, int correctAnswerIndex) throws TripsException {
+    public Location addLocationToTrip(User user, Trip trip, double latitude, double longitude, String street, String houseNr, String city, String postalCode, String province, String country, String title, String description, String question, List<String> possibleAnswers, int correctAnswerIndex) throws TripsException {
+        Location location = null;
         if(isExistingTrip(trip.getId()) && userBL.isExistingUser(user.getEmail()) && isOrganizer(trip, user))
         {
             if(correctAnswerIndex<possibleAnswers.size())
             {
-                Location location =  new Location(trip, latitude, longitude, new Address(street, houseNr, city, postalCode, province, country), title, description, new Question(question, possibleAnswers, correctAnswerIndex));
+                location =  new Location(trip, latitude, longitude, new Address(street, houseNr, city, postalCode, province, country), title, description,trip.getLocations().size()+1, new Question(question, possibleAnswers, correctAnswerIndex));
                 trip.addLocation(location);
                 tripDao.saveOrUpdateTrip(trip);
             }
@@ -203,6 +207,7 @@ public class TripBLImpl implements TripBL
                 throw new TripsException("The answer doesn't exist");
             }
         }
+        return location;
     }
 
     @Override
@@ -261,6 +266,28 @@ public class TripBLImpl implements TripBL
         else
         {
             throw new TripsException("Start date must be in the future");
+        }
+    }
+
+    public void switchLocationSequence(Trip trip, User user, int location1, int location2) throws TripsException {
+        if(isExistingTrip(trip.getId()) && userBL.isExistingUser(user.getEmail()) && isOrganizer(trip, user))
+        {
+            int locationsSize = trip.getLocations().size()+1;
+            List<Location> locations = trip.getLocations();
+            if(location1 == location2)
+            {
+
+            }
+            else if(locationsSize < 1 || (location1 <= locationsSize && location1 > 0) || (location2 <= locationsSize && location2 > 0))
+            {
+                trip.getLocations().get(location1-1).setSequence(location2);
+                trip.getLocations().get(location2-1).setSequence(location1);
+                tripDao.saveOrUpdateTrip(trip);
+            }
+            else
+            {
+                throw new TripsException("Locations couldn't be switched because they don't exist");
+            }
         }
     }
 

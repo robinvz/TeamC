@@ -308,6 +308,36 @@ public class TestTrip {
     }
 
     @Test
+    public void successfulSwitchLocations() throws TripsException
+    {
+        Trip trip = tripsService.createTimelessTrip("Trip with locations", "trip with locations", TripPrivacy.PUBLIC, user);
+        tripsService.addLocationToTrip(user, trip, 12.00, 13.00, null, null, null, null, null, null, "Location", "Aangename location1");
+        tripsService.addLocationToTrip(user, trip, 13.00, 13.00, null, null, null, null, null, null, "Location", "Aangename location2");
+        tripsService.addLocationToTrip(user, trip, 14.00, 13.00, null, null, null, null, null, null, "Location", "Aangename location3");
+        tripsService.switchLocationSequence(trip, user, 1, 3);
+    }
+
+    @Test(expected = TripsException.class)
+    public void failSwitchLocationsInvalidSequence() throws TripsException
+    {
+        Trip trip = tripsService.createTimelessTrip("Trip with locations", "trip with locations", TripPrivacy.PUBLIC, user);
+        tripsService.addLocationToTrip(user, trip, 12.00, 13.00, null, null, null, null, null, null, "Location", "Aangename location1");
+        tripsService.addLocationToTrip(user, trip, 13.00, 13.00, null, null, null, null, null, null, "Location", "Aangename location2");
+        tripsService.addLocationToTrip(user, trip, 14.00, 13.00, null, null, null, null, null, null, "Location", "Aangename location3");
+        tripsService.switchLocationSequence(trip, user, -1, 5);
+    }
+
+    @Test
+    public void failSwitchLocationsSameSequence() throws TripsException
+    {
+        Trip trip = tripsService.createTimelessTrip("Trip with locations", "trip with locations", TripPrivacy.PUBLIC, user);
+        tripsService.addLocationToTrip(user, trip, 12.00, 13.00, null, null, null, null, null, null, "Location", "Aangename location1");
+        tripsService.addLocationToTrip(user, trip, 13.00, 13.00, null, null, null, null, null, null, "Location", "Aangename location2");
+        tripsService.addLocationToTrip(user, trip, 14.00, 13.00, null, null, null, null, null, null, "Location", "Aangename location3");
+        tripsService.switchLocationSequence(trip, user, 1, 1);
+    }
+
+    @Test
     public void successfulDeleteTrip() throws TripsException, MessagingException, ParseException {
         User organizer = tripsService.createUser(new User("tripsteamc@gmail.com","SDProject"));
         Trip createdTrip = tripsService.createTimeBoundTrip("Deer hunting", "I will be deleted", TripPrivacy.PROTECTED, organizer, df.parse("20/05/2013"), df.parse("21/05/2013"));

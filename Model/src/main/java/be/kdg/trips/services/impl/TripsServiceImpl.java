@@ -7,6 +7,7 @@ import be.kdg.trips.businessLogic.interfaces.UserBL;
 import be.kdg.trips.exception.TripsException;
 import be.kdg.trips.model.enrollment.Enrollment;
 import be.kdg.trips.model.invitation.Invitation;
+import be.kdg.trips.model.location.Location;
 import be.kdg.trips.model.trip.Trip;
 import be.kdg.trips.model.trip.TripPrivacy;
 import be.kdg.trips.model.user.User;
@@ -58,9 +59,9 @@ public class TripsServiceImpl implements TripsService
     }
 
     @Override
-    public void changePassword(User user, String oldPassword, String newPassword) throws TripsException
+    public void changePassword(User loggedInUser, String oldPassword, String newPassword) throws TripsException
     {
-        userController.changePassword(user, oldPassword, newPassword);
+        userController.changePassword(loggedInUser, oldPassword, newPassword);
     }
 
     @Override
@@ -82,24 +83,24 @@ public class TripsServiceImpl implements TripsService
     }
 
     @Override
-    public List<Trip> findNonPrivateTripsByKeyword(String keyword, User user) throws TripsException
+    public List<Trip> findNonPrivateTripsByKeyword(String keyword, User loggedInUser) throws TripsException
     {
-        return tripController.findNonPrivateTripsByKeyword(keyword, user);
+        return tripController.findNonPrivateTripsByKeyword(keyword, loggedInUser);
     }
 
     @Override
-    public List<Trip> findAllNonPrivateTrips(User user) throws TripsException {
-        return tripController.findAllNonPrivateTrips(user);
+    public List<Trip> findAllNonPrivateTrips(User loggedInUser) throws TripsException {
+        return tripController.findAllNonPrivateTrips(loggedInUser);
     }
 
     @Override
-    public List<Trip> findPrivateTrips(User user) throws TripsException {
-        return tripController.findPrivateTrips(user);
+    public List<Trip> findPrivateTrips(User loggedInUser) throws TripsException {
+        return tripController.findPrivateTrips(loggedInUser);
     }
 
     @Override
-    public Trip findTripById(int id, User user) throws TripsException {
-        return tripController.findTripById(id, user);
+    public Trip findTripById(int id, User loggedInUser) throws TripsException {
+        return tripController.findTripById(id, loggedInUser);
     }
 
     @Override
@@ -108,41 +109,46 @@ public class TripsServiceImpl implements TripsService
     }
 
     @Override
-    public void publishTrip(Trip trip, User organizer) throws TripsException {
-        tripController.publishTrip(trip, organizer);
+    public void publishTrip(Trip trip, User loggedInUser) throws TripsException {
+        tripController.publishTrip(trip, loggedInUser);
     }
 
     @Override
-    public void addLabelToTrip(Trip trip, User organizer, String label) throws TripsException
+    public void addLabelToTrip(Trip trip, User loggedInUser, String label) throws TripsException
     {
-        tripController.addLabelToTrip(trip, organizer, label);
+        tripController.addLabelToTrip(trip, loggedInUser, label);
     }
 
     @Override
-    public void addLocationToTrip(User organizer, Trip trip, double latitude, double longitude, String street, String houseNr, String city, String postalCode, String province, String country, String title, String description) throws TripsException {
-        tripController.addLocationToTrip(organizer, trip, latitude, longitude, street, houseNr, city, postalCode, province, country, title, description);
+    public Location addLocationToTrip(User loggedInUser, Trip trip, double latitude, double longitude, String street, String houseNr, String city, String postalCode, String province, String country, String title, String description) throws TripsException {
+        return tripController.addLocationToTrip(loggedInUser, trip, latitude, longitude, street, houseNr, city, postalCode, province, country, title, description);
     }
 
     @Override
-    public void addLocationToTrip(User organizer, Trip trip, double latitude, double longitude, String street, String houseNr, String city, String postalCode, String province, String country, String title, String description, String question, List<String> possibleAnswers, int correctAnswerIndex) throws TripsException {
-        tripController.addLocationToTrip(organizer, trip, latitude, longitude, street, houseNr, city, postalCode, province, country, title, description, question, possibleAnswers, correctAnswerIndex);
+    public Location addLocationToTrip(User loggedInUser, Trip trip, double latitude, double longitude, String street, String houseNr, String city, String postalCode, String province, String country, String title, String description, String question, List<String> possibleAnswers, int correctAnswerIndex) throws TripsException {
+        return tripController.addLocationToTrip(loggedInUser, trip, latitude, longitude, street, houseNr, city, postalCode, province, country, title, description, question, possibleAnswers, correctAnswerIndex);
     }
 
     @Override
-    public void addDateToTimeBoundTrip(Date startDate, Date endDate, Trip trip, User organizer) throws TripsException {
-        tripController.addDateToTimeBoundTrip(startDate, endDate, trip, organizer);
+    public void addDateToTimeBoundTrip(Date startDate, Date endDate, Trip trip, User loggedInUser) throws TripsException {
+        tripController.addDateToTimeBoundTrip(startDate, endDate, trip, loggedInUser);
     }
 
     @Override
-    public void deleteTrip(Trip trip, User organizer) throws TripsException, MessagingException {
-        tripController.deleteTrip(trip, organizer);
+    public void switchLocationSequence(Trip trip, User loggedInUser, int location1, int location2) throws TripsException {
+        tripController.switchLocationSequence(trip, loggedInUser, location1, location2);
+    }
+
+    @Override
+    public void deleteTrip(Trip trip, User loggedInUser) throws TripsException, MessagingException {
+        tripController.deleteTrip(trip, loggedInUser);
     }
 
     //Enrollment Service
     @Override
-    public Enrollment subscribe(Trip trip, User user) throws TripsException
+    public Enrollment subscribe(Trip trip, User loggedInUser) throws TripsException
     {
-        return enrollmentController.subscribe(trip, user);
+        return enrollmentController.subscribe(trip, loggedInUser);
     }
 
     @Override
@@ -156,12 +162,17 @@ public class TripsServiceImpl implements TripsService
     }
 
     @Override
-    public Invitation invite(Trip trip, User organizer, User user) throws TripsException {
-        return enrollmentController.invite(trip, organizer, user);
+    public Invitation invite(Trip trip, User loggedInUser, User invitee) throws TripsException {
+        return enrollmentController.invite(trip, loggedInUser, invitee);
     }
 
     @Override
-    public Enrollment acceptInvitation(Trip trip, User user) throws TripsException {
-        return enrollmentController.acceptInvitation(trip, user);
+    public Enrollment acceptInvitation(Trip trip, User loggedInUser) throws TripsException {
+        return enrollmentController.acceptInvitation(trip, loggedInUser);
+    }
+
+    @Override
+    public void setLastLocationVisited(Trip trip, User user, Location location) throws TripsException {
+        enrollmentController.setLastLocationVisited(trip, user, location);
     }
 }

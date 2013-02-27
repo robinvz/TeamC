@@ -14,7 +14,9 @@
     <div class="inner-content">
         <section>
             <article>
-                <span class="errorblock">${error}</span>
+                <c:if test="${error != null}">
+                    <span class="errorblock">${error}</span>
+                </c:if>
                 <div class="trip-info">
                     <table>
                         <tr>
@@ -60,8 +62,8 @@
                 <div class="trip-participants">
 
                 </div>
-                <c:if test="${trip.privacy == 'PROTECTED'}">
-                    <a href="/subscribe?id=${trip.id}">
+                <c:if test="${trip.privacy == 'PROTECTED' and user != null}">
+                    <a href="/subscribe?tripId=${trip.id}">
                         <img id="subscribeButton"
                              src="${pageContext.request.contextPath}/resources/res/img/subscribe.jpg">
                     </a>

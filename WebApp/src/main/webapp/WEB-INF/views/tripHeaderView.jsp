@@ -1,3 +1,4 @@
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <div id="trip-header">
     <h2>${trip.title}</h2>
 </div>
@@ -7,16 +8,20 @@
         <ul class="trip-nav">
             <li><a href="#">Info</a></li>
             <li><a href="#">Requirements</a></li>
-            <li><a href="#">Stops</a></li>
+            <li><a href="/createLocation">Stops</a></li>
             <li><a href="#">Chat</a></li>
             <li><a href="#">Participants</a></li>
             <li><a href="#">Results</a></li>
+            <li><a href="#">Edit</a></li>
+
+            <c:if test="${not empty user && trip.organizer == user && trip.published == false}">
             <li>
-                <form id="startTripForm" action="/startTrip/${trip.id}" method="GET">
-                    <button type="submit" id="startBtn">Start</button>
+                <form id="publishTripForm" action="/publishTrip/${trip.id}" method="GET">
+                    <button type="submit" id="publishBtn">Publish</button>
                 </form>
             </li>
-            <li><a href="#">Edit</a></li>
+            </c:if>
+
             <li>
                 <form id="deleteTripForm" action="/deleteTrip/${trip.id}" method="GET">
                     <button type="submit" id="deleteBtn">Delete</button>
