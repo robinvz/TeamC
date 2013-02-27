@@ -96,7 +96,7 @@ public class UserBLImpl implements UserBL
             {
                 user.getAddress().setCountry(country);
             }
-            if(!profilePicture.equals(""))
+            if(profilePicture!=null)
             {
                 user.setProfilePicture(profilePicture);
             }
