@@ -1,9 +1,12 @@
 package be.kdg.groupcandroid;
 
 import java.util.ArrayList;
+import java.util.concurrent.ExecutionException;
 
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
+import android.preference.PreferenceManager;
 import android.support.v4.app.Fragment;
 import android.view.KeyEvent;
 import android.view.LayoutInflater;
@@ -58,15 +61,16 @@ public class CreatedTripsFragment extends Fragment{
 	}
 
 	private ArrayList<Item> getTrips() {
-	/*	// TODO Ophalen van trips uit backend
+		// TODO Ophalen van trips uit backend
 		TripsTask tt = new TripsTask();
 		SharedPreferences sp = PreferenceManager
 				.getDefaultSharedPreferences(getActivity());
 		String ip = sp.getString("server_ip", "192.168.2.200");
 		String port = sp.getString("server_port", "8080");
 		String type = "created";
+		SessionManager sm = new SessionManager(getActivity());
 		try {
-			return tt.execute(new String[] { ip, port, type,"bob", "bob" }).get();
+			return tt.execute(new String[] { ip, port, type, sm.getEmail(), sm.getPassword() }).get();
 		} catch (InterruptedException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
@@ -76,7 +80,7 @@ public class CreatedTripsFragment extends Fragment{
 		}
 		return new ArrayList<Item>();
 		
-		/**/
+		/*
 		ArrayList<Item> trips = new ArrayList<Item>();
 		trips.add(new Item("Tocht door Antwerpen", R.drawable.img_antwerpen));
 		trips.add(new Item("Boswandeling Lokeren", R.drawable.img_antwerpen));
@@ -85,7 +89,7 @@ public class CreatedTripsFragment extends Fragment{
 		trips.add(new Item("Kunst in Antwerpen", R.drawable.img_antwerpen));
 		trips.add(new Item("Uitstap naar zee", R.drawable.img_antwerpen));
 		trips.add(new Item("Rock Werchter", R.drawable.img_antwerpen));
-		return trips;
+		return trips;*/
 	}
 
 

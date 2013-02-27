@@ -50,10 +50,10 @@ public class TripsTask extends AsyncTask<String, Void, ArrayList<Item>>{
 					}
 					return trips;
 				} else {
-					return null;
+					return trips;
 				}
 			} else {
-				return null;
+				return trips;
 			}
 		} catch (Exception e) {
 			return trips;
