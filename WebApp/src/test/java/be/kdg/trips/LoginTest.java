@@ -18,10 +18,16 @@ import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.RequestBuilder;
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
+import org.springframework.validation.BeanPropertyBindingResult;
+import org.springframework.validation.BindingResult;
+import org.springframework.validation.ObjectError;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertNull;
+import static org.mockito.Matchers.any;
+import static org.mockito.Mockito.doCallRealMethod;
+import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.view;
@@ -42,6 +48,7 @@ public class LoginTest {
     private MockHttpSession mockHttpSession;
 
     private MockMvc mockMvc;
+
 
     LoginController lg;
 
@@ -91,20 +98,31 @@ public class LoginTest {
 
     @Test
     public void registerUserShortSuccess() throws Exception {
-        RequestBuilder requestBuilder = MockMvcRequestBuilders.post("/register").param("email", "bobette@gmail.com").param("password", "bobb");
         User user = new User("bobette@gmail.com", "bobb");
-        when(tripsService.createUser(user)).thenReturn(user);
+        RequestBuilder requestBuilder = MockMvcRequestBuilders.post("/register").param("password", "password");
+        when(tripsService.createUser(any(User.class))).thenReturn(user);
         mockMvc.perform(requestBuilder).andExpect(view().name("indexView"));
         assertNotNull(mockHttpSession.getAttribute("user"));
     }
 
     @Test
     public void registerUserShortFail() throws Exception {
-        RequestBuilder requestBuilder = MockMvcRequestBuilders.post("/register").param("email", "bob").param("password", "bob");
-        when(tripsService.createUser(new User("bob", "bob"))).thenThrow(new TripsException("User Exists"));
+        User user = new User("bobette@gmail.com", "bobb");
+        RequestBuilder requestBuilder = MockMvcRequestBuilders.post("/register").param("password", "password");
+        when(tripsService.createUser(any(User.class))).thenThrow(new TripsException("User Exists"));
         mockMvc.perform(requestBuilder).andExpect(view().name("registerView"));
         assertNull(mockHttpSession.getAttribute("user"));
     }
+
+
+    @Test
+    public void registerUserEmptyPassword() throws Exception {
+        User user = new User("bobette@gmail.com", "");
+        RequestBuilder requestBuilder = MockMvcRequestBuilders.post("/register").requestAttr("validUser", user).param("password", "");
+        mockMvc.perform(requestBuilder).andExpect(view().name("registerView"));
+        assertNull(mockHttpSession.getAttribute("user"));
+    }
+
 
     @Test
     public void loginUserWrong() throws Exception {
