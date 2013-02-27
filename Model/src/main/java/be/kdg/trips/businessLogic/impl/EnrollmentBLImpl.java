@@ -43,7 +43,6 @@ public class EnrollmentBLImpl implements EnrollmentBL
         {
             if(trip.isPublished() && !trip.isActive())
             {
-                //
                 enrollment = new Enrollment(trip, user);
                 enrollmentDao.saveOrUpdateEnrollment(enrollment);
             }
