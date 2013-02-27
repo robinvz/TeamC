@@ -183,5 +183,9 @@ public class TripTest {
         assertEquals(0, tripsService.findAllNonPrivateTrips(testUser).size());
     }
 
-
+    @Test
+    public void createLocation() throws Exception {
+        RequestBuilder requestBuilder = MockMvcRequestBuilders.get("/createLocation");
+        mockMvc.perform(requestBuilder).andExpect(view().name("/createLocationView"));
+    }
 }

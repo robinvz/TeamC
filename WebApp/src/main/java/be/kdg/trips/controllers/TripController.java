@@ -49,7 +49,7 @@ public class TripController {
             if (session.getAttribute("user") != null) {
                 allNonPrivateTrips = tripsService.findAllNonPrivateTrips(user);
                 allPrivateTrips = tripsService.findPrivateTrips(user);
-               allOrganisedTrips = tripsService.findTripsByOrganizer(user);
+                allOrganisedTrips = tripsService.findTripsByOrganizer(user);
                 allEnrollments = tripsService.findEnrollmentsByUser(user);
             } else {
                 allNonPrivateTrips = tripsService.findAllNonPrivateTrips(null);
@@ -146,9 +146,9 @@ public class TripController {
     }
 
     @RequestMapping(value = "/subscribe", method = RequestMethod.GET)
-    public ModelAndView subscribe(@RequestParam int id){
+    public ModelAndView subscribe(@RequestParam int id) {
         User user = (User) session.getAttribute("user");
-        if (user != null){
+        if (user != null) {
             try {
                 tripsService.subscribe(tripsService.findTripById(id, user), user);
             } catch (TripsException e) {
@@ -163,6 +163,11 @@ public class TripController {
             return getTrip(id);
         }
         return new ModelAndView("loginView", "loginBean", new LoginBean());
+    }
+
+    @RequestMapping(value = "/createLocation", method = RequestMethod.GET)
+    public String createLocation() {
+        return "/createLocationView";
     }
 
    /*
