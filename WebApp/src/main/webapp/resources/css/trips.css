@@ -1,7 +1,18 @@
+#inner-content{
+    width: 2880px;
+}
+
+#content{
+       overflow: hidden;
+}
+
 table{
+    display: inline-table;
     margin-top: 20px;
-    width: 960px;
+    width: 950px;
+    margin-right: 9px;
     text-align: center;
+    float:left;
 }
 
 thead th{
@@ -32,7 +43,8 @@ tr:hover{
 }
 
 #control-bar{
-    height: 70px;
+    height: 32px;
+    margin-bottom: 5px;
 }
 
 #btn-addtrip{
@@ -50,4 +62,37 @@ tr:hover{
 
 #filter{
     vertical-align: top;
+}
+
+#trips-nav{
+    display: inline-table;
+    margin: 0px auto;
+}
+
+
+.inner-nav{
+    display: table;
+    margin: 20px auto;
+    text-align: center;
+    width: 100%;
+}
+
+.nav li{
+    display: inline;
+    margin-right:30px;
+    padding-left: 0px;
+}
+
+
+
+.inner-nav-link{
+    text-decoration: none;
+    color: rgb(150,150,150);
+    font-family: webfontbold;
+    cursor: pointer;
+    font-size: 1.1em;
+}
+
+.inner-selected{
+    border-bottom: solid rgb(153, 170, 255) 4px;
 }

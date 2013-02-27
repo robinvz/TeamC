@@ -11,7 +11,11 @@
             <li><a href="#">Chat</a></li>
             <li><a href="#">Participants</a></li>
             <li><a href="#">Results</a></li>
-            <li><a href="#">Start</a></li>
+            <li>
+                <form id="startTripForm" action="/startTrip/${trip.id}" method="GET">
+                    <button type="submit" id="startBtn">Start</button>
+                </form>
+            </li>
             <li><a href="#">Edit</a></li>
             <li>
                 <form id="deleteTripForm" action="/deleteTrip/${trip.id}" method="GET">

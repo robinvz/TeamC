@@ -31,20 +31,22 @@
                     <tr>
                         <td>Email</td>
                         <td>
-                            <form:input path="email"/></td>
-                        <form:errors path="email"></form:errors>
+                            <form:input path="email"/>
+                            <form:errors path="email" cssClass="error"></form:errors>
+                        </td>
                     </tr>
                     <tr>
                         <td>Password</td>
                         <td>
-                            <form:input path="password"/></td>
-                        <form:errors path="password"></form:errors>
+                            <form:password path="password"/>
+                            <form:errors path="password" cssClass="error"></form:errors>
+                        </td>
 
                         </td>
                     </tr>
                     <tr>
                         <td colspan="2" align="center">
-                            <button type="submit">Register</button>
+                            <button type="submit">Login</button>
                         </td>
                     </tr>
                 </table>

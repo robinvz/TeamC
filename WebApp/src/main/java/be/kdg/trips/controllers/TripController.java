@@ -1,6 +1,7 @@
 package be.kdg.trips.controllers;
 
 import be.kdg.trips.exception.TripsException;
+import be.kdg.trips.model.enrollment.Enrollment;
 import be.kdg.trips.model.trip.Trip;
 import be.kdg.trips.model.trip.TripPrivacy;
 import be.kdg.trips.model.user.User;
@@ -39,12 +40,16 @@ public class TripController {
     public ModelAndView showTrips() {
         List<Trip> allNonPrivateTrips = null;
         List<Trip> allPrivateTrips = null;
+        List<Trip> allOrganisedTrips = null;
+        List<Enrollment> allEnrollments = null;
         Map<String, List> parameters = new HashMap();
         User user = (User) session.getAttribute("user");
         try {
             if (session.getAttribute("user") != null) {
                 allNonPrivateTrips = tripsService.findAllNonPrivateTrips(user);
                 allPrivateTrips = tripsService.findPrivateTrips(user);
+               allOrganisedTrips = tripsService.findTripsByOrganizer(user);
+                allEnrollments = tripsService.findEnrollmentsByUser(user);
             } else {
                 allNonPrivateTrips = tripsService.findAllNonPrivateTrips(null);
             }
@@ -53,8 +58,25 @@ public class TripController {
         }
         parameters.put("allNonPrivateTrips", allNonPrivateTrips);
         parameters.put("allPrivateTrips", allPrivateTrips);
+        parameters.put("allOrganisedTrips", allOrganisedTrips);
+        parameters.put("allEnrollments", allEnrollments);
         return new ModelAndView("tripsView", parameters);
     }
+
+  /*  @RequestMapping(value = "/createdTrips", method = RequestMethod.GET)
+    public ModelAndView showCreatedTrips(){
+        List<Trip> allOrganisedTrips = null;
+        Map<String, List> parameters = new HashMap<>();
+        try{
+            if(session.getAttribute("user") != null){
+                allOrganisedTrips = tripsService.findTripsByOrganizer((User) session.getAttribute("user"));
+            }
+        }catch(TripsException e){
+            //No created trips by this user.
+        }
+        parameters.put("allOrganisedTrips", allOrganisedTrips);
+        return new ModelAndView("tripsView", parameters);
+    }                        */
 
     @RequestMapping(value = "/trip/{tripId}", method = RequestMethod.GET)
     public ModelAndView getTrip(@PathVariable int tripId) {
@@ -137,7 +159,7 @@ public class TripController {
                 return new ModelAndView("tripView", map);
             }
         }
-        return new ModelAndView("login");
+        return new ModelAndView("loginView");
     }
 
    /*
