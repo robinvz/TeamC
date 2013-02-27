@@ -8,11 +8,10 @@ import be.kdg.trips.model.trip.TripPrivacy;
 import be.kdg.trips.model.user.User;
 import be.kdg.trips.services.interfaces.TripsService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.propertyeditors.StringTrimmerEditor;
 import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.ServletRequestDataBinder;
+import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
 
 import javax.mail.MessagingException;
@@ -31,6 +30,13 @@ import java.util.*;
  */
 @Controller
 public class TripController {
+
+    @InitBinder
+    protected void initBinder(HttpServletRequest request,
+                              ServletRequestDataBinder binder) throws Exception {
+        binder.registerCustomEditor(String.class, new StringTrimmerEditor(true));
+    }
+
     @Autowired
     private HttpSession session;
 
@@ -165,23 +171,27 @@ public class TripController {
         return new ModelAndView("loginView", "loginBean", new LoginBean());
     }
 
-    @RequestMapping(value = "/createLocation", method = RequestMethod.GET)
-    public String createLocation() {
-        return "/createLocationView";
+    @RequestMapping(value = "/trip/{tripId}/createLocation", method = RequestMethod.GET)
+    public ModelAndView createLocationView(@PathVariable int tripId) {
+        try {
+            Trip trip = tripsService.findTripById(tripId, (User) session.getAttribute("user"));
+            return new ModelAndView("createLocationView", "trip", trip);
+        } catch (TripsException e) {
+            return new ModelAndView("tripsView");
+        }
     }
 
-   /*
-    @RequestMapping(value = "/addLocationToTrip", method = RequestMethod.POST)
-    public String addLocationToTrip(HttpServletRequest request){
-        try{
-          //  Trip trip = tripsService.addLocationToTrip((User) session.getAttribute("user"), (Trip) session.getAttribute("trip"),
-                    request.getParameter("latitude"), request.getParameter("longitude"), request.getParameter("street"), request.getParameter("houseNr"),
-                    request.getParameter("city"), request.getParameter("postalCode"), request.getParameter("province"), request.getParameter("country")
-                    , request.getParameter("tite"), request.getParameter("description"));
-            //Trip trip = tripsService.addLocationToTrip(user, trip, latitude, longitude, street, houseNr, city, postalCode, province, country, title, description, question, answer );
-        }catch (TripsException e){
-             //failed to add location to trip
+    @RequestMapping(value = "/trip/{tripId}/createLocation", method = RequestMethod.POST)
+    public String createLocation(HttpServletRequest request, @PathVariable int tripId) {
+        User user = (User) session.getAttribute("user");
+        try {
+            Trip trip = tripsService.findTripById(tripId, user);
+            tripsService.addLocationToTrip(user, trip, Double.parseDouble(request.getParameter("latitude")), Double.parseDouble(request.getParameter("longitude")), request.getParameter("street"),
+                    request.getParameter("houseNr"), request.getParameter("city"), request.getParameter("postalCode"), request.getParameter("province"),
+                    request.getParameter("country"), request.getParameter("title"), request.getParameter("description"));
+        } catch (TripsException e) {
+            //failed to add location to trip
         }
-        return null;
-    }       */
+        return "redirect:/trip/" + tripId;
+    }
 }

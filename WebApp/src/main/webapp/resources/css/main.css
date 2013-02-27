@@ -88,6 +88,7 @@ p{
     min-height: 100%;
     width:960px;
     margin: -50px auto 0;
+    overflow: hidden;
 }
 
 #trip-header{

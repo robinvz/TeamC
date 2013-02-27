@@ -2,6 +2,9 @@ package be.kdg.trips;
 
 import be.kdg.trips.controllers.TripController;
 import be.kdg.trips.exception.TripsException;
+import be.kdg.trips.model.address.Address;
+import be.kdg.trips.model.location.Location;
+import be.kdg.trips.model.question.Question;
 import be.kdg.trips.model.trip.TimeBoundTrip;
 import be.kdg.trips.model.trip.TimelessTrip;
 import be.kdg.trips.model.trip.Trip;
@@ -24,6 +27,7 @@ import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
 
 import static org.junit.Assert.*;
 import static org.mockito.Matchers.any;
@@ -133,7 +137,7 @@ public class TripTest {
     }
 
     @Test
-    public void getTripUserNotAllowe() throws Exception {
+    public void getTripUserNotAllowed() throws Exception {
         mockHttpSession.setAttribute("user", testUser);
         TimelessTrip t = new TimelessTrip(title, description, privacy, new User("hallo", "hallo"));
         RequestBuilder requestBuilder = MockMvcRequestBuilders.get("/trip/" + t.getId());
@@ -184,8 +188,22 @@ public class TripTest {
     }
 
     @Test
+    public void createLocationView() throws Exception {
+        TimelessTrip t = new TimelessTrip(title, description, privacy, testUser);
+        RequestBuilder requestBuilder = MockMvcRequestBuilders.get("/trip/" + t.getId() + "/createLocation");
+        mockHttpSession.setAttribute("user", testUser);
+        when(tripsService.findTripById(t.getId(), (User) mockHttpSession.getAttribute("user"))).thenReturn(t);
+        mockMvc.perform(requestBuilder).andExpect(view().name("createLocationView")).andExpect(model().attribute("trip", t));
+    }
+
+    @Test
     public void createLocation() throws Exception {
-        RequestBuilder requestBuilder = MockMvcRequestBuilders.get("/createLocation");
-        mockMvc.perform(requestBuilder).andExpect(view().name("/createLocationView"));
+        TimelessTrip t = new TimelessTrip(title, description, privacy, testUser);
+        RequestBuilder requestBuilder = MockMvcRequestBuilders.post("/trip/" + t.getId() + "/createLocation").param("user", "testUser").param("trip", "t")
+                .param("latitude", "1.00").param("longitude", "1.00").param("street", "testStreet").param("houseNr", "1").param("city", "testCity")
+                .param("postalCode", "2000").param("province", "testProvince").param("country", "testCountry").param("title", "testTitle").param("description", "testDescription");
+        mockMvc.perform(requestBuilder).andExpect(view().name("redirect:trip/" + t.getId()));
+        t.addLocation(new Location(t, 1.00, 1.00, new Address("street", "1", "city", "2000", "province", "country"), title, description));
+        assertEquals(1, t.getLocations().size());
     }
 }
