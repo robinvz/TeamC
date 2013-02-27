@@ -16,12 +16,23 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 public class MainActivity extends Activity {
+	
+	SessionManager session;
+
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
-		setContentView(R.layout.activity_main);
-		createListeners();
+		session = new SessionManager(getApplicationContext()); 
+		if (session.isLoggedIn()){
+			Intent intent = new Intent(MainActivity.this,
+					TripsOverview.class);
+			startActivity(intent);
+		}
+		else{
+			setContentView(R.layout.activity_main);
+			createListeners();
+		}
 	}
 
 	public void createListeners() {
@@ -41,6 +52,8 @@ public class MainActivity extends Activity {
 					Integer response = new LoginTask().execute(
 							new String[] { ip, port, username, pass }).get();
 					if (response == 1) {
+						session.createLoginSession(username, pass);
+						
 						Intent intent = new Intent(MainActivity.this,
 								TripsOverview.class);
 						startActivity(intent);

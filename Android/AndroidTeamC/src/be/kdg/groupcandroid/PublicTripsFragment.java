@@ -109,7 +109,7 @@ public class PublicTripsFragment extends Fragment {
 	}
 
 	private ArrayList<Item> getTrips() {
-	/*	// TODO Ophalen van trips uit backend
+		// TODO Ophalen van trips uit backend
 		TripsTask tt = new TripsTask();
 		SharedPreferences sp = PreferenceManager
 				.getDefaultSharedPreferences(getActivity());
@@ -127,7 +127,7 @@ public class PublicTripsFragment extends Fragment {
 		}
 		return new ArrayList<Item>();
 		
-		/**/
+		/*
 		ArrayList<Item> trips = new ArrayList<Item>();
 		trips.add(new Item("Tocht door Antwerpen", R.drawable.img_antwerpen));
 		trips.add(new Item("Boswandeling Lokeren", R.drawable.img_antwerpen));
@@ -136,7 +136,7 @@ public class PublicTripsFragment extends Fragment {
 		trips.add(new Item("Kunst in Antwerpen", R.drawable.img_antwerpen));
 		trips.add(new Item("Uitstap naar zee", R.drawable.img_antwerpen));
 		trips.add(new Item("Rock Werchter", R.drawable.img_antwerpen));
-		return trips;
+		return trips;*/
 	}
 
 }
