@@ -3,6 +3,9 @@ package be.kdg.trips.businessLogic.interfaces;
 import be.kdg.trips.exception.TripsException;
 import be.kdg.trips.model.user.User;
 
+import java.util.List;
+import java.util.Set;
+
 /**
  * Subversion id
  * Project Application Development
@@ -15,6 +18,7 @@ public interface UserBL
 
     public User findUser(String email) throws TripsException;
     public User findUserWithDetails(String email) throws TripsException;
+    public List<User> findUsersByKeyword(String keyword, User user) throws TripsException;
     public boolean checkLogin(String email, String password);
 
     public void updateUser(User user, String firstName, String lastName, String street, String houseNr, String city, String postalCode, String province, String country, byte[] profilePicture) throws TripsException;
