@@ -49,6 +49,9 @@ public class LoginTest {
 
     private MockMvc mockMvc;
 
+    @Mock
+    private BindingResult mockBindingResult;
+
 
     LoginController lg;
 
@@ -58,6 +61,7 @@ public class LoginTest {
         MockitoAnnotations.initMocks(this);
         mockHttpSession = new MockHttpSession(null);
         lg = new LoginController();
+        MockitoAnnotations.initMocks(this);
         ReflectionTestUtils.setField(lg, "tripsService", tripsService);
         ReflectionTestUtils.setField(lg, "session", mockHttpSession);
         mockMvc = MockMvcBuilders.standaloneSetup(lg).build();
@@ -65,7 +69,7 @@ public class LoginTest {
 
     @Test
     public void loginView() throws Exception {
-      //  assertEquals(lg.login("loginView");
+        //  assertEquals(lg.login("loginView");
     }
 
     @Test
@@ -123,6 +127,15 @@ public class LoginTest {
         assertNull(mockHttpSession.getAttribute("user"));
     }
 
+    @Test
+    public void registerWithErrors() throws Exception {
+        User user = new User("bobette@gmail.com", "");
+        RequestBuilder requestBuilder = MockMvcRequestBuilders.post("/register").requestAttr("validUser", user).param("password", "");
+        when(mockBindingResult.hasErrors()).thenReturn(true);
+        mockMvc.perform(requestBuilder).andExpect(view().name("registerView"));
+        assertNull(mockHttpSession.getAttribute("user"));
+    }
+
 
     @Test
     public void loginUserWrong() throws Exception {
@@ -139,6 +152,15 @@ public class LoginTest {
         assertNotNull(mockHttpSession.getAttribute("user"));
         RequestBuilder requestBuilder = MockMvcRequestBuilders.get("/logout");
         mockMvc.perform(requestBuilder);
+        assertNull(mockHttpSession.getAttribute("user"));
+    }
+
+    @Test
+    public void loginWithErrors() throws Exception {
+        User user = new User("bobette@gmail.com", "");
+        RequestBuilder requestBuilder = MockMvcRequestBuilders.post("/login");
+        when(mockBindingResult.hasErrors()).thenReturn(true);
+        mockMvc.perform(requestBuilder).andExpect(view().name("loginView"));
         assertNull(mockHttpSession.getAttribute("user"));
     }
 
