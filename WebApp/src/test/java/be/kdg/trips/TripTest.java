@@ -37,6 +37,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
  * 2012-2013
  */
 public class TripTest {
+    //lolo
     @Mock
     private TripsService tripsService;
     @Mock
