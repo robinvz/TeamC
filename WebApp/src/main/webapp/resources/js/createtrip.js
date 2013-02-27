@@ -3,10 +3,10 @@ $(document).ready(function(){
 
     $('#checkTimeBound').on("click", function() {
         if($('#checkTimeBound').is(':checked')){
-            $('.optionsTimeBound').slideDown('600');
+            $('.optionsTimeBound').show('600');
             $('#form-createTrip').attr("action", "/createTimeBoundTrip");
         }else{
-            $('.optionsTimeBound').slideUp('600');
+            $('.optionsTimeBound').hide('600');
             $('#form-createTrip').attr("action", "/createTimeLessTrip");
         }
     });
