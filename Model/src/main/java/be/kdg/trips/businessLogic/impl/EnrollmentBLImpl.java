@@ -55,6 +55,21 @@ public class EnrollmentBLImpl implements EnrollmentBL
     }
 
     @Override
+    public void disenroll(Trip trip, User user) throws TripsException {
+        if(isExistingEnrollment(user, trip))
+        {
+            Enrollment enrollment = enrollmentDao.getEnrollmentByUserAndTrip(user, trip);
+            if(trip.getPrivacy()==TripPrivacy.PRIVATE)
+            {
+                Invitation invitation = enrollmentDao.getInvitationByUserAndTrip(user, trip);
+                invitation.setAnswer(Answer.DECLINED);
+                enrollmentDao.saveOrUpdateInvitation(invitation);
+            }
+            enrollmentDao.deleteEnrollment(enrollment);
+        }
+    }
+
+    @Override
     public Invitation invite(Trip trip, User organizer, User user) throws TripsException
     {
         Invitation invitation = null;
@@ -110,9 +125,13 @@ public class EnrollmentBLImpl implements EnrollmentBL
     }
 
     @Override
-    public void disenroll(Trip trip, User user)
-    {
-        //To change body of implemented methods use File | Settings | File Templates.
+    public List<Invitation> getInvitationsByUser(User user) throws TripsException {
+        List<Invitation> invitations = null;
+        if(userBL.isExistingUser(user.getEmail()))
+        {
+            invitations = enrollmentDao.getInvitationsByUser(user);
+        }
+        return invitations;
     }
 
     @Override
@@ -162,6 +181,24 @@ public class EnrollmentBLImpl implements EnrollmentBL
             enrollmentDao.saveOrUpdateInvitation(invitation);
         }
         return enrollment;
+    }
+
+    @Override
+    public void declineInvitation(Trip trip, User user) throws TripsException {
+        if(isExistingInvitation(user, trip) && isUnexistingEnrollment(user, trip))
+        {
+            Invitation invitation = enrollmentDao.getInvitationByUserAndTrip(user, trip);
+            if(invitation.getAnswer()!=Answer.DECLINED)
+            {
+                invitation.setAnswer(Answer.DECLINED);
+                enrollmentDao.saveOrUpdateInvitation(invitation);
+            }
+            else
+            {
+                throw new TripsException("Invitation is already declined");
+            }
+
+        }
     }
 
     @Override

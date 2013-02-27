@@ -152,6 +152,26 @@ public class TripsServiceImpl implements TripsService
     }
 
     @Override
+    public Enrollment acceptInvitation(Trip trip, User loggedInUser) throws TripsException {
+        return enrollmentController.acceptInvitation(trip, loggedInUser);
+    }
+
+    @Override
+    public void declineInvitation(Trip trip, User loggedInUser) throws TripsException {
+        enrollmentController.declineInvitation(trip, loggedInUser);
+    }
+
+    @Override
+    public void disenroll(Trip trip, User user) throws TripsException {
+        enrollmentController.disenroll(trip, user);
+    }
+
+    @Override
+    public void setLastLocationVisited(Trip trip, User user, Location location) throws TripsException {
+        enrollmentController.setLastLocationVisited(trip, user, location);
+    }
+
+    @Override
     public List<Enrollment> findEnrollmentsByUser(User user) throws TripsException {
         return enrollmentController.getEnrollmentsByUser(user);
     }
@@ -162,6 +182,11 @@ public class TripsServiceImpl implements TripsService
     }
 
     @Override
+    public List<Invitation> findInvitationsByUser(User user) throws TripsException {
+        return enrollmentController.getInvitationsByUser(user);
+    }
+
+    @Override
     public Invitation invite(Trip trip, User loggedInUser, User invitee) throws TripsException {
         return enrollmentController.invite(trip, loggedInUser, invitee);
     }
@@ -169,15 +194,5 @@ public class TripsServiceImpl implements TripsService
     @Override
     public void uninvite(Trip trip, User organizer, User user) throws TripsException {
         enrollmentController.uninvite(trip, organizer, user);
-    }
-
-    @Override
-    public Enrollment acceptInvitation(Trip trip, User loggedInUser) throws TripsException {
-        return enrollmentController.acceptInvitation(trip, loggedInUser);
-    }
-
-    @Override
-    public void setLastLocationVisited(Trip trip, User user, Location location) throws TripsException {
-        enrollmentController.setLastLocationVisited(trip, user, location);
     }
 }
