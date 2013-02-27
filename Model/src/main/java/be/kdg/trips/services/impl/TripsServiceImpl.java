@@ -53,9 +53,9 @@ public class TripsServiceImpl implements TripsService
     }
 
     @Override
-    public void updateUser(User user, String firstName, String lastName, String street, String houseNr, String city, String postalCode, String province, String country) throws TripsException
+    public void updateUser(User user, String firstName, String lastName, String street, String houseNr, String city, String postalCode, String province, String country, byte[] profilePicture) throws TripsException
     {
-        userController.updateUser(user, firstName, lastName, street, houseNr, city, postalCode, province, country);
+        userController.updateUser(user, firstName, lastName, street, houseNr, city, postalCode, province, country, profilePicture);
     }
 
     @Override
