@@ -8,6 +8,7 @@ import be.kdg.trips.model.trip.TripPrivacy;
 import be.kdg.trips.model.user.User;
 import be.kdg.trips.services.interfaces.TripsService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.MessageSource;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -36,6 +37,9 @@ public class TripController {
 
     @Autowired
     private TripsService tripsService;
+
+    @Autowired
+    private MessageSource messageSource;
 
     @RequestMapping(value = "/trips", method = RequestMethod.GET)
     public ModelAndView showTrips() {
@@ -146,31 +150,46 @@ public class TripController {
     }
 
     @RequestMapping(value = "/subscribe", method = RequestMethod.GET)
-    public ModelAndView subscribe(@RequestParam int id) {
+    public ModelAndView subscribe(@RequestParam int tripId, Locale locale) {
         User user = (User) session.getAttribute("user");
         if (user != null) {
             try {
-                tripsService.subscribe(tripsService.findTripById(id, user), user);
+                tripsService.subscribe(tripsService.findTripById(tripId, user), user);
             } catch (TripsException e) {
                 Map map = new HashMap();
                 try {
-                    map.put("trip", tripsService.findTripById(id, user));
-                    map.put("error", "Could not subscribe to the trip.");
+                    map.put("trip", tripsService.findTripById(tripId, user));
+                    map.put("error", messageSource.getMessage("notSubscribed", null, locale));
                 } catch (TripsException e1) {
                 }
                 return new ModelAndView("tripView", map);
             }
-            return getTrip(id);
+            return getTrip(tripId);
         }
         return new ModelAndView("loginView", "loginBean", new LoginBean());
     }
 
+    @RequestMapping(value = "/publishTrip/{tripId}", method = RequestMethod.GET)
+    public ModelAndView publish(@PathVariable int tripId, Locale locale) {
+        User user = (User) session.getAttribute("user");
+        if (user != null) {
+            try {
+                Trip trip = tripsService.findTripById(tripId, user);
+                tripsService.publishTrip(trip, user);
+            } catch (TripsException e) {
+                return new ModelAndView("tripView/"+tripId, "error", messageSource.getMessage("notPublished", null, locale));
+            }
+            return new ModelAndView("tripsView");
+        }
+        return new ModelAndView("loginView", "loginBean", new LoginBean());
+    }
+
+      /*
     @RequestMapping(value = "/createLocation", method = RequestMethod.GET)
     public String createLocation() {
         return "/createLocationView";
     }
 
-   /*
     @RequestMapping(value = "/addLocationToTrip", method = RequestMethod.POST)
     public String addLocationToTrip(HttpServletRequest request){
         try{
@@ -184,4 +203,5 @@ public class TripController {
         }
         return null;
     }       */
+
 }
