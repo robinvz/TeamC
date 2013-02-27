@@ -62,7 +62,7 @@ public class ProfileController {
         String province = request.getParameter("province");
         String country = request.getParameter("country");
         try {
-            tripsService.updateUser((User) session.getAttribute("user"), firstName, lastName, street, houseNr, city, postalCode, province, country);
+            tripsService.updateUser((User) session.getAttribute("user"), firstName, lastName, street, houseNr, city, postalCode, province, country, null);
             session.setAttribute("user", tripsService.findUser(((User) session.getAttribute("user")).getEmail()));
         } catch (TripsException e) {
             return "/users/profileView";

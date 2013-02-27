@@ -18,6 +18,7 @@ import java.util.List;
 public interface EnrollmentBL
 {
     public Enrollment enroll(Trip trip, User user) throws TripsException;
+    public void disenroll(Trip trip, User user) throws TripsException;
     public Invitation invite(Trip trip, User organizer, User user) throws TripsException;
     public void uninvite(Trip trip,User organizer, User user) throws TripsException;
     public Enrollment acceptInvitation(Trip trip, User user) throws TripsException;
@@ -26,8 +27,7 @@ public interface EnrollmentBL
 
     public List<Enrollment> getEnrollmentsByUser(User user) throws TripsException;
     public List<Enrollment> getEnrollmentsByTrip(Trip trip) throws TripsException;
-
-    public void disenroll(Trip trip, User user);
+    public List<Invitation> getInvitationsByUser(User user) throws TripsException;
 
 
     public boolean isExistingEnrollment(User user, Trip trip) throws TripsException;

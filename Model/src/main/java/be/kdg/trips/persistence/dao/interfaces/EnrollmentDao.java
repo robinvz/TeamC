@@ -22,6 +22,7 @@ public interface EnrollmentDao
     public List<Enrollment> getEnrollmentsByTrip(Trip trip);
     public Enrollment getEnrollmentByUserAndTrip(User user, Trip trip) throws TripsException;
     public Invitation getInvitationByUserAndTrip(User user, Trip trip) throws TripsException;
+    public List<Invitation> getInvitationsByUser(User user);
 
     public void saveOrUpdateInvitation(Invitation invitation);
 
@@ -30,5 +31,6 @@ public interface EnrollmentDao
     public boolean isUnexistingEnrollment(User user, Trip trip) throws TripsException;
     public boolean isUnexistingInvitation(User user, Trip trip) throws TripsException;
 
+    public void deleteEnrollment(Enrollment enrollment);
     public void deleteInvitation(Invitation invitation);
 }
