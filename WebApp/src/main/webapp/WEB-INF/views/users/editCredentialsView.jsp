@@ -8,36 +8,39 @@
 <body>
 <div id="page">
     <jsp:include page="../baseView.jsp"/>
+    <jsp:include page="profileHeaderView.jsp"/>
+    <div class="content">
 
-    <div id="content">
-        <form action="/users/editCredentials" method="POST">
-            <fieldset>
-                <legend>Credentials</legend>
-                <table>
-                    <tr>
-                        <td>
-                            <label>Old password</label>
-                        </td>
-                    </tr>
-                    <tr>
-                        <td>
-                            <input type="password" name="oldPassword">
-                        </td>
-                    </tr>
-                    <tr>
-                        <td>
-                            <label>New password</label>
-                        </td>
-                    </tr>
-                    <tr>
-                        <td>
-                            <input type="password" name="newPassword">
-                        </td>
-                    </tr>
-                </table>
-            </fieldset>
-            <input type="submit" value="Save" class="btn-submit">
-        </form>
+            <form action="/users/editCredentials" method="POST">
+                <fieldset>
+                    <legend>Credentials</legend>
+                    <h2>Edit password for ${user.firstName} ${user.lastName}</h2>
+                    <table>
+                        <tr>
+                            <td>
+                                <label>Old password</label>
+                            </td>
+
+                            <td>
+                                <input type="password" name="oldPassword">
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>
+                                <label>New password</label>
+                            </td>
+
+                            <td>
+                                <input type="password" name="newPassword">
+                            </td>
+                        </tr>
+                        <input id="btn-save" type="submit" value="Save" class="btn-submit">
+
+                    </table>
+                </fieldset>
+
+            </form>
+
     </div>
 </div>
 </body>

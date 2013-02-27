@@ -58,9 +58,17 @@ public abstract class Trip implements Serializable, TripInterface {
         this.title = title;
         this.description = description;
         this.privacy = privacy;
+        if(privacy == TripPrivacy.PRIVATE)
+        {
+            this.published = true;
+        }
+        else
+        {
+            this.published = false;
+        }
         this.organizer = organizer;
         this.labels = new HashSet<>();
-        this.published = false;
+
         this.enrollments = new HashSet<>();
         this.locations = new ArrayList<>();
     }

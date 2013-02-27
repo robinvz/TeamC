@@ -129,4 +129,14 @@ public class EnrollmentDaoImpl implements EnrollmentDao
         }
         throw new TripsException("Invitation already exists");
     }
+
+    @Override
+    public void deleteInvitation(Invitation invitation) {
+        Session session = sessionFactory.openSession();
+        Transaction tx = session.getTransaction();
+        tx.begin();
+        session.delete(invitation);
+        tx.commit();
+        session.close();
+    }
 }

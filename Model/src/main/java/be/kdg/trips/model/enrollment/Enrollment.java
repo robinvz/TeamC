@@ -34,7 +34,7 @@ public class Enrollment implements EnrollmentInterface, Serializable
     private Date date;
     @OneToOne
     @JoinColumn(name = "locationId")
-    private Location lastVisitedLocation;
+    private Location lastLocationVisited;
     private boolean isStarted;
 
     public Enrollment(Trip trip, User user)
@@ -83,19 +83,22 @@ public class Enrollment implements EnrollmentInterface, Serializable
         this.date = new Date(date.getTime());
     }
 
-    public Location getLastVisitedLocation() {
-        return lastVisitedLocation;
+    public Location getLastLocationVisited() {
+        return lastLocationVisited;
     }
 
     public boolean isStarted() {
         return isStarted;
     }
 
-    public void setLastVisitedLocation(Location lastVisitedLocation) {
-        if(lastVisitedLocation!=null)
+    public void setLastLocationVisited(Location lastLocationVisited) {
+        if(lastLocationVisited!=null)
         {
-            this.lastVisitedLocation = lastVisitedLocation;
-            isStarted = true;
+            if(!trip.isTimeBoundTrip() || (trip.isTimeBoundTrip() && trip.isActive()))
+            {
+                this.lastLocationVisited = lastLocationVisited;
+                isStarted = true;
+            }
         }
     }
 
