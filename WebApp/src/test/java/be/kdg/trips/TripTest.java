@@ -208,16 +208,16 @@ public class TripTest {
         assertEquals(0, tripsService.findAllNonPrivateTrips(testUser).size());
     }
 
-   /* @Test
+    @Test
     public void createLocationView() throws Exception {
         TimelessTrip t = new TimelessTrip(title, description, privacy, testUser);
         RequestBuilder requestBuilder = MockMvcRequestBuilders.get("/trip/" + t.getId() + "/createLocation");
         mockHttpSession.setAttribute("user", testUser);
         when(tripsService.findTripById(t.getId(), (User) mockHttpSession.getAttribute("user"))).thenReturn(t);
         mockMvc.perform(requestBuilder).andExpect(view().name("createLocationView")).andExpect(model().attribute("trip", t));
-    } */
+    }
 
-  /*  @Test
+    @Test
     public void createLocation() throws Exception {
         TimelessTrip t = new TimelessTrip(title, description, privacy, testUser);
         RequestBuilder requestBuilder = MockMvcRequestBuilders.post("/trip/" + t.getId() + "/createLocation").param("user", "testUser").param("trip", "t")
@@ -227,5 +227,4 @@ public class TripTest {
         t.addLocation(new Location(t, 1.00, 1.00, new Address("street", "1", "city", "2000", "province", "country"), title, description, 1));
         assertEquals(1, t.getLocations().size());
     }
-    */
 }
