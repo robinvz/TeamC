@@ -1,5 +1,6 @@
 package be.kdg.trips.controllers;
 
+import be.kdg.trips.beans.LoginBean;
 import be.kdg.trips.exception.TripsException;
 import be.kdg.trips.model.enrollment.Enrollment;
 import be.kdg.trips.model.trip.Trip;
@@ -48,7 +49,7 @@ public class TripController {
             if (session.getAttribute("user") != null) {
                 allNonPrivateTrips = tripsService.findAllNonPrivateTrips(user);
                 allPrivateTrips = tripsService.findPrivateTrips(user);
-               allOrganisedTrips = tripsService.findTripsByOrganizer(user);
+                allOrganisedTrips = tripsService.findTripsByOrganizer(user);
                 allEnrollments = tripsService.findEnrollmentsByUser(user);
             } else {
                 allNonPrivateTrips = tripsService.findAllNonPrivateTrips(null);
@@ -99,8 +100,9 @@ public class TripController {
             String title = request.getParameter("title");
             String description = request.getParameter("description");
             TripPrivacy privacy = TripPrivacy.valueOf(request.getParameter("privacy"));
-            SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy HH:mm:ss");
+            SimpleDateFormat sdf = new SimpleDateFormat("yyyy/MM/dd HH:mm");
             User user = (User) session.getAttribute("user");
+            String uur = request.getParameter("startDate");
             Date startDate = sdf.parse(request.getParameter("startDate"));
             Date endDate = sdf.parse(request.getParameter("endDate"));
             Trip test = tripsService.createTimeBoundTrip(title, description, privacy, user, startDate, endDate);
@@ -144,9 +146,9 @@ public class TripController {
     }
 
     @RequestMapping(value = "/subscribe", method = RequestMethod.GET)
-    public ModelAndView subscribe(@RequestParam int id){
+    public ModelAndView subscribe(@RequestParam int id) {
         User user = (User) session.getAttribute("user");
-        if (user != null){
+        if (user != null) {
             try {
                 tripsService.subscribe(tripsService.findTripById(id, user), user);
             } catch (TripsException e) {
@@ -158,8 +160,14 @@ public class TripController {
                 }
                 return new ModelAndView("tripView", map);
             }
+            return getTrip(id);
         }
-        return new ModelAndView("loginView");
+        return new ModelAndView("loginView", "loginBean", new LoginBean());
+    }
+
+    @RequestMapping(value = "/createLocation", method = RequestMethod.GET)
+    public String createLocation() {
+        return "/createLocationView";
     }
 
    /*
