@@ -39,7 +39,7 @@ public class EnrollmentBLImpl implements EnrollmentBL
     public Enrollment enroll(Trip trip, User user) throws TripsException
     {
         Enrollment enrollment = null;
-        if(isUnexistingEnrollment(user,trip))
+        if(isUnexistingEnrollment(user, trip))
         {
             if(trip.isPublished() && !trip.isActive())
             {
@@ -60,7 +60,7 @@ public class EnrollmentBLImpl implements EnrollmentBL
         Invitation invitation = null;
         if(isUnexistingInvitation(user, trip))
         {
-            if (userBL.isExistingUser(organizer.getEmail()) && tripBL.isOrganizer(trip, organizer) && trip.isPublished() && !trip.isActive() && trip.getPrivacy()==TripPrivacy.PRIVATE)
+            if (tripBL.isOrganizer(trip, organizer) && trip.isPublished() && !trip.isActive() && trip.getPrivacy()==TripPrivacy.PRIVATE)
             {
                 invitation = new Invitation(trip, user);
                 enrollmentDao.saveOrUpdateInvitation(invitation);
@@ -71,6 +71,22 @@ public class EnrollmentBLImpl implements EnrollmentBL
             }
         }
         return invitation;
+    }
+
+    @Override
+    public void uninvite(Trip trip, User organizer, User user) throws TripsException {
+        if(isExistingInvitation(user, trip))
+        {
+            if (tripBL.isOrganizer(trip, organizer) && isExistingInvitation(user, trip) && isUnexistingEnrollment(user, trip))
+            {
+                Invitation invitation = enrollmentDao.getInvitationByUserAndTrip(user, trip);
+                enrollmentDao.deleteInvitation(invitation);
+            }
+            else
+            {
+                throw new TripsException("Trip is either not published, already active, not private or organizer doesn't exist");
+            }
+        }
     }
 
     @Override
@@ -95,12 +111,6 @@ public class EnrollmentBLImpl implements EnrollmentBL
 
     @Override
     public void disenroll(Trip trip, User user)
-    {
-        //To change body of implemented methods use File | Settings | File Templates.
-    }
-
-    @Override
-    public void uninvite(Trip trip, User user)
     {
         //To change body of implemented methods use File | Settings | File Templates.
     }

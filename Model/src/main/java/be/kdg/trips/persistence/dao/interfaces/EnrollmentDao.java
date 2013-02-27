@@ -29,4 +29,6 @@ public interface EnrollmentDao
     public boolean isExistingInvitation(User user, Trip trip) throws TripsException;
     public boolean isUnexistingEnrollment(User user, Trip trip) throws TripsException;
     public boolean isUnexistingInvitation(User user, Trip trip) throws TripsException;
+
+    public void deleteInvitation(Invitation invitation);
 }

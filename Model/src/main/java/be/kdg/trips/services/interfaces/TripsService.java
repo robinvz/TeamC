@@ -61,4 +61,5 @@ public interface TripsService
     public List<Enrollment> findEnrollmentsByTrip(Trip trip) throws TripsException;
 
     public Invitation invite(Trip trip, User organizer, User user) throws TripsException;
+    public void uninvite(Trip trip, User organizer, User user) throws TripsException;
 }

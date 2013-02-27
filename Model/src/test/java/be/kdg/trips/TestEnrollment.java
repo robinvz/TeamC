@@ -94,7 +94,6 @@ public class TestEnrollment
         User user = new User("jereaamy@msn.be","zwaard");
         User subscriber = tripsService.createUser(user);
         Trip trip = tripsService.createTimelessTrip("tijdloze trip", "aa", TripPrivacy.PRIVATE, organizer);
-        tripsService.publishTrip(trip, organizer);
         tripsService.subscribe(trip, subscriber);
     }
 
@@ -128,7 +127,6 @@ public class TestEnrollment
         User user = new User("leopard@hotmail.com","pass");
         User invitee = tripsService.createUser(user);
         Trip trip = tripsService.createTimelessTrip("Spartacus run", "Lopen door de modder!", TripPrivacy.PRIVATE, organizer);
-        tripsService.publishTrip(trip, organizer);
         Invitation invitation = tripsService.invite(trip, organizer, invitee);
         assertEquals(1,tripsService.findPrivateTrips(invitee).size());
     }
@@ -143,11 +141,29 @@ public class TestEnrollment
     }
 
     @Test
+    public void successfulUninvite() throws TripsException {
+        User invitee = tripsService.createUser(new User("geoffrey@hotmail.com","pass"));
+        Trip trip = tripsService.createTimelessTrip("Spartacusaaa", "Lopen", TripPrivacy.PRIVATE, organizer);
+        Invitation invitation = tripsService.invite(trip, organizer, invitee);
+        tripsService.uninvite(trip, organizer, invitee);
+        assertTrue(tripsService.findPrivateTrips(invitee).isEmpty());
+    }
+
+    @Test(expected = TripsException.class)
+    public void failedUninviteAlreadyEnrolled() throws TripsException {
+        User invitee = tripsService.createUser(new User("geoffrey@hotmail.com","pass"));
+        Trip trip = tripsService.createTimelessTrip("Spartacusaaa", "Lopen", TripPrivacy.PRIVATE, organizer);
+        Invitation invitation = tripsService.invite(trip, organizer, invitee);
+        tripsService.acceptInvitation(trip, invitee);
+        tripsService.uninvite(trip, organizer, invitee);
+        assertTrue(tripsService.findPrivateTrips(invitee).isEmpty());
+    }
+
+    @Test
     public void succesfulAcceptInvitation() throws TripsException {
         User user = new User("leoguardo@hotmail.com","pass");
         User invitee = tripsService.createUser(user);
         Trip trip = tripsService.createTimelessTrip("Spartacus run", "Lopen door de modder!", TripPrivacy.PRIVATE, organizer);
-        tripsService.publishTrip(trip, organizer);
         Invitation invitation = tripsService.invite(trip, organizer, invitee);
         tripsService.acceptInvitation(trip, invitee);
     }
@@ -157,7 +173,6 @@ public class TestEnrollment
         User user = new User("leorosto@hotmail.com","pass");
         User invitee = tripsService.createUser(user);
         Trip trip = tripsService.createTimelessTrip("Spartacus run", "Lopen door de modder!", TripPrivacy.PRIVATE, organizer);
-        tripsService.publishTrip(trip, organizer);
         tripsService.acceptInvitation(trip, invitee);
     }
 
@@ -166,7 +181,6 @@ public class TestEnrollment
         User user = new User("leovago@hotmail.com","pass");
         User invitee = tripsService.createUser(user);
         Trip trip = tripsService.createTimelessTrip("Spartacus run", "Lopen door de modder!", TripPrivacy.PRIVATE, organizer);
-        tripsService.publishTrip(trip, organizer);
         Invitation invitation = tripsService.invite(trip, organizer, invitee);
         tripsService.acceptInvitation(trip, invitee);
         tripsService.acceptInvitation(trip, invitee);
