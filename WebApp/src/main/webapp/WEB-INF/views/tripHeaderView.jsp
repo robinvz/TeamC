@@ -21,12 +21,13 @@
                 </form>
             </li>
             </c:if>
-
+            <c:if test="${not empty user && trip.organizer == user}">
             <li>
                 <form id="deleteTripForm" action="/deleteTrip/${trip.id}" method="GET">
                     <button type="submit" id="deleteBtn">Delete</button>
                 </form>
             </li>
+            </c:if>
         </ul>
     </nav>
 </aside>

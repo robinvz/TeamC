@@ -11,7 +11,7 @@
 
     <div id="content">
         <div id="timeboundTrip">
-            <form id="form-createTrip"  action="/createTimeLessTrip" method="POST">
+            <form id="form-createTrip" action="/createTimeLessTrip" method="POST">
                 <fieldset>
                     <legend>Create a trip</legend>
                     <table>
@@ -30,11 +30,11 @@
                                 <input type="radio" name="privacy" value="PRIVATE">Private   </input>
                             </td>
                         </tr>
+
                         <tr>
                             <td><label>Create a timebound trip</label></td>
                             <td><input type="checkbox" id="checkTimeBound"></td>
                         </tr>
-
                         <tr class="optionsTimeBound">
                             <td><label>Start date: </label></td>
                             <td><input type="date" name="startDate">
@@ -44,7 +44,6 @@
                             <td><input type="date" name="endDate"></td>
                             </td>
                         </tr>
-
                     </table>
                 </fieldset>
                 <input type="submit" value="Create" class="btn-submit">

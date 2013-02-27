@@ -135,24 +135,24 @@
 
                 <tbody>
                 <div>
-                    <c:if test="${not empty allOrganisedTrips}">
-                        <c:forEach items="${allOrganisedTrips}" var="organisedTrip">
-                            <tr id="trip${organisedTrip.id}">
+                    <c:if test="${not empty allOrganizedTrips}">
+                        <c:forEach items="${allOrganizedTrips}" var="organizedTrip">
+                            <tr id="trip${organizedTrip.id}">
                                 <div class="form-row">
                                     <td>
-                                            ${organisedTrip.title}
+                                            ${organizedTrip.title}
                                     </td>
                                     <td>
-                                            ${organisedTrip.description}
+                                            ${organizedTrip.description}
                                     </td>
                                     <td>
-                                            ${organisedTrip.privacy}
+                                            ${organizedTrip.privacy}
                                     </td>
                                     <td>
-                                        <c:if test="${organisedTrip.published == true}">
+                                        <c:if test="${organizedTrip.published == true}">
                                             <img src="${pageContext.request.contextPath}/resources/res/img/icons/checked.png" alt="Yes" title="Published">
                                         </c:if>
-                                        <c:if test="${organisedTrip.published == false}">
+                                        <c:if test="${organizedTrip.published == false}">
                                             <img src="${pageContext.request.contextPath}/resources/res/img/icons/false.png" alt="No" title="Not Published">
                                         </c:if>
 

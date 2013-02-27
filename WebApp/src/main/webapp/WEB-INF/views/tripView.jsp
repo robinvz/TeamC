@@ -62,7 +62,7 @@
                 <div class="trip-participants">
 
                 </div>
-                <c:if test="${trip.privacy == 'PROTECTED' and user != null}">
+                <c:if test="${trip.privacy == 'PROTECTED' and not empty user && trip.published==true}">
                     <a href="/subscribe?tripId=${trip.id}">
                         <img id="subscribeButton"
                              src="${pageContext.request.contextPath}/resources/res/img/subscribe.jpg">

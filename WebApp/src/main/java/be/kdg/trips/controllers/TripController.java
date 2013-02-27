@@ -19,6 +19,7 @@ import org.springframework.web.servlet.ModelAndView;
 import javax.mail.MessagingException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
+import javax.validation.Valid;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.*;
@@ -45,7 +46,7 @@ public class TripController {
     public ModelAndView showTrips() {
         List<Trip> allNonPrivateTrips = null;
         List<Trip> allPrivateTrips = null;
-        List<Trip> allOrganisedTrips = null;
+        List<Trip> allOrganizedTrips = null;
         List<Enrollment> allEnrollments = null;
         Map<String, List> parameters = new HashMap();
         User user = (User) session.getAttribute("user");
@@ -53,7 +54,7 @@ public class TripController {
             if (session.getAttribute("user") != null) {
                 allNonPrivateTrips = tripsService.findAllNonPrivateTrips(user);
                 allPrivateTrips = tripsService.findPrivateTrips(user);
-                allOrganisedTrips = tripsService.findTripsByOrganizer(user);
+                allOrganizedTrips = tripsService.findTripsByOrganizer(user);
                 allEnrollments = tripsService.findEnrollmentsByUser(user);
             } else {
                 allNonPrivateTrips = tripsService.findAllNonPrivateTrips(null);
@@ -63,7 +64,7 @@ public class TripController {
         }
         parameters.put("allNonPrivateTrips", allNonPrivateTrips);
         parameters.put("allPrivateTrips", allPrivateTrips);
-        parameters.put("allOrganisedTrips", allOrganisedTrips);
+        parameters.put("allOrganizedTrips", allOrganizedTrips);
         parameters.put("allEnrollments", allEnrollments);
         return new ModelAndView("tripsView", parameters);
     }
@@ -99,54 +100,46 @@ public class TripController {
     }
 
     @RequestMapping(value = "/createTimeBoundTrip", method = RequestMethod.POST)
-    public String createTimeBoundTrip(HttpServletRequest request) {
+    public String createTimeBoundTrip(@RequestParam String title, @RequestParam String description, @RequestParam TripPrivacy privacy,
+                                      @RequestParam String startDate, @RequestParam String endDate) {
         try {
-            String title = request.getParameter("title");
-            String description = request.getParameter("description");
-            TripPrivacy privacy = TripPrivacy.valueOf(request.getParameter("privacy"));
-            SimpleDateFormat sdf = new SimpleDateFormat("yyyy/MM/dd HH:mm");
             User user = (User) session.getAttribute("user");
-            String uur = request.getParameter("startDate");
-            Date startDate = sdf.parse(request.getParameter("startDate"));
-            Date endDate = sdf.parse(request.getParameter("endDate"));
-            Trip test = tripsService.createTimeBoundTrip(title, description, privacy, user, startDate, endDate);
-            String view = "trip/" + test.getId();
-            return view;
-
+            SimpleDateFormat sdf = new SimpleDateFormat("yyyy/MM/dd HH:mm");
+            Trip test = tripsService.createTimeBoundTrip(title, description, privacy, user, sdf.parse(startDate), sdf.parse(endDate));
+            return "trip/" + test.getId();
         } catch (TripsException e) {
+            return "users/createTripView";
         } catch (ParseException e) {
+            return "/users/createTripView";
         }
-        return "/users/createTripView";
     }
 
     @RequestMapping(value = "/createTimeLessTrip", method = RequestMethod.POST)
-    public String createTimeLessTrip(HttpServletRequest request) {
+    public String createTimeLessTrip(@RequestParam String title, @RequestParam String description, @RequestParam TripPrivacy privacy) {
         try {
-            String title = request.getParameter("title");
-            String description = request.getParameter("description");
-            TripPrivacy privacy = TripPrivacy.valueOf(request.getParameter("privacy"));
             User user = (User) session.getAttribute("user");
             Trip test = tripsService.createTimelessTrip(title, description, privacy, user);
-            String view = "redirect:trip/" + test.getId();
-            return view;
+            return "redirect:trip/" + test.getId();
         } catch (TripsException e) {
-            return "/errors/loginErrorView";
+            return "/users/createTripView";
         }
     }
 
     @RequestMapping(value = "/deleteTrip/{tripId}", method = RequestMethod.GET)
-    public ModelAndView deleteTrip(@PathVariable int tripId) throws TripsException {
+    public ModelAndView deleteTrip(@PathVariable int tripId, Locale locale) {
         User user = (User) session.getAttribute("user");
-        Trip trip = null;
-        try {
-            trip = tripsService.findTripById(tripId, user);
-            tripsService.deleteTrip(trip, user);
-        } catch (TripsException e) {
-            //failed to delete trip
-            return new ModelAndView("tripView", "trip", trip);
-        } catch (MessagingException e) {
+        if (user != null) {
+            try {
+                tripsService.deleteTrip(tripsService.findTripById(tripId, user), user);
+            } catch (TripsException e) {
+                return new ModelAndView("tripView", "error", messageSource.getMessage("deleteFailed", null, locale));
+            } catch (MessagingException e) {
+                //return new ModelAndView("tripView" + tripId);   //deze error ook catchen geeft fout
+            }
+            return new ModelAndView("tripsView");
+        } else {
+            return new ModelAndView("loginView", "loginBean", new LoginBean());
         }
-        return new ModelAndView("tripsView");
     }
 
     @RequestMapping(value = "/subscribe", method = RequestMethod.GET)
@@ -159,14 +152,20 @@ public class TripController {
                 Map map = new HashMap();
                 try {
                     map.put("trip", tripsService.findTripById(tripId, user));
-                    map.put("error", messageSource.getMessage("notSubscribed", null, locale));
+                    if (e.getMessage().contains("published")) {
+                        map.put("error", messageSource.getMessage("notSubscribed", null, locale));
+                    } else {
+                        map.put("error", messageSource.getMessage("enrollmentAlreadyExists", null, locale));
+                    }
                 } catch (TripsException e1) {
+
                 }
                 return new ModelAndView("tripView", map);
             }
             return getTrip(tripId);
+        } else {
+            return new ModelAndView("loginView", "loginBean", new LoginBean());
         }
-        return new ModelAndView("loginView", "loginBean", new LoginBean());
     }
 
     @RequestMapping(value = "/publishTrip/{tripId}", method = RequestMethod.GET)
@@ -174,16 +173,15 @@ public class TripController {
         User user = (User) session.getAttribute("user");
         if (user != null) {
             try {
-                Trip trip = tripsService.findTripById(tripId, user);
-                tripsService.publishTrip(trip, user);
+                tripsService.publishTrip(tripsService.findTripById(tripId, user), user);
+                return new ModelAndView("tripsView");
             } catch (TripsException e) {
-                return new ModelAndView("tripView/"+tripId, "error", messageSource.getMessage("notPublished", null, locale));
+                return new ModelAndView("tripView", "error", messageSource.getMessage("notPublished", null, locale));
             }
-            return new ModelAndView("tripsView");
+        } else {
+            return new ModelAndView("loginView", "loginBean", new LoginBean());
         }
-        return new ModelAndView("loginView", "loginBean", new LoginBean());
     }
-
       /*
     @RequestMapping(value = "/createLocation", method = RequestMethod.GET)
     public String createLocation() {
