@@ -158,7 +158,8 @@ public class TripBLImpl implements TripBL
                 trip.setPublished(true);
                 if(trip.getPrivacy()!=TripPrivacy.PUBLIC)
                 {
-                    enrollmentBL.enroll(trip,trip.getOrganizer());
+                    User organizer = userBL.findUserWithDetails(user.getEmail());
+                    enrollmentBL.enroll(trip, organizer);
                 }
                 tripDao.saveOrUpdateTrip(trip);
             }
