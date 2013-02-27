@@ -1,10 +1,14 @@
 package be.kdg.groupcandroid;
 
 import java.util.concurrent.ExecutionException;
+import java.util.concurrent.TimeUnit;
+import java.util.concurrent.TimeoutException;
 
 import android.os.Bundle;
 import android.preference.PreferenceManager;
 import android.app.Activity;
+import android.app.AlertDialog;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.support.v4.app.FragmentActivity;
@@ -16,20 +20,17 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 public class MainActivity extends Activity {
-	
-	SessionManager session;
 
+	SessionManager session;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
-		session = new SessionManager(getApplicationContext()); 
-		if (session.isLoggedIn()){
-			Intent intent = new Intent(MainActivity.this,
-					TripsOverview.class);
+		session = new SessionManager(getApplicationContext());
+		if (session.isLoggedIn()) {
+			Intent intent = new Intent(MainActivity.this, TripsOverview.class);
 			startActivity(intent);
-		}
-		else{
+		} else {
 			setContentView(R.layout.activity_main);
 			createListeners();
 		}
@@ -48,46 +49,73 @@ public class MainActivity extends Activity {
 				TextView tvPass = (TextView) findViewById(R.id.txtPassword);
 				String username = tvUser.getText().toString();
 				String pass = tvPass.getText().toString();
-				try {
-					Integer response = new LoginTask().execute(
-							new String[] { ip, port, username, pass }).get();
-					if (response == 1) {
-						session.createLoginSession(username, pass);
-						
-						Intent intent = new Intent(MainActivity.this,
-								TripsOverview.class);
-						startActivity(intent);
-					} else {
-						switch (response) {
-						case 0:
-							Toast.makeText(MainActivity.this,
-									"Wrong Username/Password",
-									Toast.LENGTH_SHORT).show();
-							break;
+				if (username.isEmpty() || pass.isEmpty()) {
+					AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(MainActivity.this);
 
-						case -1:
-							Toast.makeText(MainActivity.this,
-									"Could not connect to the server",
-									Toast.LENGTH_SHORT).show();
-							break;
+					alertDialogBuilder.setTitle("No email/password");
+					alertDialogBuilder
+							.setMessage("Please fill in your email and password")
+							.setCancelable(false)
+							.setPositiveButton(
+									"OK",
+									new DialogInterface.OnClickListener() {
+										@Override
+										public void onClick(
+												DialogInterface dialog,
+												int which) {
+										}
+									});
+					AlertDialog alertDialog = alertDialogBuilder.create();
+					alertDialog.show();
+				} else {
+					try {
+						Integer response = new LoginTask().execute(
+								new String[] { ip, port, username, pass })
+								.get(3, TimeUnit.SECONDS);
+						if (response == 1) {
+							session.createLoginSession(username, pass);
 
-						case -2:
-							Toast.makeText(MainActivity.this,
-									"Could not connect. Is your Wifi/Data on?",
-									Toast.LENGTH_SHORT).show();
-							break;
+							Intent intent = new Intent(MainActivity.this,
+									TripsOverview.class);
+							startActivity(intent);
+						} else {
+							switch (response) {
+							case 0:
+								Toast.makeText(MainActivity.this,
+										"Wrong Username/Password",
+										Toast.LENGTH_SHORT).show();
+								break;
 
-						default:
-							Toast.makeText(MainActivity.this,
-									"Something went wrong, try again.",
-									Toast.LENGTH_SHORT).show();						}
+							case -1:
+								Toast.makeText(MainActivity.this,
+										"Could not connect to the server",
+										Toast.LENGTH_SHORT).show();
+								break;
+
+							case -2:
+								Toast.makeText(
+										MainActivity.this,
+										"Could not connect. Is your Wifi/Data on?",
+										Toast.LENGTH_SHORT).show();
+								break;
+
+							default:
+								Toast.makeText(MainActivity.this,
+										"Something went wrong, try again.",
+										Toast.LENGTH_SHORT).show();
+							}
+						}
+					} catch (InterruptedException e) {
+						e.printStackTrace();
+					} catch (ExecutionException e) {
+						// TODO Auto-generated catch block
+					} catch (TimeoutException e) {
+						Toast.makeText(MainActivity.this,
+								"Connection Timed Out.",
+								Toast.LENGTH_SHORT).show();
 					}
-				} catch (InterruptedException e) {
-					e.printStackTrace();
-				} catch (ExecutionException e) {
-					// TODO Auto-generated catch block
-				}
 
+				}
 			}
 		});
 		Button btnFacebook = (Button) findViewById(R.id.btnFacebookLogin);
@@ -98,6 +126,12 @@ public class MainActivity extends Activity {
 				startActivity(intent);
 			}
 		});
+	}
+
+	@Override
+	public boolean onPrepareOptionsMenu(Menu menu) {
+		menu.getItem(0).setVisible(false);
+		return true;
 	}
 
 	@Override

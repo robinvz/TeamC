@@ -42,7 +42,7 @@ public class MenuContent extends FragmentActivity {
     protected void onCreate(Bundle inState) {
         super.onCreate(inState);
         Intent myIntent= getIntent();
-        String tripName = myIntent.getStringExtra("tripName");
+        Trip trip = (Trip) myIntent.getSerializableExtra("trip");
         // TODO custom banner -> crashes
         //Integer tripBanner = Integer.parseInt(myIntent.getStringExtra("tripBanner"));
         if (inState != null) {
@@ -54,12 +54,12 @@ public class MenuContent extends FragmentActivity {
         mMenuDrawer.setContentView(R.layout.activity_contentsample);
         
         List<Object> items = new ArrayList<Object>();
-        items.add(new Item(tripName, R.drawable.ic_launcher));
+        items.add(new Item(trip.getTitle(), R.drawable.ic_launcher, 0));
         items.add(new Category("Communicatie"));
-        items.add(new Item("Chat",  R.drawable.chat_icon));
-        items.add(new Item("Broadcast", R.drawable.broadcast));
+        items.add(new Item("Chat",  R.drawable.chat_icon, 1));
+        items.add(new Item("Broadcast", R.drawable.broadcast, 2));
         items.add(new Category("Navigeren"));
-        items.add(new Item("Posities", R.drawable.positie));
+        items.add(new Item("Posities", R.drawable.positie, 3));
 
         mList = new ListView(this);
         mAdapter = new MenuAdapter(items);
@@ -84,7 +84,14 @@ public class MenuContent extends FragmentActivity {
         
        //Set tripTitle, tripBanner,...
         TextView txtTripTitle = (TextView) findViewById(R.id.txtTripTitle);
-        txtTripTitle.setText(tripName);
+        txtTripTitle.setText(trip.getTitle());
+        TextView txtDescription = (TextView) findViewById(R.id.txtDescription);
+        txtDescription.setText(trip.getDescription());
+        TextView txtEnrolledNr = (TextView) findViewById(R.id.txtEnrolledNr);
+        txtEnrolledNr.setText(trip.getEnrollments() + "");
+        TextView txtPrivacy = (TextView) findViewById(R.id.txtPrivacyNr);
+        txtPrivacy.setText(trip.getPrivacy());
+
              
         
     }

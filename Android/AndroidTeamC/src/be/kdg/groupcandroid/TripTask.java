@@ -17,20 +17,21 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import android.content.SharedPreferences;
 import android.os.AsyncTask;
-import android.util.Log;
+import android.preference.PreferenceManager;
+import android.widget.TextView;
 
-public class TripsTask extends AsyncTask<String, Void, ArrayList<Item>>{
+public class TripTask extends AsyncTask<String, Void, Trip> {
 
 	@Override
-	protected ArrayList<Item> doInBackground(String... params) {
+	protected Trip doInBackground(String... params) {
 		StringBuilder builder = new StringBuilder();
 		HttpClient client = new DefaultHttpClient();
 		HttpGet httpGet;
-		ArrayList<Item> trips = new ArrayList<Item>();
 		try {
 			httpGet = new HttpGet(new URI("http://" + params[0] + ":" + params[1]
-					+ "/service/"+ params[2]+ "trips?username=" + params[3] + "&password=" + params[4]));
+					+ "/service/trip?id=" + params[2] + "&username=" + params[3] + "&password=" + params[4]));
 			HttpResponse response = client.execute(httpGet);
 			StatusLine statusLine = response.getStatusLine();
 			int statusCode = statusLine.getStatusCode();
@@ -45,23 +46,17 @@ public class TripsTask extends AsyncTask<String, Void, ArrayList<Item>>{
 				}
 				JSONObject jsonObject = new JSONObject(builder.toString());
 				if (jsonObject.getBoolean("valid")) {
-					JSONArray array = jsonObject.getJSONArray("trips");
-						for (int i = 0; i < array.length(); i++){
-							trips.add(new Item(array.getJSONObject(i).getString("title"), R.drawable.img_antwerpen, array.getJSONObject(i).getInt("id")));
-						}
-					return trips;
+					
+					Trip trip = new Trip(jsonObject.getString("title"), jsonObject.getString("description"), jsonObject.getInt("enrollments"), jsonObject.getString("privacy"));
+					return trip;
 				} else {
-					return trips;
+					return null;
 				}
 			} else {
-				return trips;
+				return null;
 			}
 		} catch (Exception e) {
-			String message = e.getMessage();
-			e.printStackTrace();
-			Log.d("error", message);
-			return trips;
+			return null;
 		}
 	}
-
 }
