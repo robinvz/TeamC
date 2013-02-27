@@ -1,6 +1,8 @@
+<%@ taglib prefix="form" uri="http://www.springframework.org/tags/form" %>
 <html>
 <head>
     <link rel="stylesheet" href="${pageContext.request.contextPath}/resources/css/main.css"/>
+    <link rel="stylesheet" href="${pageContext.request.contextPath}/resources/css/maps.css">
     <link rel="shortcut icon" href="${pageContext.request.contextPath}/resources/res/favicon.ico">
     <title>Create location page</title>
 </head>
@@ -9,52 +11,61 @@
     <jsp:include page="baseView.jsp"/>
 
     <div id="trip-header">
-        <h2>${trip.naam}</h2>
+        <h2>${trip.title}</h2>
     </div>
 
     <div id="content">
         <div id="add-location">
-            <div class="page">
-                <h2>Select the location of your point of interest</h2>
-
-                <div id="mapcanvas" class="map-canvas"></div>
-                <div id="addressfields">
-
-                    <label>Street: </label>
-                    <input id="route" type="text">
-                    <label>Number: </label>
-                    <input id="street_number" type="text">
-                    <label>City: </label>
-                    <input id="sublocality" type="text">
-                    <label>Postcode: </label>
-                    <input id="postal_code" type="text">
-                    <label>Country: </label>
-                    <input id="country" type="text">
-                    <button id="btn-next">Next</button>
+            <form:form action="createLocation" method="POST">
+                <div class="page">
+                    <h2>Select the location of your point of interest</h2>
+                    <div id="mapcanvas" class="map-canvas"></div>
+                    <div id="addressfields">
+                        <div id="latlng">
+                            <input id="latitude" name="latitude" type="text">
+                            <input id="longitude" name="longitude" type="text">
+                        </div>
+                        <label>Street: </label>
+                        <input id="route" name="street" type="text">
+                        <label>Number: </label>
+                        <input id="street_number" name="houseNr" type="text">
+                        <label>City: </label>
+                        <input id="sublocality" name="city" type="text">
+                        <label>Province: </label>
+                        <input id="province" name="province" type="text">
+                        <label>Postcode: </label>
+                        <input id="postal_code" name="postalCode" type="text">
+                        <label>Country: </label>
+                        <input id="country" name="country" type="text">
+                        <button id="btn-next" type="button">Next</button>
+                    </div>
                 </div>
-            </div>
-            <div class="page page-right">
-                <h2>Please enter details for this point of interest</h2>
-                <label>Title: </label>
-                <input id="location-title" type="text">
-                <label>Description: </label>
-                <textarea id="location-description" type="text"></textarea>
-                <label>Question: </label>
-                <input id="location-question" type="text">
+                <div class="page page-right">
+                    <h2>Please enter details for this point of interest</h2>
+                    <label>Title: </label>
+                    <input id="location-title" name="title" type="text">
+                    <label>Description: </label>
+                    <textarea id="location-description" name="description" type="text"></textarea>
+                    <label>Question: </label>
+                    <input id="location-question" name="question" type="text">
 
-                <div id="answers">
+                    <div id="answers">
+                    </div>
+                    <label>Add a new answer: </label>
+                    <input id="new-answer" type="text">
+                    <button id="btn-answer" type="button">Save</button>
+                    <label>Select the correct answer: </label>
+                    <select id="correct-answer">
+                        <option></option>
+                    </select>
+                    <button id="btn-submit" type="submit">Submit</button>
                 </div>
-                <label>Add a new answer: </label>
-                <input id="new-anwser" type="text">
-                <button id="btn-answer">Save</button>
-                <label>Select the correct answer: </label>
-                <select id="correct-answer">
-                    <option></option>
-                </select>
-            </div>
+            </form:form>
         </div>
     </div>
 </div>
+<script src="${pageContext.request.contextPath}/resources/js/jquery-1.9.0.min.js"></script>
+<script src="http://maps.googleapis.com/maps/api/js?sensor=false"></script>
 <script src="${pageContext.request.contextPath}/resources/js/mapscript.js"></script>
 </body>
 </html>
