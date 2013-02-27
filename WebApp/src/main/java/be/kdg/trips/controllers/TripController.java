@@ -186,8 +186,8 @@ public class TripController {
             String uur = request.getParameter("startDate");
             Date startDate = sdf.parse(request.getParameter("startDate"));
             Date endDate = sdf.parse(request.getParameter("endDate"));
-            Trip test = tripsService.createTimeBoundTrip(title, description, privacy, user, startDate, endDate);
-            String view = "trip/" + test.getId();
+            Trip trip = tripsService.createTimeBoundTrip(title, description, privacy, user, startDate, endDate);
+            String view = "trip/" + trip.getId();
             return view;
 
         } catch (TripsException e) {
