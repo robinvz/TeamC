@@ -1,5 +1,6 @@
 package be.kdg.trips.model.trip;
 
+import be.kdg.trips.exception.TripsException;
 import be.kdg.trips.model.enrollment.Enrollment;
 import be.kdg.trips.model.location.Location;
 import be.kdg.trips.model.user.User;
@@ -57,9 +58,17 @@ public abstract class Trip implements Serializable, TripInterface {
         this.title = title;
         this.description = description;
         this.privacy = privacy;
+        if(privacy == TripPrivacy.PRIVATE)
+        {
+            this.published = true;
+        }
+        else
+        {
+            this.published = false;
+        }
         this.organizer = organizer;
         this.labels = new HashSet<>();
-        this.published = false;
+
         this.enrollments = new HashSet<>();
         this.locations = new ArrayList<>();
     }

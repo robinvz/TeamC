@@ -7,8 +7,8 @@
     <uses-sdk
         android:minSdkVersion="12"
         android:targetSdkVersion="17" />
-    
-    <uses-permission android:name="android.permission.INTERNET"/>
+
+    <uses-permission android:name="android.permission.INTERNET" />
 
     <application
         android:allowBackup="true"
@@ -33,7 +33,8 @@
         </activity>
         <activity
             android:name="be.kdg.groupcandroid.TripsOverview"
-            android:label="" >
+            android:label=""
+            android:theme="@style/StyledIndicators">
         </activity>
         <activity android:name=".Preferences" >
         </activity>

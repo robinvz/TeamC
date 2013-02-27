@@ -1,5 +1,6 @@
 package be.kdg.trips.model.enrollment;
 
+import be.kdg.trips.model.location.Location;
 import be.kdg.trips.model.trip.Trip;
 import be.kdg.trips.model.user.User;
 
@@ -31,6 +32,10 @@ public class Enrollment implements EnrollmentInterface, Serializable
     private User user;
     @NotNull
     private Date date;
+    @OneToOne
+    @JoinColumn(name = "locationId")
+    private Location lastLocationVisited;
+    private boolean isStarted;
 
     public Enrollment(Trip trip, User user)
     {
@@ -76,6 +81,25 @@ public class Enrollment implements EnrollmentInterface, Serializable
     @Override
     public void setDate(Date date) {
         this.date = new Date(date.getTime());
+    }
+
+    public Location getLastLocationVisited() {
+        return lastLocationVisited;
+    }
+
+    public boolean isStarted() {
+        return isStarted;
+    }
+
+    public void setLastLocationVisited(Location lastLocationVisited) {
+        if(lastLocationVisited!=null)
+        {
+            if(!trip.isTimeBoundTrip() || (trip.isTimeBoundTrip() && trip.isActive()))
+            {
+                this.lastLocationVisited = lastLocationVisited;
+                isStarted = true;
+            }
+        }
     }
 
     @Override

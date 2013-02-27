@@ -83,7 +83,6 @@ public class TestTrip {
         Trip trip3 = tripsService.createTimelessTrip("Marathon des sables", "N/A", TripPrivacy.PRIVATE, user);
         tripsService.publishTrip(trip1,user);
         tripsService.publishTrip(trip2,user);
-        tripsService.publishTrip(trip3, user);
         trips = tripsService.findAllNonPrivateTrips(null);
         for(Trip trip : trips)
         {
@@ -105,7 +104,6 @@ public class TestTrip {
         Trip trip3 = tripsService.createTimelessTrip("Marathon des sables", "N/A", TripPrivacy.PRIVATE, user);
         tripsService.publishTrip(trip1,user);
         tripsService.publishTrip(trip2,user);
-        tripsService.publishTrip(trip3, user);
         User user1 = tripsService.createUser(new User("test@gmail.com","kokelengerb"));
         trips = tripsService.findAllNonPrivateTrips(user1);
         for(Trip trip : trips)
@@ -168,7 +166,6 @@ public class TestTrip {
     public void successfulFindPrivateTrips() throws TripsException {
         User organizer = tripsService.createUser(new User("bobby.lobby@hotmail.com","xinus"));
         Trip trip = tripsService.createTimelessTrip("Trip","TripDescription",TripPrivacy.PRIVATE,organizer);
-        tripsService.publishTrip(trip, organizer);
         User user = tripsService.createUser(new User("gekke.trekke@hotmail.com","linus"));
         tripsService.invite(trip, organizer, user);
         assertEquals(1, tripsService.findPrivateTrips(user).size());
@@ -305,6 +302,36 @@ public class TestTrip {
         possibleAnswers.add("Keke");
         tripsService.addLocationToTrip(user, createdTrip, 10.12131, 10.12131, "Nationalestraat", null, "Antwerp", "2000", "Antwerp", "Belgium", "Titel", "Lange straat met tramspoor", "Who am I?", possibleAnswers, 0);
         assertFalse(createdTrip.getLocations().get(FIRST_ELEMENT).getQuestion().checkAnswer(1));
+    }
+
+    @Test
+    public void successfulSwitchLocations() throws TripsException
+    {
+        Trip trip = tripsService.createTimelessTrip("Trip with locations", "trip with locations", TripPrivacy.PUBLIC, user);
+        tripsService.addLocationToTrip(user, trip, 12.00, 13.00, null, null, null, null, null, null, "Location", "Aangename location1");
+        tripsService.addLocationToTrip(user, trip, 13.00, 13.00, null, null, null, null, null, null, "Location", "Aangename location2");
+        tripsService.addLocationToTrip(user, trip, 14.00, 13.00, null, null, null, null, null, null, "Location", "Aangename location3");
+        tripsService.switchLocationSequence(trip, user, 1, 3);
+    }
+
+    @Test(expected = TripsException.class)
+    public void failSwitchLocationsInvalidSequence() throws TripsException
+    {
+        Trip trip = tripsService.createTimelessTrip("Trip with locations", "trip with locations", TripPrivacy.PUBLIC, user);
+        tripsService.addLocationToTrip(user, trip, 12.00, 13.00, null, null, null, null, null, null, "Location", "Aangename location1");
+        tripsService.addLocationToTrip(user, trip, 13.00, 13.00, null, null, null, null, null, null, "Location", "Aangename location2");
+        tripsService.addLocationToTrip(user, trip, 14.00, 13.00, null, null, null, null, null, null, "Location", "Aangename location3");
+        tripsService.switchLocationSequence(trip, user, -1, 5);
+    }
+
+    @Test
+    public void failSwitchLocationsSameSequence() throws TripsException
+    {
+        Trip trip = tripsService.createTimelessTrip("Trip with locations", "trip with locations", TripPrivacy.PUBLIC, user);
+        tripsService.addLocationToTrip(user, trip, 12.00, 13.00, null, null, null, null, null, null, "Location", "Aangename location1");
+        tripsService.addLocationToTrip(user, trip, 13.00, 13.00, null, null, null, null, null, null, "Location", "Aangename location2");
+        tripsService.addLocationToTrip(user, trip, 14.00, 13.00, null, null, null, null, null, null, "Location", "Aangename location3");
+        tripsService.switchLocationSequence(trip, user, 1, 1);
     }
 
     @Test

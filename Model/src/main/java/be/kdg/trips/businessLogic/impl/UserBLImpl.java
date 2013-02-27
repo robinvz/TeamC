@@ -61,7 +61,7 @@ public class UserBLImpl implements UserBL
     }
 
     @Override
-    public void updateUser(User user, String firstName, String lastName, String street, String houseNr, String city, String postalCode, String province, String country) throws TripsException {
+    public void updateUser(User user, String firstName, String lastName, String street, String houseNr, String city, String postalCode, String province, String country, byte[] profilePicture) throws TripsException {
         if(isExistingUser(user.getEmail()))
         {
             if(!firstName.equals(""))
@@ -95,6 +95,10 @@ public class UserBLImpl implements UserBL
             if(!country.equals(""))
             {
                 user.getAddress().setCountry(country);
+            }
+            if(profilePicture!=null)
+            {
+                user.setProfilePicture(profilePicture);
             }
             userDao.saveOrUpdateUser(user);
         }

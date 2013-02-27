@@ -76,4 +76,27 @@ public class Question implements QuestionInterface, Serializable
         }
         return false;
     }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+
+        Question question1 = (Question) o;
+
+        if (correctAnswerIndex != question1.correctAnswerIndex) return false;
+        if (possibleAnswers != null ? !possibleAnswers.equals(question1.possibleAnswers) : question1.possibleAnswers != null)
+            return false;
+        if (!question.equals(question1.question)) return false;
+
+        return true;
+    }
+
+    @Override
+    public int hashCode() {
+        int result = question.hashCode();
+        result = 31 * result + (possibleAnswers != null ? possibleAnswers.hashCode() : 0);
+        result = 31 * result + correctAnswerIndex;
+        return result;
+    }
 }
