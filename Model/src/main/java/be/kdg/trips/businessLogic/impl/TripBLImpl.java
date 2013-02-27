@@ -131,6 +131,7 @@ public class TripBLImpl implements TripBL
                 }
                 break;
             case PRIVATE:
+                user = userBL.findUser(user.getEmail());
                 if(enrollmentBL.isExistingInvitation(user, trip))
                 {
                     return trip;
