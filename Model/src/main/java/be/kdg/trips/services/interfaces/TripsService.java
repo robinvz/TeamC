@@ -44,6 +44,8 @@ public interface TripsService
     public Trip findTripById(int id, User user) throws TripsException;
     public List<Trip> findTripsByOrganizer(User organizer) throws TripsException;
 
+    public void editTripDetails(Trip trip, String title, String description, User organizer) throws TripsException;
+
     public void publishTrip(Trip trip, User organizer) throws TripsException;
     public void addLabelToTrip(Trip trip, User organizer, String label) throws TripsException;
     public Location addLocationToTrip(User organizer, Trip trip, double latitude, double longitude, String street, String houseNr, String city, String postalCode, String province, String country, String title, String description) throws TripsException;
@@ -67,8 +69,8 @@ public interface TripsService
     public List<Enrollment> findEnrollmentsByTrip(Trip trip) throws TripsException;
     public List<Invitation> findInvitationsByUser(User user) throws TripsException;
 
-    public void addRequisiteToEnrollment(String name, int amount, Trip trip, User user, User organizer);
-    public void removeRequisiteFromEnrollment(String name, int amount, Trip trip, User user, User organizer);
+    public void addRequisiteToEnrollment(String name, int amount, Trip trip, User user, User organizer) throws TripsException;
+    public void removeRequisiteFromEnrollment(String name, int amount, Trip trip, User user, User organizer) throws TripsException;
 
     public Invitation invite(Trip trip, User organizer, User user) throws TripsException, MessagingException;
     public void uninvite(Trip trip, User organizer, User user) throws TripsException;

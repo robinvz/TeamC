@@ -114,6 +114,12 @@ public class TripsServiceImpl implements TripsService
     }
 
     @Override
+    public void editTripDetails(Trip trip, String title, String description, User organizer) throws TripsException
+    {
+        tripController.editTripDetails(trip, title, description, organizer);
+    }
+
+    @Override
     public void publishTrip(Trip trip, User loggedInUser) throws TripsException {
         tripController.publishTrip(trip, loggedInUser);
     }
@@ -209,13 +215,13 @@ public class TripsServiceImpl implements TripsService
     }
 
     @Override
-    public void addRequisiteToEnrollment(String name, int amount, Trip trip, User user, User organizer)
+    public void addRequisiteToEnrollment(String name, int amount, Trip trip, User user, User organizer) throws TripsException
     {
         enrollmentController.addRequisiteToEnrollment(name, amount, trip, user, organizer);
     }
 
     @Override
-    public void removeRequisiteFromEnrollment(String name, int amount, Trip trip, User user, User organizer)
+    public void removeRequisiteFromEnrollment(String name, int amount, Trip trip, User user, User organizer) throws TripsException
     {
         enrollmentController.removeRequisiteFromEnrollment(name, amount, trip, user, organizer);
     }

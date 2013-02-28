@@ -8,6 +8,8 @@ import javax.persistence.*;
 import javax.validation.constraints.NotNull;
 import java.io.Serializable;
 import java.util.Date;
+import java.util.HashMap;
+import java.util.Map;
 
 /**
  * Subversion id
@@ -35,6 +37,9 @@ public class Enrollment implements EnrollmentInterface, Serializable
     @OneToOne
     @JoinColumn(name = "locationId")
     private Location lastLocationVisited;
+    @ElementCollection(fetch = FetchType.EAGER)
+    @CollectionTable(name = "T_ENROLLMENT_REQUISITE")
+    private Map<String, Integer> requisites;
     private boolean isStarted;
 
     public Enrollment(Trip trip, User user)
@@ -44,6 +49,7 @@ public class Enrollment implements EnrollmentInterface, Serializable
         trip.addEnrollment(this);
         user.addEnrollment(this);
         this.date = new Date();
+        this.requisites = new HashMap<>();
     }
 
     private Enrollment()
@@ -98,6 +104,41 @@ public class Enrollment implements EnrollmentInterface, Serializable
             {
                 this.lastLocationVisited = lastLocationVisited;
                 isStarted = true;
+            }
+        }
+    }
+
+    public Map<String, Integer> getRequisites()
+    {
+        return requisites;
+    }
+
+    @Override
+    public void addRequisite(String name, int amount)
+    {
+        if(this.requisites.containsKey(name))
+        {
+            this.requisites.put(name, this.requisites.get(name) + amount);
+        }
+        else
+        {
+            this.requisites.put(name, amount);
+        }
+    }
+
+    @Override
+    public void removeRequisite(String name, int amount)
+    {
+        if(this.requisites.containsKey(name))
+        {
+            int value = this.requisites.get(name);
+            if(amount < value)
+            {
+                this.requisites.put(name, value - amount);
+            }
+            else
+            {
+                this.requisites.remove(name);
             }
         }
     }

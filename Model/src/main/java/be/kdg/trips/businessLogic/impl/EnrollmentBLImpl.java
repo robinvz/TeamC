@@ -149,15 +149,25 @@ public class EnrollmentBLImpl implements EnrollmentBL
     }
 
     @Override
-    public void addRequisiteToEnrollment(String name, int amount, Trip trip, User user, User organizer)
+    public void addRequisiteToEnrollment(String name, int amount, Trip trip, User user, User organizer) throws TripsException
     {
-        //To change body of implemented methods use File | Settings | File Templates.
+        if(isExistingEnrollment(user, trip) &&userBL.isExistingUser(organizer.getEmail()) && tripBL.isOrganizer(trip, organizer))
+        {
+            Enrollment enrollment = enrollmentDao.getEnrollmentByUserAndTrip(user, trip);
+            enrollment.addRequisite(name, amount);
+            enrollmentDao.saveOrUpdateEnrollment(enrollment);
+        }
     }
 
     @Override
-    public void removeRequisiteFromEnrollment(String name, int amount, Trip trip, User user, User organizer)
+    public void removeRequisiteFromEnrollment(String name, int amount, Trip trip, User user, User organizer) throws TripsException
     {
-        //To change body of implemented methods use File | Settings | File Templates.
+        if(isExistingEnrollment(user, trip) &&userBL.isExistingUser(organizer.getEmail()) && tripBL.isOrganizer(trip, organizer))
+        {
+            Enrollment enrollment = enrollmentDao.getEnrollmentByUserAndTrip(user, trip);
+            enrollment.removeRequisite(name, amount);
+            enrollmentDao.saveOrUpdateEnrollment(enrollment);
+        }
     }
 
     @Override
