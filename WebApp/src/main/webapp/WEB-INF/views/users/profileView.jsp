@@ -16,7 +16,7 @@
             <article>
                 <h2>${user.firstName} ${user.lastName}</h2>
                 <div class="profile-general">
-                     <button id="btn-edit" class="profile-view">Edit</button>
+                     <button id="btn-edit" class="profile-view btn-blue">Edit</button>
                     <form id="profile-form" action="/users/editProfile" method="POST">
                     <table id="profile-data">
 
@@ -103,7 +103,7 @@
                             </td>
                         </tr>
                         <tr>
-                            <input id="btn-save" type="submit" value="Save changes" class="btn-submit profile-edit">
+                            <input id="btn-save" type="submit" value="Save changes" class="btn-submit profile-edit btn-blue">
                         </tr>
                     </table>
                     </form>

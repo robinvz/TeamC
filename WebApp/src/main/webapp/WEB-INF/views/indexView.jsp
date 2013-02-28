@@ -16,7 +16,7 @@
                 <h2>Welcome ${user.firstName}</h2>
             </c:when>
             <c:otherwise>
-                <h3>Welcome</h3>
+                <h2>Welcome</h2>
             </c:otherwise>
         </c:choose>
 

@@ -1,12 +1,21 @@
-#form-register, #form-login{
-    width: 310px;
-    margin: 20px auto;
-    display: none;
+#loginform {
+    width: 227px;
+    margin: 0px auto 0px;
+}
+
+#registerform{
+    width: 305px;
+    margin: 0px auto 0px;
 }
 
 #login-title{
     text-align: center;
     margin-top: 10%;
+}
+
+#login-buttons{
+    margin: 50px auto 0px;
+    width: 192px;
 }
 
 
@@ -19,16 +28,14 @@ input, label {
     display: inline-block;
 }
 
-.btn-submit{
-   float: right;
-}
+
 
 #login-facebook{
     background-image: url('../res/img/icons/btn_fb_login.png');
     width: 192px;
     height: 34px;
     border: none;
-    margin: 20px auto;
+    margin: 0px auto 20px;
 }
 
 #login-facebook:active
@@ -36,14 +43,16 @@ input, label {
     background-image: url('../res/img/icons/btn_fb_login_clicked.png');
 }
 
-#register-facebook{
-    background-image: url('../res/img/icons/btn_fb_signup.png');
+#btn-login{
     width: 192px;
     height: 34px;
-    border: none;
-    margin: 20px auto;
 }
 
 #register-facebook:active{
     background-image: url('../res/img/icons/btn_fb_signup_clicked.png');
+}
+
+
+.btn-blue{
+    margin-left: 2px;
 }

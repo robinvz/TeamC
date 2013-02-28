@@ -47,17 +47,9 @@ tr:hover{
     margin-bottom: 5px;
 }
 
-#btn-addtrip{
-    width: 150px;
-    height: 30px;
-    text-align: left;
-    color: white;
-    font-size: 1.05em;
-    font-family: webfontbold;
-    cursor: pointer;
-    border: none;
+.btn-blue{
     float: right;
-    background-image: url('../res/img/btn-addtrip.png');
+    margin-right: 15px;
 }
 
 #filter{
@@ -96,3 +88,4 @@ tr:hover{
 .inner-selected{
     border-bottom: solid rgb(153, 170, 255) 4px;
 }
+

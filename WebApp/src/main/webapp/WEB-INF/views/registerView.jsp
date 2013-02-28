@@ -10,14 +10,14 @@
     <jsp:include page="baseView.jsp"/>
 
     <div id="content">
-        <form:form method="POST" commandName="user" action="register">
+        <h2>Please fill in the forms</h2>
+        <form:form method="POST" commandName="user" action="register" id="registerform">
             <form:errors path="*" cssClass="errorblock" element="div" />
-            <fieldset>
-                <legend>Required</legend>
+
                 <table>
                     <tr>
                         <td>
-                            <label>Email Address</label>
+                            <label>Email Address*</label>
                         </td>
                         <td>
                             <form:input path="email"></form:input>
@@ -26,17 +26,15 @@
                     </tr>
                     <tr>
                         <td>
-                            <label>Password</label>
+                            <label>Password*</label>
                         </td>
                         <td>
                             <input type="password" name="password">
                         </td>
                     </tr>
                 </table>
-            </fieldset>
-            <fieldset>
-                <legend>Optional</legend>
-                <header>Personal Information</header>
+
+
                 <table>
                     <tr>
                         <td>
@@ -104,9 +102,13 @@
                             <form:input path="address.country"></form:input>
                             <form:errors path="address.country" cssClass="error"></form:errors></td>
                     </tr>
+                    <tr>
+                        <td><small>*required fields</small></td>
+                        <td> <button class="btn-blue" type="submit">Register</button></td>
+                    </tr>
                 </table>
-            </fieldset>
-            <button type="submit">Register</button>
+
+
         </form:form>
     </div>
 </div>

@@ -14,8 +14,8 @@
     </div>
 
     <div id="content">
-        <fieldset id="form-contact">
-            <form>
+
+            <form id="form-contact">
                 <label for="name"> Name: </label> <input type="text" name="name" id="name">
                 <label for="email"> Email: </label> <input type="text" name="email" id="email">
                 <label for="type"> Type: </label>
@@ -25,9 +25,9 @@
                     <option value="bug_error">Bug or Error</option>
                 </select>
                 <textarea name="message" id="message" rows="5"></textarea>
-                <input type="submit" value="Send" class="btn-submit">
+                <input type="submit" value="Send" class="btn-submit btn-blue">
             </form>
-        </fieldset>
+
     </div>
 </div>
 </body>
