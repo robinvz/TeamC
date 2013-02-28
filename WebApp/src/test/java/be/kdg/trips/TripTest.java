@@ -175,13 +175,11 @@ public class TripTest {
     }
 
     @Test
-    public void timelessTripNotDeleted() throws Exception {
-        User user = new User("ik ben geen organizer", "password");
-        mockHttpSession.setAttribute("user", user);
+    public void timelessTripNotDeletedNotLoggedIn() throws Exception {
         Trip t = new TimelessTrip(title, description, privacy, testUser);
         RequestBuilder requestBuilder = MockMvcRequestBuilders.get("/deleteTrip/" + t.getId());
-        Mockito.doThrow(new TripsException("Failed to delete trip")).when(tripsService).deleteTrip(t, user);
-        mockMvc.perform(requestBuilder).andExpect(view().name("tripView"));
+        Mockito.doThrow(new TripsException("Failed to delete trip")).when(tripsService).deleteTrip(t, testUser);
+        mockMvc.perform(requestBuilder).andExpect(view().name("loginView"));
         assertNotNull(t);
     }
 
