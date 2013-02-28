@@ -1,23 +1,24 @@
 <%@ taglib prefix="form" uri="http://www.springframework.org/tags/form" %>
+<%@ taglib prefix="spring" uri="http://www.springframework.org/tags" %>
 
 <html>
 <head>
     <link rel="stylesheet" href="${pageContext.request.contextPath}/resources/css/main.css"/>
     <link rel="shortcut icon" href="${pageContext.request.contextPath}/resources/res/favicon.ico">
     <link rel="stylesheet" href="${pageContext.request.contextPath}/resources/css/login.css"/>
+    <title><spring:message code="RegisterPage" /></title>
 </head>
 <div id="page">
     <jsp:include page="baseView.jsp"/>
 
     <div id="content">
-        <h2>Please fill in the forms</h2>
+        <h2><spring:message code="PleaseFillIn" /></h2>
         <form:form method="POST" commandName="user" action="register" id="registerform">
             <form:errors path="*" cssClass="errorblock" element="div" />
-
                 <table>
                     <tr>
                         <td>
-                            <label>Email Address*</label>
+                            <label>Email*</label>
                         </td>
                         <td>
                             <form:input path="email"></form:input>
@@ -34,11 +35,10 @@
                     </tr>
                 </table>
 
-
                 <table>
                     <tr>
                         <td>
-                            <label>First Name</label>
+                            <label><spring:message code="FirstName" /></label>
                         </td>
                         <td>
                             <form:input path="firstName"></form:input>
@@ -47,7 +47,7 @@
                     </tr>
                     <tr>
                         <td>
-                            <label>Last Name</label>
+                            <label><spring:message code="LastName" /></label>
                         </td>
                         <td>
                             <form:input path="lastName"></form:input>
@@ -56,7 +56,7 @@
                     </tr>
                     <tr>
                         <td>
-                            <label>Street</label>
+                            <label><spring:message code="Street" /></label>
                         </td>
                         <td>
                             <form:input path="address.street"></form:input>
@@ -64,7 +64,7 @@
                     </tr>
                     <tr>
                         <td>
-                            <label>House Nr</label>
+                            <label><spring:message code="HouseNr" /></label>
                         </td>
                         <td>
                             <form:input path="address.houseNr"></form:input>
@@ -72,7 +72,7 @@
                     </tr>
                     <tr>
                         <td>
-                            <label>City</label>
+                            <label><spring:message code="City" /></label>
                         </td>
                         <td>
                             <form:input path="address.city"></form:input>
@@ -80,7 +80,7 @@
                     </tr>
                     <tr>
                         <td>
-                            <label>Postal code</label>
+                            <label><spring:message code="PostalCode" /></label>
                         </td>
                         <td>
                             <form:input path="address.postalCode"></form:input>
@@ -88,7 +88,7 @@
                     </tr>
                     <tr>
                         <td>
-                            <label>Province</label>
+                            <label><spring:message code="Province" /></label>
                         </td>
                         <td>
                             <form:input path="address.province"></form:input>
@@ -96,7 +96,7 @@
                     </tr>
                     <tr>
                         <td>
-                            <label>Country</label>
+                            <label><spring:message code="Country" /></label>
                         </td>
                         <td>
                             <form:input path="address.country"></form:input>
@@ -107,10 +107,9 @@
                         <td> <button class="btn-blue" type="submit">Register</button></td>
                     </tr>
                 </table>
-
-
         </form:form>
     </div>
+
 </div>
 </body>
 </html>

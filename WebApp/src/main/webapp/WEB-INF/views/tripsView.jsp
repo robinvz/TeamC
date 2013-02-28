@@ -1,16 +1,18 @@
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+<%@ taglib prefix="spring" uri="http://www.springframework.org/tags" %>
+
 <html>
 <head>
     <link rel="stylesheet" href="${pageContext.request.contextPath}/resources/css/main.css"/>
     <link rel="stylesheet" href="${pageContext.request.contextPath}/resources/css/trips.css"/>
     <link rel="shortcut icon" href="${pageContext.request.contextPath}/resources/res/favicon.ico">
-    <title>Trip overview</title>
+    <title><spring:message code="TripsPage" /></title>
 </head>
 <body>
 <div id="page">
     <jsp:include page="baseView.jsp"/>
 
-    <h2>Overview</h2>
+    <h2><spring:message code="Overview" /></h2>
     <c:if test="${not empty user}">
         <nav class="inner-nav">
             <ul class="nav">

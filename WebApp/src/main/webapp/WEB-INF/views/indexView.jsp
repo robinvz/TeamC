@@ -1,4 +1,6 @@
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+<%@ taglib prefix="spring" uri="http://www.springframework.org/tags" %>
+
 <html>
 <head>
     <link rel="stylesheet" href="${pageContext.request.contextPath}/resources/css/main.css">
@@ -10,13 +12,12 @@
     <jsp:include page="baseView.jsp"/>
 
     <div id="content">
-
         <c:choose>
             <c:when test="${not empty user}">
-                <h2>Welcome ${user.firstName}</h2>
+                <h2><spring:message code="Welcome" /> ${user.firstName}</h2>
             </c:when>
             <c:otherwise>
-                <h2>Welcome</h2>
+                <h2><spring:message code="Welcome" /></h2>
             </c:otherwise>
         </c:choose>
 
