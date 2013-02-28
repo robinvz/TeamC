@@ -32,8 +32,8 @@ public interface EnrollmentBL
     public List<Enrollment> getEnrollmentsByTrip(Trip trip) throws TripsException;
     public List<Invitation> getInvitationsByUser(User user) throws TripsException;
 
-    public void addRequisiteToEnrollment(String name, int amount, Trip trip, User user, User organizer);
-    public void removeRequisiteFromEnrollment(String name, int amount, Trip trip, User user, User organizer);
+    public void addRequisiteToEnrollment(String name, int amount, Trip trip, User user, User organizer) throws TripsException;
+    public void removeRequisiteFromEnrollment(String name, int amount, Trip trip, User user, User organizer) throws TripsException;
 
     public boolean isExistingEnrollment(User user, Trip trip) throws TripsException;
     public boolean isExistingInvitation(User user, Trip trip) throws TripsException;

@@ -260,29 +260,35 @@ public class TestEnrollment
         tripsService.subscribe(trip, user);
         tripsService.setLastLocationVisited(trip, user, loc1);
     }
-    /*
+
     @Test
     public void successfulAddRequisiteToEnrollment() throws TripsException
     {
-        Trip trip = tripsService.createTimelessTrip("Trip with requisites", "trip with requisites", TripPrivacy.PUBLIC, organizer);
+        Trip trip = tripsService.createTimelessTrip("Trip with requisites", "trip with requisites", TripPrivacy.PROTECTED, organizer);
         User user = tripsService.createUser(new User("kiki@hotmail.com", "pass"));
+        tripsService.publishTrip(trip, organizer);
+        tripsService.subscribe(trip, user);
         tripsService.addRequisiteToEnrollment("liters bier", 10, trip, user, organizer);
         tripsService.addRequisiteToEnrollment("liters bier", 5, trip, user, organizer);
         tripsService.addRequisiteToEnrollment("vrienden", 5, trip, user, organizer);
-        assertEquals(2, trip.getRequisites().size());
+        Enrollment enrollment = tripsService.findEnrollmentsByUser(user).get(FIRST_ELEMENT);
+        assertEquals(2, enrollment.getRequisites().size());
     }
 
     @Test
     public void successfulRemoveRequisiteFromEnrollment() throws TripsException
     {
-        Trip trip = tripsService.createTimelessTrip("Trip with requisites", "trip with requisites", TripPrivacy.PUBLIC, organizer);
+        Trip trip = tripsService.createTimelessTrip("Trip with requisites", "trip with requisites", TripPrivacy.PROTECTED, organizer);
         User user = tripsService.createUser(new User("koko@hotmail.com", "pass"));
+        tripsService.publishTrip(trip, organizer);
+        tripsService.subscribe(trip, user);
         tripsService.addRequisiteToEnrollment("liters bier", 10, trip, user, organizer);
         tripsService.addRequisiteToEnrollment("liters bier", 5, trip, user, organizer);
         tripsService.addRequisiteToEnrollment("vrienden", 5, trip, user, organizer);
         tripsService.removeRequisiteFromEnrollment("liters bier", 12, trip, user, organizer);
         tripsService.removeRequisiteFromEnrollment("vrienden", 6, trip, user, organizer);
-        assertEquals(1, trip.getRequisites().size());
+        Enrollment enrollment = tripsService.findEnrollmentsByUser(user).get(FIRST_ELEMENT);
+        assertEquals(1, enrollment.getRequisites().size());
     }
-    */
+
 }

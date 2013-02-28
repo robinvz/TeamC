@@ -66,8 +66,8 @@ public interface TripsService
     public List<Enrollment> findEnrollmentsByTrip(Trip trip) throws TripsException;
     public List<Invitation> findInvitationsByUser(User user) throws TripsException;
 
-    public void addRequisiteToEnrollment(String name, int amount, Trip trip, User user, User organizer);
-    public void removeRequisiteFromEnrollment(String name, int amount, Trip trip, User user, User organizer);
+    public void addRequisiteToEnrollment(String name, int amount, Trip trip, User user, User organizer) throws TripsException;
+    public void removeRequisiteFromEnrollment(String name, int amount, Trip trip, User user, User organizer) throws TripsException;
 
     public Invitation invite(Trip trip, User organizer, User user) throws TripsException, MessagingException;
     public void uninvite(Trip trip, User organizer, User user) throws TripsException;
