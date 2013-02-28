@@ -2,6 +2,7 @@ package be.kdg.trips.persistence.dao.interfaces;
 
 import be.kdg.trips.exception.TripsException;
 import be.kdg.trips.model.location.Location;
+import be.kdg.trips.model.question.Question;
 import be.kdg.trips.model.trip.Trip;
 import be.kdg.trips.model.user.User;
 
@@ -25,6 +26,7 @@ public interface TripDao {
     public List<Trip> getProtectedTripsWithoutDetailsByKeyword(String keyword);
     public List<Trip> getTripsByOrganizer(User organizer);
     public Trip getTrip(int id) throws TripsException;
+    public Trip getTripByQuestion(Question question) throws TripsException;
 
     public void deleteTrip(Trip trip);
     public void deleteLocation(Location location);

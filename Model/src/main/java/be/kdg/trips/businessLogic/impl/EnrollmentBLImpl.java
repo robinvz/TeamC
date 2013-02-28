@@ -8,6 +8,7 @@ import be.kdg.trips.model.enrollment.Enrollment;
 import be.kdg.trips.model.invitation.Answer;
 import be.kdg.trips.model.invitation.Invitation;
 import be.kdg.trips.model.location.Location;
+import be.kdg.trips.model.question.Question;
 import be.kdg.trips.model.trip.Trip;
 import be.kdg.trips.model.trip.TripPrivacy;
 import be.kdg.trips.model.user.User;
@@ -272,6 +273,51 @@ public class EnrollmentBLImpl implements EnrollmentBL
             else
             {
                 throw new TripsException("Location doesn't exist in selected trip");
+            }
+        }
+    }
+
+    @Transactional
+    @Override
+    public void checkAnswerFromQuestion(Question question, int answerIndex, User user) throws TripsException {
+        Trip trip = tripBL.findTripByQuestion(question);
+        if(isExistingEnrollment(user, trip))
+        {
+            Enrollment enrollment = enrollmentDao.getEnrollmentByUserAndTrip(user, trip);
+            if(!enrollment.getAnsweredQuestions().contains(question.getId()))
+            {
+                if(enrollment.isStarted())
+                {
+                    for(Location location: trip.getLocations())
+                    {
+                        if(location.getQuestion().equals(question))
+                        {
+                            if(enrollment.getLastLocationVisited().equals(location))
+                            {
+                                if(question.checkAnswer(answerIndex))
+                                {
+                                    enrollment.incrementScore();
+                                }
+                                enrollment.addAnsweredQuestion(question.getId());
+                                enrollmentDao.saveOrUpdateEnrollment(enrollment);
+                                break;
+                            }
+                            else
+                            {
+                                throw new TripsException("You haven't reached this location yet");
+                            }
+                        }
+                    }
+                }
+                else
+                {
+                    throw new TripsException("You haven't started the trip yet (LastLocationVisited is empty)");
+                }
+
+            }
+            else
+            {
+                throw new TripsException("You already answered this question");
             }
         }
     }
