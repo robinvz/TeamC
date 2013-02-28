@@ -6,13 +6,19 @@ import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.net.URI;
 import java.net.URISyntaxException;
+import java.util.ArrayList;
+import java.util.List;
 
 import org.apache.http.HttpEntity;
 import org.apache.http.HttpResponse;
+import org.apache.http.NameValuePair;
 import org.apache.http.StatusLine;
 import org.apache.http.client.HttpClient;
+import org.apache.http.client.entity.UrlEncodedFormEntity;
 import org.apache.http.client.methods.HttpGet;
+import org.apache.http.client.methods.HttpPost;
 import org.apache.http.impl.client.DefaultHttpClient;
+import org.apache.http.message.BasicNameValuePair;
 import org.json.JSONException;
 import org.json.JSONObject;
 import android.os.AsyncTask;
@@ -23,11 +29,14 @@ public class LoginTask extends AsyncTask<String, Void, Integer> {
 	protected Integer doInBackground(String... params) {
 		StringBuilder builder = new StringBuilder();
 		HttpClient client = new DefaultHttpClient();
-		HttpGet httpGet;
+		HttpPost httpPost;
 		try {
-			httpGet = new HttpGet(new URI("http://" + params[0] + ":" + params[1]
-					+ "/service/login?username=" + params[2] + "&password=" + params[3]));
-			HttpResponse response = client.execute(httpGet);
+			httpPost = new HttpPost(new URI("http://" + params[0] + ":" + params[1]	+ "/"+ params[2]));
+			 List<NameValuePair> nameValuePairs = new ArrayList<NameValuePair>(2); 
+			  nameValuePairs.add(new BasicNameValuePair("password", params[4]));
+		        nameValuePairs.add(new BasicNameValuePair("username", params[3]));
+		        httpPost.setEntity(new UrlEncodedFormEntity(nameValuePairs));
+		        HttpResponse response = client.execute(httpPost);
 			StatusLine statusLine = response.getStatusLine();
 			int statusCode = statusLine.getStatusCode();
 			if (statusCode == 200) {
@@ -53,6 +62,7 @@ public class LoginTask extends AsyncTask<String, Void, Integer> {
 		} catch (JSONException e) {
 			return -3;
 		} catch (Exception e) {
+			e.printStackTrace();
 			return -4;
 		}
 	}

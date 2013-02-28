@@ -62,7 +62,7 @@ public class LoginController {
         return new ModelAndView("loginView", "loginBean", new LoginBean());
     }
 
-    @RequestMapping(value = "/service/login", method = RequestMethod.GET)
+    @RequestMapping(value = "/service/login", method = RequestMethod.POST)
     public
     @ResponseBody
     String loginService(@RequestParam String username, @RequestParam String password) throws TripsException {
@@ -75,6 +75,7 @@ public class LoginController {
     @ResponseBody
     public String facebookLogin(@RequestParam String username, @RequestParam String password) {
         User user = new User(username, password);
+        JSONObject js = new JSONObject();
         try {
             tripsService.createUser(user);
         } catch (Exception e) {
@@ -83,11 +84,12 @@ public class LoginController {
             if (tripsService.checkLogin(username, password)) {
                 user = tripsService.findUser(username);
                 session.setAttribute("user", user);
+                js.accumulate("valid", tripsService.checkLogin(username, password));
             }
         } catch (TripsException e) {
-            return "fail";
+            return js.toString();
         }
-        return "success";
+        return js.toString();
     }
 
     @RequestMapping(value = "/login", method = RequestMethod.POST)
@@ -119,7 +121,7 @@ public class LoginController {
     }
 
     @RequestMapping(value = "/register", method = RequestMethod.GET)
-    public String register(User user) {
+    public String register(User newUser) {
         session.invalidate();
         return "registerView";
     }
