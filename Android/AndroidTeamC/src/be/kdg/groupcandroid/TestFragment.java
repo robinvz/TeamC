@@ -38,7 +38,7 @@ public class TestFragment extends Fragment {
 		System.out.println(positie);
 		switch (positie) {	//categorieen hebben ook posities
 		case 0:
-			return inflater.inflate(R.layout.trips, container, false);
+			return inflater.inflate(R.layout.trip, container, false);
 		case 2:
 			return inflater.inflate(R.layout.chat, container, false);
 		case 3:

@@ -39,7 +39,7 @@ public class EnrollmentBLImpl implements EnrollmentBL
     public Enrollment enroll(Trip trip, User user) throws TripsException
     {
         Enrollment enrollment = null;
-        if(isUnexistingEnrollment(user,trip))
+        if(isUnexistingEnrollment(user, trip))
         {
             if(trip.isPublished() && !trip.isActive())
             {
@@ -55,12 +55,31 @@ public class EnrollmentBLImpl implements EnrollmentBL
     }
 
     @Override
+    public void disenroll(Trip trip, User user) throws TripsException {
+        if(isExistingEnrollment(user, trip) && !trip.isActive())
+        {
+            Enrollment enrollment = enrollmentDao.getEnrollmentByUserAndTrip(user, trip);
+            if(trip.getPrivacy()==TripPrivacy.PRIVATE)
+            {
+                Invitation invitation = enrollmentDao.getInvitationByUserAndTrip(user, trip);
+                invitation.setAnswer(Answer.DECLINED);
+                enrollmentDao.saveOrUpdateInvitation(invitation);
+            }
+            enrollmentDao.deleteEnrollment(enrollment);
+        }
+        else
+        {
+            throw new TripsException("You can't disenroll from a trip that is currently active");
+        }
+    }
+
+    @Override
     public Invitation invite(Trip trip, User organizer, User user) throws TripsException
     {
         Invitation invitation = null;
         if(isUnexistingInvitation(user, trip))
         {
-            if (userBL.isExistingUser(organizer.getEmail()) && tripBL.isOrganizer(trip, organizer) && trip.isPublished() && !trip.isActive() && trip.getPrivacy()==TripPrivacy.PRIVATE)
+            if (tripBL.isOrganizer(trip, organizer) && !trip.isActive() && trip.getPrivacy()==TripPrivacy.PRIVATE)
             {
                 invitation = new Invitation(trip, user);
                 enrollmentDao.saveOrUpdateInvitation(invitation);
@@ -71,6 +90,22 @@ public class EnrollmentBLImpl implements EnrollmentBL
             }
         }
         return invitation;
+    }
+
+    @Override
+    public void uninvite(Trip trip, User organizer, User user) throws TripsException {
+        if(isExistingInvitation(user, trip))
+        {
+            if (tripBL.isOrganizer(trip, organizer)&& isUnexistingEnrollment(user, trip))
+            {
+                Invitation invitation = enrollmentDao.getInvitationByUserAndTrip(user, trip);
+                enrollmentDao.deleteInvitation(invitation);
+            }
+            else
+            {
+                throw new TripsException("Trip is either not published, already active, not private or organizer doesn't exist");
+            }
+        }
     }
 
     @Override
@@ -94,15 +129,13 @@ public class EnrollmentBLImpl implements EnrollmentBL
     }
 
     @Override
-    public void disenroll(Trip trip, User user)
-    {
-        //To change body of implemented methods use File | Settings | File Templates.
-    }
-
-    @Override
-    public void uninvite(Trip trip, User user)
-    {
-        //To change body of implemented methods use File | Settings | File Templates.
+    public List<Invitation> getInvitationsByUser(User user) throws TripsException {
+        List<Invitation> invitations = null;
+        if(userBL.isExistingUser(user.getEmail()))
+        {
+            invitations = enrollmentDao.getInvitationsByUser(user);
+        }
+        return invitations;
     }
 
     @Override
@@ -144,7 +177,7 @@ public class EnrollmentBLImpl implements EnrollmentBL
     @Override
     public Enrollment acceptInvitation(Trip trip, User user) throws TripsException {
         Enrollment enrollment = null;
-        if(isExistingInvitation(user, trip))
+        if(isExistingInvitation(user, trip) && !trip.isActive())
         {
             enrollment = enroll(trip, user);
             Invitation invitation = enrollmentDao.getInvitationByUserAndTrip(user, trip);
@@ -152,6 +185,23 @@ public class EnrollmentBLImpl implements EnrollmentBL
             enrollmentDao.saveOrUpdateInvitation(invitation);
         }
         return enrollment;
+    }
+
+    @Override
+    public void declineInvitation(Trip trip, User user) throws TripsException {
+        if(isExistingInvitation(user, trip) && isUnexistingEnrollment(user, trip))
+        {
+            Invitation invitation = enrollmentDao.getInvitationByUserAndTrip(user, trip);
+            if(invitation.getAnswer()!=Answer.DECLINED)
+            {
+                invitation.setAnswer(Answer.DECLINED);
+                enrollmentDao.saveOrUpdateInvitation(invitation);
+            }
+            else
+            {
+                throw new TripsException("Invitation is already declined");
+            }
+        }
     }
 
     @Override

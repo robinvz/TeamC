@@ -10,6 +10,9 @@ import org.springframework.context.support.ClassPathXmlApplicationContext;
 
 import javax.validation.ConstraintViolationException;
 
+import java.io.File;
+import java.io.FileInputStream;
+
 import static org.junit.Assert.*;
 
 /**
@@ -92,10 +95,21 @@ public class TestUser {
     }
 
     @Test
+    public void successfulFindUsersByKeyword() throws TripsException {
+        User loggedInUser = tripsService.createUser(new User("gino.frank@docent.kdg.be", "password"));
+        User createdUser1 = tripsService.createUser(new User("mathias.vandepol@docent.kdg.be", "password"));
+        User createdUser2 = tripsService.createUser(new User("lore.coppens@student.kdg.be", "password"));
+        tripsService.updateUser(createdUser2, "docent", "", "", "", "", "", "", "", null);
+        User createdUser3 = tripsService.createUser(new User("lotte.verezen@student.kdg.be", "password"));
+        tripsService.updateUser(createdUser3, "", "docent", "", "", "", "", "", "", null);
+        assertEquals(3, tripsService.findUsersByKeyword("doCent", loggedInUser).size());
+    }
+
+    @Test
     public void successfulUserUpdateNewValues() throws TripsException
     {
         User user = tripsService.createUser(new User("tony.mertens@student.kdg.be","password"));
-        tripsService.updateUser(user, "hans", "martens", "beerstraat", "11", "Antwerpen", "2000", "Antwerpen","België");
+        tripsService.updateUser(user, "hans", "martens", "beerstraat", "11", "Antwerpen", "2000", "Antwerpen","België",null);
         assertEquals("hans", tripsService.findUser("tony.mertens@student.kdg.be").getFirstName());
     }
 
@@ -103,14 +117,30 @@ public class TestUser {
     public void successfulUserUpdateNullValues() throws TripsException
     {
         User user = tripsService.createUser(new User("tony.martens@student.kdg.be","password"));
-        tripsService.updateUser(user, "", "", "", "","", "", "", "");
+        tripsService.updateUser(user, "", "", "", "","", "", "", "", null);
         assertEquals(tripsService.findUser("tony.martens@student.kdg.be").getFirstName(), null);
+    }
+
+    @Test
+    public void successfulUserUpdateProfilePicture() throws TripsException
+    {
+        User user = tripsService.createUser(new User("gaston.leo@student.kdg.be","password"));
+        File file = new File("src/test/resources/testimage.jpg");
+        byte[] bFile = new byte[(int) file.length()];
+        try {
+            FileInputStream fileInputStream = new FileInputStream(file);
+            fileInputStream.read(bFile);
+            fileInputStream.close();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        tripsService.updateUser(user, "", "", "", "","", "", "", "", bFile);
     }
 
     @Test(expected = ConstraintViolationException.class)
     public void failedUserUpdateInvalidStreet() throws TripsException {
         User user = tripsService.createUser(new User("louis.martens@student.kdg.be","password"));
-        tripsService.updateUser(user, "","","straat1212","","","","","");
+        tripsService.updateUser(user, "","","straat1212","","","","","", null);
     }
 
     @Test(expected = TripsException.class)

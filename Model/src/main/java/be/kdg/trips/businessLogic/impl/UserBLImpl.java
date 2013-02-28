@@ -8,6 +8,10 @@ import be.kdg.trips.persistence.dao.interfaces.UserDao;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Set;
+
 /**
  * Subversion id
  * Project Application Development
@@ -43,6 +47,16 @@ public class UserBLImpl implements UserBL
     }
 
     @Override
+    public List<User> findUsersByKeyword(String keyword, User user) throws TripsException {
+        List<User> users = new ArrayList<>();
+        if(isExistingUser(user.getEmail()))
+        {
+            users = userDao.getUsersByKeyword(keyword.toLowerCase(), user);
+        }
+        return users;
+    }
+
+    @Override
     public boolean checkLogin(String email, String password)
     {
         try
@@ -61,7 +75,7 @@ public class UserBLImpl implements UserBL
     }
 
     @Override
-    public void updateUser(User user, String firstName, String lastName, String street, String houseNr, String city, String postalCode, String province, String country) throws TripsException {
+    public void updateUser(User user, String firstName, String lastName, String street, String houseNr, String city, String postalCode, String province, String country, byte[] profilePicture) throws TripsException {
         if(isExistingUser(user.getEmail()))
         {
             if(!firstName.equals(""))
@@ -95,6 +109,10 @@ public class UserBLImpl implements UserBL
             if(!country.equals(""))
             {
                 user.getAddress().setCountry(country);
+            }
+            if(profilePicture!=null)
+            {
+                user.setProfilePicture(profilePicture);
             }
             userDao.saveOrUpdateUser(user);
         }

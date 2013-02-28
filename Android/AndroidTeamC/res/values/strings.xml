@@ -21,4 +21,7 @@
 
     <string name="default_image">default_image</string>
     <string name="chat_background_description">Trip Background</string>
+    <string name="logout">Logout</string>
+    <string name="total_subscribed">Total Subscribed</string>
+    <string name="trip_privacy">Trip Privacy</string>
 </resources>

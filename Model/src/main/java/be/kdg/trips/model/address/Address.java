@@ -23,7 +23,7 @@ public class Address implements AddressInterface, Serializable
     @Pattern(regexp = noDigitsRegEx, message = "Street should only contain letters")
     @Size(max=50, message = "Street has a maximum amount of 50 characters")
     private String street;
-    @Pattern(regexp = "^\\d{1,}[a-zA-Z]{0,1}$", message = "House number should a number with maximum one letter")
+    @Pattern(regexp = "^\\d{1,}[a-zA-Z]{0,1}$", message = "House number should be a number with maximum one letter")
     @Size(max=9, message = "House number has a maximum amount of 9 characters")
     private String houseNr;
     @Pattern(regexp = noDigitsRegEx, message = "City should only contain letters")

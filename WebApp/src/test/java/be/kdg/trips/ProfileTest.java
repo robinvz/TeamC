@@ -104,7 +104,7 @@ public class ProfileTest {
                 .param("firstName", "robke").param("lastName", "zype").param("street", "straat").param("houseNr", "22")
                 .param("city", "Brugge").param("postalCode", "3300").param("province", "Oost-Vlaanderen").param("country", "Belgie");
         Mockito.doThrow(new TripsException("Cannot edit unexisting user")).when(tripsService)
-                .updateUser(testUser, "robke", "zype", "straat", "22","Brugge","3300","Oost-Vlaanderen","Belgie");
+                .updateUser(testUser, "robke", "zype", "straat", "22","Brugge","3300","Oost-Vlaanderen","Belgie",null);
         mockMvc.perform(requestBuilder).andExpect(view().name("/users/profileView"));
         User notEditedUser = new User();
         notEditedUser.setFirstName("jan");
