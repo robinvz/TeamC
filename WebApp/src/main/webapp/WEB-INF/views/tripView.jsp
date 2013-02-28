@@ -57,10 +57,26 @@
                 </div>
 
                 <div class="trip-stops">
-
+                    <c:if test="${trip.privacy==PUBLIC || trip.privacy==TripPrivacy.PUBLIC}">
+                        <h1>Werkt niet</h1>
+                    </c:if>
                 </div>
 
                 <div class="trip-participants">
+                    <c:choose>
+                        <c:when test="${empty trip.enrollments}">
+                            <h3>There are no enrollments.</h3>
+                        </c:when>
+                        <c:otherwise>
+                            <table>
+                                <c:forEach items="${trip.enrollments}" var="enrollment">
+                                    <tr>
+                                        <td>${enrollment.user.email}</td>
+                                    </tr>
+                                </c:forEach>
+                            </table>
+                        </c:otherwise>
+                    </c:choose>
 
                 </div>
                 <c:if test="${trip.privacy == 'PROTECTED' and not empty user && trip.published==true}">

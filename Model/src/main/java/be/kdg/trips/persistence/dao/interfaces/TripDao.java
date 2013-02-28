@@ -1,6 +1,7 @@
 package be.kdg.trips.persistence.dao.interfaces;
 
 import be.kdg.trips.exception.TripsException;
+import be.kdg.trips.model.location.Location;
 import be.kdg.trips.model.trip.Trip;
 import be.kdg.trips.model.user.User;
 
@@ -26,6 +27,7 @@ public interface TripDao {
     public Trip getTrip(int id) throws TripsException;
 
     public void deleteTrip(Trip trip);
+    public void deleteLocation(Location location);
 
     public boolean isExistingTrip(int id) throws TripsException;
 }

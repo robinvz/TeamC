@@ -132,6 +132,18 @@ public class Location implements LocationInterface, Serializable
         this.sequence = sequence;
     }
 
+    public int getId() {
+        return id;
+    }
+
+    public String getTitle() {
+        return title;
+    }
+
+    public Trip getTrip() {
+        return trip;
+    }
+
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
