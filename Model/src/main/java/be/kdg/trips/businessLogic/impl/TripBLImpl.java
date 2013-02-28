@@ -365,7 +365,7 @@ public class TripBLImpl implements TripBL
     }
 
     private boolean areDatesValid(Date startDate, Date endDate) throws TripsException {
-        if(startDate.after(new Date()))
+        if(startDate.compareTo(new Date()) >= 0)
         {
             if(startDate.before(endDate))
             {
