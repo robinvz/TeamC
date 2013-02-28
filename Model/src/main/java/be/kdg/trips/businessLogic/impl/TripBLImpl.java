@@ -232,6 +232,45 @@ public class TripBLImpl implements TripBL
     }
 
     @Override
+    public void addRequisiteToTrip(String name, int amount, Trip trip, User organizer) throws TripsException
+    {
+        if(isExistingTrip(trip.getId()) && userBL.isExistingUser(organizer.getEmail()) && isOrganizer(trip, organizer) && isTripNotActive(trip))
+        {
+            trip.addRequisite(name, amount);
+            tripDao.saveOrUpdateTrip(trip);
+        }
+    }
+
+    @Override
+    public void removeRequisiteFromTrip(String name, int amount, Trip trip, User organizer) throws TripsException
+    {
+        trip.removeRequisite(name, amount);
+        tripDao.saveOrUpdateTrip(trip);
+    }
+
+    public void switchLocationSequence(Trip trip, User user, int location1, int location2) throws TripsException {
+        if(isExistingTrip(trip.getId()) && userBL.isExistingUser(user.getEmail()) && isOrganizer(trip, user))
+        {
+            int locationsSize = trip.getLocations().size()+1;
+            List<Location> locations = trip.getLocations();
+            if(location1 == location2)
+            {
+
+            }
+            else if(locationsSize < 1 || (location1 <= locationsSize && location1 > 0) || (location2 <= locationsSize && location2 > 0))
+            {
+                trip.getLocations().get(location1-1).setSequence(location2);
+                trip.getLocations().get(location2-1).setSequence(location1);
+                tripDao.saveOrUpdateTrip(trip);
+            }
+            else
+            {
+                throw new TripsException("Locations couldn't be switched because they don't exist");
+            }
+        }
+    }
+
+    @Override
     public void deleteTrip(Trip trip, User user) throws TripsException, MessagingException {
         if(isExistingTrip(trip.getId()) && userBL.isExistingUser(user.getEmail()) && isOrganizer(trip, user))
         {
@@ -260,63 +299,14 @@ public class TripBLImpl implements TripBL
         throw new TripsException("User with email '"+organizer.getEmail()+"' is not the organizer of the selected trip");
     }
 
-    private boolean areDatesValid(Date startDate, Date endDate) throws TripsException {
-        if(startDate.after(new Date()))
+    @Override
+    public boolean isTripNotActive(Trip trip) throws TripsException
+    {
+        if(!trip.isActive())
         {
-            if(startDate.before(endDate))
-            {
-                return true;
-            }
-            else
-            {
-                throw new TripsException("Start date must be before end date");
-            }
+            return true;
         }
-        else
-        {
-            throw new TripsException("Start date must be in the future");
-        }
-    }
-
-    public void switchLocationSequence(Trip trip, User user, int location1, int location2) throws TripsException {
-        if(isExistingTrip(trip.getId()) && userBL.isExistingUser(user.getEmail()) && isOrganizer(trip, user))
-        {
-            int locationsSize = trip.getLocations().size()+1;
-            List<Location> locations = trip.getLocations();
-            if(location1 == location2)
-            {
-
-            }
-            else if(locationsSize < 1 || (location1 <= locationsSize && location1 > 0) || (location2 <= locationsSize && location2 > 0))
-            {
-                trip.getLocations().get(location1-1).setSequence(location2);
-                trip.getLocations().get(location2-1).setSequence(location1);
-                tripDao.saveOrUpdateTrip(trip);
-            }
-            else
-            {
-                throw new TripsException("Locations couldn't be switched because they don't exist");
-            }
-        }
-    }
-
-    private boolean areDatesUnoccupied(Date startDate, Date endDate, Trip trip) throws TripsException {
-        if(trip.isTimeBoundTrip())
-        {
-            Map<Date, Date> dates = ((TimeBoundTrip) trip).getDates();
-            for(Map.Entry datePair : dates.entrySet())
-            {
-                if((((Date)datePair.getKey()).before(startDate) && ((Date)datePair.getValue()).after(startDate) || (((Date)datePair.getKey()).before(endDate) && ((Date)datePair.getValue()).after(endDate))))
-                {
-                    throw new TripsException("Dates are already occupied");
-                }
-            }
-        }
-        else
-        {
-            throw new TripsException("Trip is not a TimeBound trip");
-        }
-        return true;
+        throw new TripsException("Trip is already active");
     }
 
     @Override
@@ -349,5 +339,42 @@ public class TripBLImpl implements TripBL
         {
             throw new MessagingException("Failed to send email");
         }
+    }
+
+    private boolean areDatesValid(Date startDate, Date endDate) throws TripsException {
+        if(startDate.after(new Date()))
+        {
+            if(startDate.before(endDate))
+            {
+                return true;
+            }
+            else
+            {
+                throw new TripsException("Start date must be before end date");
+            }
+        }
+        else
+        {
+            throw new TripsException("Start date must be in the future");
+        }
+    }
+
+    private boolean areDatesUnoccupied(Date startDate, Date endDate, Trip trip) throws TripsException {
+        if(trip.isTimeBoundTrip())
+        {
+            Map<Date, Date> dates = ((TimeBoundTrip) trip).getDates();
+            for(Map.Entry datePair : dates.entrySet())
+            {
+                if((((Date)datePair.getKey()).before(startDate) && ((Date)datePair.getValue()).after(startDate) || (((Date)datePair.getKey()).before(endDate) && ((Date)datePair.getValue()).after(endDate))))
+                {
+                    throw new TripsException("Dates are already occupied");
+                }
+            }
+        }
+        else
+        {
+            throw new TripsException("Trip is not a TimeBound trip");
+        }
+        return true;
     }
 }

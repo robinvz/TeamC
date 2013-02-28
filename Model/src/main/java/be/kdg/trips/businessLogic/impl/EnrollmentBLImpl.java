@@ -89,7 +89,7 @@ public class EnrollmentBLImpl implements EnrollmentBL
                 List<InternetAddress[]> recipients = new ArrayList<>();
                 recipients.add(InternetAddress.parse(user.getEmail()));
                 //give link to invitation!
-                tripBL.sendMail("Trip invitation", "You have been invited by "+organizer.getFirstName()+" "+organizer.getLastName()+ " for his trip named: '"+trip.getTitle()+"' ("+trip.getDescription()+").\nClick here xxx if you're interested in joining.", recipients);
+                tripBL.sendMail("Trip invitation", "You have been invited by " + organizer.getFirstName() + " " + organizer.getLastName() + " for his trip named: '" + trip.getTitle() + "' (" + trip.getDescription() + ").\nClick here xxx if you're interested in joining.", recipients);
             }
             else
             {
@@ -143,6 +143,18 @@ public class EnrollmentBLImpl implements EnrollmentBL
             invitations = enrollmentDao.getInvitationsByUser(user);
         }
         return invitations;
+    }
+
+    @Override
+    public void addRequisiteToEnrollment(String name, int amount, Trip trip, User user, User organizer)
+    {
+        //To change body of implemented methods use File | Settings | File Templates.
+    }
+
+    @Override
+    public void removeRequisiteFromEnrollment(String name, int amount, Trip trip, User user, User organizer)
+    {
+        //To change body of implemented methods use File | Settings | File Templates.
     }
 
     @Override

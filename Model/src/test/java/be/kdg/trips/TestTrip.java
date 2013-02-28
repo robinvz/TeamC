@@ -314,6 +314,28 @@ public class TestTrip {
     }
 
     @Test
+    public void succesfulAddRequisiteToTrip() throws TripsException
+    {
+        Trip trip = tripsService.createTimelessTrip("Trip with requisites", "trip with requisites", TripPrivacy.PUBLIC, user);
+        tripsService.addRequisiteToTrip("liters bier", 10, trip, user);
+        tripsService.addRequisiteToTrip("liters bier", 5, trip, user);
+        tripsService.addRequisiteToTrip("vrienden", 5, trip, user);
+        assertEquals(2, trip.getRequisites().size());
+    }
+
+    @Test
+    public void succesfulRemoveRequisiteFromTrip() throws TripsException
+    {
+        Trip trip = tripsService.createTimelessTrip("Trip with requisites", "trip with requisites", TripPrivacy.PUBLIC, user);
+        tripsService.addRequisiteToTrip("liters bier", 10, trip, user);
+        tripsService.addRequisiteToTrip("liters bier", 5, trip, user);
+        tripsService.addRequisiteToTrip("vrienden", 5, trip, user);
+        tripsService.removeRequisiteFromTrip("liters bier", 12, trip, user);
+        tripsService.removeRequisiteFromTrip("vrienden", 6, trip, user);
+        assertEquals(1, trip.getRequisites().size());
+    }
+
+    @Test
     public void successfulGuessAnswer() throws TripsException
     {
         Trip createdTrip = tripsService.createTimelessTrip("Trip with loc with ?", "trip with location and question", TripPrivacy.PUBLIC, user);
