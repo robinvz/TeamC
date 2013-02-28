@@ -54,6 +54,7 @@ public interface TripsService
     public void switchLocationSequence(Trip trip, User user, int location1, int location2) throws TripsException;
 
     public void deleteTrip(Trip trip, User organizer) throws TripsException, MessagingException;
+    public void deleteLocation(Trip trip, User organizer, Location location) throws TripsException;
 
     //Enrollment Service
     public Enrollment subscribe(Trip trip, User user) throws TripsException;

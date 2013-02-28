@@ -220,6 +220,21 @@ public class TripBLImpl implements TripBL
     }
 
     @Override
+    public void deleteLocation(Trip trip, User user, Location location) throws TripsException {
+        if(isExistingTrip(trip.getId()) && userBL.isExistingUser(user.getEmail()) && isOrganizer(trip, user))
+        {
+            for(Location locationInTrip: trip.getLocations())
+            {
+                if(locationInTrip.equals(location))
+                {
+                    tripDao.deleteLocation(location);
+                    break;
+                }
+            }
+        }
+    }
+
+    @Override
     public void addDateToTimeBoundTrip(Date startDate, Date endDate, Trip trip, User organizer) throws TripsException {
         if(isExistingTrip(trip.getId()) && userBL.isExistingUser(organizer.getEmail()) && isOrganizer(trip, organizer))
         {
@@ -244,8 +259,11 @@ public class TripBLImpl implements TripBL
     @Override
     public void removeRequisiteFromTrip(String name, int amount, Trip trip, User organizer) throws TripsException
     {
-        trip.removeRequisite(name, amount);
-        tripDao.saveOrUpdateTrip(trip);
+        if(isExistingTrip(trip.getId()) && userBL.isExistingUser(organizer.getEmail()) && isOrganizer(trip, organizer) && isTripNotActive(trip))
+        {
+            trip.removeRequisite(name, amount);
+            tripDao.saveOrUpdateTrip(trip);
+        }
     }
 
     public void switchLocationSequence(Trip trip, User user, int location1, int location2) throws TripsException {
