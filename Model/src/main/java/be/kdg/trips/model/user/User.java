@@ -174,13 +174,13 @@ public class User implements UserInterface, Serializable {
 
         User user = (User) o;
 
-        if (!email.equals(user.email)) return false;
+        if (email != null ? !email.equals(user.email) : user.email != null) return false;
 
         return true;
     }
 
     @Override
     public int hashCode() {
-        return email.hashCode();
+        return email != null ? email.hashCode() : 0;
     }
 }
