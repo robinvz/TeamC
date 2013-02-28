@@ -28,16 +28,12 @@ public class ProfileController {
     @Autowired
     private TripsService tripsService;
 
-
-
     @Autowired
     private HttpSession session;
 
     @InitBinder
-    protected void initBinder(HttpServletRequest request,
-                              ServletRequestDataBinder binder) throws Exception {
+    protected void initBinder(HttpServletRequest request, ServletRequestDataBinder binder) throws Exception {
         binder.registerCustomEditor(String.class, new StringTrimmerEditor(true));
-
     }
 
     @RequestMapping(value="/users/profile", method=RequestMethod.GET)
@@ -74,7 +70,7 @@ public class ProfileController {
         String province = request.getParameter("province");
         String country = request.getParameter("country");
         try {
-            tripsService.updateUser((User) session.getAttribute("user"), firstName, lastName, street, houseNr, city, postalCode, province, country, null);
+            tripsService.updateUser((User) session.getAttribute("user"), firstName, lastName, street, houseNr, city, postalCode, province, country);
             session.setAttribute("user", tripsService.findUser(((User) session.getAttribute("user")).getEmail()));
         } catch (TripsException e) {
             return "/users/profileView";
@@ -84,7 +80,6 @@ public class ProfileController {
         return "/users/profileView";
         //return "indexView";
     }
-
 
     @RequestMapping(value = "/users/deleteProfile", method = RequestMethod.GET)
     public String deleteProfile() {

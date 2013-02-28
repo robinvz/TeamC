@@ -16,7 +16,6 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
 
 import javax.mail.MessagingException;
-import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
@@ -145,8 +144,8 @@ public class TripController {
         parameters.put("allEnrollments", allEnrollments);
         return new ModelAndView("tripsView", parameters);
     }
-
-  /*  @RequestMapping(value = "/createdTrips", method = RequestMethod.GET)
+    /*
+    @RequestMapping(value = "/createdTrips", method = RequestMethod.GET)
     public ModelAndView showCreatedTrips(){
         List<Trip> allOrganisedTrips = null;
         Map<String, List> parameters = new HashMap<>();
@@ -159,8 +158,8 @@ public class TripController {
         }
         parameters.put("allOrganisedTrips", allOrganisedTrips);
         return new ModelAndView("tripsView", parameters);
-    }                        */
-
+    }
+    */
     @RequestMapping(value = "/trip/{tripId}", method = RequestMethod.GET)
     public ModelAndView getTrip(@PathVariable int tripId) {
         try {
@@ -182,12 +181,8 @@ public class TripController {
         try {
             User user = (User) session.getAttribute("user");
             SimpleDateFormat sdf = new SimpleDateFormat("yyyy/MM/dd HH:mm");
-            Date startDate = sdf.parse(request.getParameter("startDate"));
-            Date endDate = sdf.parse(request.getParameter("endDate"));
-            Trip test = tripsService.createTimeBoundTrip(title, description, privacy, user, startDate, endDate);
-            String view = "trip/" + test.getId();
-            return view;
-
+            Trip test = tripsService.createTimeBoundTrip(title, description, privacy, user, sdf.parse(startDate), sdf.parse(endDate));
+            return "trip/" + test.getId();
         } catch (TripsException e) {
             return "users/createTripView";
         } catch (ParseException e) {
@@ -263,6 +258,11 @@ public class TripController {
             return new ModelAndView("loginView", "loginBean", new LoginBean());
         }
     }
+    /*
+    @RequestMapping(value = "/createLocation", method = RequestMethod.GET)
+    public String createLocation() {
+        return "/createLocationView";
+    }
 
     @RequestMapping(value = "/trip/{tripId}/createLocation", method = RequestMethod.GET)
     public ModelAndView createLocationView(@PathVariable int tripId) {
@@ -287,4 +287,5 @@ public class TripController {
         }
         return "redirect:/trip/" + tripId;
     }
+    */
 }

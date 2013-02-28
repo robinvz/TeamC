@@ -92,7 +92,7 @@ public class ProfileTest {
         userAfterEdit.setLastName("zype");
         userAfterEdit.setAddress(new Address("street", "22","Brugge","3300","Oost-Vlaanderen","Belgie"));
         when(tripsService.findUser(testUser.getEmail())).thenReturn(userAfterEdit);
-        mockMvc.perform(requestBuilder).andExpect(view().name("indexView"));
+        mockMvc.perform(requestBuilder).andExpect(view().name("/users/profileView"));
         assertEquals((mockHttpSession.getAttribute("user")), userAfterEdit);
     }
 
@@ -104,7 +104,7 @@ public class ProfileTest {
                 .param("firstName", "robke").param("lastName", "zype").param("street", "straat").param("houseNr", "22")
                 .param("city", "Brugge").param("postalCode", "3300").param("province", "Oost-Vlaanderen").param("country", "Belgie");
         Mockito.doThrow(new TripsException("Cannot edit unexisting user")).when(tripsService)
-                .updateUser(testUser, "robke", "zype", "straat", "22","Brugge","3300","Oost-Vlaanderen","Belgie",null);
+                .updateUser(testUser, "robke", "zype", "straat", "22","Brugge","3300","Oost-Vlaanderen","Belgie");
         mockMvc.perform(requestBuilder).andExpect(view().name("/users/profileView"));
         User notEditedUser = new User();
         notEditedUser.setFirstName("jan");

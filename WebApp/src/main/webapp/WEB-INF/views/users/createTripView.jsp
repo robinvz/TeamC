@@ -45,17 +45,16 @@
                             <td><input type="date" name="endDate"></td>
                             </td>
                         </tr>
-                              <tr>
-                                  <td></td>
-                                  <td> <input type="submit" value="Create" class="btn-submit btn-blue"></td>
-                              </tr>
+                        <tr>
+                            <td></td>
+                            <td><input type="submit" value="Create" class="btn-submit btn-blue"></td>
+                        </tr>
                     </table>
-
-
+                </fieldset>
             </form>
-
         </div>
     </div>
+
 </div>
 <script src="${pageContext.request.contextPath}/resources/js/jquery-1.9.0.min.js"></script>
 <script src="${pageContext.request.contextPath}/resources/js/createtrip.js"></script>

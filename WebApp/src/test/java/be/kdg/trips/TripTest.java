@@ -33,9 +33,10 @@ import java.util.List;
 import java.util.Locale;
 
 import static org.junit.Assert.*;
-import static org.mockito.Matchers.*;
+import static org.mockito.Matchers.any;
 import static org.mockito.Mockito.when;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
+
 
 /**
  * Subversion Id
@@ -72,15 +73,15 @@ public class TripTest {
     }
 
     @Test
-        public void getTrips() throws Exception {
-            mockHttpSession.setAttribute("user", testUser);
-            RequestBuilder requestBuilder = MockMvcRequestBuilders.get("/trips");
-            when(tripsService.findAllNonPrivateTrips(testUser)).thenReturn(new ArrayList());
-            when(tripsService.findPrivateTrips(testUser)).thenReturn(new ArrayList());
-            when(tripsService.findTripsByOrganizer(testUser)).thenReturn(new ArrayList());
-            when(tripsService.findEnrollmentsByUser(testUser)).thenReturn(new ArrayList());
-            mockMvc.perform(requestBuilder).andExpect(view().name("tripsView")).andExpect(model().attributeExists("allNonPrivateTrips")).andExpect(model().attributeExists("allPrivateTrips")).andExpect(model().attributeExists("allOrganizedTrips")).andExpect(model().attributeExists("allEnrollments"));
-        }
+    public void getTrips() throws Exception {
+        mockHttpSession.setAttribute("user", testUser);
+        RequestBuilder requestBuilder = MockMvcRequestBuilders.get("/trips");
+        when(tripsService.findAllNonPrivateTrips(testUser)).thenReturn(new ArrayList());
+        when(tripsService.findPrivateTrips(testUser)).thenReturn(new ArrayList());
+        when(tripsService.findTripsByOrganizer(testUser)).thenReturn(new ArrayList());
+        when(tripsService.findEnrollmentsByUser(testUser)).thenReturn(new ArrayList());
+        mockMvc.perform(requestBuilder).andExpect(view().name("tripsView")).andExpect(model().attributeExists("allNonPrivateTrips")).andExpect(model().attributeExists("allPrivateTrips")).andExpect(model().attributeExists("allOrganizedTrips")).andExpect(model().attributeExists("allEnrollments"));
+    }
 
     @Test
     public void createTrip() throws Exception {
@@ -89,25 +90,25 @@ public class TripTest {
     }
 
     @Test
-        public void createTimeBoundTrip() throws Exception {
-            mockHttpSession.setAttribute("user", testUser);
-            Date startd = sdf.parse(startDate);
-            Date endd = sdf.parse(endDate);
-            Trip trip = new TimeBoundTrip(title, description, privacy, testUser, startd, endd);
-            RequestBuilder requestBuilder = MockMvcRequestBuilders.post("/createTrip").param("title", title).param("description", description).param("privacy", privacyString).param("startDate", startDate).param("endDate", endDate);
-            when(tripsService.createTimeBoundTrip(title, description, privacy, testUser, startd, endd)).thenReturn(trip);
-            mockMvc.perform(requestBuilder).andExpect(view().name("trip/"+trip.getId()));
-        }
+    public void createTimeBoundTrip() throws Exception {
+        mockHttpSession.setAttribute("user", testUser);
+        Date startd = sdf.parse(startDate);
+        Date endd = sdf.parse(endDate);
+        Trip trip = new TimeBoundTrip(title, description, privacy, testUser, startd, endd);
+        RequestBuilder requestBuilder = MockMvcRequestBuilders.post("/createTrip").param("title", title).param("description", description).param("privacy", privacyString).param("startDate", startDate).param("endDate", endDate);
+        when(tripsService.createTimeBoundTrip(title, description, privacy, testUser, startd, endd)).thenReturn(trip);
+        mockMvc.perform(requestBuilder).andExpect(view().name("trip/" + trip.getId()));
+    }
 
     @Test
-        public void createTimeBoundStartDateAfterEndDate() throws Exception {
-            mockHttpSession.setAttribute("user", testUser);
-            Date startd = sdf.parse(endDate);
-            Date endd = sdf.parse(startDate);
-            RequestBuilder requestBuilder = MockMvcRequestBuilders.post("/createTimeBoundTrip").param("title", title).param("description", description).param("privacy", privacyString).param("startDate", endDate).param("endDate", startDate);
-            when(tripsService.createTimeBoundTrip(title, description, privacy, testUser, startd, endd)).thenThrow(new TripsException("Startdate after Enddate"));
-            mockMvc.perform(requestBuilder).andExpect(view().name("/users/createTripView"));
-        }
+    public void createTimeBoundStartDateAfterEndDate() throws Exception {
+        mockHttpSession.setAttribute("user", testUser);
+        Date startd = sdf.parse(endDate);
+        Date endd = sdf.parse(startDate);
+        RequestBuilder requestBuilder = MockMvcRequestBuilders.post("/createTimeBoundTrip").param("title", title).param("description", description).param("privacy", privacyString).param("startDate", endDate).param("endDate", startDate);
+        when(tripsService.createTimeBoundTrip(title, description, privacy, testUser, startd, endd)).thenThrow(new TripsException("Startdate after Enddate"));
+        mockMvc.perform(requestBuilder).andExpect(view().name("/users/createTripView"));
+    }
 
     @Test
     public void createTimelessTrip() throws Exception {
@@ -183,7 +184,6 @@ public class TripTest {
         assertNotNull(t);
     }
     */
-
     @Test
     public void subscribeTrip() throws Exception {
         mockHttpSession.setAttribute("user", testUser);
@@ -212,6 +212,32 @@ public class TripTest {
     }
 
     @Test
+    public void publishTrip() throws Exception {
+        mockHttpSession.setAttribute("user", testUser);
+        Trip t = new TimelessTrip(title, description, privacy, testUser);
+        RequestBuilder requestBuilder = MockMvcRequestBuilders.get("/publishTrip/" + t.getId());
+        mockMvc.perform(requestBuilder).andExpect(view().name("tripsView"));
+    }
+
+    @Test
+    public void publishTripFailed() throws Exception {
+        mockHttpSession.setAttribute("user", testUser);
+        Trip t = new TimelessTrip(title, description, privacy, testUser);
+        RequestBuilder requestBuilder = MockMvcRequestBuilders.get("/publishTrip/" + t.getId());
+        when(tripsService.findTripById(t.getId(), testUser)).thenReturn(t);
+        Mockito.doThrow(new TripsException("Failed to publish trip")).when(tripsService).publishTrip(t, testUser);
+        mockMvc.perform(requestBuilder).andExpect(view().name("tripView"));
+    }
+
+    @Test
+    public void publishTripFailedNotLoggedIn() throws Exception {
+        Trip t = new TimelessTrip(title, description, privacy, testUser);
+        RequestBuilder requestBuilder = MockMvcRequestBuilders.get("/publishTrip/" + t.getId());
+        Mockito.doThrow(new TripsException("Cannot publish trips when not logged in")).when(tripsService).publishTrip(t, testUser);
+        mockMvc.perform(requestBuilder).andExpect(view().name("loginView"));
+    }
+
+    @Test
     public void createLocationView() throws Exception {
         TimelessTrip t = new TimelessTrip(title, description, privacy, testUser);
         RequestBuilder requestBuilder = MockMvcRequestBuilders.get("/trip/" + t.getId() + "/createLocation");
@@ -230,4 +256,16 @@ public class TripTest {
         t.addLocation(new Location(t, 1.00, 1.00, new Address("street", "1", "city", "2000", "province", "country"), title, description, 1));
         assertEquals(1, t.getLocations().size());
     }
+    /*
+    @Test
+    public void createLocation() throws Exception {
+        TimelessTrip t = new TimelessTrip(title, description, privacy, testUser);
+        RequestBuilder requestBuilder = MockMvcRequestBuilders.post("/trip/" + t.getId() + "/createLocation").param("user", "testUser").param("trip", "t")
+                .param("latitude", "1.00").param("longitude", "1.00").param("street", "testStreet").param("houseNr", "1").param("city", "testCity")
+                .param("postalCode", "2000").param("province", "testProvince").param("country", "testCountry").param("title", "testTitle").param("description", "testDescription");
+        mockMvc.perform(requestBuilder).andExpect(view().name("redirect:/trip/" + t.getId()));
+        t.addLocation(new Location(t, 1.00, 1.00, new Address("street", "1", "city", "2000", "province", "country"), title, description));
+        assertEquals(1, t.getLocations().size());
+    }
+    */
 }
