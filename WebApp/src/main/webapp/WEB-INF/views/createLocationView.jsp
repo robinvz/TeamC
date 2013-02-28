@@ -33,7 +33,7 @@
                         <input id="sublocality" name="city" type="text">
                         <label>Province: </label>
                         <input id="province" name="province" type="text">
-                        <label>Postcode: </label>
+                        <label>Postal Code: </label>
                         <input id="postal_code" name="postalCode" type="text">
                         <label>Country: </label>
                         <input id="country" name="country" type="text">
