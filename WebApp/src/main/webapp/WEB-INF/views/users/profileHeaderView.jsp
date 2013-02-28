@@ -1,9 +1,6 @@
-<%@ taglib prefix="spring" uri="http://www.springframework.org/tags" %>
-
 <aside>
-    <div id="profilepic">
+    <img id="profilepic" src="/users/profilePic" title="kjsfdkl">
 
-    </div>
     <nav class="trip-nav">
         <ul class="trip-nav">
             <li><a href="/users/profile"><spring:message code="General" /></a></li>

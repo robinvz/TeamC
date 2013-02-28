@@ -18,5 +18,8 @@ public interface EnrollmentInterface {
     public void setTrip(Trip trip);
     public void setUser(User user);
     public void setDate(Date date);
+
+    public void addRequisite(String name, int amount);
+    public void removeRequisite(String name, int amount);
 }
 

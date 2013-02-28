@@ -1,6 +1,7 @@
 package be.kdg.trips.persistence.dao.impl;
 
 import be.kdg.trips.exception.TripsException;
+import be.kdg.trips.model.location.Location;
 import be.kdg.trips.model.trip.*;
 import be.kdg.trips.model.user.User;
 import be.kdg.trips.persistence.dao.interfaces.TripDao;
@@ -98,6 +99,16 @@ public class TripDaoImpl implements TripDao{
         Transaction tx = session.getTransaction();
         tx.begin();
         session.delete(trip);
+        tx.commit();
+        session.close();
+    }
+
+    @Override
+    public void deleteLocation(Location location) {
+        Session session = sessionFactory.openSession();
+        Transaction tx = session.getTransaction();
+        tx.begin();
+        session.delete(location);
         tx.commit();
         session.close();
     }

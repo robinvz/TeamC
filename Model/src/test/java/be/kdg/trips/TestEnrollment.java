@@ -15,6 +15,7 @@ import org.junit.BeforeClass;
 import org.junit.Test;
 import org.springframework.context.support.ClassPathXmlApplicationContext;
 
+import javax.mail.MessagingException;
 import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
@@ -110,9 +111,8 @@ public class TestEnrollment
     }
 
     @Test
-    public void successfulDisenrollPrivateTrip() throws TripsException
-    {
-        User invitee = tripsService.createUser(new User("clarkson@msn.com","gans"));
+    public void successfulDisenrollPrivateTrip() throws TripsException, MessagingException {
+        User invitee = tripsService.createUser(new User("unexisting3@msn.com","gans"));
         Trip trip = tripsService.createTimelessTrip("zalt gaan ja", "ddt", TripPrivacy.PRIVATE, organizer);
         tripsService.invite(trip, organizer, invitee);
         tripsService.acceptInvitation(trip, invitee);
@@ -123,10 +123,10 @@ public class TestEnrollment
     @Test(expected = TripsException.class)
     public void failedDisenrollNotEnrolled() throws TripsException
     {
-        User invitee = tripsService.createUser(new User("clarkson@msn.com","gans"));
+        User subscriber = tripsService.createUser(new User("clarkson@msn.com","gans"));
         Trip trip = tripsService.createTimelessTrip("zalt gaan ja", "ddt", TripPrivacy.PROTECTED, organizer);
         tripsService.publishTrip(trip, organizer);
-        tripsService.disenroll(trip, invitee);
+        tripsService.disenroll(trip, subscriber);
     }
 
     @Test
@@ -154,8 +154,8 @@ public class TestEnrollment
     }
 
     @Test
-    public void successfulInvite() throws TripsException {
-        User user = new User("leopard@hotmail.com","pass");
+    public void successfulInvite() throws TripsException, MessagingException {
+        User user = new User("unexisting1@student.kdg.be","pass");
         User invitee = tripsService.createUser(user);
         Trip trip = tripsService.createTimelessTrip("Spartacus run", "Lopen door de modder!", TripPrivacy.PRIVATE, organizer);
         Invitation invitation = tripsService.invite(trip, organizer, invitee);
@@ -163,8 +163,8 @@ public class TestEnrollment
     }
 
     @Test(expected = TripsException.class)
-    public void failedInviteInvalidTripPrivacy() throws TripsException {
-        User user = new User("leopardo@hotmail.com","pass");
+    public void failedInviteInvalidTripPrivacy() throws TripsException, MessagingException {
+        User user = new User("unexisting2@hotmail.com","pass");
         User invitee = tripsService.createUser(user);
         Trip trip = tripsService.createTimelessTrip("Spartacus run", "Lopen door de modder!", TripPrivacy.PUBLIC, organizer);
         tripsService.publishTrip(trip, organizer);
@@ -172,8 +172,8 @@ public class TestEnrollment
     }
 
     @Test
-    public void successfulUninvite() throws TripsException {
-        User invitee = tripsService.createUser(new User("geoffrey@hotmail.com","pass"));
+    public void successfulUninvite() throws TripsException, MessagingException {
+        User invitee = tripsService.createUser(new User("unexisting5@hotmail.com","pass"));
         Trip trip = tripsService.createTimelessTrip("Spartacusaaa", "Lopen", TripPrivacy.PRIVATE, organizer);
         Invitation invitation = tripsService.invite(trip, organizer, invitee);
         tripsService.uninvite(trip, organizer, invitee);
@@ -181,8 +181,8 @@ public class TestEnrollment
     }
 
     @Test(expected = TripsException.class)
-    public void failedUninviteAlreadyEnrolled() throws TripsException {
-        User invitee = tripsService.createUser(new User("geoffrey@hotmail.com","pass"));
+    public void failedUninviteAlreadyEnrolled() throws TripsException, MessagingException {
+        User invitee = tripsService.createUser(new User("unexisting7@hotmail.com","pass"));
         Trip trip = tripsService.createTimelessTrip("Spartacusaaa", "Lopen", TripPrivacy.PRIVATE, organizer);
         Invitation invitation = tripsService.invite(trip, organizer, invitee);
         tripsService.acceptInvitation(trip, invitee);
@@ -191,8 +191,8 @@ public class TestEnrollment
     }
 
     @Test
-    public void succesfulAcceptInvitation() throws TripsException {
-        User user = new User("leoguardo@hotmail.com","pass");
+    public void succesfulAcceptInvitation() throws TripsException, MessagingException {
+        User user = new User("unexisting9@hotmail.com","pass");
         User invitee = tripsService.createUser(user);
         Trip trip = tripsService.createTimelessTrip("Spartacus run", "Lopen door de modder!", TripPrivacy.PRIVATE, organizer);
         Invitation invitation = tripsService.invite(trip, organizer, invitee);
@@ -208,8 +208,8 @@ public class TestEnrollment
     }
 
     @Test(expected = TripsException.class)
-    public void failedAcceptInvitationAlreadyAccepted() throws TripsException {
-        User invitee = tripsService.createUser(new User("leovago@hotmail.com","pass"));
+    public void failedAcceptInvitationAlreadyAccepted() throws TripsException, MessagingException {
+        User invitee = tripsService.createUser(new User("unexisting22@hotmail.com","pass"));
         Trip trip = tripsService.createTimelessTrip("Spartacus run", "Lopen door de modder!", TripPrivacy.PRIVATE, organizer);
         Invitation invitation = tripsService.invite(trip, organizer, invitee);
         tripsService.acceptInvitation(trip, invitee);
@@ -217,8 +217,8 @@ public class TestEnrollment
     }
 
     @Test
-    public void successfulDeclineInvitation() throws TripsException {
-        User invitee = tripsService.createUser(new User("pedro@hotmail.com","pass"));
+    public void successfulDeclineInvitation() throws TripsException, MessagingException {
+        User invitee = tripsService.createUser(new User("unexisting99@hotmail.com","pass"));
         Trip trip = tripsService.createTimelessTrip("Spartacus run", "Lopen door de modder!", TripPrivacy.PRIVATE, organizer);
         Invitation invitation = tripsService.invite(trip, organizer, invitee);
         tripsService.declineInvitation(trip, invitee);
@@ -233,8 +233,8 @@ public class TestEnrollment
     }
 
     @Test(expected = TripsException.class)
-    public void failedDeclineInvitationAlreadyAccepted() throws TripsException {
-        User invitee = tripsService.createUser(new User("tokio@hotmail.com","pass"));
+    public void failedDeclineInvitationAlreadyAccepted() throws TripsException, MessagingException {
+        User invitee = tripsService.createUser(new User("unexisting101@hotmail.com","pass"));
         Trip trip = tripsService.createTimelessTrip("Spartacus run", "Lopen door de modder!", TripPrivacy.PRIVATE, organizer);
         Invitation invitation = tripsService.invite(trip, organizer, invitee);
         tripsService.acceptInvitation(trip, invitee);
@@ -242,8 +242,8 @@ public class TestEnrollment
     }
 
     @Test(expected = TripsException.class)
-    public void failedDeclineInvitationAlreadDeclined() throws TripsException {
-        User invitee = tripsService.createUser(new User("tfroo@hotmail.com","pass"));
+    public void failedDeclineInvitationAlreadDeclined() throws TripsException, MessagingException {
+        User invitee = tripsService.createUser(new User("unexisting201@hotmail.com","pass"));
         Trip trip = tripsService.createTimelessTrip("Spartacus run", "Lopen door de modder!", TripPrivacy.PRIVATE, organizer);
         Invitation invitation = tripsService.invite(trip, organizer, invitee);
         tripsService.declineInvitation(trip, invitee);
@@ -260,4 +260,35 @@ public class TestEnrollment
         tripsService.subscribe(trip, user);
         tripsService.setLastLocationVisited(trip, user, loc1);
     }
+
+    @Test
+    public void successfulAddRequisiteToEnrollment() throws TripsException
+    {
+        Trip trip = tripsService.createTimelessTrip("Trip with requisites", "trip with requisites", TripPrivacy.PROTECTED, organizer);
+        User user = tripsService.createUser(new User("kiki@hotmail.com", "pass"));
+        tripsService.publishTrip(trip, organizer);
+        tripsService.subscribe(trip, user);
+        tripsService.addRequisiteToEnrollment("liters bier", 10, trip, user, organizer);
+        tripsService.addRequisiteToEnrollment("liters bier", 5, trip, user, organizer);
+        tripsService.addRequisiteToEnrollment("vrienden", 5, trip, user, organizer);
+        Enrollment enrollment = tripsService.findEnrollmentsByUser(user).get(FIRST_ELEMENT);
+        assertEquals(2, enrollment.getRequisites().size());
+    }
+
+    @Test
+    public void successfulRemoveRequisiteFromEnrollment() throws TripsException
+    {
+        Trip trip = tripsService.createTimelessTrip("Trip with requisites", "trip with requisites", TripPrivacy.PROTECTED, organizer);
+        User user = tripsService.createUser(new User("koko@hotmail.com", "pass"));
+        tripsService.publishTrip(trip, organizer);
+        tripsService.subscribe(trip, user);
+        tripsService.addRequisiteToEnrollment("liters bier", 10, trip, user, organizer);
+        tripsService.addRequisiteToEnrollment("liters bier", 5, trip, user, organizer);
+        tripsService.addRequisiteToEnrollment("vrienden", 5, trip, user, organizer);
+        tripsService.removeRequisiteFromEnrollment("liters bier", 12, trip, user, organizer);
+        tripsService.removeRequisiteFromEnrollment("vrienden", 6, trip, user, organizer);
+        Enrollment enrollment = tripsService.findEnrollmentsByUser(user).get(FIRST_ELEMENT);
+        assertEquals(1, enrollment.getRequisites().size());
+    }
+
 }

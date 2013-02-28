@@ -17,11 +17,18 @@
 
     <div id="content">
         <div id="login-buttons">
-            <button id="login-facebook"></button>
-            <button id="btn-login" class="btn-blue"><spring:message code="LogIn" /></button>
+            <fb:login-button autologoutlink='true'
+                             perms='email,user_birthday,status_update,publish_stream'></fb:login-button>
+            <button id="btn-login" class="btn-blue">Sign in normally</button>
         </div>
 
-        <form:form action="/login" commandName="loginBean" method="post" id="loginform" name="loginform" dir="loginform">
+        <div id="fb-root"></div>
+
+
+
+
+        <form:form action="/login" commandName="loginBean" method="post" id="loginform" name="loginform"
+                   dir="loginform">
             <form:errors path="*" cssClass="errorblock" element="div"/>
             <table>
                 <tr>
@@ -31,7 +38,7 @@
                     </td>
                 </tr>
                 <tr>
-                    <td><spring:message code="Password"/></td>
+                    <td>Password</td>
                     <td>
                         <form:password path="password"/>
                     </td>
@@ -39,15 +46,17 @@
                 <tr>
                     <td></td>
                     <td>
-                        <button class="btn-blue" type="submit"><spring:message code="LogIn" /></button>
+                        <button class="btn-blue" type="submit">Login</button>
                     </td>
                 </tr>
             </table>
+
         </form:form>
     </div>
 
 </div>
 <script src="${pageContext.request.contextPath}/resources/js/jquery-1.9.0.min.js"></script>
 <script src="${pageContext.request.contextPath}/resources/js/login.js"></script>
+<script src="${pageContext.request.contextPath}/resources/js/facebooklogin.js"></script>
 </body>
 </html>
