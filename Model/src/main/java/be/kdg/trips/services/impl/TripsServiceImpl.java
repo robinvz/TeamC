@@ -120,6 +120,11 @@ public class TripsServiceImpl implements TripsService
     }
 
     @Override
+    public void editTripLocationDetails(User organizer, Trip trip, Location location, String street, String houseNr, String city, String postalCode, String province, String country, String title, String description) throws TripsException {
+        tripController.editTripLocationDetails(organizer, trip, location, street, houseNr, city, postalCode, province, country, title, description);
+    }
+
+    @Override
     public void publishTrip(Trip trip, User loggedInUser) throws TripsException {
         tripController.publishTrip(trip, loggedInUser);
     }

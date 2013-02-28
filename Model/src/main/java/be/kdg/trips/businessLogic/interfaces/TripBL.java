@@ -29,6 +29,7 @@ public interface TripBL
     public List<Trip> findTripsByOrganizer(User organizer) throws TripsException;
 
     public void editTripDetails(Trip trip, String title, String description, User organizer) throws TripsException;
+    public void editTripLocationDetails(User organizer, Trip trip, Location location, String street, String houseNr, String city, String postalCode, String province, String country, String title, String description) throws TripsException;
 
     public void publishTrip(Trip trip, User user) throws TripsException;
     public void addLabelToTrip(Trip trip, User organizer, String label) throws TripsException;

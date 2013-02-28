@@ -178,6 +178,49 @@ public class TripBLImpl implements TripBL
         }
     }
 
+    @Override
+    public void editTripLocationDetails(User organizer, Trip trip, Location location, String street, String houseNr, String city, String postalCode, String province, String country, String title, String description) throws TripsException
+    {
+        if(isExistingTrip(trip.getId()) && userBL.isExistingUser(organizer.getEmail()) && isOrganizer(trip, organizer) && doesLocationBelongToTrip(location, trip))
+        {
+            Address address = location.getAddress();
+            if(!street.equals(""))
+            {
+                address.setStreet(street);
+            }
+            if(!houseNr.equals(""))
+            {
+                address.setHouseNr(houseNr);
+            }
+            if(!city.equals(""))
+            {
+                address.setCity(city);
+            }
+            if(!postalCode.equals(""))
+            {
+                address.setPostalCode(postalCode);
+            }
+            if(!province.equals(""))
+            {
+                address.setProvince(province);
+            }
+            if(!country.equals(""))
+            {
+                address.setCountry(country);
+            }
+            if(!title.equals(""))
+            {
+                location.setTitle(title);
+            }
+            if(!description.equals(""))
+            {
+                location.setDescription(description);
+            }
+            location.setAddress(address);
+            tripDao.saveOrUpdateTrip(trip);
+        }
+    }
+
     @Transactional
     @Override
     public void publishTrip(Trip trip, User user) throws TripsException {
@@ -347,6 +390,15 @@ public class TripBLImpl implements TripBL
             return true;
         }
         throw new TripsException("Trip is already active");
+    }
+
+    public boolean doesLocationBelongToTrip(Location location, Trip trip) throws TripsException
+    {
+        if(trip.getLocations().contains(location))
+        {
+            return true;
+        }
+        throw new TripsException("This location does not belong to this trip");
     }
 
     @Override
