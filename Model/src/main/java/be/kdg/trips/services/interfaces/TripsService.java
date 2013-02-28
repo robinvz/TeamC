@@ -49,9 +49,12 @@ public interface TripsService
     public Location addLocationToTrip(User organizer, Trip trip, double latitude, double longitude, String street, String houseNr, String city, String postalCode, String province, String country, String title, String description) throws TripsException;
     public Location addLocationToTrip(User organizer, Trip trip, double latitude, double longitude, String street, String houseNr, String city, String postalCode, String province, String country, String title, String description, String question, List<String> possibleAnswers, int correctAnswerIndex) throws TripsException;
     public void addDateToTimeBoundTrip(Date startDate, Date endDate, Trip trip, User organizer) throws TripsException;
+    public void addRequisiteToTrip(String name, int amount, Trip trip, User organizer) throws TripsException;
+    public void removeRequisiteFromTrip(String name, int amount, Trip trip, User organizer) throws TripsException;
     public void switchLocationSequence(Trip trip, User user, int location1, int location2) throws TripsException;
 
     public void deleteTrip(Trip trip, User organizer) throws TripsException, MessagingException;
+    public void deleteLocation(Trip trip, User organizer, Location location) throws TripsException;
 
     //Enrollment Service
     public Enrollment subscribe(Trip trip, User user) throws TripsException;
@@ -63,6 +66,9 @@ public interface TripsService
     public List<Enrollment> findEnrollmentsByUser(User user) throws TripsException;
     public List<Enrollment> findEnrollmentsByTrip(Trip trip) throws TripsException;
     public List<Invitation> findInvitationsByUser(User user) throws TripsException;
+
+    public void addRequisiteToEnrollment(String name, int amount, Trip trip, User user, User organizer);
+    public void removeRequisiteFromEnrollment(String name, int amount, Trip trip, User user, User organizer);
 
     public Invitation invite(Trip trip, User organizer, User user) throws TripsException, MessagingException;
     public void uninvite(Trip trip, User organizer, User user) throws TripsException;

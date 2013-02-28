@@ -140,6 +140,18 @@ public class TripsServiceImpl implements TripsService
     }
 
     @Override
+    public void addRequisiteToTrip(String name, int amount, Trip trip, User organizer) throws TripsException
+    {
+        tripController.addRequisiteToTrip(name, amount, trip, organizer);
+    }
+
+    @Override
+    public void removeRequisiteFromTrip(String name, int amount, Trip trip, User organizer) throws TripsException
+    {
+        tripController.removeRequisiteFromTrip(name, amount, trip, organizer);
+    }
+
+    @Override
     public void switchLocationSequence(Trip trip, User loggedInUser, int location1, int location2) throws TripsException {
         tripController.switchLocationSequence(trip, loggedInUser, location1, location2);
     }
@@ -147,6 +159,11 @@ public class TripsServiceImpl implements TripsService
     @Override
     public void deleteTrip(Trip trip, User loggedInUser) throws TripsException, MessagingException {
         tripController.deleteTrip(trip, loggedInUser);
+    }
+
+    @Override
+    public void deleteLocation(Trip trip, User organizer, Location location) throws TripsException {
+        tripController.deleteLocation(trip, organizer, location);
     }
 
     //Enrollment Service
@@ -189,6 +206,18 @@ public class TripsServiceImpl implements TripsService
     @Override
     public List<Invitation> findInvitationsByUser(User user) throws TripsException {
         return enrollmentController.getInvitationsByUser(user);
+    }
+
+    @Override
+    public void addRequisiteToEnrollment(String name, int amount, Trip trip, User user, User organizer)
+    {
+        enrollmentController.addRequisiteToEnrollment(name, amount, trip, user, organizer);
+    }
+
+    @Override
+    public void removeRequisiteFromEnrollment(String name, int amount, Trip trip, User user, User organizer)
+    {
+        enrollmentController.removeRequisiteFromEnrollment(name, amount, trip, user, organizer);
     }
 
     @Override
