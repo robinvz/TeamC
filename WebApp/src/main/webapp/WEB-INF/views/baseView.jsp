@@ -2,10 +2,10 @@
 <%@ taglib prefix="spring" uri="http://www.springframework.org/tags" %>
 <!---->
 <header>
-    <a href="/" title="Home"> <img class="header-img"
-                                   src="${pageContext.request.contextPath}/resources/res/img/logosite.png" alt="Logo"
-                                   title="Home"/> </a>
-    <a href="?lang=en">English</a>|<a href="?lang=nl">Nederlands</a>
+    <a href="/" title="Home" class="home">
+        <img class="header-img" src="${pageContext.request.contextPath}/resources/res/img/logosite.png" alt="Logo" title="Home"/>
+    </a>
+
 
     <nav class="header-nav">
         <ul class="nav">
@@ -27,7 +27,17 @@
         </ul>
     </nav>
 </header>
-<footer><p class="footer">Trips - 2013</p></footer>
+<footer>
+    <p class="footer">
+        <a  class="lang" href="?lang=en">
+            <img src="${pageContext.request.contextPath}/resources/res/img/icons/uk.gif" alt="English" title="English"/>
+        </a>
+        TRIPS - 2013
+        <a class="lang" href="?lang=nl">
+            <img src="${pageContext.request.contextPath}/resources/res/img/icons/nl.gif" alt="Nederlands" title="Nederlands"/>
+        </a>
+    </p>
+</footer>
 
 <script src="${pageContext.request.contextPath}/resources/js/jquery-1.9.0.min.js"></script>
 <script src="${pageContext.request.contextPath}/resources/js/header.js"></script>

@@ -2,6 +2,7 @@
 <html>
 <head>
     <link rel="stylesheet" href="${pageContext.request.contextPath}/resources/css/main.css"/>
+    <link rel="stylesheet" href="${pageContext.request.contextPath}/resources/css/createtrip.css"/>
     <link rel="shortcut icon" href="${pageContext.request.contextPath}/resources/res/favicon.ico">
     <title>Create trip page</title>
 </head>
@@ -44,11 +45,15 @@
                             <td><input type="date" name="endDate"></td>
                             </td>
                         </tr>
+                              <tr>
+                                  <td></td>
+                                  <td> <input type="submit" value="Create" class="btn-submit btn-blue"></td>
+                              </tr>
                     </table>
-                </fieldset>
-                <input type="submit" value="Create" class="btn-submit">
+
+
             </form>
-            </fieldset>
+
         </div>
     </div>
 </div>

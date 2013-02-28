@@ -1,6 +1,6 @@
 #form-contact{
     width: 310px;
-    margin: 10% auto
+    margin: 10px auto
 }
 
 label {
@@ -13,7 +13,17 @@ input, label {
 }
 
 .btn-submit{
-    float: right;
+    width: 300;
+    margin-top: 10px;
+}
+
+#message{
+    width: 305px;
+}
+
+#type{
+    width: 153px;
+    margin-left: 2px;
 }
 
 textarea{

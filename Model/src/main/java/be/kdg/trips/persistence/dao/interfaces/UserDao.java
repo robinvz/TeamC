@@ -3,6 +3,8 @@ package be.kdg.trips.persistence.dao.interfaces;
 import be.kdg.trips.exception.TripsException;
 import be.kdg.trips.model.user.User;
 
+import java.util.List;
+
 /**
  * Subversion id
  * Project Application Development
@@ -12,6 +14,7 @@ import be.kdg.trips.model.user.User;
 public interface UserDao {
     public User getUser(String email) throws TripsException;
     public User getUserWithDetails(String email) throws TripsException;
+    public List<User> getUsersByKeyword(String keyword, User user);
 
     public void saveOrUpdateUser(User user) throws TripsException;
 

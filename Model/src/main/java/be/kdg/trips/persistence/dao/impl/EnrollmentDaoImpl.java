@@ -83,6 +83,14 @@ public class EnrollmentDaoImpl implements EnrollmentDao
     }
 
     @Override
+    public List<Invitation> getInvitationsByUser(User user) {
+        Session session = sessionFactory.openSession();
+        List<Invitation> invitations = session.createCriteria(Invitation.class).add(Restrictions.eq("user", user)).list();
+        session.close();
+        return invitations;
+    }
+
+    @Override
     public void saveOrUpdateInvitation(Invitation invitation) {
         Session session = sessionFactory.openSession();
         Transaction tx = session.getTransaction();
@@ -128,6 +136,16 @@ public class EnrollmentDaoImpl implements EnrollmentDao
             return true;
         }
         throw new TripsException("Invitation already exists");
+    }
+
+    @Override
+    public void deleteEnrollment(Enrollment enrollment) {
+        Session session = sessionFactory.openSession();
+        Transaction tx = session.getTransaction();
+        tx.begin();
+        session.delete(enrollment);
+        tx.commit();
+        session.close();
     }
 
     @Override

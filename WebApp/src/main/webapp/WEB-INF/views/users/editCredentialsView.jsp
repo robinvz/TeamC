@@ -10,11 +10,10 @@
     <jsp:include page="../baseView.jsp"/>
     <jsp:include page="profileHeaderView.jsp"/>
     <div class="content">
-
+        <h2>Edit password for ${user.firstName} ${user.lastName}</h2>
             <form action="/users/editCredentials" method="POST">
-                <fieldset>
-                    <legend>Credentials</legend>
-                    <h2>Edit password for ${user.firstName} ${user.lastName}</h2>
+
+
                     <table>
                         <tr>
                             <td>
@@ -34,10 +33,10 @@
                                 <input type="password" name="newPassword">
                             </td>
                         </tr>
-                        <input id="btn-save" type="submit" value="Save" class="btn-submit">
+                        <input id="btn-save" type="submit" value="Save" class="btn-blue">
 
                     </table>
-                </fieldset>
+
 
             </form>
 

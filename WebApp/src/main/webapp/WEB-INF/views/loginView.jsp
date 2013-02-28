@@ -15,45 +15,42 @@
 <div id="page">
     <jsp:include page="baseView.jsp"/>
 
+    <h2>Please log in</h2>
+
     <div id="content">
         <div id="login-buttons">
             <button id="login-facebook"></button>
-            <button id="register-facebook"></button>
+            <button id="btn-login" class="btn-blue">Sign in normally</button>
         </div>
-        <h2 id="login-title"></h2>
+
 
         <form:form action="/login" commandName="loginBean" method="post" id="loginform" name="loginform" dir="loginform">
-            <fieldset>
                 <form:errors path="*" cssClass="errorblock" element="div" />
-
-                <legend>Login</legend>
                 <table>
                     <tr>
                         <td>Email</td>
                         <td>
                             <form:input path="email"/>
-                            <form:errors path="email" cssClass="error"></form:errors>
                         </td>
                     </tr>
                     <tr>
                         <td>Password</td>
                         <td>
                             <form:password path="password"/>
-                            <form:errors path="password" cssClass="error"></form:errors>
-                        </td>
-
                         </td>
                     </tr>
                     <tr>
-                        <td colspan="2" align="center">
-                            <button type="submit">Login</button>
+                        <td></td>
+                        <td>
+                            <button class="btn-blue" type="submit">Login</button>
                         </td>
                     </tr>
                 </table>
-            </fieldset>
+
         </form:form>
     </div>
 </div>
+<script src="${pageContext.request.contextPath}/resources/js/jquery-1.9.0.min.js"></script>
 <script src="${pageContext.request.contextPath}/resources/js/login.js"></script>
 </body>
 </html>

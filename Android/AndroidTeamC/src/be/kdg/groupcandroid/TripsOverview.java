@@ -31,7 +31,6 @@ public class TripsOverview extends FragmentActivity {
 
 		ViewPager pager = (ViewPager) findViewById(R.id.pager);
 		pager.setAdapter(adapter);
-
 		TabPageIndicator indicator = (TabPageIndicator) findViewById(R.id.indicator);
 		indicator.setViewPager(pager);
 	}
@@ -58,7 +57,6 @@ public class TripsOverview extends FragmentActivity {
 				return new PublicTripsFragment();
 			case 1:
 				return new EnrolledTripsFragment();
-
 			case 2:
 				return new CreatedTripsFragment();
 
