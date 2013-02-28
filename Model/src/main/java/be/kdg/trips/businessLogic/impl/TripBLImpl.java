@@ -161,6 +161,23 @@ public class TripBLImpl implements TripBL
         return trips;
     }
 
+    @Override
+    public void editTripDetails(Trip trip, String title, String description, User organizer) throws TripsException
+    {
+        if(isExistingTrip(trip.getId()) && userBL.isExistingUser(organizer.getEmail()) && isOrganizer(trip, organizer))
+        {
+            if(!title.equals(""))
+            {
+                trip.setTitle(title);
+            }
+            if(!description.equals(""))
+            {
+                trip.setDescription(description);
+            }
+            tripDao.saveOrUpdateTrip(trip);
+        }
+    }
+
     @Transactional
     @Override
     public void publishTrip(Trip trip, User user) throws TripsException {

@@ -114,6 +114,12 @@ public class TripsServiceImpl implements TripsService
     }
 
     @Override
+    public void editTripDetails(Trip trip, String title, String description, User organizer) throws TripsException
+    {
+        tripController.editTripDetails(trip, title, description, organizer);
+    }
+
+    @Override
     public void publishTrip(Trip trip, User loggedInUser) throws TripsException {
         tripController.publishTrip(trip, loggedInUser);
     }

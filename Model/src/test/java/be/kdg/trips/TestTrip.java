@@ -220,8 +220,16 @@ public class TestTrip {
 
     @Test
     public void successfulFindTripsByOrganizer2() throws TripsException {
-        User organizer = tripsService.createUser(new User("femke@hotmail.com","spint"));
+        User organizer = tripsService.createUser(new User("femke@hotmail.com", "spint"));
         assertTrue(tripsService.findTripsByOrganizer(organizer).isEmpty());
+    }
+
+    @Test
+    public void sucessfulEditTripDetails() throws TripsException
+    {
+        Trip trip = tripsService.createTimelessTrip("Trip1","TripDescription",TripPrivacy.PUBLIC,user);
+        tripsService.editTripDetails(trip, "", "TripDescriptionEdited", user);
+        assertTrue(trip.getDescription().equals("TripDescriptionEdited"));
     }
 
     @Test
@@ -229,7 +237,7 @@ public class TestTrip {
         Trip trip = tripsService.createTimelessTrip("The Spartacus", "N/A", TripPrivacy.PUBLIC, user);
         tripsService.addLabelToTrip(trip,user,"Modder");
         tripsService.addLabelToTrip(trip,user,"Uitdaging");
-        assertEquals(2,trip.getLabels().size());
+        assertEquals(2, trip.getLabels().size());
     }
 
     @Test(expected = TripsException.class)
@@ -390,14 +398,14 @@ public class TestTrip {
 
     @Test
     public void successfulDeleteTrip() throws TripsException, MessagingException, ParseException {
-        User organizer = tripsService.createUser(new User("tripsteamc@gmail.com","SDProject"));
+        User organizer = tripsService.createUser(new User("tripsteamc@gmail.com", "SDProject"));
         Trip createdTrip = tripsService.createTimeBoundTrip("Deer hunting", "I will be deleted", TripPrivacy.PROTECTED, organizer, df.parse("20/05/2013"), df.parse("21/05/2013"));
         tripsService.publishTrip(createdTrip, organizer);
        // Second user could be added in order to check if both receive notification mail
        // User user = tripsService.createUser("email2","x");
        // tripsService.enroll(createdTrip,user);
-        tripsService.deleteTrip(createdTrip,organizer);
-        assertEquals(0,tripsService.findNonPrivateTripsByKeyword("deletetrip", user).size());
+        tripsService.deleteTrip(createdTrip, organizer);
+        assertEquals(0, tripsService.findNonPrivateTripsByKeyword("deletetrip", user).size());
     }
 
     @Test
