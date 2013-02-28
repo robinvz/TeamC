@@ -1,11 +1,12 @@
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+<%@ taglib prefix="spring" uri="http://www.springframework.org/tags" %>
 
 <html>
 <head>
     <link rel="stylesheet" href="${pageContext.request.contextPath}/resources/css/main.css"/>
     <link rel="stylesheet" href="${pageContext.request.contextPath}/resources/css/trip.css"/>
     <link rel="shortcut icon" href="${pageContext.request.contextPath}/resources/res/favicon.ico">
-    <title>Trip page</title>
+    <title><spring:message code="TripPage" /></title>
 </head>
 <body>
 <div id="page">
@@ -32,7 +33,10 @@
                             <td><label>Active:</label></td>
                             <td>${trip.active}</td>
                         </tr>
-
+                        <tr>
+                            <td><label>Published:</label></td>
+                            <td>${trip.published}</td>
+                        </tr>
                         <tr>
                             <td><label>Published:</label></td>
                             <td>${trip.published}</td>
