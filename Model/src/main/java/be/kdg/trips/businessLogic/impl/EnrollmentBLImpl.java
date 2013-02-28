@@ -14,6 +14,7 @@ import be.kdg.trips.model.user.User;
 import be.kdg.trips.persistence.dao.interfaces.EnrollmentDao;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
+import org.springframework.transaction.annotation.Transactional;
 
 import javax.mail.MessagingException;
 import javax.mail.internet.AddressException;
@@ -58,6 +59,7 @@ public class EnrollmentBLImpl implements EnrollmentBL
         return enrollment;
     }
 
+    @Transactional
     @Override
     public void disenroll(Trip trip, User user) throws TripsException {
         if(isExistingEnrollment(user, trip) && !trip.isActive())
@@ -77,6 +79,7 @@ public class EnrollmentBLImpl implements EnrollmentBL
         }
     }
 
+    @Transactional
     @Override
     public Invitation invite(Trip trip, User organizer, User user) throws TripsException, MessagingException {
         Invitation invitation = null;
@@ -193,6 +196,7 @@ public class EnrollmentBLImpl implements EnrollmentBL
         return false;
     }
 
+    @Transactional
     @Override
     public Enrollment acceptInvitation(Trip trip, User user) throws TripsException {
         Enrollment enrollment = null;
