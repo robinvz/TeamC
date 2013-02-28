@@ -2,6 +2,7 @@
 <html>
 <head>
     <link rel="stylesheet" href="${pageContext.request.contextPath}/resources/css/main.css"/>
+    <link rel="stylesheet" href="${pageContext.request.contextPath}/resources/css/trip.css"/>
     <link rel="stylesheet" href="${pageContext.request.contextPath}/resources/css/maps.css">
     <link rel="shortcut icon" href="${pageContext.request.contextPath}/resources/res/favicon.ico">
     <title>Create location page</title>
@@ -9,16 +10,12 @@
 <body>
 <div id="page">
     <jsp:include page="baseView.jsp"/>
-
-    <div id="trip-header">
-        <h2>${trip.title}</h2>
-    </div>
-
-    <div id="content">
+    <jsp:include page="tripHeaderView.jsp"/>
+    <div id="inner-content">
         <div id="add-location">
             <form:form action="createLocation" method="POST">
                 <div class="page">
-                    <h2>Select the location of your point of interest</h2>
+                    <h3>Select the location of your point of interest</h3>
                     <div id="mapcanvas" class="map-canvas"></div>
                     <div id="addressfields">
                         <div id="latlng">
