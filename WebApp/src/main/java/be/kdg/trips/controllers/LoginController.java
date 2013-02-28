@@ -33,7 +33,8 @@ import javax.validation.Valid;
 //LoginController
 public class LoginController {
 
-    @Autowired LoginValidator loginValidator;
+    @Autowired
+    LoginValidator loginValidator;
 
     @InitBinder
     protected void initBinder(HttpServletRequest request,
@@ -43,7 +44,7 @@ public class LoginController {
     }
 
     @InitBinder()
-    protected void loginBinder( WebDataBinder binder) throws Exception {
+    protected void loginBinder(WebDataBinder binder) throws Exception {
         if (binder.getTarget() instanceof LoginBean) {
             binder.setValidator(loginValidator);
 
@@ -70,9 +71,28 @@ public class LoginController {
         return js.toString();
     }
 
+    @RequestMapping(value = "/facebooklogin", method = RequestMethod.POST)
+    @ResponseBody
+    public String facebookLogin(@RequestParam String username, @RequestParam String password) {
+        User user = new User(username, password);
+        try {
+            tripsService.createUser(user);
+        } catch (Exception e) {
+        }
+        try {
+            if (tripsService.checkLogin(username, password)) {
+                user = tripsService.findUser(username);
+                session.setAttribute("user", user);
+            }
+        } catch (TripsException e) {
+            return "fail";
+        }
+        return "success";
+    }
+
     @RequestMapping(value = "/login", method = RequestMethod.POST)
     public String handleLogin(@Valid LoginBean loginBean, BindingResult result, HttpServletRequest request) {
-        if (result.hasErrors()){
+        if (result.hasErrors()) {
             return "loginView";
         }
         String email = request.getParameter("email");
@@ -95,7 +115,7 @@ public class LoginController {
     @RequestMapping(value = "/logout", method = RequestMethod.GET)
     public String logout() {
         session.invalidate();
-        return "indexView";
+        return "logoutView";
     }
 
     @RequestMapping(value = "/register", method = RequestMethod.GET)

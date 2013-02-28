@@ -30,18 +30,12 @@ input, label {
 
 
 
-#login-facebook{
-    background-image: url('../res/img/icons/btn_fb_login.png');
-    width: 192px;
-    height: 34px;
+.fb_iframe_widget{
     border: none;
-    margin: 0px auto 20px;
+    margin: 0 auto 20px auto;
 }
 
-#login-facebook:active
-{
-    background-image: url('../res/img/icons/btn_fb_login_clicked.png');
-}
+
 
 #btn-login{
     width: 192px;

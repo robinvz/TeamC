@@ -161,6 +161,11 @@ public class TripsServiceImpl implements TripsService
         tripController.deleteTrip(trip, loggedInUser);
     }
 
+    @Override
+    public void deleteLocation(Trip trip, User organizer, Location location) throws TripsException {
+        tripController.deleteLocation(trip, organizer, location);
+    }
+
     //Enrollment Service
     @Override
     public Enrollment subscribe(Trip trip, User loggedInUser) throws TripsException
