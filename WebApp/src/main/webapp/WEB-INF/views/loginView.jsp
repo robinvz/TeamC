@@ -14,7 +14,6 @@
     <jsp:include page="baseView.jsp"/>
 
     <h2><spring:message code="PleaseLogIn"/></h2>
-
     <div id="content">
         <div id="login-buttons">
             <fb:login-button autologoutlink='true'
@@ -23,9 +22,6 @@
         </div>
 
         <div id="fb-root"></div>
-
-
-
 
         <form:form action="/login" commandName="loginBean" method="post" id="loginform" name="loginform"
                    dir="loginform">
@@ -50,7 +46,6 @@
                     </td>
                 </tr>
             </table>
-
         </form:form>
     </div>
 

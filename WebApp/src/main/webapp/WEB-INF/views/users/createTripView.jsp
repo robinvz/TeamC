@@ -30,7 +30,7 @@
                             <td><label><spring:message code="Privacy" /></label></td>
                             <td><input type="radio" name="privacy" value="PUBLIC" checked="true">Public</input>
                                 <input type="radio" name="privacy" value="PROTECTED">Protected</input>
-                                <input type="radio" name="privacy" value="PRIVATE">Private   </input>
+                                <input type="radio" name="privacy" value="PRIVATE">Private</input>
                             </td>
                         </tr>
 
