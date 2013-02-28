@@ -16,6 +16,7 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
 
 import javax.mail.MessagingException;
+import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
@@ -117,7 +118,6 @@ public class TripController {
         return js.toString();
     }
 
-
     @RequestMapping(value = "/trips", method = RequestMethod.GET)
     public ModelAndView showTrips() {
         List<Trip> allNonPrivateTrips = null;
@@ -144,22 +144,7 @@ public class TripController {
         parameters.put("allEnrollments", allEnrollments);
         return new ModelAndView("tripsView", parameters);
     }
-    /*
-    @RequestMapping(value = "/createdTrips", method = RequestMethod.GET)
-    public ModelAndView showCreatedTrips(){
-        List<Trip> allOrganisedTrips = null;
-        Map<String, List> parameters = new HashMap<>();
-        try{
-            if(session.getAttribute("user") != null){
-                allOrganisedTrips = tripsService.findTripsByOrganizer((User) session.getAttribute("user"));
-            }
-        }catch(TripsException e){
-            //No created trips by this user.
-        }
-        parameters.put("allOrganisedTrips", allOrganisedTrips);
-        return new ModelAndView("tripsView", parameters);
-    }
-    */
+
     @RequestMapping(value = "/trip/{tripId}", method = RequestMethod.GET)
     public ModelAndView getTrip(@PathVariable int tripId) {
         try {
@@ -258,7 +243,7 @@ public class TripController {
             return new ModelAndView("loginView", "loginBean", new LoginBean());
         }
     }
-    /*
+
     @RequestMapping(value = "/createLocation", method = RequestMethod.GET)
     public String createLocation() {
         return "/createLocationView";
@@ -287,5 +272,5 @@ public class TripController {
         }
         return "redirect:/trip/" + tripId;
     }
-    */
+
 }
