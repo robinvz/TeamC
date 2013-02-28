@@ -192,7 +192,7 @@ public class TripsServiceImpl implements TripsService
     }
 
     @Override
-    public Invitation invite(Trip trip, User loggedInUser, User invitee) throws TripsException {
+    public Invitation invite(Trip trip, User loggedInUser, User invitee) throws TripsException, MessagingException {
         return enrollmentController.invite(trip, loggedInUser, invitee);
     }
 

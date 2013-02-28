@@ -46,7 +46,6 @@ public class TestTrip {
     public void successfulCreateTimelessTripPublic() throws TripsException {
         User organizer = tripsService.createUser(new User("exodus@hotmail.com","donut"));
         Trip trip = tripsService.createTimelessTrip("Stadswandeling", "Wandeling in 't Stad", TripPrivacy.PUBLIC, organizer);
-        tripsService.publishTrip(trip, organizer);
         assertEquals(TripPrivacy.PUBLIC, tripsService.findTripsByOrganizer(organizer).get(FIRST_ELEMENT).getPrivacy());
     }
 
@@ -54,7 +53,6 @@ public class TestTrip {
     public void successfulCreateTimelessTripProtected() throws TripsException {
         User organizer = tripsService.createUser(new User("bible@hotmail.com","koran"));
         Trip trip = tripsService.createTimelessTrip("Stadswandeling", "Wandeling in 't Stad", TripPrivacy.PROTECTED, organizer);
-        tripsService.publishTrip(trip, organizer);
         assertEquals(TripPrivacy.PROTECTED, tripsService.findTripsByOrganizer(organizer).get(FIRST_ELEMENT).getPrivacy());
     }
 
@@ -73,8 +71,23 @@ public class TestTrip {
     */
     @Test
     public void successfulCreateTimeBoundTripPublic() throws TripsException, ParseException {
-        Trip trip = tripsService.createTimeBoundTrip("Langlauf", "Langlaufen in de Ardennen", TripPrivacy.PUBLIC, user, df.parse("14/12/2014"), df.parse("15/12/2014"));
-        assertNotNull(trip);
+        User organizer = tripsService.createUser(new User("davidvilla@msn.com","uniek"));
+        Trip trip = tripsService.createTimeBoundTrip("Langlauf", "Langlaufen in de Ardennen", TripPrivacy.PUBLIC, organizer, df.parse("14/12/2014"), df.parse("15/12/2014"));
+        assertEquals(TripPrivacy.PUBLIC, tripsService.findTripsByOrganizer(organizer).get(FIRST_ELEMENT).getPrivacy());
+    }
+
+    @Test
+    public void successfulCreateTimeBoundTripProtected() throws TripsException, ParseException {
+        User organizer = tripsService.createUser(new User("ikercassilias@msn.com","uniek"));
+        Trip trip = tripsService.createTimeBoundTrip("Langlauf", "Langlaufen in de Ardennen", TripPrivacy.PROTECTED, organizer, df.parse("14/12/2014"), df.parse("15/12/2014"));
+        assertEquals(TripPrivacy.PROTECTED, tripsService.findTripsByOrganizer(organizer).get(FIRST_ELEMENT).getPrivacy());
+    }
+
+    @Test
+    public void successfulCreateTimeBoundTripPrivate() throws TripsException, ParseException {
+        User organizer = tripsService.createUser(new User("lionelmessi@msn.com","uniek"));
+        Trip trip = tripsService.createTimeBoundTrip("Langlauf", "Langlaufen in de Ardennen", TripPrivacy.PRIVATE, organizer, df.parse("14/12/2014"), df.parse("15/12/2014"));
+        assertEquals(TripPrivacy.PRIVATE, tripsService.findTripsByOrganizer(organizer).get(FIRST_ELEMENT).getPrivacy());
     }
 
     /*
@@ -181,7 +194,7 @@ public class TestTrip {
     }
 
     @Test
-    public void successfulFindPrivateTrips() throws TripsException {
+    public void successfulFindPrivateTrips() throws TripsException, MessagingException {
         User organizer = tripsService.createUser(new User("bobby.lobby@hotmail.com","xinus"));
         Trip trip = tripsService.createTimelessTrip("Trip","TripDescription",TripPrivacy.PRIVATE,organizer);
         User user = tripsService.createUser(new User("gekke.trekke@hotmail.com","linus"));
