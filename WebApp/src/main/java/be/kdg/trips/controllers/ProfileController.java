@@ -12,8 +12,11 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.SessionAttributes;
 
+import javax.imageio.ImageIO;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
+import java.awt.image.BufferedImage;
+import java.io.*;
 
 /**
  * Created with IntelliJ IDEA.
@@ -41,6 +44,8 @@ public class ProfileController {
         return "/users/profileView";
     }
 
+
+
     @RequestMapping(value = "/users/editCredentials", method = RequestMethod.GET)
     public String showEditCredentials() {
         return "/users/editCredentialsView";
@@ -59,6 +64,30 @@ public class ProfileController {
         return "indexView";
     }
 
+    @RequestMapping(value = "/users/editProfilePicView", method = RequestMethod.GET)
+    public  String showEditProfilePic(){
+        return "/users/editProfilePicView";
+    }
+
+    @RequestMapping(value = "/users/profilePic", method = RequestMethod.GET)
+    public OutputStream showProfilePic(){
+        User user = (User) session.getAttribute("user");
+
+
+        byte[] imageData = user.getProfilePicture();
+       /* response.setContentType("image/jpeg");
+        response.getOutputStream().write(imageData);       */
+        OutputStream output = new ByteArrayOutputStream();
+        try {
+            output.write(imageData);
+
+        } catch (IOException e) {
+            //Unable to get image
+        }
+
+        return output;
+    }
+
     @RequestMapping(value = "/users/editProfile", method = RequestMethod.POST)
     public String editProfile(HttpServletRequest request) {
         String firstName = request.getParameter("firstName");
@@ -70,7 +99,23 @@ public class ProfileController {
         String province = request.getParameter("province");
         String country = request.getParameter("country");
         try {
-            tripsService.updateUser((User) session.getAttribute("user"), firstName, lastName, street, houseNr, city, postalCode, province, country);
+            tripsService.updateUser((User) session.getAttribute("user"), firstName, lastName, street, houseNr, city, postalCode, province, country, null);
+            session.setAttribute("user", tripsService.findUser(((User) session.getAttribute("user")).getEmail()));
+        } catch (TripsException e) {
+            return "/users/profileView";
+            //failed to edit user
+        }
+        //TODO test for return to /users/profileView
+        return "/users/profileView";
+        //return "indexView";
+    }
+
+    @RequestMapping(value = "/users/editProfilePic", method = RequestMethod.POST)
+    public String editProfilePic(HttpServletRequest request) {
+        File file = new File(request.getParameter("picPath"));
+        byte[] bFile = new byte[(int) file.length()];
+        try {
+            tripsService.updateUser((User) session.getAttribute("user"), "", "", "", "", "", "", "", "", bFile);
             session.setAttribute("user", tripsService.findUser(((User) session.getAttribute("user")).getEmail()));
         } catch (TripsException e) {
             return "/users/profileView";
