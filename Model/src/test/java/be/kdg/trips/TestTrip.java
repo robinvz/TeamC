@@ -225,7 +225,7 @@ public class TestTrip {
     }
 
     @Test
-    public void sucessfulEditTripDetails() throws TripsException
+    public void successfulEditTripDetails() throws TripsException
     {
         Trip trip = tripsService.createTimelessTrip("Trip1","TripDescription",TripPrivacy.PUBLIC,user);
         tripsService.editTripDetails(trip, "", "TripDescriptionEdited", user);

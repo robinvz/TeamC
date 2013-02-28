@@ -4,6 +4,7 @@ import be.kdg.trips.exception.TripsException;
 import be.kdg.trips.model.enrollment.Enrollment;
 import be.kdg.trips.model.invitation.Invitation;
 import be.kdg.trips.model.location.Location;
+import be.kdg.trips.model.question.Question;
 import be.kdg.trips.model.trip.Trip;
 import be.kdg.trips.model.user.User;
 
@@ -27,6 +28,7 @@ public interface EnrollmentBL
     public void declineInvitation(Trip trip, User user) throws TripsException;
     public Enrollment subscribe(Trip trip, User user) throws TripsException;
     public void setLastLocationVisited(Trip trip, User user, Location location) throws TripsException;
+    public void checkAnswerFromQuestion(Question question, int answerIndex, User user) throws TripsException;
 
     public List<Enrollment> getEnrollmentsByUser(User user) throws TripsException;
     public List<Enrollment> getEnrollmentsByTrip(Trip trip) throws TripsException;

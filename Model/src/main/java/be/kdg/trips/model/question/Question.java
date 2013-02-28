@@ -53,6 +53,10 @@ public class Question implements QuestionInterface, Serializable
         return question;
     }
 
+    public int getId() {
+        return id;
+    }
+
     public List<String> getPossibleAnswers() {
         return possibleAnswers;
     }
@@ -85,8 +89,6 @@ public class Question implements QuestionInterface, Serializable
         Question question1 = (Question) o;
 
         if (correctAnswerIndex != question1.correctAnswerIndex) return false;
-        if (possibleAnswers != null ? !possibleAnswers.equals(question1.possibleAnswers) : question1.possibleAnswers != null)
-            return false;
         if (!question.equals(question1.question)) return false;
 
         return true;
@@ -95,7 +97,6 @@ public class Question implements QuestionInterface, Serializable
     @Override
     public int hashCode() {
         int result = question.hashCode();
-        result = 31 * result + (possibleAnswers != null ? possibleAnswers.hashCode() : 0);
         result = 31 * result + correctAnswerIndex;
         return result;
     }
