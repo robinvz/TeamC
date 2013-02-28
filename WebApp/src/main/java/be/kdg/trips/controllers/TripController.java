@@ -165,11 +165,11 @@ public class TripController {
                                       @RequestParam String startDate, @RequestParam String endDate) {
         try {
             User user = (User) session.getAttribute("user");
-            SimpleDateFormat sdf = new SimpleDateFormat("yyyy/MM/dd HH:mm");
+            SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
             Trip test = tripsService.createTimeBoundTrip(title, description, privacy, user, sdf.parse(startDate), sdf.parse(endDate));
-            return "trip/" + test.getId();
+            return "redirect:trip/" + test.getId();
         } catch (TripsException e) {
-            return "users/createTripView";
+            return "/users/createTripView";
         } catch (ParseException e) {
             return "/users/createTripView";
         }
