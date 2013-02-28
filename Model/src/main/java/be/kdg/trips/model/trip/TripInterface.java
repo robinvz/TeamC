@@ -36,4 +36,6 @@ public interface TripInterface {
     public Set<Enrollment> getEnrollments();
     public void addEnrollment(Enrollment enrollment);
     public void removeEnrollment(Enrollment enrollment);
+    public void addRequisite(String name, int amount);
+    public void removeRequisite(String name, int amount);
 }

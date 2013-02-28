@@ -8,7 +8,7 @@
         <ul class="trip-nav">
             <li><a href="#">Info</a></li>
             <li><a href="#">Requirements</a></li>
-            <li><a href="/trip/${trip.id}/createLocation">Stops</a></li>
+            <li><a href="/trip/${trip.id}/locations">Locations</a></li>
             <li><a href="#">Chat</a></li>
             <li><a href="#">Participants</a></li>
             <li><a href="#">Results</a></li>

@@ -15,6 +15,10 @@ import be.kdg.trips.persistence.dao.interfaces.EnrollmentDao;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
+import javax.mail.MessagingException;
+import javax.mail.internet.AddressException;
+import javax.mail.internet.InternetAddress;
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -74,8 +78,7 @@ public class EnrollmentBLImpl implements EnrollmentBL
     }
 
     @Override
-    public Invitation invite(Trip trip, User organizer, User user) throws TripsException
-    {
+    public Invitation invite(Trip trip, User organizer, User user) throws TripsException, MessagingException {
         Invitation invitation = null;
         if(isUnexistingInvitation(user, trip))
         {
@@ -83,6 +86,10 @@ public class EnrollmentBLImpl implements EnrollmentBL
             {
                 invitation = new Invitation(trip, user);
                 enrollmentDao.saveOrUpdateInvitation(invitation);
+                List<InternetAddress[]> recipients = new ArrayList<>();
+                recipients.add(InternetAddress.parse(user.getEmail()));
+                //give link to invitation!
+                tripBL.sendMail("Trip invitation", "You have been invited by " + organizer.getFirstName() + " " + organizer.getLastName() + " for his trip named: '" + trip.getTitle() + "' (" + trip.getDescription() + ").\nClick here xxx if you're interested in joining.", recipients);
             }
             else
             {
@@ -136,6 +143,18 @@ public class EnrollmentBLImpl implements EnrollmentBL
             invitations = enrollmentDao.getInvitationsByUser(user);
         }
         return invitations;
+    }
+
+    @Override
+    public void addRequisiteToEnrollment(String name, int amount, Trip trip, User user, User organizer)
+    {
+        //To change body of implemented methods use File | Settings | File Templates.
+    }
+
+    @Override
+    public void removeRequisiteFromEnrollment(String name, int amount, Trip trip, User user, User organizer)
+    {
+        //To change body of implemented methods use File | Settings | File Templates.
     }
 
     @Override

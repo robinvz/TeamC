@@ -16,6 +16,7 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
 
 import javax.mail.MessagingException;
+import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
@@ -117,7 +118,6 @@ public class TripController {
         return js.toString();
     }
 
-
     @RequestMapping(value = "/trips", method = RequestMethod.GET)
     public ModelAndView showTrips() {
         List<Trip> allNonPrivateTrips = null;
@@ -144,22 +144,7 @@ public class TripController {
         parameters.put("allEnrollments", allEnrollments);
         return new ModelAndView("tripsView", parameters);
     }
-    /*
-    @RequestMapping(value = "/createdTrips", method = RequestMethod.GET)
-    public ModelAndView showCreatedTrips(){
-        List<Trip> allOrganisedTrips = null;
-        Map<String, List> parameters = new HashMap<>();
-        try{
-            if(session.getAttribute("user") != null){
-                allOrganisedTrips = tripsService.findTripsByOrganizer((User) session.getAttribute("user"));
-            }
-        }catch(TripsException e){
-            //No created trips by this user.
-        }
-        parameters.put("allOrganisedTrips", allOrganisedTrips);
-        return new ModelAndView("tripsView", parameters);
-    }
-    */
+
     @RequestMapping(value = "/trip/{tripId}", method = RequestMethod.GET)
     public ModelAndView getTrip(@PathVariable int tripId) {
         try {
@@ -258,13 +243,21 @@ public class TripController {
             return new ModelAndView("loginView", "loginBean", new LoginBean());
         }
     }
-    /*
-    @RequestMapping(value = "/createLocation", method = RequestMethod.GET)
-    public String createLocation() {
-        return "/createLocationView";
+
+    @RequestMapping(value = "/trip/{tripId}/locations", method = RequestMethod.GET)
+    public ModelAndView getLocations(@PathVariable int tripId) {
+        Map parameters = new HashMap();
+        try {
+            Trip trip = tripsService.findTripById(tripId, (User) session.getAttribute("user"));
+            parameters.put("trip", trip);
+            parameters.put("locations", trip.getLocations());
+            return new ModelAndView("locationsView", parameters);
+        } catch (TripsException e) {
+            return new ModelAndView("tripsView");
+        }
     }
 
-    @RequestMapping(value = "/trip/{tripId}/createLocation", method = RequestMethod.GET)
+    @RequestMapping(value = "/trip/{tripId}/locations/createLocation", method = RequestMethod.GET)
     public ModelAndView createLocationView(@PathVariable int tripId) {
         try {
             Trip trip = tripsService.findTripById(tripId, (User) session.getAttribute("user"));
@@ -274,18 +267,19 @@ public class TripController {
         }
     }
 
-    @RequestMapping(value = "/trip/{tripId}/createLocation", method = RequestMethod.POST)
-    public String createLocation(HttpServletRequest request, @PathVariable int tripId) {
+    @RequestMapping(value = "/trip/{tripId}/locations/createLocation", method = RequestMethod.POST)
+    public String createLocation(@RequestParam double latitude, @RequestParam double longitude, @RequestParam String street,
+                                 @RequestParam String houseNr, @RequestParam String city, @RequestParam String postalCode,
+                                 @RequestParam String province, @RequestParam String country, @RequestParam String title,
+                                 @RequestParam String description, @PathVariable int tripId) {
         User user = (User) session.getAttribute("user");
         try {
             Trip trip = tripsService.findTripById(tripId, user);
-            tripsService.addLocationToTrip(user, trip, Double.parseDouble(request.getParameter("latitude")), Double.parseDouble(request.getParameter("longitude")), request.getParameter("street"),
-                    request.getParameter("houseNr"), request.getParameter("city"), request.getParameter("postalCode"), request.getParameter("province"),
-                    request.getParameter("country"), request.getParameter("title"), request.getParameter("description"));
+            tripsService.addLocationToTrip(user, trip, latitude, longitude, street, houseNr, city, postalCode, province,
+                    country, title, description);
         } catch (TripsException e) {
             //failed to add location to trip
         }
-        return "redirect:/trip/" + tripId;
+        return "redirect:/trip/" + tripId + "/locations";
     }
-    */
 }

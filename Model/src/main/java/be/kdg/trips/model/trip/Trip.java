@@ -12,10 +12,7 @@ import javax.persistence.Table;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 import java.io.Serializable;
-import java.util.ArrayList;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Set;
+import java.util.*;
 
 /**
  * Subversion id
@@ -52,6 +49,9 @@ public abstract class Trip implements Serializable, TripInterface {
     @OneToMany(mappedBy = "trip")
     @Cascade({org.hibernate.annotations.CascadeType.ALL})
     private Set<Enrollment> enrollments;
+    @ElementCollection
+    @CollectionTable(name = "T_TRIP_REQUISITE")
+    private Map<String, Integer> requisites;
 
     public Trip(String title, String description, TripPrivacy privacy, User organizer) {
         this.id = getNextId();
@@ -71,6 +71,7 @@ public abstract class Trip implements Serializable, TripInterface {
 
         this.enrollments = new HashSet<>();
         this.locations = new ArrayList<>();
+        this.requisites = new HashMap<>();
     }
 
     @Override
@@ -136,6 +137,11 @@ public abstract class Trip implements Serializable, TripInterface {
         this.organizer = organizer;
     }
 
+    public Map<String, Integer> getRequisites()
+    {
+        return requisites;
+    }
+
     @Override
     public boolean isPublished() {
         return published;
@@ -197,6 +203,36 @@ public abstract class Trip implements Serializable, TripInterface {
 
     public void setEnrollments(Set<Enrollment> enrollments) {
         this.enrollments = enrollments;
+    }
+
+    @Override
+    public void addRequisite(String name, int amount)
+    {
+        if(this.requisites.containsKey(name))
+        {
+            this.requisites.put(name, this.requisites.get(name) + amount);
+        }
+        else
+        {
+            this.requisites.put(name, amount);
+        }
+    }
+
+    @Override
+    public void removeRequisite(String name, int amount)
+    {
+        if(this.requisites.containsKey(name))
+        {
+            int value = this.requisites.get(name);
+            if(amount < value)
+            {
+                this.requisites.put(name, value - amount);
+            }
+            else
+            {
+                this.requisites.remove(name);
+            }
+        }
     }
 
     private synchronized int getNextId() {
