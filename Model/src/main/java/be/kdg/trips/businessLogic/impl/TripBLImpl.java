@@ -319,7 +319,8 @@ public class TripBLImpl implements TripBL
         return true;
     }
 
-    private void sendMail(String subject, String text, List<InternetAddress[]> recipients) throws MessagingException {
+    @Override
+    public void sendMail(String subject, String text, List<InternetAddress[]> recipients) throws MessagingException {
         Properties props = new Properties();
         props.put("mail.smtp.auth", "true");
         props.put("mail.smtp.starttls.enable", "true");
