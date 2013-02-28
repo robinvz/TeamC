@@ -7,10 +7,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.propertyeditors.StringTrimmerEditor;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.ServletRequestDataBinder;
-import org.springframework.web.bind.annotation.InitBinder;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.SessionAttributes;
+import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
@@ -54,31 +51,22 @@ public class ProfileController {
             session.setAttribute("user", tripsService.findUser(((User) session.getAttribute("user")).getEmail()));
         } catch (TripsException e) {
             return "/users/profileView";
-            //Failed to update password
         }
         return "indexView";
     }
 
     @RequestMapping(value = "/users/editProfile", method = RequestMethod.POST)
-    public String editProfile(HttpServletRequest request) {
-        String firstName = request.getParameter("firstName");
-        String lastName = request.getParameter("lastName");
-        String street = request.getParameter("street");
-        String houseNr = request.getParameter("houseNr");
-        String city = request.getParameter("city");
-        String postalCode = request.getParameter("postalCode");
-        String province = request.getParameter("province");
-        String country = request.getParameter("country");
+    public String editProfile(@RequestParam String firstName, @RequestParam String lastName, @RequestParam String street,
+                              @RequestParam String houseNr, @RequestParam String city, @RequestParam String postalCode,
+                              @RequestParam String province, @RequestParam String country) {
         try {
-            tripsService.updateUser((User) session.getAttribute("user"), firstName, lastName, street, houseNr, city, postalCode, province, country);
+            tripsService.updateUser((User) session.getAttribute("user"), firstName, lastName, street, houseNr, city, postalCode, province, country, null);
             session.setAttribute("user", tripsService.findUser(((User) session.getAttribute("user")).getEmail()));
         } catch (TripsException e) {
             return "/users/profileView";
-            //failed to edit user
         }
         //TODO test for return to /users/profileView
         return "/users/profileView";
-        //return "indexView";
     }
 
     @RequestMapping(value = "/users/deleteProfile", method = RequestMethod.GET)
@@ -88,7 +76,6 @@ public class ProfileController {
             session.invalidate();
         } catch (TripsException e) {
             return "/users/profileView";
-            //failed to delete user
         }
         return "indexView";
     }
