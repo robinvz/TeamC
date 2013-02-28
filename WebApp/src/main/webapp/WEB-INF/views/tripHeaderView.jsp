@@ -10,7 +10,9 @@
             <li><a href="#">Requirements</a></li>
             <li><a href="/trip/${trip.id}/locations">Locations</a></li>
             <li><a href="#">Chat</a></li>
-            <li><a href="#">Participants</a></li>
+            <c:if test="${trip.privacy != 'PUBLIC'}">
+                <li><a href="#">Participants</a></li>
+            </c:if>
             <li><a href="#">Results</a></li>
             <li><a href="#">Edit</a></li>
 

@@ -104,7 +104,7 @@
                     </tr>
                     <tr>
                         <td><small>*required fields</small></td>
-                        <td> <button class="btn-blue" type="submit">Register</button></td>
+                        <td><button class="btn-blue" type="submit"><spring:message code="Register" /></button></td>
                     </tr>
                 </table>
         </form:form>
