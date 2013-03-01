@@ -7,5 +7,5 @@ package be.kdg.trips.model.enrollment;
  * 2012-2013
  */
 public enum Status {
-    IDLE, BUSY, FINISHED
+    READY, BUSY, FINISHED
 }

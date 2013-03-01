@@ -39,7 +39,7 @@ public class Enrollment implements EnrollmentInterface, Serializable
     private Location lastLocationVisited;
     @ElementCollection(fetch = FetchType.EAGER)
     private Map<String, Integer> requisites;
-    private boolean started;
+    private Status status;
     @NotNull
     private int score;
     @ElementCollection(fetch = FetchType.EAGER)
@@ -54,7 +54,7 @@ public class Enrollment implements EnrollmentInterface, Serializable
         this.date = new Date();
         this.requisites = new HashMap<>();
         this.answeredQuestions = new HashSet<>();
-        this.started = false;
+        this.status = Status.READY;
     }
 
     private Enrollment()
@@ -98,9 +98,6 @@ public class Enrollment implements EnrollmentInterface, Serializable
         return lastLocationVisited;
     }
 
-    public boolean isStarted() {
-        return started;
-    }
 
     public int getScore() {
         return score;
@@ -118,13 +115,20 @@ public class Enrollment implements EnrollmentInterface, Serializable
         this.answeredQuestions.add(id);
     }
 
+    public Status getStatus() {
+        return status;
+    }
+
+    public void setStatus(Status status) {
+        this.status = status;
+    }
+
     public void setLastLocationVisited(Location lastLocationVisited) {
         if(lastLocationVisited!=null)
         {
             if(!trip.isTimeBoundTrip() || (trip.isTimeBoundTrip() && trip.isActive()))
             {
                 this.lastLocationVisited = lastLocationVisited;
-                started = true;
             }
         }
     }
