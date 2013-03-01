@@ -3,6 +3,7 @@ package be.kdg.trips;
 import be.kdg.trips.controllers.TripController;
 import be.kdg.trips.exception.TripsException;
 import be.kdg.trips.model.address.Address;
+import be.kdg.trips.model.enrollment.Enrollment;
 import be.kdg.trips.model.location.Location;
 import be.kdg.trips.model.question.Question;
 import org.mockito.Mockito;
@@ -186,9 +187,7 @@ public class TripTest {
     @Test
     public void subscribeTrip() throws Exception {
         mockHttpSession.setAttribute("user", testUser);
-        Date startd = sdf.parse(endDate);
-        Date endd = sdf.parse(startDate);
-        Trip t = new TimeBoundTrip(title, description, privacy, testUser, startd, endd);
+        Trip t = new TimelessTrip(title, description, privacy, testUser);
         RequestBuilder requestBuilder = MockMvcRequestBuilders.get("/subscribe?tripId=" + t.getId()).requestAttr("locale", Locale.ENGLISH);
         when(tripsService.findTripById(t.getId(), testUser)).thenReturn(t);
         mockMvc.perform(requestBuilder).andExpect(view().name("tripView")).andExpect(model().attribute("trip", t));
@@ -196,18 +195,48 @@ public class TripTest {
     }
 
     @Test
+    public void subscribeTripFailedNotLoggedIn() throws Exception {
+        Trip t = new TimelessTrip(title, description, privacy, testUser);
+        RequestBuilder requestBuilder = MockMvcRequestBuilders.get("/subscribe?tripId=" + t.getId());
+        Mockito.doThrow(new TripsException("Cannot subsribe to trip when not logged in")).when(tripsService).subscribe(t, testUser);
+        mockMvc.perform(requestBuilder).andExpect(view().name("loginView"));
+    }
+
+    @Test
     public void subscribeTripDouble() throws Exception {
         mockHttpSession.setAttribute("user", testUser);
-        Date startd = sdf.parse(endDate);
-        Date endd = sdf.parse(startDate);
-        Trip t = new TimeBoundTrip(title, description, privacy, testUser, startd, endd);
-        RequestBuilder requestBuilder = MockMvcRequestBuilders.get("/subscribe?tripId=" + t.getId()).requestAttr("locale", Locale.ENGLISH);
+        Trip t = new TimelessTrip(title, description, privacy, testUser);
+        RequestBuilder requestBuilder = MockMvcRequestBuilders.get("/subscribe?tripId=" + t.getId());
         when(tripsService.subscribe(t, testUser)).thenThrow(new TripsException("already subscribed"));
         when(tripsService.findTripById(t.getId(), testUser)).thenReturn(t);
-        String error = "error";
-        when(messageSource.getMessage("notSubscribed", null, Locale.ENGLISH)).thenReturn(error);
-        mockMvc.perform(requestBuilder).andExpect(view().name("tripView")).andExpect(model().attribute("error", error)).andExpect(model().attribute("trip", t));
+        mockMvc.perform(requestBuilder).andExpect(view().name("tripView")).andExpect(model().attribute("trip", t));
         assertEquals(0, tripsService.findAllNonPrivateTrips(testUser).size());
+    }
+
+    @Test
+    public void unSubscribeTrip() throws Exception {
+        mockHttpSession.setAttribute("user", testUser);
+        Trip t = new TimelessTrip(title, description, privacy, testUser);
+        RequestBuilder requestBuilder = MockMvcRequestBuilders.get("/unSubscribe?tripId=" + t.getId());
+        mockMvc.perform(requestBuilder).andExpect(view().name("tripView"));
+    }
+
+    @Test
+    public void unSubscribeTripFailed() throws Exception {
+        mockHttpSession.setAttribute("user", testUser);
+        Trip t = new TimelessTrip(title, description, privacy, testUser);
+        RequestBuilder requestBuilder = MockMvcRequestBuilders.get("/unSubscribe?tripId=" + t.getId());
+        when(tripsService.findTripById(t.getId(), testUser)).thenReturn(t);
+        Mockito.doThrow(new TripsException("Failed to unsubscribe to trip")).when(tripsService).disenroll(t, testUser);
+        mockMvc.perform(requestBuilder).andExpect(view().name("tripView"));
+    }
+
+    @Test
+    public void unSubscribeTripFailedNotLoggedIn() throws Exception {
+        Trip t = new TimelessTrip(title, description, privacy, testUser);
+        RequestBuilder requestBuilder = MockMvcRequestBuilders.get("/unSubscribe?tripId=" + t.getId());
+        Mockito.doThrow(new TripsException("Cannot unsubsribe to trip when not logged in")).when(tripsService).subscribe(t, testUser);
+        mockMvc.perform(requestBuilder).andExpect(view().name("loginView"));
     }
 
     @Test

@@ -95,7 +95,7 @@
                     <th>Trip</th>
                     <th><spring:message code="Description" /></th>
                     <th>Privacy</th>
-                    <th>Start</th>
+                    <th><spring:message code="SubscriptionDate" /></th>
                 </tr>
                 </thead>
 
