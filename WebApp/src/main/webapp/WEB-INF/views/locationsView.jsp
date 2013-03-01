@@ -98,6 +98,7 @@
             <a href="/trip/${trip.id}/locations/createLocation">
                 <button type="button" id="btn-createLocation" class="btn-blue">Create Location</button>
             </a>
+            <button type="button" id="btn-toggleLocations" class="btn-blue">Map Overview</button>
 
             </form>
             </tbody>

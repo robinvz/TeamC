@@ -4,6 +4,9 @@ $(document).ready(function () {
     btnListeners();
     initializeMap();
 
+   /* $.getJSON('/trip/{tripId}/locations', function (data) {
+        alert(data.locationsJSON);
+    }); */
     //voor elke location uit lijst do createMarker(lat, lng)
     //zoomFit();
 });
