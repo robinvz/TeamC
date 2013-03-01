@@ -11,6 +11,7 @@
 <div id="page">
     <jsp:include page="baseView.jsp"/>
     <jsp:include page="tripHeaderView.jsp"/>
+    <div id="content">
     <div id="inner-content">
         <div id="add-location">
             <form:form action="createLocation" method="POST">
@@ -64,6 +65,7 @@
                 </div>
             </form:form>
         </div>
+    </div>
     </div>
 </div>
 <script src="${pageContext.request.contextPath}/resources/js/jquery-1.9.0.min.js"></script>

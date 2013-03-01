@@ -4,7 +4,7 @@
 <div id="trip-header">
     <h2>${trip.title}</h2>
 </div>
-<aside>
+<aside class="above-footer">
     <nav class="trip-nav">
         <h3>Trip</h3>
         <ul class="trip-nav">

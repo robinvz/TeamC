@@ -14,9 +14,8 @@
 
     <div id="content">
         <div id="timeboundTrip">
+            <h2>Create a new Trip</h2>
             <form id="form-createTrip" action="/createTimeLessTrip" method="POST">
-                <fieldset>
-                    <legend><spring:message code="CreateTrip" /></legend>
                     <table>
                         <tr>
                             <td><label><spring:message code="Title" /></label></td>
@@ -51,7 +50,6 @@
                             <td><input type="submit" class="btn-submit btn-blue" value="<spring:message code="Create" />"></td>
                         </tr>
                     </table>
-                </fieldset>
             </form>
         </div>
     </div>

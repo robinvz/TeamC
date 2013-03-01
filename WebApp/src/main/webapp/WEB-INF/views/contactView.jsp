@@ -11,11 +11,10 @@
 <div id="page">
     <jsp:include page="baseView.jsp"/>
 
-    <div id="contact">
-        <h2>Contact</h2>
-    </div>
-
     <div id="content">
+        <div id="contact">
+            <h2>Contact</h2>
+        </div>
 
         <form id="form-contact">
             <label for="name"><spring:message code="Name"/></label>

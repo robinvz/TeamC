@@ -112,6 +112,12 @@ p{
     overflow: hidden;
 }
 
+#content, .above-footer{
+    padding-bottom: 60px;
+}
+
+
+
 #trip-header{
     background-color: #7e7bff;
     height: 200px;
@@ -166,7 +172,7 @@ aside{
 footer
 {
     text-align:center;
-    height: 50px;
+    height: 30px;
     position: absolute;
     width:960px;
     bottom: 0;
