@@ -8,6 +8,21 @@
     <context:component-scan base-package="be.kdg.trips"/>
     <context:annotation-config/>
 
+
+    <mvc:annotation-driven>
+        <mvc:message-converters>
+            <bean class="org.springframework.http.converter.ByteArrayHttpMessageConverter">
+                <property name="supportedMediaTypes">
+                    <list>
+                        <value>image/jpeg</value>
+                        <value>image/jpg</value>
+                        <value>image/png</value>
+                    </list>
+                </property>
+            </bean>
+        </mvc:message-converters>
+    </mvc:annotation-driven>
+
     <!-- bind your messages.properties -->
     <bean id="messageSource" class="org.springframework.context.support.ReloadableResourceBundleMessageSource">
         <property name="basename" value="classpath:messages" />
@@ -34,20 +49,21 @@
 
     <bean id="dataSource" class="org.springframework.jdbc.datasource.DriverManagerDataSource">
         <property name="driverClassName" value="com.mysql.jdbc.Driver"/>
-        <property name="url" value="jdbc:mysql://localhost:3306/groepC"/>
-        <property name="username" value="groepC"/>
-        <property name="password" value="groepC"/>
-    </bean>
+        <property name="url" value="jdbc:mysql://192.168.15.1:3306/groepC"/>
+        <!--  <property name="url" value="jdbc:mysql://localhost:3306/groepC"/>    -->
+          <property name="username" value="groepC"/>
+          <property name="password" value="groepC"/>
+      </bean>
 
-    <bean name="sessionFactory" id="sessionFactory" class="org.springframework.orm.hibernate4.LocalSessionFactoryBean">
-        <property name="dataSource" ref="dataSource"/>
-        <property name="packagesToScan" value="be.kdg.trips.model"/>
-        <property name="hibernateProperties">
-            <props>
-                <prop key="hibernate.hbm2ddl.auto">update</prop>
-                <prop key="hibernate.dialect">org.hibernate.dialect.MySQL5InnoDBDialect</prop>
-            </props>
-        </property>
-    </bean>
+      <bean name="sessionFactory" id="sessionFactory" class="org.springframework.orm.hibernate4.LocalSessionFactoryBean">
+          <property name="dataSource" ref="dataSource"/>
+          <property name="packagesToScan" value="be.kdg.trips.model"/>
+          <property name="hibernateProperties">
+              <props>
+                  <prop key="hibernate.hbm2ddl.auto">update</prop>
+                  <prop key="hibernate.dialect">org.hibernate.dialect.MySQL5InnoDBDialect</prop>
+              </props>
+          </property>
+      </bean>
 
-</beans>
+  </beans>

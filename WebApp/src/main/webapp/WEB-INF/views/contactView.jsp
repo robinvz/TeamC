@@ -31,7 +31,7 @@
                 <option value="bug_error"><spring:message code="Bug"/></option>
             </select>
             <textarea name="message" id="message" rows="5"></textarea>
-            <input type="submit" value="Send" class="btn-submit btn-blue">
+            <input type="submit" value="<spring:message code="Send" />" class="btn-submit btn-blue">
         </form>
     </div>
 

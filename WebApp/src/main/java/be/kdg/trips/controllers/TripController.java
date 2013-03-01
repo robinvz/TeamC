@@ -161,17 +161,21 @@ public class TripController {
     }
 
     @RequestMapping(value = "/createTimeBoundTrip", method = RequestMethod.POST)
-    public String createTimeBoundTrip(@RequestParam String title, @RequestParam String description, @RequestParam TripPrivacy privacy,
-                                      @RequestParam String startDate, @RequestParam String endDate) {
+    public ModelAndView createTimeBoundTrip(@RequestParam String title, @RequestParam String description, @RequestParam TripPrivacy privacy,
+                                      @RequestParam String startDate, @RequestParam String endDate, Locale locale) {
         try {
             User user = (User) session.getAttribute("user");
             SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
             Trip test = tripsService.createTimeBoundTrip(title, description, privacy, user, sdf.parse(startDate), sdf.parse(endDate));
-            return "redirect:trip/" + test.getId();
+            return new ModelAndView("redirect:trip/"+test.getId());
         } catch (TripsException e) {
-            return "/users/createTripView";
+            if (e.getMessage().contains("future")) {
+                return new ModelAndView("/users/createTripView", "error", messageSource.getMessage("StartDateFuture", null, locale));
+            } else {
+                return new ModelAndView("/users/createTripView", "error", messageSource.getMessage("StartDateBefore", null, locale));
+            }
         } catch (ParseException e) {
-            return "/users/createTripView";
+            return new ModelAndView("/users/createTripView", "error", e.getMessage());
         }
     }
 
@@ -195,7 +199,7 @@ public class TripController {
             } catch (TripsException e) {
                 return new ModelAndView("tripView", "error", messageSource.getMessage("DeleteError", null, locale));
             } catch (MessagingException e) {
-                //return new ModelAndView("tripView" + tripId);   //deze error ook catchen geeft fout
+                e.printStackTrace();  //To change body of catch statement use File | Settings | File Templates.
             }
             return new ModelAndView("tripsView");
         } else {
@@ -232,13 +236,17 @@ public class TripController {
     @RequestMapping(value = "/unSubscribe", method = RequestMethod.GET)
     public ModelAndView unSubscribe(@RequestParam int tripId, Locale locale) {
         User user = (User) session.getAttribute("user");
-        if (user != null) {     //TODO:Add custom error msgs
+        if (user != null) {
             try {
                tripsService.disenroll(tripsService.findTripById(tripId, user), user);
             } catch (TripsException e) {
-                return new ModelAndView("tripView");
+                return new ModelAndView("tripView", "error", messageSource.getMessage("UnSubscribeError", null, locale));
             }
-            return new ModelAndView("tripView");
+            try {
+                return new ModelAndView("tripView", "trip", tripsService.findTripById(tripId,user));
+            } catch (TripsException e) {
+                return new ModelAndView("tripsView");
+            }
         } else {
             return new ModelAndView("loginView", "loginBean", new LoginBean());
         }

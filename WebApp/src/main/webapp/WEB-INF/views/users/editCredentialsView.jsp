@@ -5,7 +5,7 @@
     <link rel="stylesheet" href="${pageContext.request.contextPath}/resources/css/main.css"/>
     <link rel="stylesheet" href="${pageContext.request.contextPath}/resources/css/profiel.css"/>
     <link rel="shortcut icon" href="${pageContext.request.contextPath}/resources/res/favicon.ico">
-    <title><spring:message code="EditCredentialsPage"/>/title>
+    <title><spring:message code="EditCredentialsPage" /></title>
 </head>
 <body>
 <div id="page">
@@ -35,7 +35,7 @@
                         <input type="password" name="newPassword">
                     </td>
                 </tr>
-                <input id="btn-save" type="submit" value="Save" class="btn-blue">
+                <input id="btn-save" type="submit" value="<spring:message code="Save" />" class="btn-blue">
             </table>
         </form>
     </div>
