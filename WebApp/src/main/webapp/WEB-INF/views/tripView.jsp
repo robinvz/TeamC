@@ -22,20 +22,22 @@
                 <div class="trip-info">
                     <table>
                         <tr>
-                            <td><label>Description:</label></td>
+                            <td><spring:message code="Description"/></td>
                             <td>${trip.description}</td>
                         </tr>
                         <tr>
-                            <td><label>Privacy:</label></td>
+                            <td><spring:message code="Privacy"/></td>
                             <td>${trip.privacy}</td>
                         </tr>
                         <tr>
-                            <td><label>Active:</label></td>
+                            <td><label><spring:message code="Active"/>:</label></td>
                             <td>${trip.active}</td>
                         </tr>
                         <tr>
-                            <td><label>Published:</label></td>
-                            <td>${trip.published}</td>
+                            <c:if test="${trip.published==true}">
+                                <spring:message code="IsPublished"/>
+                            </c:if>
+                            <<spring:message code="IsNotPublished"/>
                         </tr>
                         <c:choose>
                             <c:when test="${not empty trip.labels}">
@@ -62,8 +64,11 @@
 
                 <div class="trip-participants">
                     <c:choose>
+                        <c:when test="${trip.privacy == 'PUBLIC'}">
+                            <!--Do nothing-->
+                        </c:when>
                         <c:when test="${empty trip.enrollments}">
-                            <h3>There are no enrollments yet.</h3>
+                            <label>There are no enrollments yet.</label>
                         </c:when>
                         <c:otherwise>
                             <table>
@@ -77,11 +82,27 @@
                     </c:choose>
                 </div>
 
-                <c:if test="${trip.privacy == 'PROTECTED' and not empty user && trip.published==true}">
-                    <a href="/subscribe?tripId=${trip.id}">
-                        <img id="subscribeButton"
-                             src="${pageContext.request.contextPath}/resources/res/img/subscribe.jpg">
-                    </a>
+                <c:choose>
+                    <c:when test="${not empty user  && trip.published==true && trip.privacy == 'PROTECTED' && not empty trip.enrollments}">
+                        <c:forEach items="${trip.enrollments}" var="enrollment">
+                            <c:if test="${enrollment.user == user}">
+                                <a href="/unSubscribe?tripId=${trip.id}">
+                                    <img id="unsubscribeButton" src="${pageContext.request.contextPath}/resources/res/img/unsubscribe.jpg">
+                                </a>
+                            </c:if>
+                        </c:forEach>
+                    </c:when>
+                    <c:otherwise>
+                        <c:if test="${not empty user && trip.published==true && trip.privacy == 'PROTECTED'}">
+                        <a href="/subscribe?tripId=${trip.id}">
+                            <img id="subscribeButton" src="${pageContext.request.contextPath}/resources/res/img/subscribe.jpg">
+                        </a>
+                        </c:if>
+                    </c:otherwise>
+                </c:choose>
+
+                <c:if test="${not empty user  && trip.published==true && trip.privacy == 'PROTECTED'}">
+
                 </c:if>
             </article>
         </section>

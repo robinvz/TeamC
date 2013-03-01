@@ -228,7 +228,22 @@ public class TripController {
             return new ModelAndView("loginView", "loginBean", new LoginBean());
         }
     }
-
+    /* //UNDER CONSTRUCTION
+    @RequestMapping(value = "/unSubscribe", method = RequestMethod.GET)
+    public ModelAndView unSubscribe(@RequestParam int tripId, Locale locale) {
+        User user = (User) session.getAttribute("user");
+        if (user != null) {
+            try {
+               // tripsService.subscribe()
+            } catch (TripsException e) {
+                return new ModelAndView("tripView");
+            }
+            return new ModelAndView("tripView");
+        } else {
+            return new ModelAndView("loginView", "loginBean", new LoginBean());
+        }
+    }
+    */
     @RequestMapping(value = "/publishTrip/{tripId}", method = RequestMethod.GET)
     public ModelAndView publish(@PathVariable int tripId, Locale locale) {
         User user = (User) session.getAttribute("user");
@@ -268,7 +283,8 @@ public class TripController {
     }
 
     @RequestMapping(value = "/trip/{tripId}/locations/createLocation", method = RequestMethod.POST)
-    public String createLocation(@RequestParam double latitude, @RequestParam double longitude, @RequestParam String street,
+    public String createLocation(@RequestParam double latitude, @RequestParam double longitude,
+                                 @RequestParam String street,
                                  @RequestParam String houseNr, @RequestParam String city, @RequestParam String postalCode,
                                  @RequestParam String province, @RequestParam String country, @RequestParam String title,
                                  @RequestParam String description, @PathVariable int tripId) {
