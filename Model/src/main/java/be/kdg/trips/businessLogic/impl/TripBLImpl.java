@@ -48,11 +48,12 @@ public class TripBLImpl implements TripBL
         Trip trip = null;
         if(userBL.isExistingUser(organizer.getEmail()))
         {
-            trip = new TimelessTrip(title, description, privacy, organizer);
+            User organizerWithDetails = userBL.findUserWithDetails(organizer.getEmail());
+            trip = new TimelessTrip(title, description, privacy, organizerWithDetails);
             tripDao.saveOrUpdateTrip(trip);
             if(trip.getPrivacy()==TripPrivacy.PRIVATE)
             {
-                enrollmentBL.enroll(trip, organizer);
+                enrollmentBL.enroll(trip, organizerWithDetails);
             }
         }
         return trip;
@@ -66,11 +67,12 @@ public class TripBLImpl implements TripBL
         {
             if(areDatesValid(startDate, endDate))
             {
-                trip = new TimeBoundTrip(title, description, privacy, organizer, startDate, endDate);
+                User organizerWithDetails = userBL.findUserWithDetails(organizer.getEmail());
+                trip = new TimeBoundTrip(title, description, privacy, organizerWithDetails, startDate, endDate);
                 tripDao.saveOrUpdateTrip(trip);
                 if(trip.getPrivacy()==TripPrivacy.PRIVATE)
                 {
-                    enrollmentBL.enroll(trip, organizer);
+                    enrollmentBL.enroll(trip, organizerWithDetails);
                 }
             }
         }
