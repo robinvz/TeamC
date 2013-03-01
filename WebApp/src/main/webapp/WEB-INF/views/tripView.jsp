@@ -6,7 +6,7 @@
     <link rel="stylesheet" href="${pageContext.request.contextPath}/resources/css/main.css"/>
     <link rel="stylesheet" href="${pageContext.request.contextPath}/resources/css/trip.css"/>
     <link rel="shortcut icon" href="${pageContext.request.contextPath}/resources/res/favicon.ico">
-    <title><spring:message code="TripPage" /></title>
+    <title><spring:message code="TripPage"/></title>
 </head>
 <body>
 <div id="page">
@@ -37,10 +37,6 @@
                             <td><label>Published:</label></td>
                             <td>${trip.published}</td>
                         </tr>
-                        <tr>
-                            <td><label>Published:</label></td>
-                            <td>${trip.published}</td>
-                        </tr>
                         <c:choose>
                             <c:when test="${not empty trip.labels}">
                                 <c:forEach items="${trip.labels}" var="label">
@@ -61,15 +57,13 @@
                 </div>
 
                 <div class="trip-stops">
-                    <c:if test="${trip.privacy==PUBLIC || trip.privacy==TripPrivacy.PUBLIC}">
-                        <h1>Werkt niet</h1>
-                    </c:if>
+
                 </div>
 
                 <div class="trip-participants">
                     <c:choose>
                         <c:when test="${empty trip.enrollments}">
-                            <h3>There are no enrollments.</h3>
+                            <h3>There are no enrollments yet.</h3>
                         </c:when>
                         <c:otherwise>
                             <table>
@@ -81,8 +75,8 @@
                             </table>
                         </c:otherwise>
                     </c:choose>
-
                 </div>
+
                 <c:if test="${trip.privacy == 'PROTECTED' and not empty user && trip.published==true}">
                     <a href="/subscribe?tripId=${trip.id}">
                         <img id="subscribeButton"
@@ -92,6 +86,7 @@
             </article>
         </section>
     </div>
+
 </div>
 </body>
 </html>

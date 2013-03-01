@@ -94,6 +94,14 @@ public class Location implements LocationInterface, Serializable
         this.longitude = longitude;
     }
 
+    public String getTitle() {
+        return title;
+    }
+
+    public void setTitle(String title) {
+        this.title = title;
+    }
+
     @Override
     public String getDescription() {
         return description;
@@ -134,10 +142,6 @@ public class Location implements LocationInterface, Serializable
 
     public int getId() {
         return id;
-    }
-
-    public String getTitle() {
-        return title;
     }
 
     public Trip getTrip() {

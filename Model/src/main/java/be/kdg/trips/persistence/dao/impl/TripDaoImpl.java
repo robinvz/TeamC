@@ -2,6 +2,7 @@ package be.kdg.trips.persistence.dao.impl;
 
 import be.kdg.trips.exception.TripsException;
 import be.kdg.trips.model.location.Location;
+import be.kdg.trips.model.question.Question;
 import be.kdg.trips.model.trip.*;
 import be.kdg.trips.model.user.User;
 import be.kdg.trips.persistence.dao.interfaces.TripDao;
@@ -89,6 +90,19 @@ public class TripDaoImpl implements TripDao{
         session.close();
         if (trip == null) {
             throw new TripsException("Trip with id '"+id+"' doesn't exist");
+        }
+        return trip;
+    }
+
+    @Override
+    public Trip getTripByQuestion(Question question) throws TripsException {
+        Session session = sessionFactory.openSession();
+        Query query = session.createQuery("SELECT DISTINCT t FROM Trip t LEFT JOIN FETCH t.enrollments LEFT JOIN FETCH t.locations location WHERE location = (FROM Location l WHERE l.question = :question)");
+        query.setParameter("question", question);
+        Trip trip =(Trip)query.uniqueResult();
+        session.close();
+        if (trip == null) {
+            throw new TripsException("Trip with question '"+question.getQuestion()+"' doesn't exist");
         }
         return trip;
     }

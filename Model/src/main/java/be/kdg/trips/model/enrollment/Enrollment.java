@@ -1,15 +1,15 @@
 package be.kdg.trips.model.enrollment;
 
 import be.kdg.trips.model.location.Location;
+import be.kdg.trips.model.question.Question;
 import be.kdg.trips.model.trip.Trip;
 import be.kdg.trips.model.user.User;
+import org.hibernate.annotations.Cascade;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
 import java.io.Serializable;
-import java.util.Date;
-import java.util.HashMap;
-import java.util.Map;
+import java.util.*;
 
 /**
  * Subversion id
@@ -40,7 +40,12 @@ public class Enrollment implements EnrollmentInterface, Serializable
     @ElementCollection(fetch = FetchType.EAGER)
     @CollectionTable(name = "T_ENROLLMENT_REQUISITE")
     private Map<String, Integer> requisites;
-    private boolean isStarted;
+    private boolean started;
+    @NotNull
+    private int score;
+    @ElementCollection(fetch = FetchType.EAGER)
+    @CollectionTable(name = "T_ENROLLMENT_ANSWEREDQUESTIONS")
+    private Set<Integer> answeredQuestions;
 
     public Enrollment(Trip trip, User user)
     {
@@ -50,6 +55,7 @@ public class Enrollment implements EnrollmentInterface, Serializable
         user.addEnrollment(this);
         this.date = new Date();
         this.requisites = new HashMap<>();
+        this.started = false;
     }
 
     private Enrollment()
@@ -94,7 +100,23 @@ public class Enrollment implements EnrollmentInterface, Serializable
     }
 
     public boolean isStarted() {
-        return isStarted;
+        return started;
+    }
+
+    public int getScore() {
+        return score;
+    }
+
+    public void incrementScore() {
+        this.score++;
+    }
+
+    public Set<Integer> getAnsweredQuestions() {
+        return answeredQuestions;
+    }
+
+    public void addAnsweredQuestion(int id){
+        this.answeredQuestions.add(id);
     }
 
     public void setLastLocationVisited(Location lastLocationVisited) {
@@ -103,7 +125,7 @@ public class Enrollment implements EnrollmentInterface, Serializable
             if(!trip.isTimeBoundTrip() || (trip.isTimeBoundTrip() && trip.isActive()))
             {
                 this.lastLocationVisited = lastLocationVisited;
-                isStarted = true;
+                started = true;
             }
         }
     }
@@ -112,6 +134,7 @@ public class Enrollment implements EnrollmentInterface, Serializable
     {
         return requisites;
     }
+
 
     @Override
     public void addRequisite(String name, int amount)
@@ -141,6 +164,10 @@ public class Enrollment implements EnrollmentInterface, Serializable
                 this.requisites.remove(name);
             }
         }
+    }
+
+    public String getFullScore(){
+        return this.score+"/"+getAnsweredQuestions().size();
     }
 
     @Override

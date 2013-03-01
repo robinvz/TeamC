@@ -4,6 +4,7 @@ import be.kdg.trips.exception.TripsException;
 import be.kdg.trips.model.enrollment.Enrollment;
 import be.kdg.trips.model.invitation.Invitation;
 import be.kdg.trips.model.location.Location;
+import be.kdg.trips.model.question.Question;
 import be.kdg.trips.model.trip.Trip;
 import be.kdg.trips.model.trip.TripPrivacy;
 import be.kdg.trips.model.user.User;
@@ -45,6 +46,7 @@ public interface TripsService
     public List<Trip> findTripsByOrganizer(User organizer) throws TripsException;
 
     public void editTripDetails(Trip trip, String title, String description, User organizer) throws TripsException;
+    public void editTripLocationDetails(User organizer, Trip trip, Location location, String street, String houseNr, String city, String postalCode, String province, String country, String title, String description) throws TripsException;
 
     public void publishTrip(Trip trip, User organizer) throws TripsException;
     public void addLabelToTrip(Trip trip, User organizer, String label) throws TripsException;
@@ -63,7 +65,10 @@ public interface TripsService
     public Enrollment acceptInvitation(Trip trip, User user) throws TripsException;
     public void declineInvitation(Trip trip, User user) throws TripsException;
     public void disenroll(Trip trip, User user) throws TripsException;
+    //implicit start enrollment
     public void setLastLocationVisited(Trip trip, User user, Location location) throws TripsException;
+    public void checkAnswerFromQuestion(Question question, int answerIndex, User user) throws TripsException;
+
 
     public List<Enrollment> findEnrollmentsByUser(User user) throws TripsException;
     public List<Enrollment> findEnrollmentsByTrip(Trip trip) throws TripsException;

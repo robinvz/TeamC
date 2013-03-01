@@ -225,11 +225,22 @@ public class TestTrip {
     }
 
     @Test
-    public void sucessfulEditTripDetails() throws TripsException
+    public void successfulEditTripDetails() throws TripsException
     {
         Trip trip = tripsService.createTimelessTrip("Trip1","TripDescription",TripPrivacy.PUBLIC,user);
         tripsService.editTripDetails(trip, "", "TripDescriptionEdited", user);
         assertTrue(trip.getDescription().equals("TripDescriptionEdited"));
+    }
+
+    @Test
+    public void successfulEditTripLocation() throws TripsException
+    {
+        Trip trip = tripsService.createTimelessTrip("Trip1","TripDescription",TripPrivacy.PUBLIC,user);
+        Location location1 = tripsService.addLocationToTrip(user, trip, 10.12131, 10.12131, "Nationalestraat", null, "Antwerp", "2000", "Antwerp", "Belgium", "Titel", "Lange straat met tramspoor");
+        Location location2 = tripsService.addLocationToTrip(user, trip, 10.12121, 10.12123, "Groenplaats", "53", null, "2000", null, null, "Titel", "Groenplaats");
+        tripsService.editTripLocationDetails(user, trip, location1, "", "1", "", "", "", "", "", "");
+        tripsService.editTripLocationDetails(user, trip, location2, "", "", "", "", "", "", "", "");
+        assertTrue(trip.getLocations().get(FIRST_ELEMENT).getAddress().getHouseNr().equals("1"));
     }
 
     @Test

@@ -55,9 +55,9 @@ public class TripTest {
     private String description = "description";
     private String privacyString = "PUBLIC";
     private TripPrivacy privacy = TripPrivacy.PUBLIC;
-    private String startDate = "21/2/2013 08:00:00";
-    private String endDate = "22/2/2013 08:00:00";
-    SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy HH:mm:ss");
+    private String startDate = "2013-01-01";
+    private String endDate = "2013-02-02";
+    SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
     User testUser = new User("test@student.kdg.be", "password");
     TripController tc;
 
@@ -95,9 +95,9 @@ public class TripTest {
         Date startd = sdf.parse(startDate);
         Date endd = sdf.parse(endDate);
         Trip trip = new TimeBoundTrip(title, description, privacy, testUser, startd, endd);
-        RequestBuilder requestBuilder = MockMvcRequestBuilders.post("/createTrip").param("title", title).param("description", description).param("privacy", privacyString).param("startDate", startDate).param("endDate", endDate);
+        RequestBuilder requestBuilder = MockMvcRequestBuilders.post("/createTimeBoundTrip").param("title", title).param("description", description).param("privacy", privacyString).param("startDate", startDate).param("endDate", endDate);
         when(tripsService.createTimeBoundTrip(title, description, privacy, testUser, startd, endd)).thenReturn(trip);
-        mockMvc.perform(requestBuilder).andExpect(view().name("trip/" + trip.getId()));
+        mockMvc.perform(requestBuilder).andExpect(view().name("redirect:trip/" + trip.getId()));
     }
 
     @Test
@@ -173,17 +173,16 @@ public class TripTest {
         mockMvc.perform(requestBuilder).andExpect(view().name("tripsView"));
         assertEquals(0, tripsService.findAllNonPrivateTrips(testUser).size());
     }
-    /*
+
     @Test
-    public void timelessTripNotDeleted() throws Exception {
-        User user = new User("ik ben geen organizer", "password");
-        mockHttpSession.setAttribute("user", user);
+    public void timelessTripNotDeletedNotLoggedIn() throws Exception {
         Trip t = new TimelessTrip(title, description, privacy, testUser);
         RequestBuilder requestBuilder = MockMvcRequestBuilders.get("/deleteTrip/" + t.getId());
-        mockMvc.perform(requestBuilder).andExpect(view().name("tripView"));
+        Mockito.doThrow(new TripsException("Failed to delete trip")).when(tripsService).deleteTrip(t, testUser);
+        mockMvc.perform(requestBuilder).andExpect(view().name("loginView"));
         assertNotNull(t);
     }
-    */
+
     @Test
     public void subscribeTrip() throws Exception {
         mockHttpSession.setAttribute("user", testUser);
@@ -256,16 +255,5 @@ public class TripTest {
         t.addLocation(new Location(t, 1.00, 1.00, new Address("street", "1", "city", "2000", "province", "country"), title, description, 1));
         assertEquals(1, t.getLocations().size());
     }
-    /*
-    @Test
-    public void createLocation() throws Exception {
-        TimelessTrip t = new TimelessTrip(title, description, privacy, testUser);
-        RequestBuilder requestBuilder = MockMvcRequestBuilders.post("/trip/" + t.getId() + "/createLocation").param("user", "testUser").param("trip", "t")
-                .param("latitude", "1.00").param("longitude", "1.00").param("street", "testStreet").param("houseNr", "1").param("city", "testCity")
-                .param("postalCode", "2000").param("province", "testProvince").param("country", "testCountry").param("title", "testTitle").param("description", "testDescription");
-        mockMvc.perform(requestBuilder).andExpect(view().name("redirect:/trip/" + t.getId()));
-        t.addLocation(new Location(t, 1.00, 1.00, new Address("street", "1", "city", "2000", "province", "country"), title, description));
-        assertEquals(1, t.getLocations().size());
-    }
-    */
+
 }
