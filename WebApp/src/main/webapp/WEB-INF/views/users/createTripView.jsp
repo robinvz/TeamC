@@ -28,10 +28,9 @@
                         </tr>
                         <tr>
                             <td><label><spring:message code="Privacy" /></label></td>
-                            <td><input type="radio" name="privacy" value="PUBLIC" checked="true"><spring:message code="Public" /> </input>
-                                <input type="radio" name="privacy" value="PROTECTED"><spring:message code="Protected" /> </input>
-                                <input type="radio" name="privacy" value="PRIVATE"><spring:message code="Private" /> </input>
-                            </td>
+                            <td><input type="radio" name="privacy" value="PUBLIC" checked="true"><spring:message code="Public" /> </input></td>
+                            <tr><td></td><td><input type="radio" name="privacy" value="PROTECTED"><spring:message code="Protected" /> </input></td></tr>
+                            <tr><td></td><td><input type="radio" name="privacy" value="PRIVATE"><spring:message code="Private" /> </input></td></tr>
                         </tr>
 
                         <tr>
@@ -49,7 +48,7 @@
                         </tr>
                         <tr>
                             <td></td>
-                            <td><input type="submit" value="Create" class="btn-submit btn-blue"></td>
+                            <td><input type="submit" class="btn-submit btn-blue" value="<spring:message code="Create" />"></td>
                         </tr>
                     </table>
                 </fieldset>

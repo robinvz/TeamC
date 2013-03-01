@@ -19,7 +19,7 @@
                 <h2>${user.firstName} ${user.lastName}</h2>
 
                 <div class="profile-general">
-                    <button id="btn-edit" class="profile-view btn-blue">Edit</button>
+                    <button id="btn-edit" class="profile-view btn-blue"><spring:message code="Edit" /></button>
                     <form id="profile-form" action="/users/editProfile" method="POST">
                         <table id="profile-data">
                             <tr>

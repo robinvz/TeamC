@@ -26,13 +26,13 @@
     <div id="control-bar">
         <c:if test="${not empty user}">
             <form action="/users/createTrip" method="GET">
-                <button id="btn-addtrip" type="submit" class="btn-blue">Create Trip</button>
+                <button id="btn-addtrip" type="submit" class="btn-blue"><spring:message code="CreateTrip" /></button>
             </form>
         </c:if>
         <select id="filter" name="filterTripsMenu">
             <option>Filter</option>
-            <option value="">Repeating trips</option>
-            <option value="">Timebound trips</option>
+            <option value=""><spring:message code="TimeLessTrips" /></option>
+            <option value=""><spring:message code="TimeBoundTrips" /></option>
         </select>
     </div>
 

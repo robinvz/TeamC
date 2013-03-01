@@ -18,13 +18,12 @@
         <div id="login-buttons">
             <fb:login-button autologoutlink='true'
                              perms='email,user_birthday,status_update,publish_stream'></fb:login-button>
-            <button id="btn-login" class="btn-blue">Sign in normally</button>
+            <button id="btn-login" class="btn-blue"><spring:message code="LogIn" /></button>
         </div>
 
         <div id="fb-root"></div>
 
-        <form:form action="/login" commandName="loginBean" method="post" id="loginform" name="loginform"
-                   dir="loginform">
+        <form:form action="/login" commandName="loginBean" method="post" id="loginform" name="loginform" dir="loginform">
             <form:errors path="*" cssClass="errorblock" element="div"/>
             <table>
                 <tr>
@@ -34,7 +33,7 @@
                     </td>
                 </tr>
                 <tr>
-                    <td>Password</td>
+                    <td><spring:message code="Password" /></td>
                     <td>
                         <form:password path="password"/>
                     </td>
@@ -42,7 +41,7 @@
                 <tr>
                     <td></td>
                     <td>
-                        <button class="btn-blue" type="submit">Login</button>
+                        <button class="btn-blue" type="submit"><spring:message code="LogIn" /></button>
                     </td>
                 </tr>
             </table>
