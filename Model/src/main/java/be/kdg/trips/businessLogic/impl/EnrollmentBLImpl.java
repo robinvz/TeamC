@@ -5,6 +5,7 @@ import be.kdg.trips.businessLogic.interfaces.TripBL;
 import be.kdg.trips.businessLogic.interfaces.UserBL;
 import be.kdg.trips.exception.TripsException;
 import be.kdg.trips.model.enrollment.Enrollment;
+import be.kdg.trips.model.enrollment.Status;
 import be.kdg.trips.model.invitation.Answer;
 import be.kdg.trips.model.invitation.Invitation;
 import be.kdg.trips.model.location.Location;
@@ -286,7 +287,7 @@ public class EnrollmentBLImpl implements EnrollmentBL
             Enrollment enrollment = enrollmentDao.getEnrollmentByUserAndTrip(user, trip);
             if(!enrollment.getAnsweredQuestions().contains(question.getId()))
             {
-                if(enrollment.isStarted())
+                if(enrollment.getStatus() == Status.BUSY)
                 {
                     for(Location location: trip.getLocations())
                     {
@@ -311,7 +312,7 @@ public class EnrollmentBLImpl implements EnrollmentBL
                 }
                 else
                 {
-                    throw new TripsException("You haven't started the trip yet (LastLocationVisited is empty)");
+                    throw new TripsException("You haven't started the trip yet");
                 }
 
             }
@@ -320,5 +321,42 @@ public class EnrollmentBLImpl implements EnrollmentBL
                 throw new TripsException("You already answered this question");
             }
         }
+    }
+
+    @Override
+    public void startTrip(Trip trip, User user) throws TripsException {
+        if(isExistingEnrollment(user, trip))
+        {
+            Enrollment enrollment = enrollmentDao.getEnrollmentByUserAndTrip(user, trip);
+            if(enrollment.getStatus()==Status.READY)
+            {
+                enrollment.setStatus(Status.BUSY);
+                enrollmentDao.saveOrUpdateEnrollment(enrollment);
+            }
+            else
+            {
+                throw new TripsException("Enrollment is already started");
+            }
+
+        }
+    }
+
+    @Override
+    public String stopTrip(Trip trip, User user) throws TripsException {
+        if(isExistingEnrollment(user, trip))
+        {
+            Enrollment enrollment = enrollmentDao.getEnrollmentByUserAndTrip(user, trip);
+            if(enrollment.getStatus()==Status.BUSY)
+            {
+                enrollment.setStatus(Status.FINISHED);
+                enrollmentDao.saveOrUpdateEnrollment(enrollment);
+                return enrollment.getFullScore();
+            }
+            else
+            {
+                throw new TripsException("You can't finish a trip which you haven't begun yet");
+            }
+        }
+        return "";
     }
 }

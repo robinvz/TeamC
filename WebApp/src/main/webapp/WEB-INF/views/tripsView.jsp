@@ -16,9 +16,9 @@
     <c:if test="${not empty user}">
         <nav class="inner-nav">
             <ul class="nav">
-                <li id="btn-trips" class="inner-nav-link inner-selected">Display all trips</li>
-                <li id="btn-trips-participating" class="inner-nav-link">Show my enrolled trips</li>
-                <li id="btn-trips-organised" class="inner-nav-link">Show trips organised by me</li>
+                <li id="btn-trips" class="inner-nav-link inner-selected"><spring:message code="ShowAllTrips" /></li>
+                <li id="btn-trips-participating" class="inner-nav-link"><spring:message code="ShowEnrolledTrips" /></li>
+                <li id="btn-trips-organised" class="inner-nav-link"><spring:message code="ShowOrganizedTrips" /></li>
             </ul>
         </nav>
     </c:if>
@@ -38,7 +38,7 @@
 
     <div id="content">
         <div id="inner-content">
-            <table>
+            <table class="tables">
                 <!-- model heeft momenteel: type, id, description, privacy, published, title, userId -->
                 <thead>
                 <tr>
@@ -88,14 +88,14 @@
                 </form>
                 </tbody>
             </table>
-            <table >
+            <table class="tables">
                 <!-- model heeft momenteel: type, id, description, privacy, published, title, userId -->
                 <thead>
                 <tr>
                     <th>Trip</th>
                     <th><spring:message code="Description" /></th>
                     <th>Privacy</th>
-                    <th>Start</th>
+                    <th><spring:message code="SubscriptionDate" /></th>
                 </tr>
                 </thead>
 
@@ -124,7 +124,7 @@
                     </div>
                 </tbody>
             </table>
-            <table >
+            <table class="tables">
                 <!-- model heeft momenteel: type, id, description, privacy, published, title, userId -->
                 <thead>
                 <tr>
@@ -170,7 +170,11 @@
     </div>
 
 </div>
+
 <script src="${pageContext.request.contextPath}/resources/js/jquery-1.9.0.min.js"></script>
+<script src="${pageContext.request.contextPath}/resources/js/jquery.dataTables.js"></script>
+<script src="//ajax.googleapis.com/ajax/libs/jqueryui/1.8.24/jquery-ui.min.js"></script>
+<script src="${pageContext.request.contextPath}/resources/js/jquery.dataTables.rowReordering.js"></script>
 <script src="${pageContext.request.contextPath}/resources/js/trips.js"></script>
 </body>
 </html>

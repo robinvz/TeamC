@@ -2,6 +2,7 @@ package be.kdg.trips;
 
 import be.kdg.trips.exception.TripsException;
 import be.kdg.trips.model.enrollment.Enrollment;
+import be.kdg.trips.model.enrollment.Status;
 import be.kdg.trips.model.invitation.Answer;
 import be.kdg.trips.model.invitation.Invitation;
 import be.kdg.trips.model.location.Location;
@@ -276,7 +277,7 @@ public class TestEnrollment
         tripsService.addRequisiteToEnrollment("liters bier", 5, trip, user, organizer);
         tripsService.addRequisiteToEnrollment("vrienden", 5, trip, user, organizer);
         Enrollment enrollment = tripsService.findEnrollmentsByUser(user).get(FIRST_ELEMENT);
-        assertEquals(2, enrollment.getRequisites().size());
+        assertTrue(enrollment.getRequisites().containsValue(15));
     }
 
     @Test
@@ -288,9 +289,9 @@ public class TestEnrollment
         tripsService.subscribe(trip, user);
         tripsService.addRequisiteToEnrollment("liters bier", 10, trip, user, organizer);
         tripsService.addRequisiteToEnrollment("liters bier", 5, trip, user, organizer);
-       // tripsService.addRequisiteToEnrollment("vrienden", 5, trip, user, organizer);
-       // tripsService.removeRequisiteFromEnrollment("liters bier", 12, trip, user, organizer);
-       // tripsService.removeRequisiteFromEnrollment("vrienden", 6, trip, user, organizer);
+        // tripsService.addRequisiteToEnrollment("vrienden", 5, trip, user, organizer);
+        // tripsService.removeRequisiteFromEnrollment("liters bier", 12, trip, user, organizer);
+        // tripsService.removeRequisiteFromEnrollment("vrienden", 6, trip, user, organizer);
         Enrollment enrollment = tripsService.findEnrollmentsByUser(user).get(FIRST_ELEMENT);
         assertEquals(1, enrollment.getRequisites().size());
     }
@@ -305,6 +306,7 @@ public class TestEnrollment
         possibleAnswers.add("Gijs");
         possibleAnswers.add("Keke");
         Location location = tripsService.addLocationToTrip(organizer, createdTrip, 10.12131, 10.12131, "Nationalestraat", null, "Antwerp", "2000", "Antwerp", "Belgium", "Titel", "Lange straat met tramspoor", "Who am I?", possibleAnswers, FIRST_ELEMENT);
+        tripsService.startTrip(createdTrip, organizer);
         tripsService.setLastLocationVisited(createdTrip, organizer, location);
         Question question = createdTrip.getLocations().get(FIRST_ELEMENT).getQuestion();
         tripsService.checkAnswerFromQuestion(question,FIRST_ELEMENT,organizer);
@@ -320,6 +322,7 @@ public class TestEnrollment
         possibleAnswers.add("Gijs");
         possibleAnswers.add("Keke");
         Location location = tripsService.addLocationToTrip(organizer, createdTrip, 10.12131, 10.12131, "Nationalestraat", null, "Antwerp", "2000", "Antwerp", "Belgium", "Titel", "Lange straat met tramspoor", "Who were I yesterday?", possibleAnswers, FIRST_ELEMENT);
+        tripsService.startTrip(createdTrip, organizer);
         tripsService.setLastLocationVisited(createdTrip, organizer, location);
         Question question = createdTrip.getLocations().get(FIRST_ELEMENT).getQuestion();
         tripsService.checkAnswerFromQuestion(question,SECOND_ELEMENT,organizer);
@@ -335,6 +338,7 @@ public class TestEnrollment
         possibleAnswers.add("Gijs");
         possibleAnswers.add("Keke");
         Location location = tripsService.addLocationToTrip(organizer, createdTrip, 10.12131, 10.12131, "Nationalestraat", null, "Antwerp", "2000", "Antwerp", "Belgium", "Titel", "Lange straat met tramspoor", "Who will I be tomorrow?", possibleAnswers, FIRST_ELEMENT);
+        tripsService.startTrip(createdTrip, organizer);
         tripsService.setLastLocationVisited(createdTrip, organizer, location);
         Question question = createdTrip.getLocations().get(FIRST_ELEMENT).getQuestion();
         tripsService.checkAnswerFromQuestion(question,FIRST_ELEMENT,organizer);
@@ -364,8 +368,55 @@ public class TestEnrollment
         possibleAnswers.add("Keke");
         Location loc1 = tripsService.addLocationToTrip(organizer, createdTrip, 23.12131, 11.12131, "Groenplaats", null, "Antwerp", "2000", "Antwerp", "Belgium", "Titel", "Plein");
         Location loc2 = tripsService.addLocationToTrip(organizer, createdTrip, 10.12131, 10.12131, "Nationalestraat", null, "Antwerp", "2000", "Antwerp", "Belgium", "Titel", "Lange straat met tramspoor", "Who will I be tomorrow?", possibleAnswers, FIRST_ELEMENT);
+        tripsService.startTrip(createdTrip, organizer);
         tripsService.setLastLocationVisited(createdTrip, organizer, loc1);
         Question question = createdTrip.getLocations().get(SECOND_ELEMENT).getQuestion();
         tripsService.checkAnswerFromQuestion(question,FIRST_ELEMENT,organizer);
+    }
+
+    @Test
+    public void successfulStartTrip() throws TripsException {
+        User organizer = tripsService.createUser(new User("marielouisegaatopenneer@msn.com","herr"));
+        Trip createdTrip = tripsService.createTimelessTrip("Trip", "trip ", TripPrivacy.PROTECTED, organizer);
+        tripsService.publishTrip(createdTrip, organizer);
+        tripsService.startTrip(createdTrip, organizer);
+        assertEquals(Status.BUSY, tripsService.findEnrollmentsByUser(organizer).get(FIRST_ELEMENT).getStatus());
+    }
+
+    @Test(expected = TripsException.class)
+    public void failedStartTripAlreadyStarted() throws TripsException {
+        User organizer = tripsService.createUser(new User("zeiljevoorheteerst@msn.com","herr"));
+        Trip createdTrip = tripsService.createTimelessTrip("Trip", "trip ", TripPrivacy.PROTECTED, organizer);
+        tripsService.publishTrip(createdTrip, organizer);
+        tripsService.startTrip(createdTrip, organizer);
+        tripsService.startTrip(createdTrip, organizer);
+    }
+
+    @Test
+    public void successfulStopTrip() throws TripsException {
+        User organizer = tripsService.createUser(new User("danslajeeenflater@msn.com","herr"));
+        Trip createdTrip = tripsService.createTimelessTrip("Trip", "trip ", TripPrivacy.PROTECTED, organizer);
+        tripsService.publishTrip(createdTrip, organizer);
+        tripsService.startTrip(createdTrip, organizer);
+        tripsService.stopTrip(createdTrip, organizer);
+        assertEquals(Status.FINISHED, tripsService.findEnrollmentsByUser(organizer).get(FIRST_ELEMENT).getStatus());
+    }
+
+    @Test(expected = TripsException.class)
+    public void failedStopTripAlreadyStopped() throws TripsException {
+        User organizer = tripsService.createUser(new User("danslajeeenflater@msn.com","herr"));
+        Trip createdTrip = tripsService.createTimelessTrip("Trip", "trip ", TripPrivacy.PROTECTED, organizer);
+        tripsService.publishTrip(createdTrip, organizer);
+        tripsService.startTrip(createdTrip, organizer);
+        tripsService.stopTrip(createdTrip, organizer);
+        tripsService.stopTrip(createdTrip, organizer);
+    }
+
+    @Test(expected = TripsException.class)
+    public void failedStopTripNotStarted() throws TripsException {
+        User organizer = tripsService.createUser(new User("danslajeeenflater@msn.com","herr"));
+        Trip createdTrip = tripsService.createTimelessTrip("Trip", "trip ", TripPrivacy.PROTECTED, organizer);
+        tripsService.publishTrip(createdTrip, organizer);
+        tripsService.stopTrip(createdTrip, organizer);
     }
 }

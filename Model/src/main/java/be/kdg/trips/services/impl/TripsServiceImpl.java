@@ -251,4 +251,14 @@ public class TripsServiceImpl implements TripsService
     public void uninvite(Trip trip, User organizer, User user) throws TripsException {
         enrollmentController.uninvite(trip, organizer, user);
     }
+
+    @Override
+    public void startTrip(Trip trip, User user) throws TripsException {
+        enrollmentController.startTrip(trip, user);
+    }
+
+    @Override
+    public String stopTrip(Trip trip, User user) throws TripsException {
+        return enrollmentController.stopTrip(trip, user);
+    }
 }

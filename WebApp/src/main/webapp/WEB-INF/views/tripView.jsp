@@ -87,7 +87,7 @@
                         <c:forEach items="${trip.enrollments}" var="enrollment">
                             <c:if test="${enrollment.user == user}">
                                 <a href="/unSubscribe?tripId=${trip.id}">
-                                    <img id="unsubscribeButton" src="${pageContext.request.contextPath}/resources/res/img/unsubscribe.jpg">
+                                    <img id="unSubscribeButton" src="${pageContext.request.contextPath}/resources/res/img/unsubscribe.jpg">
                                 </a>
                             </c:if>
                         </c:forEach>

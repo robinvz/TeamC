@@ -334,17 +334,17 @@ public class TestTrip {
     }
 
     @Test
-    public void succesfulAddRequisiteToTrip() throws TripsException
+    public void successfulAddRequisiteToTrip() throws TripsException
     {
         Trip trip = tripsService.createTimelessTrip("Trip with requisites", "trip with requisites", TripPrivacy.PUBLIC, user);
         tripsService.addRequisiteToTrip("liters bier", 10, trip, user);
         tripsService.addRequisiteToTrip("liters bier", 5, trip, user);
         tripsService.addRequisiteToTrip("vrienden", 5, trip, user);
-        assertEquals(2, trip.getRequisites().size());
+        assertTrue(trip.getRequisites().containsValue(15));
     }
 
     @Test
-    public void succesfulRemoveRequisiteFromTrip() throws TripsException
+    public void successfulRemoveRequisiteFromTrip() throws TripsException
     {
         Trip trip = tripsService.createTimelessTrip("Trip with requisites", "trip with requisites", TripPrivacy.PUBLIC, user);
         tripsService.addRequisiteToTrip("liters bier", 10, trip, user);

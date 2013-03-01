@@ -26,10 +26,12 @@ import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertNull;
 import static org.mockito.Matchers.any;
+import static org.mockito.Matchers.anyString;
 import static org.mockito.Mockito.doCallRealMethod;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.model;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.view;
 
 /**
@@ -69,7 +71,9 @@ public class LoginTest {
 
     @Test
     public void loginView() throws Exception {
-        //  assertEquals(lg.login("loginView");
+        RequestBuilder requestBuilder = MockMvcRequestBuilders.get("/login");
+        mockMvc.perform(requestBuilder).andExpect(model().attributeExists("loginBean")).andExpect(view().name("loginView"));
+
     }
 
     @Test
@@ -79,15 +83,38 @@ public class LoginTest {
 
     @Test
     public void loginServiceCorrect() throws Exception {
-        RequestBuilder requestBuilder = MockMvcRequestBuilders.get("/service/login").param("username", "bob").param("password", "bob");
-        when(tripsService.checkLogin("bob", "bob")).thenReturn(true);
+        RequestBuilder requestBuilder = MockMvcRequestBuilders.post("/service/login").param("username", "bob").param("password", "bob");
+        when(tripsService.checkLogin(anyString(), anyString())).thenReturn(true);
         mockMvc.perform(requestBuilder).andExpect(content().string("{\"valid\":true}"));
     }
 
     @Test
-    public void loginServiceFalse() throws Exception {
-        RequestBuilder requestBuilder = MockMvcRequestBuilders.get("/service/login").param("username", "bob").param("password", "bob");
+        public void loginServiceFalse() throws Exception {
+        RequestBuilder requestBuilder = MockMvcRequestBuilders.post("/service/login").param("username", "bob").param("password", "bob");
         when(tripsService.checkLogin("bob", "bobette")).thenReturn(true);
+        mockMvc.perform(requestBuilder).andExpect(content().string("{\"valid\":false}"));
+    }
+
+    @Test
+    public void facebookloginCorrect() throws Exception {
+        RequestBuilder requestBuilder = MockMvcRequestBuilders.post("/facebooklogin").param("username", "bob").param("password", "bob");
+        when(tripsService.checkLogin(anyString(), anyString())).thenReturn(true);
+        when(tripsService.createUser(any(User.class))).thenThrow(new TripsException("User already exists"));
+        mockMvc.perform(requestBuilder).andExpect(content().string("{\"valid\":true}"));
+    }
+
+
+    @Test
+    public void facebookloginNewUser() throws Exception {
+        RequestBuilder requestBuilder = MockMvcRequestBuilders.post("/facebooklogin").param("username", "bob").param("password", "bob");
+        when(tripsService.checkLogin(anyString(), anyString())).thenReturn(true);
+        mockMvc.perform(requestBuilder).andExpect(content().string("{\"valid\":true}"));
+    }
+
+    @Test
+    public void facebookloginUserExistsWithOtherPassword() throws Exception {
+        RequestBuilder requestBuilder = MockMvcRequestBuilders.post("/facebooklogin").param("username", "bob").param("password", "bob");
+        when(tripsService.checkLogin(anyString(), anyString())).thenThrow(new TripsException("User already exists"));
         mockMvc.perform(requestBuilder).andExpect(content().string("{\"valid\":false}"));
     }
 

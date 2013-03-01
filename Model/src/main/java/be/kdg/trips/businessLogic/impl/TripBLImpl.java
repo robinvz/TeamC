@@ -6,6 +6,7 @@ import be.kdg.trips.businessLogic.interfaces.UserBL;
 import be.kdg.trips.exception.TripsException;
 import be.kdg.trips.model.address.Address;
 import be.kdg.trips.model.enrollment.Enrollment;
+import be.kdg.trips.model.enrollment.Status;
 import be.kdg.trips.model.invitation.Invitation;
 import be.kdg.trips.model.location.Location;
 import be.kdg.trips.model.question.Question;
@@ -48,11 +49,12 @@ public class TripBLImpl implements TripBL
         Trip trip = null;
         if(userBL.isExistingUser(organizer.getEmail()))
         {
-            trip = new TimelessTrip(title, description, privacy, organizer);
+            User organizerWithDetails = userBL.findUserWithDetails(organizer.getEmail());
+            trip = new TimelessTrip(title, description, privacy, organizerWithDetails);
             tripDao.saveOrUpdateTrip(trip);
             if(trip.getPrivacy()==TripPrivacy.PRIVATE)
             {
-                enrollmentBL.enroll(trip, organizer);
+                enrollmentBL.enroll(trip, organizerWithDetails);
             }
         }
         return trip;
@@ -66,11 +68,12 @@ public class TripBLImpl implements TripBL
         {
             if(areDatesValid(startDate, endDate))
             {
-                trip = new TimeBoundTrip(title, description, privacy, organizer, startDate, endDate);
+                User organizerWithDetails = userBL.findUserWithDetails(organizer.getEmail());
+                trip = new TimeBoundTrip(title, description, privacy, organizerWithDetails, startDate, endDate);
                 tripDao.saveOrUpdateTrip(trip);
                 if(trip.getPrivacy()==TripPrivacy.PRIVATE)
                 {
-                    enrollmentBL.enroll(trip, organizer);
+                    enrollmentBL.enroll(trip, organizerWithDetails);
                 }
             }
         }

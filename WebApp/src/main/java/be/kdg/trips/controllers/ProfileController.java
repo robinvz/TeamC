@@ -34,11 +34,6 @@ public class ProfileController {
     @Autowired
     private HttpSession session;
 
-    @InitBinder
-    protected void initBinder(HttpServletRequest request, ServletRequestDataBinder binder) throws Exception {
-        binder.registerCustomEditor(String.class, new StringTrimmerEditor(true));
-    }
-
     @RequestMapping(value="/users/profile", method=RequestMethod.GET)
     public String showProfile(){
         return "/users/profileView";
@@ -64,19 +59,19 @@ public class ProfileController {
         return "indexView";
     }
 
-    @RequestMapping(value = "/users/editProfilePicView", method = RequestMethod.GET)
+    @RequestMapping(value = "/users/editProfilePic", method = RequestMethod.GET)
     public  String showEditProfilePic(){
         return "/users/editProfilePicView";
     }
 
-    @RequestMapping(value = "/users/profilePic", method = RequestMethod.GET)
+    /* @RequestMapping(value = "/users/profilePic", method = RequestMethod.GET)
     public OutputStream showProfilePic(){
-        User user = (User) session.getAttribute("user");
+       User user = (User) session.getAttribute("user");
 
 
         byte[] imageData = user.getProfilePicture();
-       /* response.setContentType("image/jpeg");
-        response.getOutputStream().write(imageData);       */
+        response.setContentType("image/jpeg");
+        response.getOutputStream().write(imageData);
         OutputStream output = new ByteArrayOutputStream();
         try {
             output.write(imageData);
@@ -86,7 +81,7 @@ public class ProfileController {
         }
 
         return output;
-    }
+    }          */
 
     @RequestMapping(value = "/users/editProfile", method = RequestMethod.POST)
     public String editProfile(HttpServletRequest request) {

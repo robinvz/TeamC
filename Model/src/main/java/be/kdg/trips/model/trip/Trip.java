@@ -177,6 +177,12 @@ public abstract class Trip implements Serializable, TripInterface {
 
     @Override
     public List<Location> getLocations() {
+        Collections.sort(locations, new Comparator<Location>() {
+            @Override
+            public int compare(Location o1, Location o2) {
+                return o1.getSequence() - o2.getSequence();
+            }
+        });
         return locations;
     }
 
