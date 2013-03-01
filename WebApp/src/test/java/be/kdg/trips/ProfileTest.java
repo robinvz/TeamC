@@ -84,6 +84,13 @@ public class ProfileTest {
     }
 
     @Test
+    public void editCredentialsNotLoggedIn() throws Exception {
+        RequestBuilder requestBuilder = MockMvcRequestBuilders.post("/users/editCredentials");
+        Mockito.doThrow(new TripsException("Cannot edit credentials when not logged in")).when(tripsService).changePassword(testUser, "oldPw", "newPw");
+        mockMvc.perform(requestBuilder).andExpect(view().name("loginView"));
+    }
+
+    @Test
     public void profileEdited() throws Exception {
         mockHttpSession.setAttribute("user", testUser);
         RequestBuilder requestBuilder = MockMvcRequestBuilders.post("/users/editProfile")
@@ -111,6 +118,15 @@ public class ProfileTest {
         User notEditedUser = new User();
         notEditedUser.setFirstName("jan");
         assertEquals(notEditedUser.getFirstName(), testUser.getFirstName());
+    }
+
+    @Test
+    public void profileNotEditedNotLoggedIn() throws Exception {
+        RequestBuilder requestBuilder = MockMvcRequestBuilders.post("/users/editProfile")
+                .param("firstName", "robke").param("lastName", "zype").param("street", "straat").param("houseNr", "22")
+                .param("city", "Brugge").param("postalCode", "3300").param("province", "Oost-Vlaanderen").param("country", "Belgie");
+        Mockito.doThrow(new TripsException("Cannot update user when not logged in")).when(tripsService).updateUser(testUser, "robke", "zype", "straat", "22", "Brugge", "3300", "Oost-Vlaanderen", "Belgie", null);
+        mockMvc.perform(requestBuilder).andExpect(view().name("loginView"));
     }
 
     @Test
@@ -142,7 +158,6 @@ public class ProfileTest {
         RequestBuilder requestBuilder = MockMvcRequestBuilders.post("/users/editProfilePic").param("picPath", "../../main/webapp/resources/res/img/dragon.png");
         when(tripsService.findUser(anyString())).thenReturn(testUser);
         mockMvc.perform(requestBuilder).andExpect(view().name("/users/profileView"));
-
     }
 
     @Test
@@ -151,7 +166,6 @@ public class ProfileTest {
         RequestBuilder requestBuilder = MockMvcRequestBuilders.post("/users/editProfilePic").param("picPath", "../../main/webapp/resources/res/img/dragon.png");
         when(tripsService.findUser(anyString())).thenThrow(new TripsException("user does not exist"));
         mockMvc.perform(requestBuilder).andExpect(view().name("/users/profileView"));
-
     }
 
 }

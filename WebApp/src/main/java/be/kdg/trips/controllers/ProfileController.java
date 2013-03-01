@@ -1,5 +1,6 @@
 package be.kdg.trips.controllers;
 
+import be.kdg.trips.beans.LoginBean;
 import be.kdg.trips.exception.TripsException;
 import be.kdg.trips.model.user.User;
 import be.kdg.trips.services.interfaces.TripsService;
@@ -7,10 +8,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.propertyeditors.StringTrimmerEditor;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.ServletRequestDataBinder;
-import org.springframework.web.bind.annotation.InitBinder;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.SessionAttributes;
+import org.springframework.web.bind.annotation.*;
+import org.springframework.web.servlet.ModelAndView;
 
 import javax.imageio.ImageIO;
 import javax.servlet.http.HttpServletRequest;
@@ -34,12 +33,10 @@ public class ProfileController {
     @Autowired
     private HttpSession session;
 
-    @RequestMapping(value="/users/profile", method=RequestMethod.GET)
-    public String showProfile(){
+    @RequestMapping(value = "/users/profile", method = RequestMethod.GET)
+    public String showProfile() {
         return "/users/profileView";
     }
-
-
 
     @RequestMapping(value = "/users/editCredentials", method = RequestMethod.GET)
     public String showEditCredentials() {
@@ -47,24 +44,30 @@ public class ProfileController {
     }
 
     @RequestMapping(value = "/users/editCredentials", method = RequestMethod.POST)
-    public String editCredentials(HttpServletRequest request) {
-        try {
-            tripsService.changePassword((User) session.getAttribute("user"), request.getParameter("oldPassword"),
-                    request.getParameter("newPassword"));
-            session.setAttribute("user", tripsService.findUser(((User) session.getAttribute("user")).getEmail()));
-        } catch (TripsException e) {
-            return "/users/profileView";
-            //Failed to update password
+    public ModelAndView editCredentials(HttpServletRequest request) {
+        User user = (User) session.getAttribute("user");
+        if(user!=null) {
+            try {
+                tripsService.changePassword(user, request.getParameter("oldPassword"),
+                        request.getParameter("newPassword"));
+                session.setAttribute("user", tripsService.findUser(((User) session.getAttribute("user")).getEmail()));
+            } catch (TripsException e) {
+                //TODO:Error msg for edit credentials
+                return new ModelAndView("/users/profileView");
+            }
+            return new ModelAndView("indexView");
+        } else {
+            return new ModelAndView("loginView", "loginBean", new LoginBean());
         }
-        return "indexView";
     }
 
     @RequestMapping(value = "/users/editProfilePic", method = RequestMethod.GET)
-    public  String showEditProfilePic(){
+    public String showEditProfilePic() {
         return "/users/editProfilePicView";
     }
 
-    /* @RequestMapping(value = "/users/profilePic", method = RequestMethod.GET)
+    /*
+    @RequestMapping(value = "/users/profilePic", method = RequestMethod.GET)
     public OutputStream showProfilePic(){
        User user = (User) session.getAttribute("user");
 
@@ -81,28 +84,24 @@ public class ProfileController {
         }
 
         return output;
-    }          */
-
+    }
+    */
     @RequestMapping(value = "/users/editProfile", method = RequestMethod.POST)
-    public String editProfile(HttpServletRequest request) {
-        String firstName = request.getParameter("firstName");
-        String lastName = request.getParameter("lastName");
-        String street = request.getParameter("street");
-        String houseNr = request.getParameter("houseNr");
-        String city = request.getParameter("city");
-        String postalCode = request.getParameter("postalCode");
-        String province = request.getParameter("province");
-        String country = request.getParameter("country");
-        try {
-            tripsService.updateUser((User) session.getAttribute("user"), firstName, lastName, street, houseNr, city, postalCode, province, country, null);
-            session.setAttribute("user", tripsService.findUser(((User) session.getAttribute("user")).getEmail()));
-        } catch (TripsException e) {
-            return "/users/profileView";
-            //failed to edit user
+    public ModelAndView editProfile(@RequestParam String firstName, @RequestParam String lastName, @RequestParam String street,
+                                    @RequestParam String houseNr, @RequestParam String city, @RequestParam String postalCode,
+                                    @RequestParam String province, @RequestParam String country) {
+        User user = (User) session.getAttribute("user");
+        if (user != null) {
+            try {
+                tripsService.updateUser(user, firstName, lastName, street, houseNr, city, postalCode, province, country, null);
+                session.setAttribute("user", tripsService.findUser(((User) session.getAttribute("user")).getEmail()));
+            } catch (TripsException e) {
+                return new ModelAndView("/users/profileView");
+            }
+            return new ModelAndView("/users/profileView");
+        } else {
+            return new ModelAndView("loginView", "loginBean", new LoginBean());
         }
-        //TODO test for return to /users/profileView
-        return "/users/profileView";
-        //return "indexView";
     }
 
     @RequestMapping(value = "/users/editProfilePic", method = RequestMethod.POST)
@@ -114,11 +113,9 @@ public class ProfileController {
             session.setAttribute("user", tripsService.findUser(((User) session.getAttribute("user")).getEmail()));
         } catch (TripsException e) {
             return "/users/profileView";
-            //failed to edit user
         }
         //TODO test for return to /users/profileView
         return "/users/profileView";
-        //return "indexView";
     }
 
     @RequestMapping(value = "/users/deleteProfile", method = RequestMethod.GET)
@@ -128,7 +125,6 @@ public class ProfileController {
             session.invalidate();
         } catch (TripsException e) {
             return "/users/profileView";
-            //failed to delete user
         }
         return "indexView";
     }

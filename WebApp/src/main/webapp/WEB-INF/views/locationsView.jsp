@@ -14,7 +14,7 @@
 <div id="page">
     <jsp:include page="baseView.jsp"/>
     <jsp:include page="tripHeaderView.jsp"/>
-
+<div id="content">
     <div class="inner-content">
         <h3>Locations Overview</h3>
         <table id="example">
@@ -104,6 +104,7 @@
 
         </table>
     </div>
+</div>
 </div>
 <script src="http://code.jquery.com/jquery-1.8.3.min.js"></script>
 <script src="${pageContext.request.contextPath}/resources/js/jquery.dataTables.js"></script>

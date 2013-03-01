@@ -270,7 +270,7 @@ public class TripBLImpl implements TripBL
         Location location = null;
         if(isExistingTrip(trip.getId()) && userBL.isExistingUser(user.getEmail()) && isOrganizer(trip, user))
         {
-            location =  new Location(trip, latitude, longitude, new Address(street, houseNr, city, postalCode, province, country), title, description, trip.getLocations().size()+1);
+            location =  new Location(trip, latitude, longitude, new Address(street, houseNr, city, postalCode, province, country), title, description, trip.getLocations().size());
             trip.addLocation(location);
             tripDao.saveOrUpdateTrip(trip);
         }
@@ -284,7 +284,7 @@ public class TripBLImpl implements TripBL
         {
             if(correctAnswerIndex<possibleAnswers.size())
             {
-                location =  new Location(trip, latitude, longitude, new Address(street, houseNr, city, postalCode, province, country), title, description,trip.getLocations().size()+1, new Question(question, possibleAnswers, correctAnswerIndex));
+                location =  new Location(trip, latitude, longitude, new Address(street, houseNr, city, postalCode, province, country), title, description,trip.getLocations().size(), new Question(question, possibleAnswers, correctAnswerIndex));
                 trip.addLocation(location);
                 tripDao.saveOrUpdateTrip(trip);
             }
@@ -343,25 +343,50 @@ public class TripBLImpl implements TripBL
         }
     }
 
-    public void switchLocationSequence(Trip trip, User user, int location1, int location2) throws TripsException {
+    public void switchLocationSequence(Trip trip, User user, int from, int to) throws TripsException {
         if(isExistingTrip(trip.getId()) && userBL.isExistingUser(user.getEmail()) && isOrganizer(trip, user))
         {
-            int locationsSize = trip.getLocations().size()+1;
             List<Location> locations = trip.getLocations();
-            if(location1 == location2)
+            if(from >= 0 && from < locations.size() && to >= 0 && to < locations.size())
             {
+                if(to==from)
+                {
 
+                }
+                else if(from>to)
+                {
+                    locations.get(from).setSequence(to);
+                    for (int i = 0; i < Math.abs(to-from); i++){
+                        locations.get(to+i).setSequence(locations.get(to+i).getSequence()+1);
+                    }
+                    tripDao.saveOrUpdateTrip(trip);
+                }
+                else if(from<to)
+                {
+                /*    locations.get(from).setSequence(to);
+                    tripDao.saveOrUpdateTrip(trip);
+                    for(int i = to-1; i < locations.size()-1; i++)
+                    {
+                        int seq = locations.get(i).getSequence();
+                        locations.get(i).setSequence(seq+1);
+                        tripDao.saveOrUpdateTrip(trip);
+                    }
+                    for(int i = to-1; i >= 0; i--)
+                    {
+                        int seq = locations.get(i).getSequence();
+                        locations.get(i).setSequence(seq-1);
+                        tripDao.saveOrUpdateTrip(trip);
+                    }
+                }*/
+                    locations.get(from).setSequence(to);
+                    for (int i = 0; i < to-from; i++){
+                        locations.get(from+1+i).setSequence(locations.get(from+1+i).getSequence()-1);
+
+                    }
+                    tripDao.saveOrUpdateTrip(trip);
+                }
             }
-            else if(locationsSize < 1 || (location1 <= locationsSize && location1 > 0) || (location2 <= locationsSize && location2 > 0))
-            {
-                trip.getLocations().get(location1-1).setSequence(location2);
-                trip.getLocations().get(location2-1).setSequence(location1);
-                tripDao.saveOrUpdateTrip(trip);
-            }
-            else
-            {
-                throw new TripsException("Locations couldn't be switched because they don't exist");
-            }
+
         }
     }
 

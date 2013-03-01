@@ -11,11 +11,10 @@
 <div id="page">
     <jsp:include page="baseView.jsp"/>
 
-    <div id="contact">
-        <h2>Contact</h2>
-    </div>
-
     <div id="content">
+        <div id="contact">
+            <h2>Contact</h2>
+        </div>
 
         <form id="form-contact">
             <label for="name"><spring:message code="Name"/></label>
@@ -31,7 +30,7 @@
                 <option value="bug_error"><spring:message code="Bug"/></option>
             </select>
             <textarea name="message" id="message" rows="5"></textarea>
-            <input type="submit" value="Send" class="btn-submit btn-blue">
+            <input type="submit" value="<spring:message code="Send" />" class="btn-submit btn-blue">
         </form>
     </div>
 
