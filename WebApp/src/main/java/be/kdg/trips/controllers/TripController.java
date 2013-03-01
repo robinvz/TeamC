@@ -359,4 +359,17 @@ public class TripController {
         return new ModelAndView("locationsView", "trip", trip);
     }
 
-}
+
+    @RequestMapping(value = "/trip/{tripId}/participants", method = RequestMethod.GET)
+    public ModelAndView participants(@PathVariable int tripId) {
+        try {
+            Trip trip = tripsService.findTripById(tripId, (User) session.getAttribute("user"));
+            List<Enrollment> enr = tripsService.findEnrollmentsByTrip(trip);
+            return new ModelAndView("participantsView", "enrollments", enr);
+        } catch (TripsException e) {
+            return new ModelAndView("tripsView");
+        }
+    }
+
+
+    }
