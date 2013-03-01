@@ -7,7 +7,7 @@ var tmpVal = '';
 var usedAddressComponents = [];
 
 $(document).ready(function () {
-    $('#addressfields input').attr('disabled', 'disabled');
+    $('#addressfields input').attr('readonly', 'readonly');
     $('#btn-next').attr('disabled', 'disabled');
     btnListeners();
     initializeMap();
