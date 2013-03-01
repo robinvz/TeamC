@@ -1,9 +1,13 @@
-#add-location{
+aside {
+    display: none;
+}
+
+#add-location {
     width: 1920px;
 }
 
-.map-canvas{
-    width:600px;
+.map-canvas {
+    width: 600px;
     height: 460px;
     background-color: #413E19;
     border: solid 1px #736F3D;
@@ -13,44 +17,44 @@
     float: left;
 }
 
-.page{
+.page {
     width: 955px;
     display: inline-block;
 }
 
-.page-right{
+.page-right {
     float: right;
     margin-right: 5px;
 }
 
-.page-right input{
+.page-right input {
     width: 600px;
 }
 
-#latlng{
+#latlng {
     display: none;
 
 }
 
-#new-answer{
+#new-answer {
     width: 550px;
 }
 
-#address-fields{
+#address-fields {
     display: inline-block;
     margin-right: -30px;
     width: 300px;
 }
 
-#correct-answer{
+#correct-answer {
     width: 600px;
 }
 
-#enable-answer{
+#enable-answer {
     display: none;
 }
 
-#btn-submit{
+#btn-submit {
     margin-left: 250px;
 }
 
@@ -59,12 +63,12 @@ label {
     width: 250px;
 }
 
-textarea{
+textarea {
     height: 200px;
     width: 598px;
     resize: none;
 }
 
-input, label, textarea{
+input, label, textarea {
     display: inline-block;
 }

@@ -334,17 +334,17 @@ public class TestTrip {
     }
 
     @Test
-    public void succesfulAddRequisiteToTrip() throws TripsException
+    public void successfulAddRequisiteToTrip() throws TripsException
     {
         Trip trip = tripsService.createTimelessTrip("Trip with requisites", "trip with requisites", TripPrivacy.PUBLIC, user);
         tripsService.addRequisiteToTrip("liters bier", 10, trip, user);
         tripsService.addRequisiteToTrip("liters bier", 5, trip, user);
         tripsService.addRequisiteToTrip("vrienden", 5, trip, user);
-        assertEquals(2, trip.getRequisites().size());
+        assertTrue(trip.getRequisites().containsValue(15));
     }
 
     @Test
-    public void succesfulRemoveRequisiteFromTrip() throws TripsException
+    public void successfulRemoveRequisiteFromTrip() throws TripsException
     {
         Trip trip = tripsService.createTimelessTrip("Trip with requisites", "trip with requisites", TripPrivacy.PUBLIC, user);
         tripsService.addRequisiteToTrip("liters bier", 10, trip, user);
@@ -428,4 +428,14 @@ public class TestTrip {
         tripsService.deleteLocation(trip, organizer, loc1);
         assertEquals(1,tripsService.findTripsByOrganizer(organizer).get(FIRST_ELEMENT).getLocations().size());
     }
+
+    @Test
+    public void successfulFindLocationById() throws TripsException {
+        User organizer = tripsService.createUser(new User("retenflees@hotmail.com","viandel"));
+        Trip trip = tripsService.createTimelessTrip("Trip with locations", "trip with locations", TripPrivacy.PUBLIC, organizer);
+        Location loc1 = tripsService.addLocationToTrip(organizer, trip, 12.00, 13.00, null, null, null, null, null, null, "Location", "Aangename location1");
+        assertNotNull(tripsService.findLocationById(1));
+    }
+
+
 }

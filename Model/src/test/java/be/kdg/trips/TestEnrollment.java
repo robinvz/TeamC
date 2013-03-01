@@ -276,7 +276,7 @@ public class TestEnrollment
         tripsService.addRequisiteToEnrollment("liters bier", 5, trip, user, organizer);
         tripsService.addRequisiteToEnrollment("vrienden", 5, trip, user, organizer);
         Enrollment enrollment = tripsService.findEnrollmentsByUser(user).get(FIRST_ELEMENT);
-        assertEquals(2, enrollment.getRequisites().size());
+        assertTrue(enrollment.getRequisites().containsValue(15));
     }
 
     @Test

@@ -38,13 +38,11 @@ public class Enrollment implements EnrollmentInterface, Serializable
     @JoinColumn(name = "locationId")
     private Location lastLocationVisited;
     @ElementCollection(fetch = FetchType.EAGER)
-    @CollectionTable(name = "T_ENROLLMENT_REQUISITE")
     private Map<String, Integer> requisites;
     private boolean started;
     @NotNull
     private int score;
     @ElementCollection(fetch = FetchType.EAGER)
-    @CollectionTable(name = "T_ENROLLMENT_ANSWEREDQUESTIONS")
     private Set<Integer> answeredQuestions;
 
     public Enrollment(Trip trip, User user)
@@ -55,6 +53,7 @@ public class Enrollment implements EnrollmentInterface, Serializable
         user.addEnrollment(this);
         this.date = new Date();
         this.requisites = new HashMap<>();
+        this.answeredQuestions = new HashSet<>();
         this.started = false;
     }
 
