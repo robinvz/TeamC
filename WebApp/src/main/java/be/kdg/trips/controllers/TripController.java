@@ -283,19 +283,39 @@ public class TripController {
     }
 
     @RequestMapping(value = "/trip/{tripId}/locations/createLocation", method = RequestMethod.POST)
-    public String createLocation(@RequestParam double latitude, @RequestParam double longitude,
-                                 @RequestParam String street,
+    public String createLocation(@PathVariable int tripId, @RequestParam double latitude, @RequestParam double longitude, @RequestParam String street,
                                  @RequestParam String houseNr, @RequestParam String city, @RequestParam String postalCode,
                                  @RequestParam String province, @RequestParam String country, @RequestParam String title,
-                                 @RequestParam String description, @PathVariable int tripId) {
+                                 @RequestParam String description, @RequestParam String question, @RequestParam String correctAnswer, HttpServletRequest request) {
         User user = (User) session.getAttribute("user");
         try {
             Trip trip = tripsService.findTripById(tripId, user);
-            tripsService.addLocationToTrip(user, trip, latitude, longitude, street, houseNr, city, postalCode, province,
-                    country, title, description);
+            if (question.isEmpty()) {
+                tripsService.addLocationToTrip(user, trip, latitude, longitude, street, houseNr.split("-")[0], city, postalCode, province,
+                        country, title, description);
+            } else {
+                List answers = new ArrayList(Arrays.asList(request.getParameter("possibleAnswers")));
+                tripsService.addLocationToTrip(user, trip, latitude, longitude, street, houseNr.split("-")[0], city, postalCode, province,
+                        country, title, description, question, answers, answers.indexOf(correctAnswer));
+            }
+
         } catch (TripsException e) {
             //failed to add location to trip
         }
         return "redirect:/trip/" + tripId + "/locations";
+    }
+
+    @RequestMapping(value = "/trip/{tripId}/locations/{locationId}/deleteLocation", method = RequestMethod.GET)
+    public ModelAndView deleteLocation(@PathVariable int tripId, @PathVariable int locationId) {
+        User user = (User) session.getAttribute("user");
+        Trip trip;
+        try {
+            trip = tripsService.findTripById(tripId, user);
+            tripsService.deleteLocation(trip, user, tripsService.findLocationById(locationId));
+            return new ModelAndView("locationsView", "trip", trip);
+        } catch (TripsException e) {
+            //failed to delete location
+            return new ModelAndView("locationsView");
+        }
     }
 }
