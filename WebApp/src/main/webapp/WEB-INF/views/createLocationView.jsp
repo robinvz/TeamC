@@ -16,6 +16,7 @@
             <form:form action="createLocation" method="POST">
                 <div class="page">
                     <h3>Select the location of your point of interest</h3>
+
                     <div id="mapcanvas" class="map-canvas"></div>
                     <div id="addressfields">
                         <div id="latlng">
@@ -38,7 +39,7 @@
                     </div>
                 </div>
                 <div class="page page-right">
-                    <h2>Please enter details for this point of interest</h2>
+                    <h3>Please enter details for this point of interest</h3>
                     <label>Title: </label>
                     <input id="location-title" name="title" type="text">
                     <label>Description: </label>
@@ -52,7 +53,7 @@
                     <input id="new-answer" type="text">
                     <button id="btn-answer" type="button">Save</button>
                     <label>Select the correct answer: </label>
-                    <select id="correct-answer">
+                    <select id="correct-answer" name="correctAnswer">
                         <option></option>
                     </select>
                     <button id="btn-submit" type="submit">Submit</button>

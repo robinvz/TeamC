@@ -16,12 +16,11 @@ $(document).ready(function () {
 
     $('#btn-answer').on('click', function () {
         $('#answers').append('<label>Answer ' + answerNumber + '</label>');
-        $('#answers').append('<input value="' + tmpVal + '"/>')
+        $('#answers').append('<input name="possibleAnswers" value="' + tmpVal + '"/>')
         $('#new-answer').val('');
         $('#correct-answer').append('<option>' + tmpVal + '</option>')
         $("#new-answer").val('leeg');
         answerNumber += 1;
-
     });
 
     $('#new-answer').on('blur', function () {
@@ -29,7 +28,6 @@ $(document).ready(function () {
         $('#new-answer').val('');
     });
 });
-
 
 function initializeMap() {
     var mapDiv = $('#mapcanvas')[0];
@@ -44,6 +42,7 @@ function initializeMap() {
     });
 
     var marker;
+
     function placeMarker(location) {
         if (marker) { //verify if the marker exists
             marker.setPosition(location); //cange the position
