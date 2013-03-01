@@ -115,6 +115,11 @@ public class TripsServiceImpl implements TripsService
     }
 
     @Override
+    public Location findLocationById(int id) throws TripsException {
+        return tripController.findLocationById(id);
+    }
+
+    @Override
     public void editTripDetails(Trip trip, String title, String description, User organizer) throws TripsException
     {
         tripController.editTripDetails(trip, title, description, organizer);

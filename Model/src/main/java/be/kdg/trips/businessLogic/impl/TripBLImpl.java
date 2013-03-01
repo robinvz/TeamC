@@ -167,6 +167,11 @@ public class TripBLImpl implements TripBL
     }
 
     @Override
+    public Location findLocationById(int id) throws TripsException {
+        return tripDao.getLocationById(id);
+    }
+
+    @Override
     public void editTripDetails(Trip trip, String title, String description, User organizer) throws TripsException
     {
         if(isExistingTrip(trip.getId()) && userBL.isExistingUser(organizer.getEmail()) && isOrganizer(trip, organizer))
