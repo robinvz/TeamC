@@ -30,14 +30,14 @@
                             <td>${trip.privacy}</td>
                         </tr>
                         <tr>
-                            <td><label><spring:message code="Active"/>:</label></td>
+                            <td><label><spring:message code="Active"/></label></td>
                             <td>${trip.active}</td>
                         </tr>
                         <tr>
                             <c:if test="${trip.published==true}">
                                 <spring:message code="IsPublished"/>
                             </c:if>
-                            <<spring:message code="IsNotPublished"/>
+                            <spring:message code="IsNotPublished"/>
                         </tr>
                         <c:choose>
                             <c:when test="${not empty trip.labels}">
@@ -68,7 +68,7 @@
                             <!--Do nothing-->
                         </c:when>
                         <c:when test="${empty trip.enrollments}">
-                            <label>There are no enrollments yet.</label>
+                            <spring:message code="NoEnnrollmentsYet"/>
                         </c:when>
                         <c:otherwise>
                             <table>
@@ -100,10 +100,6 @@
                         </c:if>
                     </c:otherwise>
                 </c:choose>
-
-                <c:if test="${not empty user  && trip.published==true && trip.privacy == 'PROTECTED'}">
-
-                </c:if>
             </article>
         </section>
     </div>
