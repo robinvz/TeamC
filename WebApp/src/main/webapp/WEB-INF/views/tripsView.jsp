@@ -16,9 +16,9 @@
     <c:if test="${not empty user}">
         <nav class="inner-nav">
             <ul class="nav">
-                <li id="btn-trips" class="inner-nav-link inner-selected">Display all trips</li>
-                <li id="btn-trips-participating" class="inner-nav-link">Show my enrolled trips</li>
-                <li id="btn-trips-organised" class="inner-nav-link">Show trips organised by me</li>
+                <li id="btn-trips" class="inner-nav-link inner-selected"><spring:message code="ShowAllTrips" /></li>
+                <li id="btn-trips-participating" class="inner-nav-link"><spring:message code="ShowEnrolledTrips" /></li>
+                <li id="btn-trips-organised" class="inner-nav-link"><spring:message code="ShowOrganizedTrips" /></li>
             </ul>
         </nav>
     </c:if>
@@ -42,8 +42,8 @@
                 <!-- model heeft momenteel: type, id, description, privacy, published, title, userId -->
                 <thead>
                 <tr>
-                    <th>Title</th>
-                    <th>Description</th>
+                    <th><spring:message code="Title" /></th>
+                    <th><spring:message code="Description" /></th>
                     <th>Privacy</th>
                 </tr>
                 </thead>
@@ -93,7 +93,7 @@
                 <thead>
                 <tr>
                     <th>Trip</th>
-                    <th>Description</th>
+                    <th><spring:message code="Description" /></th>
                     <th>Privacy</th>
                     <th>Start</th>
                 </tr>
@@ -129,9 +129,9 @@
                 <thead>
                 <tr>
                     <th>Title</th>
-                    <th>Description</th>
+                    <th><spring:message code="Description" /></th>
                     <th>Privacy</th>
-                    <th>Published</th>
+                    <th><spring:message code="Published" /></th>
                 </tr>
                 </thead>
 

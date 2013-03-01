@@ -1,30 +1,52 @@
-#btn-createLocation {
+#btn-createLocation, #btn-toggleLocations {
     float: right;
 }
 
-table{
+#btn-toggleLocations{
+    margin-right: 10px;;
+}
+
+table {
     display: inline-table;
     margin-top: 20px;
     width: 100%;
     margin-right: 9px;
     text-align: center;
-    float:left;
+    float: left;
 }
 
-thead th{
-    background-color:rgb(215,215,215);
-    color:rgb(30,30,30);
+thead th {
+    background-color: rgb(215, 215, 215);
+    color: rgb(30, 30, 30);
     cursor: default;
 }
 
-th{
+th {
     padding: 20px 0px;
+    width: 30%;
 }
 
-td{
+td {
     padding: 10px 0px;
     text-align: center;
 }
 
-tr:nth-child(even)    { background-color:rgb(235,235,235); }
-tr:nth-child(odd)    { background-color:rgb(248,248,248); }
+tr:nth-child(even) {
+    background-color: rgb(235, 235, 235);
+}
+
+tr:nth-child(odd) {
+    background-color: rgb(248, 248, 248);
+}
+
+#mapcanvas {
+    display: none;
+    width: 100%;
+    height: 460px;
+    margin-top: 20px;
+    background-color: #413E19;
+    border: solid 1px #736F3D;
+    -moz-box-shadow: 5px 5px 10px #2b2814;
+    -webkit-box-shadow: 5px 5px 10px #2b2814;
+    box-shadow: 5px 5px 10px #2b2814;
+}
