@@ -188,13 +188,6 @@ footer
     color: #ff0000;
 }
 
-
-#subscribeButton{
-    float:right;
-    height: 50px;
-    width:120px;
-}
-
 .btn-blue{
     background-color: rgb(76, 90, 162);
     /* Safari 4-5, Chrome 1-9 */

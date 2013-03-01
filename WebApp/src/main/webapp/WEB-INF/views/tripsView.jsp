@@ -42,8 +42,8 @@
                 <!-- model heeft momenteel: type, id, description, privacy, published, title, userId -->
                 <thead>
                 <tr>
-                    <th>Title</th>
-                    <th>Description</th>
+                    <th><spring:message code="Title" /></th>
+                    <th><spring:message code="Description" /></th>
                     <th>Privacy</th>
                 </tr>
                 </thead>
@@ -93,7 +93,7 @@
                 <thead>
                 <tr>
                     <th>Trip</th>
-                    <th>Description</th>
+                    <th><spring:message code="Description" /></th>
                     <th>Privacy</th>
                     <th>Start</th>
                 </tr>
@@ -129,9 +129,9 @@
                 <thead>
                 <tr>
                     <th>Title</th>
-                    <th>Description</th>
+                    <th><spring:message code="Description" /></th>
                     <th>Privacy</th>
-                    <th>Published</th>
+                    <th><spring:message code="Published" /></th>
                 </tr>
                 </thead>
 

@@ -193,7 +193,7 @@ public class TripController {
             try {
                 tripsService.deleteTrip(tripsService.findTripById(tripId, user), user);
             } catch (TripsException e) {
-                return new ModelAndView("tripView", "error", messageSource.getMessage("deleteFailed", null, locale));
+                return new ModelAndView("tripView", "error", messageSource.getMessage("DeleteError", null, locale));
             } catch (MessagingException e) {
                 //return new ModelAndView("tripView" + tripId);   //deze error ook catchen geeft fout
             }
@@ -214,9 +214,9 @@ public class TripController {
                 try {
                     map.put("trip", tripsService.findTripById(tripId, user));
                     if (e.getMessage().contains("published")) {
-                        map.put("error", messageSource.getMessage("notSubscribed", null, locale));
+                        map.put("error", messageSource.getMessage("NotSubscribedError", null, locale));
                     } else {
-                        map.put("error", messageSource.getMessage("enrollmentAlreadyExists", null, locale));
+                        map.put("error", messageSource.getMessage("EnrollmentExistsError", null, locale));
                     }
                 } catch (TripsException e1) {
 
@@ -224,6 +224,21 @@ public class TripController {
                 return new ModelAndView("tripView", map);
             }
             return getTrip(tripId);
+        } else {
+            return new ModelAndView("loginView", "loginBean", new LoginBean());
+        }
+    }
+
+    @RequestMapping(value = "/unSubscribe", method = RequestMethod.GET)
+    public ModelAndView unSubscribe(@RequestParam int tripId, Locale locale) {
+        User user = (User) session.getAttribute("user");
+        if (user != null) {     //TODO:Add custom error msgs
+            try {
+               tripsService.disenroll(tripsService.findTripById(tripId, user), user);
+            } catch (TripsException e) {
+                return new ModelAndView("tripView");
+            }
+            return new ModelAndView("tripView");
         } else {
             return new ModelAndView("loginView", "loginBean", new LoginBean());
         }
@@ -237,7 +252,7 @@ public class TripController {
                 tripsService.publishTrip(tripsService.findTripById(tripId, user), user);
                 return new ModelAndView("tripsView");
             } catch (TripsException e) {
-                return new ModelAndView("tripView", "error", messageSource.getMessage("notPublished", null, locale));
+                return new ModelAndView("tripView", "error", messageSource.getMessage("NotPublishedError", null, locale));
             }
         } else {
             return new ModelAndView("loginView", "loginBean", new LoginBean());
@@ -268,7 +283,8 @@ public class TripController {
     }
 
     @RequestMapping(value = "/trip/{tripId}/locations/createLocation", method = RequestMethod.POST)
-    public String createLocation(@RequestParam double latitude, @RequestParam double longitude, @RequestParam String street,
+    public String createLocation(@RequestParam double latitude, @RequestParam double longitude,
+                                 @RequestParam String street,
                                  @RequestParam String houseNr, @RequestParam String city, @RequestParam String postalCode,
                                  @RequestParam String province, @RequestParam String country, @RequestParam String title,
                                  @RequestParam String description, @PathVariable int tripId) {
