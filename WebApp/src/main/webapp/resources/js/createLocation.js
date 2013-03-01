@@ -7,26 +7,10 @@ var tmpVal = '';
 var usedAddressComponents = [];
 
 $(document).ready(function () {
+    $('#addressfields input').attr('disabled', 'disabled');
+    $('#btn-next').attr('disabled', 'disabled');
+    btnListeners();
     initializeMap();
-
-    $('#btn-next').on('click', function () {
-        $('#add-location').animate({marginLeft: '-=960'}, 1500, function () {
-        });
-    });
-
-    $('#btn-answer').on('click', function () {
-        $('#answers').append('<label>Answer ' + answerNumber + '</label>');
-        $('#answers').append('<input name="possibleAnswers" value="' + tmpVal + '"/>')
-        $('#new-answer').val('');
-        $('#correct-answer').append('<option>' + tmpVal + '</option>')
-        $("#new-answer").val('leeg');
-        answerNumber += 1;
-    });
-
-    $('#new-answer').on('blur', function () {
-        tmpVal = $('#new-answer').val();
-        $('#new-answer').val('');
-    });
 });
 
 function initializeMap() {
@@ -84,15 +68,17 @@ function fillInputAddress() {
     $.each(usedAddressComponents, function (i, usedAddressComponent) {
         $("#" + usedAddressComponent).val(usedAddressComponents[i + 1]);
     });
-    $("#latitude").val(latCoord);
-    $("#longitude").val(lngCoord);
+    $('#latitude').val(latCoord);
+    $('#longitude').val(lngCoord);
+    $('#btn-next').removeAttr('disabled');
 }
 
 function clearInputAddress() {
     $.each(usedAddressComponents, function (i, usedAddressComponent) {
-        $("#" + usedAddressComponent).val("");
+        $('#' + usedAddressComponent).val('');
     });
     usedAddressComponents = [];
+    $('#btn-next').attr('disabled', 'disabled');
 }
 
 
@@ -100,3 +86,29 @@ function clearInputAddress() {
 // (sublocality wordt soms administrative_area_level
 /*function checkAddress() {
  }        */
+
+function btnListeners() {
+    $('#btn-next').on('click', function () {
+        $('#add-location').animate({marginLeft: '-=960'}, 1500, function () {
+        });
+    });
+
+    $('#btn-back').on('click', function () {
+        $('#add-location').animate({marginLeft: '+=960'}, 1500, function () {
+        });
+    });
+
+    $('#btn-answer').on('click', function () {
+        $('#answers').append('<label>Answer ' + answerNumber + '</label>');
+        $('#answers').append('<input name="possibleAnswers" value="' + tmpVal + '"/>')
+        $('#new-answer').val('');
+        $('#correct-answer').append('<option>' + tmpVal + '</option>')
+        $("#new-answer").val('leeg');
+        answerNumber += 1;
+    });
+
+    $('#new-answer').on('blur', function () {
+        tmpVal = $('#new-answer').val();
+        $('#new-answer').val('');
+    });
+}

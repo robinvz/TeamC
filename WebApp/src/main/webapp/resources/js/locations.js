@@ -1,20 +1,8 @@
 var map;
 
 $(document).ready(function () {
+    btnListeners();
     initializeMap();
-
-    $('#btn-toggleLocations').on('click', function () {
-        if ($("#mapcanvas").is(":hidden")) {
-            $(this).text("Textual Overview");
-            $("#tbl-locations").hide();
-            $("#mapcanvas").show();
-        } else {
-            $(this).text("Map Overview");
-            $("#mapcanvas").hide();
-            $("#tbl-locations").show();
-        }
-    });
-
 
     //voor elke location uit lijst do createMarker(lat, lng)
     //zoomFit();
@@ -49,3 +37,17 @@ function initializeMap() {
  });
  map.fitBounds(bounds);
  } */
+
+function btnListeners() {
+    $('#btn-toggleLocations').on('click', function () {
+        if ($('#mapcanvas').is(":hidden")) {
+            $(this).text('Text Overview');
+            $('#tbl-locations').hide();
+            $('#mapcanvas').show();
+        } else {
+            $(this).text('Map Overview');
+            $('#mapcanvas').hide();
+            $('#tbl-locations').show();
+        }
+    });
+}
