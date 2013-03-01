@@ -29,6 +29,8 @@ import java.util.Date;
 import java.util.Locale;
 
 import static org.junit.Assert.*;
+import static org.mockito.Matchers.any;
+import static org.mockito.Matchers.eq;
 import static org.mockito.Mockito.when;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 
@@ -167,6 +169,17 @@ public class TripTest {
         RequestBuilder requestBuilder = MockMvcRequestBuilders.get("/deleteTrip/" + t.getId());
         mockMvc.perform(requestBuilder).andExpect(view().name("tripsView"));
         assertEquals(0, tripsService.findAllNonPrivateTrips(testUser).size());
+    }
+
+    @Test
+    public void tripNotDeletedNotOrganizer() throws Exception {
+        mockHttpSession.setAttribute("user", testUser);
+        User organizer = new User("email", "password");
+        Trip t = new TimelessTrip(title, description, privacy, organizer);
+        RequestBuilder requestBuilder = MockMvcRequestBuilders.get("/deleteTrip/" + t.getId());
+        Mockito.doThrow(new TripsException("You're not the organizer")).when(tripsService).deleteTrip(any(Trip.class), eq(testUser));
+        mockMvc.perform(requestBuilder).andExpect(view().name("tripView"));
+        assertNotNull(t);
     }
 
     @Test
