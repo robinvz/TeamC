@@ -29,6 +29,7 @@
                 <th>Province</th>
                 <th>Postal Code</th>
                 <th>Country</th>
+                <th></th>
             </tr>
             </thead>
             <tfoot>
@@ -42,6 +43,7 @@
                 <th>Province</th>
                 <th>Postal Code</th>
                 <th>Country</th>
+                <th></th>
             </tr>
             </tfoot>
             <tbody>
@@ -82,7 +84,12 @@
                                 <td>
                                         ${location.getAddress().country}
                                 </td>
-
+                                <td>
+                                    <a href="/trip/${trip.id}/locations/${location.id}/deleteLocation">
+                                        <button type="button" id="btn-deleteLocation">Delete
+                                        </button>
+                                    </a>
+                                </td>
 
                         </tr>
                     </c:forEach>

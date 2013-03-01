@@ -16,8 +16,7 @@
     <h2><spring:message code="PleaseLogIn"/></h2>
     <div id="content">
         <div id="login-buttons">
-            <fb:login-button autologoutlink='true'
-                             perms='email,user_birthday,status_update,publish_stream'></fb:login-button>
+
             <button id="btn-login" class="btn-blue">Sign in normally</button>
         </div>
 
