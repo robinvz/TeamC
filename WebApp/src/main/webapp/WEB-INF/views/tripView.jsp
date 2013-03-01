@@ -62,26 +62,6 @@
 
                 </div>
 
-                <div class="trip-participants">
-                    <c:choose>
-                        <c:when test="${trip.privacy == 'PUBLIC'}">
-                            <!--Do nothing-->
-                        </c:when>
-                        <c:when test="${empty trip.enrollments}">
-                            <spring:message code="NoEnnrollmentsYet"/>
-                        </c:when>
-                        <c:otherwise>
-                            <table>
-                                <c:forEach items="${trip.enrollments}" var="enrollment">
-                                    <tr>
-                                        <td>${enrollment.user.email}</td>
-                                    </tr>
-                                </c:forEach>
-                            </table>
-                        </c:otherwise>
-                    </c:choose>
-                </div>
-
                 <c:choose>
                     <c:when test="${not empty user  && trip.published==true && trip.privacy == 'PROTECTED' && not empty trip.enrollments}">
                         <c:forEach items="${trip.enrollments}" var="enrollment">

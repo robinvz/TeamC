@@ -8,7 +8,7 @@
     <nav class="trip-nav">
         <h3>Trip</h3>
         <ul class="trip-nav">
-            <li><a href="#"><spring:message code="General"/></a></li>
+            <li><a href="/trip/${trip.id}"><spring:message code="General"/></a></li>
             <li><a href="#"><spring:message code="Requirements"/></a></li>
             <li><a href="/trip/${trip.id}/locations"><spring:message code="Locations"/></a></li>
             <li><a href="#">Chat</a></li>
