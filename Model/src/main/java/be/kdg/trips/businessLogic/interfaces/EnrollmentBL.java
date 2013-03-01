@@ -41,4 +41,7 @@ public interface EnrollmentBL
     public boolean isExistingInvitation(User user, Trip trip) throws TripsException;
     public boolean isUnexistingEnrollment(User user, Trip trip) throws TripsException;
     public boolean isUnexistingInvitation(User user, Trip trip) throws TripsException;
+
+    public void startTrip(Trip trip, User user) throws TripsException;
+    public String stopTrip(Trip trip, User user) throws TripsException;
 }
