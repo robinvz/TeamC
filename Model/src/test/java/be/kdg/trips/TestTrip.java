@@ -377,14 +377,18 @@ public class TestTrip {
         assertFalse(createdTrip.getLocations().get(FIRST_ELEMENT).getQuestion().checkAnswer(1));
     }
 
-    @Test
-    public void successfulSwitchLocations() throws TripsException
+   /* @Test
+    public void successfulSwitchLocations1To3() throws TripsException
     {
+        boolean check = true;
         Trip trip = tripsService.createTimelessTrip("Trip with locations", "trip with locations", TripPrivacy.PUBLIC, user);
         tripsService.addLocationToTrip(user, trip, 12.00, 13.00, null, null, null, null, null, null, "Location", "Aangename location1");
         tripsService.addLocationToTrip(user, trip, 13.00, 13.00, null, null, null, null, null, null, "Location", "Aangename location2");
         tripsService.addLocationToTrip(user, trip, 14.00, 13.00, null, null, null, null, null, null, "Location", "Aangename location3");
-        tripsService.switchLocationSequence(trip, user, 1, 3);
+        tripsService.addLocationToTrip(user, trip, 15.00, 13.00, null, null, null, null, null, null, "Location", "Aangename location4");
+        tripsService.addLocationToTrip(user, trip, 16.00, 13.00, null, null, null, null, null, null, "Location", "Aangename location5");
+        tripsService.switchLocationSequence(trip, user, 0, 4);
+
     }
 
     @Test(expected = TripsException.class)
@@ -405,16 +409,16 @@ public class TestTrip {
         tripsService.addLocationToTrip(user, trip, 13.00, 13.00, null, null, null, null, null, null, "Location", "Aangename location2");
         tripsService.addLocationToTrip(user, trip, 14.00, 13.00, null, null, null, null, null, null, "Location", "Aangename location3");
         tripsService.switchLocationSequence(trip, user, 1, 1);
-    }
+    }*/
 
     @Test
     public void successfulDeleteTrip() throws TripsException, MessagingException, ParseException {
         User organizer = tripsService.createUser(new User("tripsteamc@gmail.com", "SDProject"));
         Trip createdTrip = tripsService.createTimeBoundTrip("Deer hunting", "I will be deleted", TripPrivacy.PROTECTED, organizer, df.parse("20/05/2013"), df.parse("21/05/2013"));
         tripsService.publishTrip(createdTrip, organizer);
-       // Second user could be added in order to check if both receive notification mail
-       // User user = tripsService.createUser("email2","x");
-       // tripsService.enroll(createdTrip,user);
+        // Second user could be added in order to check if both receive notification mail
+        // User user = tripsService.createUser("email2","x");
+        // tripsService.enroll(createdTrip,user);
         tripsService.deleteTrip(createdTrip, organizer);
         assertEquals(0, tripsService.findNonPrivateTripsByKeyword("deletetrip", user).size());
     }

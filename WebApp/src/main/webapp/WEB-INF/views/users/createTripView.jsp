@@ -1,13 +1,12 @@
 <%@ taglib prefix="form" uri="http://www.springframework.org/tags/form" %>
 <%@ taglib prefix="spring" uri="http://www.springframework.org/tags" %>
-<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 
 <html>
 <head>
     <link rel="stylesheet" href="${pageContext.request.contextPath}/resources/css/main.css"/>
     <link rel="stylesheet" href="${pageContext.request.contextPath}/resources/css/createtrip.css"/>
     <link rel="shortcut icon" href="${pageContext.request.contextPath}/resources/res/favicon.ico">
-    <title><spring:message code="CreateTripPage"/></title>
+    <title><spring:message code="CreateTripPage" /></title>
 </head>
 <body>
 <div id="page">
@@ -20,15 +19,13 @@
 
         <div id="timeboundTrip">
             <form id="form-createTrip" action="/createTimeLessTrip" method="POST">
-                <fieldset>
-                    <legend><spring:message code="CreateTrip"/></legend>
                     <table>
                         <tr>
-                            <td><label><spring:message code="Title"/></label></td>
+                            <td><label><spring:message code="Title" /></label></td>
                             <td><input type="text" name="title" required="true"></td>
                         </tr>
                         <tr>
-                            <td><label><spring:message code="Description"/></label></td>
+                            <td><label><spring:message code="Description" /></label></td>
                             <td><input type="text" name="description" required="true"></td>
                         </tr>
                         <tr>
@@ -48,23 +45,22 @@
                         </tr>
 
                         <tr>
-                            <td><label><spring:message code="CreateTbTrip"/></label></td>
+                            <td><label><spring:message code="CreateTbTrip" /></label></td>
                             <td><input type="checkbox" id="checkTimeBound"></td>
                         </tr>
                         <tr class="optionsTimeBound">
-                            <td><label><spring:message code="StartDate"/></label></td>
-                            <td><input type="date" name="startDate">
+                            <td><label><spring:message code="StartDate" /></label></td>
+                            <td><input type="date" name="startDate">     </td>
                         </tr>
                         <tr class="optionsTimeBound">
                             <td><label><spring:message code="EndDate"/></label></td>
-                            <td><input type="date" name="endDate"></td></td>
+                            <td><input type="date" name="endDate"></td>
                         </tr>
                         <tr>
                             <td></td>
                             <td><input type="submit" class="btn-submit btn-blue" value="<spring:message code="Create" />"></td>
                         </tr>
                     </table>
-                </fieldset>
             </form>
         </div>
     </div>

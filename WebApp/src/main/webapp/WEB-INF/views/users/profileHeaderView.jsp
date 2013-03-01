@@ -1,6 +1,6 @@
 <%@ taglib prefix="spring" uri="http://www.springframework.org/tags" %>
 
-<aside>
+<aside class="above-footer">
     <img id="profilepic" src="/users/profilePic" title="kjsfdkl">
 
     <nav class="trip-nav">
