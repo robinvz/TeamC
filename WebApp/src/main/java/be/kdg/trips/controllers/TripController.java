@@ -282,4 +282,31 @@ public class TripController {
         }
         return "redirect:/trip/" + tripId + "/locations";
     }
+
+    @RequestMapping(value = "/trip/switchLocation", method = RequestMethod.POST)
+    public ModelAndView switchLocation(@RequestParam String id,@RequestParam int fromPosition,@RequestParam int toPosition,@RequestParam String direction){
+        System.out.println();
+        User user = (User) session.getAttribute("user");
+        String[] ids = id.split("-");
+        int tripId = Integer.parseInt(ids[0]);
+        int locationId = Integer.parseInt(ids[1]);
+        Trip trip = null;
+        try {
+            trip = tripsService.findTripById(tripId, user);
+        }
+        catch (TripsException e) {
+            //Trip not found
+            System.out.println("error1");
+        }
+        if (user != null){
+            try {
+                tripsService.switchLocationSequence(trip, user, fromPosition, toPosition);
+            } catch (TripsException e) {
+                //Switch location failed
+                System.out.println("error2");
+            }
+        }
+
+        return new ModelAndView("locationsView", "trip", trip);
+    }
 }
