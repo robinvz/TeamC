@@ -228,13 +228,13 @@ public class TripController {
             return new ModelAndView("loginView", "loginBean", new LoginBean());
         }
     }
-    /* //UNDER CONSTRUCTIONz
+
     @RequestMapping(value = "/unSubscribe", method = RequestMethod.GET)
     public ModelAndView unSubscribe(@RequestParam int tripId, Locale locale) {
         User user = (User) session.getAttribute("user");
-        if (user != null) {
+        if (user != null) {     //TODO:Add custom error msgs
             try {
-               // tripsService.subscribe()
+               tripsService.disenroll(tripsService.findTripById(tripId, user), user);
             } catch (TripsException e) {
                 return new ModelAndView("tripView");
             }
@@ -243,7 +243,7 @@ public class TripController {
             return new ModelAndView("loginView", "loginBean", new LoginBean());
         }
     }
-    */
+
     @RequestMapping(value = "/publishTrip/{tripId}", method = RequestMethod.GET)
     public ModelAndView publish(@PathVariable int tripId, Locale locale) {
         User user = (User) session.getAttribute("user");
