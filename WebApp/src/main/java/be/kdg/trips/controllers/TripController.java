@@ -193,7 +193,7 @@ public class TripController {
             try {
                 tripsService.deleteTrip(tripsService.findTripById(tripId, user), user);
             } catch (TripsException e) {
-                return new ModelAndView("tripView", "error", messageSource.getMessage("deleteFailed", null, locale));
+                return new ModelAndView("tripView", "error", messageSource.getMessage("DeleteError", null, locale));
             } catch (MessagingException e) {
                 //return new ModelAndView("tripView" + tripId);   //deze error ook catchen geeft fout
             }
@@ -214,9 +214,9 @@ public class TripController {
                 try {
                     map.put("trip", tripsService.findTripById(tripId, user));
                     if (e.getMessage().contains("published")) {
-                        map.put("error", messageSource.getMessage("notSubscribed", null, locale));
+                        map.put("error", messageSource.getMessage("NotSubscribedError", null, locale));
                     } else {
-                        map.put("error", messageSource.getMessage("enrollmentAlreadyExists", null, locale));
+                        map.put("error", messageSource.getMessage("EnrollmentExistsError", null, locale));
                     }
                 } catch (TripsException e1) {
 
@@ -228,7 +228,7 @@ public class TripController {
             return new ModelAndView("loginView", "loginBean", new LoginBean());
         }
     }
-    /* //UNDER CONSTRUCTION
+    /* //UNDER CONSTRUCTIONz
     @RequestMapping(value = "/unSubscribe", method = RequestMethod.GET)
     public ModelAndView unSubscribe(@RequestParam int tripId, Locale locale) {
         User user = (User) session.getAttribute("user");
@@ -252,7 +252,7 @@ public class TripController {
                 tripsService.publishTrip(tripsService.findTripById(tripId, user), user);
                 return new ModelAndView("tripsView");
             } catch (TripsException e) {
-                return new ModelAndView("tripView", "error", messageSource.getMessage("notPublished", null, locale));
+                return new ModelAndView("tripView", "error", messageSource.getMessage("NotPublishedError", null, locale));
             }
         } else {
             return new ModelAndView("loginView", "loginBean", new LoginBean());

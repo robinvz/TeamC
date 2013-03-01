@@ -20,3 +20,15 @@ h2{
     margin-top: 65px;
 }
 
+#subscribeButton{
+    float:right;
+    height: 50px;
+    width:120px;
+}
+
+#unsubscribeButton{
+    float:right;
+    height: 50px;
+    width:120px;
+}
+
