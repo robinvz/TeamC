@@ -3,6 +3,8 @@ $(document).ready(function(){
     $('#trips').fadeOut(0);
     $('#trips').slideDown(300);
 
+    $('.tables').dataTable({ "bPaginate": false, "bInfo": false, "bAutoWidth": false });
+
 
     $('#btn-trips').on('click', function(){
         setSelected($(this));

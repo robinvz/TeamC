@@ -298,7 +298,6 @@ public class TripController {
                 tripsService.addLocationToTrip(user, trip, latitude, longitude, street, houseNr.split("-")[0], city, postalCode, province,
                         country, title, description, question, answers, answers.indexOf(correctAnswer));
             }
-
         } catch (TripsException e) {
             //failed to add location to trip
         }
@@ -306,16 +305,50 @@ public class TripController {
     }
 
     @RequestMapping(value = "/trip/{tripId}/locations/{locationId}/deleteLocation", method = RequestMethod.GET)
-    public ModelAndView deleteLocation(@PathVariable int tripId, @PathVariable int locationId) {
+    public String deleteLocation(@PathVariable int tripId, @PathVariable int locationId) {
         User user = (User) session.getAttribute("user");
         Trip trip;
         try {
             trip = tripsService.findTripById(tripId, user);
-            tripsService.deleteLocation(trip, user, tripsService.findLocationById(locationId));
-            return new ModelAndView("locationsView", "trip", trip);
+            try {
+
+                tripsService.deleteLocation(trip, user, tripsService.findLocationById(locationId));
+
+            } catch (TripsException e) {
+                //failed to delete location
+            }
+            return "redirect:/trip/" + trip.getId() + "/locations";
         } catch (TripsException e) {
-            //failed to delete location
-            return new ModelAndView("locationsView");
+          //Failed to find trip
         }
+        return   "/trips";
     }
+
+    @RequestMapping(value = "/trip/switchLocation", method = RequestMethod.POST)
+    public ModelAndView switchLocation(@RequestParam String id,@RequestParam int fromPosition,@RequestParam int toPosition,@RequestParam String direction){
+        System.out.println();
+        User user = (User) session.getAttribute("user");
+        String[] ids = id.split("-");
+        int tripId = Integer.parseInt(ids[0]);
+        int locationId = Integer.parseInt(ids[1]);
+        Trip trip = null;
+        try {
+            trip = tripsService.findTripById(tripId, user);
+        }
+        catch (TripsException e) {
+            //Trip not found
+            System.out.println("error1");
+        }
+        if (user != null){
+            try {
+                tripsService.switchLocationSequence(trip, user, fromPosition, toPosition);
+            } catch (TripsException e) {
+                //Switch location failed
+                System.out.println("error2");
+            }
+        }
+
+        return new ModelAndView("locationsView", "trip", trip);
+    }
+
 }

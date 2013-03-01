@@ -21,6 +21,8 @@ import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 
 import static org.junit.Assert.*;
 import static org.mockito.Matchers.any;
+import static org.mockito.Matchers.anyByte;
+import static org.mockito.Matchers.anyString;
 import static org.mockito.Mockito.when;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.view;
 
@@ -90,7 +92,7 @@ public class ProfileTest {
         User userAfterEdit = new User("joel@student.kdg.be", "oldPassword");
         userAfterEdit.setFirstName("robke");
         userAfterEdit.setLastName("zype");
-        userAfterEdit.setAddress(new Address("street", "22","Brugge","3300","Oost-Vlaanderen","Belgie"));
+        userAfterEdit.setAddress(new Address("street", "22", "Brugge", "3300", "Oost-Vlaanderen", "Belgie"));
         when(tripsService.findUser(testUser.getEmail())).thenReturn(userAfterEdit);
         mockMvc.perform(requestBuilder).andExpect(view().name("/users/profileView"));
         assertEquals((mockHttpSession.getAttribute("user")), userAfterEdit);
@@ -104,7 +106,7 @@ public class ProfileTest {
                 .param("firstName", "robke").param("lastName", "zype").param("street", "straat").param("houseNr", "22")
                 .param("city", "Brugge").param("postalCode", "3300").param("province", "Oost-Vlaanderen").param("country", "Belgie");
         Mockito.doThrow(new TripsException("Cannot edit unexisting user")).when(tripsService)
-                .updateUser(testUser, "robke", "zype", "straat", "22","Brugge","3300","Oost-Vlaanderen","Belgie", null);
+                .updateUser(testUser, "robke", "zype", "straat", "22", "Brugge", "3300", "Oost-Vlaanderen", "Belgie", null);
         mockMvc.perform(requestBuilder).andExpect(view().name("/users/profileView"));
         User notEditedUser = new User();
         notEditedUser.setFirstName("jan");
@@ -126,6 +128,30 @@ public class ProfileTest {
         Mockito.doThrow(new TripsException("Cannot delete unexisting user")).when(tripsService).deleteUser(any(User.class));
         mockMvc.perform(requestBuilder).andExpect(view().name("/users/profileView"));
         assertNotNull(mockHttpSession.getAttribute("user"));
+    }
+
+    @Test
+    public void showEditProfilePic() throws Exception {
+        RequestBuilder requestBuilder = MockMvcRequestBuilders.get("/users/editProfilePic");
+        mockMvc.perform(requestBuilder).andExpect(view().name("/users/editProfilePicView"));
+    }
+
+    @Test
+    public void editProfilePic() throws Exception {
+        mockHttpSession.setAttribute("user", testUser);
+        RequestBuilder requestBuilder = MockMvcRequestBuilders.post("/users/editProfilePic").param("picPath", "../../main/webapp/resources/res/img/dragon.png");
+        when(tripsService.findUser(anyString())).thenReturn(testUser);
+        mockMvc.perform(requestBuilder).andExpect(view().name("/users/profileView"));
+
+    }
+
+    @Test
+    public void editProfilePicNoUserInSession() throws Exception {
+        mockHttpSession.setAttribute("user", testUser);
+        RequestBuilder requestBuilder = MockMvcRequestBuilders.post("/users/editProfilePic").param("picPath", "../../main/webapp/resources/res/img/dragon.png");
+        when(tripsService.findUser(anyString())).thenThrow(new TripsException("user does not exist"));
+        mockMvc.perform(requestBuilder).andExpect(view().name("/users/profileView"));
+
     }
 
 }
