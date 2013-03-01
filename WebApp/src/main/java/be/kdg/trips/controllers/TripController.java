@@ -298,7 +298,6 @@ public class TripController {
                 tripsService.addLocationToTrip(user, trip, latitude, longitude, street, houseNr.split("-")[0], city, postalCode, province,
                         country, title, description, question, answers, answers.indexOf(correctAnswer));
             }
-
         } catch (TripsException e) {
             //failed to add location to trip
         }
@@ -318,4 +317,5 @@ public class TripController {
             return new ModelAndView("locationsView");
         }
     }
+
 }
