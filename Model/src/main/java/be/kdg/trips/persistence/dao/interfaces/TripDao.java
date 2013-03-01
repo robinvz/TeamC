@@ -27,6 +27,7 @@ public interface TripDao {
     public List<Trip> getTripsByOrganizer(User organizer);
     public Trip getTrip(int id) throws TripsException;
     public Trip getTripByQuestion(Question question) throws TripsException;
+    public Location getLocationById(int id) throws TripsException;
 
     public void deleteTrip(Trip trip);
     public void deleteLocation(Location location);

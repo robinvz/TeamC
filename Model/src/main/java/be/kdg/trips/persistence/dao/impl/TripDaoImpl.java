@@ -108,6 +108,19 @@ public class TripDaoImpl implements TripDao{
     }
 
     @Override
+    public Location getLocationById(int id) throws TripsException {
+        Session session = sessionFactory.openSession();
+        Query query = session.createQuery("FROM Location l WHERE l.id = :id");
+        query.setParameter("id", id);
+        Location location =(Location)query.uniqueResult();
+        session.close();
+        if (location == null) {
+            throw new TripsException("Location with id '"+id+"' doesn't exist");
+        }
+        return location;
+    }
+
+    @Override
     public void deleteTrip(Trip trip) {
         Session session = sessionFactory.openSession();
         Transaction tx = session.getTransaction();
