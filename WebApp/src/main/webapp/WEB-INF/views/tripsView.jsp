@@ -38,7 +38,7 @@
 
     <div id="content">
         <div id="inner-content">
-            <table>
+            <table class="tables">
                 <!-- model heeft momenteel: type, id, description, privacy, published, title, userId -->
                 <thead>
                 <tr>
@@ -88,7 +88,7 @@
                 </form>
                 </tbody>
             </table>
-            <table >
+            <table class="tables">
                 <!-- model heeft momenteel: type, id, description, privacy, published, title, userId -->
                 <thead>
                 <tr>
@@ -124,7 +124,7 @@
                     </div>
                 </tbody>
             </table>
-            <table >
+            <table class="tables">
                 <!-- model heeft momenteel: type, id, description, privacy, published, title, userId -->
                 <thead>
                 <tr>
@@ -170,7 +170,11 @@
     </div>
 
 </div>
+
 <script src="${pageContext.request.contextPath}/resources/js/jquery-1.9.0.min.js"></script>
+<script src="${pageContext.request.contextPath}/resources/js/jquery.dataTables.js"></script>
+<script src="//ajax.googleapis.com/ajax/libs/jqueryui/1.8.24/jquery-ui.min.js"></script>
+<script src="${pageContext.request.contextPath}/resources/js/jquery.dataTables.rowReordering.js"></script>
 <script src="${pageContext.request.contextPath}/resources/js/trips.js"></script>
 </body>
 </html>

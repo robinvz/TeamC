@@ -66,7 +66,6 @@ public interface TripsService
     public Enrollment acceptInvitation(Trip trip, User user) throws TripsException;
     public void declineInvitation(Trip trip, User user) throws TripsException;
     public void disenroll(Trip trip, User user) throws TripsException;
-    //implicit start enrollment
     public void setLastLocationVisited(Trip trip, User user, Location location) throws TripsException;
     public void checkAnswerFromQuestion(Question question, int answerIndex, User user) throws TripsException;
 
@@ -80,4 +79,7 @@ public interface TripsService
 
     public Invitation invite(Trip trip, User organizer, User user) throws TripsException, MessagingException;
     public void uninvite(Trip trip, User organizer, User user) throws TripsException;
+
+    public void startTrip(Trip trip, User user) throws TripsException;
+    public String stopTrip(Trip trip, User user) throws TripsException;
 }

@@ -1,0 +1,98 @@
+.page {
+    width: 955px;
+    display: inline-block;
+}
+
+#add-location {
+    width: 1920px;
+}
+
+#latlng, aside {
+    display: none;
+}
+
+.map-canvas {
+    margin-top: 50px;
+    width: 600px;
+    height: 460px;
+    background-color: #413E19;
+    border: solid 1px #736F3D;
+    -moz-box-shadow: 5px 5px 10px #2b2814;
+    -webkit-box-shadow: 5px 5px 10px #2b2814;
+    box-shadow: 5px 5px 10px #2b2814;
+    float: left;
+}
+
+h3 {
+    display: inline-block;
+    margin: 50px 0px 50px 80px;
+    width: 250px;
+}
+
+#addressfields {
+    float: right;
+    /*display: inline-block;*/
+    width: 300px;
+}
+
+#addressfields label {
+    float: left;
+    width: 100px;
+}
+
+#addressfields label, #addressfields input {
+    margin-bottom: 10px;
+}
+
+#btn-next {
+    margin-left: 115px;
+}
+
+.page-right label {
+    width: 250px;
+    margin-left: 80px;
+    vertical-align: top;
+}
+
+.page-right {
+    float: right;
+    margin-right: 5px;
+}
+
+.page-right input {
+    width: 600px;
+}
+
+.page-right h3 {
+    width: 400px;
+}
+
+#new-answer {
+    width: 550px;
+}
+
+#correct-answer {
+    width: 600px;
+}
+
+#enable-answer {
+    display: none;
+}
+
+#btn-back {
+    margin-left: 335px;
+}
+
+#btn-submit {
+    margin-left: 5px;
+}
+
+#questionfields input, #questionfields  label, #questionfields  textarea {
+    display: inline-block;
+}
+
+textarea {
+    height: 200px;
+    width: 600px;
+    resize: none;
+}
