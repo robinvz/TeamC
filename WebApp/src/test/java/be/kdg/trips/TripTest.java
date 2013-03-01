@@ -3,11 +3,8 @@ package be.kdg.trips;
 import be.kdg.trips.controllers.TripController;
 import be.kdg.trips.exception.TripsException;
 import be.kdg.trips.model.address.Address;
-import be.kdg.trips.model.enrollment.Enrollment;
 import be.kdg.trips.model.location.Location;
-import be.kdg.trips.model.question.Question;
 import org.mockito.Mockito;
-import org.springframework.context.MessageSource;
 import be.kdg.trips.model.trip.TimeBoundTrip;
 import be.kdg.trips.model.trip.TimelessTrip;
 import be.kdg.trips.model.trip.Trip;
@@ -17,8 +14,8 @@ import be.kdg.trips.services.interfaces.TripsService;
 import org.junit.Before;
 import org.junit.Test;
 import org.mockito.Mock;
-import org.mockito.Mockito;
 import org.mockito.MockitoAnnotations;
+import org.springframework.context.MessageSource;
 import org.springframework.mock.web.MockHttpSession;
 import org.springframework.test.util.ReflectionTestUtils;
 import org.springframework.test.web.servlet.MockMvc;
@@ -26,15 +23,14 @@ import org.springframework.test.web.servlet.RequestBuilder;
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 
-import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
-import java.util.List;
 import java.util.Locale;
 
 import static org.junit.Assert.*;
 import static org.mockito.Matchers.any;
+import static org.mockito.Matchers.eq;
 import static org.mockito.Mockito.when;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 
@@ -47,9 +43,9 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
  */
 public class TripTest {
     @Mock
-    private MessageSource messageSource;
-    @Mock
     private TripsService tripsService;
+    @Mock
+    private MessageSource messageSource;
     private MockHttpSession mockHttpSession;
     private MockMvc mockMvc;
     private String title = "title";
@@ -91,7 +87,7 @@ public class TripTest {
     }
 
     @Test
-    public void createTimeBoundTrip() throws Exception {
+    public void createTBTrip() throws Exception {
         mockHttpSession.setAttribute("user", testUser);
         Date startd = sdf.parse(startDate);
         Date endd = sdf.parse(endDate);
@@ -102,7 +98,7 @@ public class TripTest {
     }
 
     @Test
-    public void createTimeBoundStartDateAfterEndDate() throws Exception {
+    public void createTBTripStartDateAfterEndDate() throws Exception {
         mockHttpSession.setAttribute("user", testUser);
         Date startd = sdf.parse(endDate);
         Date endd = sdf.parse(startDate);
@@ -112,7 +108,18 @@ public class TripTest {
     }
 
     @Test
-    public void createTimelessTrip() throws Exception {
+    public void createTBTripStartDateInPast() throws Exception {
+        mockHttpSession.setAttribute("user", testUser);
+        String PastDate = "2010-01-01";
+        Date startd = sdf.parse(PastDate);
+        Date endd = sdf.parse(endDate);
+        RequestBuilder requestBuilder = MockMvcRequestBuilders.post("/createTimeBoundTrip").param("title", title).param("description", description).param("privacy", privacyString).param("startDate", PastDate).param("endDate", endDate);
+        when(tripsService.createTimeBoundTrip(title, description, privacy, testUser, startd, endd)).thenThrow(new TripsException("Startdate must be in future"));
+        mockMvc.perform(requestBuilder).andExpect(view().name("/users/createTripView"));
+    }
+
+    @Test
+    public void createTLTrip() throws Exception {
         mockHttpSession.setAttribute("user", testUser);
         TimelessTrip t = new TimelessTrip(title, description, privacy, testUser);
         RequestBuilder requestBuilder = MockMvcRequestBuilders.post("/createTimeLessTrip").param("title", title).param("description", description).param("privacy", privacyString);
@@ -121,7 +128,7 @@ public class TripTest {
     }
 
     @Test
-    public void createTimelessTripWrongUser() throws Exception {
+    public void createTLTripWrongUser() throws Exception {
         mockHttpSession.setAttribute("user", testUser);
         RequestBuilder requestBuilder = MockMvcRequestBuilders.post("/createTimeLessTrip").param("title", title).param("description", description).param("privacy", privacyString);
         when(tripsService.createTimelessTrip(title, description, privacy, testUser)).thenThrow(new TripsException("Users does not exist"));
@@ -162,6 +169,17 @@ public class TripTest {
         RequestBuilder requestBuilder = MockMvcRequestBuilders.get("/deleteTrip/" + t.getId());
         mockMvc.perform(requestBuilder).andExpect(view().name("tripsView"));
         assertEquals(0, tripsService.findAllNonPrivateTrips(testUser).size());
+    }
+
+    @Test
+    public void tripNotDeletedNotOrganizer() throws Exception {
+        mockHttpSession.setAttribute("user", testUser);
+        User organizer = new User("email", "password");
+        Trip t = new TimelessTrip(title, description, privacy, organizer);
+        RequestBuilder requestBuilder = MockMvcRequestBuilders.get("/deleteTrip/" + t.getId());
+        Mockito.doThrow(new TripsException("You're not the organizer")).when(tripsService).deleteTrip(any(Trip.class), eq(testUser));
+        mockMvc.perform(requestBuilder).andExpect(view().name("tripView"));
+        assertNotNull(t);
     }
 
     @Test

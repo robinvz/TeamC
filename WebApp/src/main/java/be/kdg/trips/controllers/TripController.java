@@ -161,17 +161,21 @@ public class TripController {
     }
 
     @RequestMapping(value = "/createTimeBoundTrip", method = RequestMethod.POST)
-    public String createTimeBoundTrip(@RequestParam String title, @RequestParam String description, @RequestParam TripPrivacy privacy,
-                                      @RequestParam String startDate, @RequestParam String endDate) {
+    public ModelAndView createTimeBoundTrip(@RequestParam String title, @RequestParam String description, @RequestParam TripPrivacy privacy,
+                                      @RequestParam String startDate, @RequestParam String endDate, Locale locale) {
         try {
             User user = (User) session.getAttribute("user");
             SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
             Trip test = tripsService.createTimeBoundTrip(title, description, privacy, user, sdf.parse(startDate), sdf.parse(endDate));
-            return "redirect:trip/" + test.getId();
+            return new ModelAndView("redirect:trip/"+test.getId());
         } catch (TripsException e) {
-            return "/users/createTripView";
+            if (e.getMessage().contains("future")) {
+                return new ModelAndView("/users/createTripView", "error", messageSource.getMessage("StartDateFuture", null, locale));
+            } else {
+                return new ModelAndView("/users/createTripView", "error", messageSource.getMessage("StartDateBefore", null, locale));
+            }
         } catch (ParseException e) {
-            return "/users/createTripView";
+            return new ModelAndView("/users/createTripView", "error", e.getMessage());
         }
     }
 
