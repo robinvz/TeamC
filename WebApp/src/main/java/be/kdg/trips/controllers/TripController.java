@@ -208,7 +208,7 @@ public class TripController {
             try {
                 tripsService.deleteTrip(tripsService.findTripById(tripId, user), user);
             } catch (TripsException e) {
-                return new ModelAndView("tripView", "error", messageSource.getMessage("DeleteError", null, locale));
+                return new ModelAndView("tripView", "error", messageSource.getMessage("DeleteTripError", null, locale));
             } catch (MessagingException e) {
                 //failed to send email
             }

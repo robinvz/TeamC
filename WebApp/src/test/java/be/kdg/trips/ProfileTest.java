@@ -12,6 +12,7 @@ import org.mockito.Mock;
 import org.mockito.Mockito;
 import org.mockito.MockitoAnnotations;
 import org.mockito.runners.MockitoJUnitRunner;
+import org.springframework.context.MessageSource;
 import org.springframework.mock.web.MockHttpSession;
 import org.springframework.test.util.ReflectionTestUtils;
 import org.springframework.test.web.servlet.MockMvc;
@@ -37,6 +38,8 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 public class ProfileTest {
     @Mock
     private TripsService tripsService;
+    @Mock
+    private MessageSource messageSource;
     private MockHttpSession mockHttpSession;
     private MockMvc mockMvc;
     User testUser = new User("joel@student.kdg.be", "oldPassword");
@@ -49,6 +52,7 @@ public class ProfileTest {
         pc = new ProfileController();
         ReflectionTestUtils.setField(pc, "tripsService", tripsService);
         ReflectionTestUtils.setField(pc, "session", mockHttpSession);
+        ReflectionTestUtils.setField(pc, "messageSource", messageSource);
         mockMvc = MockMvcBuilders.standaloneSetup(pc).build();
     }
 
@@ -69,7 +73,7 @@ public class ProfileTest {
                 .param("oldPassword", "oldPassword").param("newPassword", "newPassword");
         User userWithNewPassword = new User("joel@student.kdg.be", "newPassword");
         when(tripsService.findUser(testUser.getEmail())).thenReturn(userWithNewPassword);
-        mockMvc.perform(requestBuilder).andExpect(view().name("indexView"));
+        mockMvc.perform(requestBuilder).andExpect(view().name("/users/profileView"));
         assertTrue(((User) mockHttpSession.getAttribute("user")).checkPassword("newPassword"));
     }
 
@@ -144,6 +148,13 @@ public class ProfileTest {
         Mockito.doThrow(new TripsException("Cannot delete unexisting user")).when(tripsService).deleteUser(any(User.class));
         mockMvc.perform(requestBuilder).andExpect(view().name("/users/profileView"));
         assertNotNull(mockHttpSession.getAttribute("user"));
+    }
+
+    @Test
+    public void userNotDeletedNotLoggedIn() throws Exception {
+        RequestBuilder requestBuilder = MockMvcRequestBuilders.get("/users/deleteProfile");
+        Mockito.doThrow(new TripsException("Not logged in")).when(tripsService).deleteUser(any(User.class));
+        mockMvc.perform(requestBuilder).andExpect(view().name("loginView"));
     }
 
     @Test

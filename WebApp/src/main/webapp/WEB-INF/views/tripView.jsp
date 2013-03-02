@@ -34,23 +34,27 @@
                             <td>${trip.active}</td>
                         </tr>
                         <tr>
-                            <c:if test="${trip.published==true}">
-                                <spring:message code="IsPublished"/>
-                            </c:if>
-                            <spring:message code="IsNotPublished"/>
+                            <c:choose>
+                                <c:when test="${trip.published==true}">
+                                    <td><spring:message code="IsPublished"/></td>
+                                </c:when>
+                                <c:otherwise>
+                                    <td><spring:message code="IsNotPublished"/></td>
+                                </c:otherwise>
+                            </c:choose>
                         </tr>
-                        <c:choose>
-                            <c:when test="${not empty trip.labels}">
-                                <c:forEach items="${trip.labels}" var="label">
-                                    <tr>
-                                        <td>${label}</td>
-                                    </tr>
-                                </c:forEach>
-                            </c:when>
+                        <tr>
+                            <c:choose>
+                                <c:when test="${not empty trip.labels}">
+                                    <c:forEach items="${trip.labels}" var="label">
+                                        <td>${label}, </td>
+                                    </c:forEach>
+                                </c:when>
                             <c:otherwise>
-                                <label>Add labels here</label>
+                                <a href="/addLabels">Add labels</a>
                             </c:otherwise>
                         </c:choose>
+                        </tr>
                     </table>
                 </div>
 
@@ -62,24 +66,29 @@
 
                 </div>
 
-                <c:choose>
-                    <c:when test="${not empty user  && trip.published==true && trip.privacy == 'PROTECTED' && not empty trip.enrollments}">
-                        <c:forEach items="${trip.enrollments}" var="enrollment">
-                            <c:if test="${enrollment.user == user}">
-                                <a href="/unSubscribe?tripId=${trip.id}">
-                                    <img id="unSubscribeButton" src="${pageContext.request.contextPath}/resources/res/img/unsubscribe.jpg">
+                <div id="subscribe-buttons">
+                    <c:choose>
+                        <c:when test="${not empty user  && trip.published==true && trip.privacy == 'PROTECTED' && not empty trip.enrollments}">
+                            <c:forEach items="${trip.enrollments}" var="enrollment">
+                                <c:if test="${enrollment.user == user}">
+                                    <a href="/unSubscribe?tripId=${trip.id}">
+                                        <img id="unSubscribeButton"
+                                             src="${pageContext.request.contextPath}/resources/res/img/unsubscribe.jpg">
+                                    </a>
+                                </c:if>
+                            </c:forEach>
+                        </c:when>
+                        <c:otherwise>
+                            <c:if test="${not empty user && trip.published==true && trip.privacy == 'PROTECTED'}">
+                                <a href="/subscribe?tripId=${trip.id}">
+                                    <img id="subscribeButton"
+                                         src="${pageContext.request.contextPath}/resources/res/img/subscribe.jpg">
                                 </a>
                             </c:if>
-                        </c:forEach>
-                    </c:when>
-                    <c:otherwise>
-                        <c:if test="${not empty user && trip.published==true && trip.privacy == 'PROTECTED'}">
-                        <a href="/subscribe?tripId=${trip.id}">
-                            <img id="subscribeButton" src="${pageContext.request.contextPath}/resources/res/img/subscribe.jpg">
-                        </a>
-                        </c:if>
-                    </c:otherwise>
-                </c:choose>
+                        </c:otherwise>
+                    </c:choose>
+                </div>
+
             </article>
         </section>
     </div>
