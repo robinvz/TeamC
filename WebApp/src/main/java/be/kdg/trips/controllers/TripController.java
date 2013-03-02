@@ -166,30 +166,38 @@ public class TripController {
     @RequestMapping(value = "/createTimeBoundTrip", method = RequestMethod.POST)
     public ModelAndView createTimeBoundTrip(@RequestParam String title, @RequestParam String description, @RequestParam TripPrivacy privacy,
                                       @RequestParam String startDate, @RequestParam String endDate, Locale locale) {
-        try {
-            User user = (User) session.getAttribute("user");
-            SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
-            Trip test = tripsService.createTimeBoundTrip(title, description, privacy, user, sdf.parse(startDate), sdf.parse(endDate));
-            return new ModelAndView("redirect:trip/"+test.getId());
-        } catch (TripsException e) {
-            if (e.getMessage().contains("future")) {
-                return new ModelAndView("/users/createTripView", "error", messageSource.getMessage("StartDateFuture", null, locale));
-            } else {
-                return new ModelAndView("/users/createTripView", "error", messageSource.getMessage("StartDateBefore", null, locale));
+        User user = (User) session.getAttribute("user");
+        if(user!=null) {
+            try {
+                SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
+                Trip test = tripsService.createTimeBoundTrip(title, description, privacy, user, sdf.parse(startDate), sdf.parse(endDate));
+                return new ModelAndView("redirect:trip/"+test.getId());
+            } catch (TripsException e) {
+                if (e.getMessage().contains("future")) {
+                    return new ModelAndView("/users/createTripView", "error", messageSource.getMessage("StartDateFuture", null, locale));
+                } else {
+                    return new ModelAndView("/users/createTripView", "error", messageSource.getMessage("StartDateBefore", null, locale));
+                }
+            } catch (ParseException e) {
+                return new ModelAndView("/users/createTripView", "error", e.getMessage());
             }
-        } catch (ParseException e) {
-            return new ModelAndView("/users/createTripView", "error", e.getMessage());
+        } else {
+            return new ModelAndView("loginView", "loginBean", new LoginBean());
         }
     }
 
     @RequestMapping(value = "/createTimeLessTrip", method = RequestMethod.POST)
-    public String createTimeLessTrip(@RequestParam String title, @RequestParam String description, @RequestParam TripPrivacy privacy) {
-        try {
-            User user = (User) session.getAttribute("user");
-            Trip test = tripsService.createTimelessTrip(title, description, privacy, user);
-            return "redirect:trip/" + test.getId();
-        } catch (TripsException e) {
-            return "/users/createTripView";
+    public ModelAndView createTimeLessTrip(@RequestParam String title, @RequestParam String description, @RequestParam TripPrivacy privacy) {
+        User user = (User) session.getAttribute("user");
+        if(user!=null) {
+            try {
+                Trip test = tripsService.createTimelessTrip(title, description, privacy, user);
+                return new ModelAndView("redirect:trip/" + test.getId());
+            } catch (TripsException e) {
+                return new ModelAndView("/users/createTripView");
+            }
+        } else {
+            return new ModelAndView("loginView", "loginBean", new LoginBean());
         }
     }
 
@@ -202,7 +210,7 @@ public class TripController {
             } catch (TripsException e) {
                 return new ModelAndView("tripView", "error", messageSource.getMessage("DeleteError", null, locale));
             } catch (MessagingException e) {
-                e.printStackTrace();  //To change body of catch statement use File | Settings | File Templates.
+                //failed to send email
             }
             return new ModelAndView("tripsView");
         } else {
@@ -374,5 +382,4 @@ public class TripController {
         }
     }
 
-
-    }
+}

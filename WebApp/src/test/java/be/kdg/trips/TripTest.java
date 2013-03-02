@@ -100,6 +100,16 @@ public class TripTest {
     }
 
     @Test
+    public void createTBTripNotLoggedIn() throws Exception {
+        Date startd = sdf.parse(startDate);
+        Date endd = sdf.parse(endDate);
+        Trip trip = new TimeBoundTrip(title, description, privacy, testUser, startd, endd);
+        RequestBuilder requestBuilder = MockMvcRequestBuilders.post("/createTimeBoundTrip").param("title", title).param("description", description).param("privacy", privacyString).param("startDate", startDate).param("endDate", endDate);
+        when(tripsService.createTimeBoundTrip(title, description, privacy, testUser, startd, endd)).thenThrow(new TripsException("Not logged in"));
+        mockMvc.perform(requestBuilder).andExpect(view().name("loginView"));
+    }
+
+    @Test
     public void createTBTripStartDateAfterEndDate() throws Exception {
         mockHttpSession.setAttribute("user", testUser);
         Date startd = sdf.parse(endDate);
@@ -127,6 +137,13 @@ public class TripTest {
         RequestBuilder requestBuilder = MockMvcRequestBuilders.post("/createTimeLessTrip").param("title", title).param("description", description).param("privacy", privacyString);
         when(tripsService.createTimelessTrip(title, description, privacy, testUser)).thenReturn(t);
         mockMvc.perform(requestBuilder).andExpect(view().name("redirect:trip/" + t.getId()));
+    }
+
+    @Test
+    public void createTLTripNotLoggedIn() throws Exception {
+        RequestBuilder requestBuilder = MockMvcRequestBuilders.post("/createTimeLessTrip").param("title", title).param("description", description).param("privacy", privacyString);
+        when(tripsService.createTimelessTrip(title, description, privacy, testUser)).thenThrow(new TripsException("Not logged in"));
+        mockMvc.perform(requestBuilder).andExpect(view().name("loginView"));
     }
 
     @Test
@@ -281,7 +298,7 @@ public class TripTest {
     public void publishTripFailedNotLoggedIn() throws Exception {
         Trip t = new TimelessTrip(title, description, privacy, testUser);
         RequestBuilder requestBuilder = MockMvcRequestBuilders.get("/publishTrip/" + t.getId());
-        Mockito.doThrow(new TripsException("Cannot publish trips when not logged in")).when(tripsService).publishTrip(t, testUser);
+        Mockito.doThrow(new TripsException("Not logged in")).when(tripsService).publishTrip(t, testUser);
         mockMvc.perform(requestBuilder).andExpect(view().name("loginView"));
     }
 
@@ -344,7 +361,7 @@ public class TripTest {
         when(tripsService.checkLogin(anyString(), anyString())).thenReturn(true);
         when(tripsService.findUser(anyString())).thenReturn(testUser);
         when(tripsService.findAllNonPrivateTrips(testUser)).thenReturn(trips);
-        mockMvc.perform(requestBuilder).andExpect(content().string("{\"valid\":true,\"trips\":[{\"title\":\"Trip 1\",\"id\":" + t.getId() + "},{\"title\":\"Trip 2\",\"id\":" + t2.getId() + "}]}"));
+        mockMvc.perform(requestBuilder).andExpect(content().string("{\"valid\":true,\"trips\":[{\"title\":\"Trip 1\",\"id\":"+ t.getId()+"},{\"title\":\"Trip 2\",\"id\":"+ t2.getId()+ "}]}"));
     }
 
     @Test
@@ -352,7 +369,7 @@ public class TripTest {
         Trip t = new TimelessTrip("Trip 1", "Beschrijving", TripPrivacy.PUBLIC, testUser);
         Trip t2 = new TimelessTrip("Trip 2", "Beschrijving", TripPrivacy.PUBLIC, testUser);
         Enrollment enroll = new Enrollment(t, testUser);
-        Enrollment enroll2 = new Enrollment(t2, testUser);
+        Enrollment enroll2 = new Enrollment(t2, testUser) ;
         ArrayList<Enrollment> enrollments = new ArrayList<>();
         enrollments.add(enroll);
         enrollments.add(enroll2);
@@ -360,14 +377,14 @@ public class TripTest {
         when(tripsService.checkLogin(anyString(), anyString())).thenReturn(true);
         when(tripsService.findUser(anyString())).thenReturn(testUser);
         when(tripsService.findEnrollmentsByUser(testUser)).thenReturn(enrollments);
-        mockMvc.perform(requestBuilder).andExpect(content().string("{\"valid\":true,\"trips\":[{\"title\":\"Trip 1\",\"id\":" + t.getId() + "},{\"title\":\"Trip 2\",\"id\":" + t2.getId() + "}]}"));
+        mockMvc.perform(requestBuilder).andExpect(content().string("{\"valid\":true,\"trips\":[{\"title\":\"Trip 1\",\"id\":"+ t.getId()+"},{\"title\":\"Trip 2\",\"id\":"+ t2.getId()+"}]}"));
     }
 
     @Test
     public void participantsTest() throws Exception {
         mockHttpSession.setAttribute("user", testUser);
         Trip t = new TimelessTrip("Trip 1", "Beschrijving", TripPrivacy.PUBLIC, testUser);
-        RequestBuilder requestBuilder = MockMvcRequestBuilders.get("/trip/" + t.getId() + "/participants").param("username", "mathias").param("password", "fred");
+        RequestBuilder requestBuilder = MockMvcRequestBuilders.get("/trip/"+ t.getId() +"/participants").param("username", "mathias").param("password", "fred");
         when(tripsService.findTripById(t.getId(), testUser)).thenReturn(t);
         when(tripsService.findEnrollmentsByTrip(t)).thenReturn(new ArrayList());
         mockMvc.perform(requestBuilder).andExpect(view().name("participantsView")).andExpect(model().attributeExists("enrollments"));
