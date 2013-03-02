@@ -363,21 +363,6 @@ public class TripBLImpl implements TripBL
                 }
                 else if(from<to)
                 {
-                /*    locations.get(from).setSequence(to);
-                    tripDao.saveOrUpdateTrip(trip);
-                    for(int i = to-1; i < locations.size()-1; i++)
-                    {
-                        int seq = locations.get(i).getSequence();
-                        locations.get(i).setSequence(seq+1);
-                        tripDao.saveOrUpdateTrip(trip);
-                    }
-                    for(int i = to-1; i >= 0; i--)
-                    {
-                        int seq = locations.get(i).getSequence();
-                        locations.get(i).setSequence(seq-1);
-                        tripDao.saveOrUpdateTrip(trip);
-                    }
-                }*/
                     locations.get(from).setSequence(to);
                     for (int i = 0; i < to-from; i++){
                         locations.get(from+1+i).setSequence(locations.get(from+1+i).getSequence()-1);
@@ -386,7 +371,6 @@ public class TripBLImpl implements TripBL
                     tripDao.saveOrUpdateTrip(trip);
                 }
             }
-
         }
     }
 
