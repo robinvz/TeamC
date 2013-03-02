@@ -1,7 +1,11 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    <ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+        android:layout_width="fill_parent"
+        android:layout_height="fill_parent" >
+
+<LinearLayout 
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
+    android:layout_height="wrap_content"
     android:background="@drawable/background_9"
     android:orientation="vertical" >
 
@@ -21,42 +25,70 @@
             android:shadowDx="2"
             android:shadowDy="2"
             android:shadowRadius="2"
-            android:text="Trip Title"
+            android:text=""
             android:textAppearance="?android:attr/textAppearanceLarge"
             android:textColor="@android:color/white"
             android:textSize="30sp"
             android:textStyle="bold" />
     </RelativeLayout>
 
-    <TextView
-        android:id="@+id/txtDescription"
-        
-        android:layout_width="wrap_content"
+    <ScrollView
+        android:layout_width="match_parent"
         android:layout_height="100dp"
-        android:layout_marginLeft="20dp"
-        android:layout_marginTop="20dp"
-        android:layout_marginBottom="20dp"
-        android:text="" />
+        android:layout_weight="0.23" >
+
+        <TextView
+            android:id="@+id/txtDescription"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="20dp"
+            android:layout_marginLeft="20dp"
+            android:layout_marginTop="20dp"
+            android:text="" />
+    </ScrollView>
 
     <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="0dip"
-        android:orientation="horizontal"
-        android:layout_weight="0.68" >
+        android:layout_weight="0.5"
+        android:orientation="horizontal" >
+
+        <Button
+            android:id="@+id/btnSubscribe"
+            android:layout_width="150dp"
+            android:layout_height="wrap_content"
+            android:text="@string/subscribe" />
+
+        <Button
+            android:id="@+id/btnStart"
+            android:layout_width="150dp"
+            android:layout_height="wrap_content"
+            android:layout_alignParentRight="true"
+            android:text="@string/start" />
+        
+            </RelativeLayout>
+        
+    <RelativeLayout
+        android:layout_width="wrap_content"
+        android:layout_height="164dp" >
 
         <TextView
             android:id="@+id/txtEnrolled"
-            android:layout_width="fill_parent"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_alignParentBottom="true"
+            android:layout_alignParentLeft="true"
+            android:padding="10dp"
             android:text="@string/total_subscribed"
             android:textAppearance="?android:attr/textAppearanceLarge" />
 
         <TextView
             android:id="@+id/txtPrivacy"
-            android:layout_width="fill_parent"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_above="@+id/txtEnrolled"
             android:layout_alignParentLeft="true"
-            android:layout_centerVertical="true"
+            android:padding="10dp"
             android:text="@string/trip_privacy"
             android:textAppearance="?android:attr/textAppearanceLarge" />
 
@@ -64,21 +96,26 @@
             android:id="@+id/txtEnrolledNr"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_alignBottom="@+id/txtEnrolled"
+            android:layout_alignParentBottom="true"
             android:layout_alignParentRight="true"
-            android:layout_alignParentTop="true"
-            android:text=""
+            android:layout_toRightOf="@+id/txtEnrolled"
+            android:gravity="center"
+            android:padding="10dp"
             android:textAppearance="?android:attr/textAppearanceMedium" />
 
         <TextView
             android:id="@+id/txtPrivacyNr"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_alignBottom="@+id/txtPrivacy"
+            android:layout_above="@+id/txtEnrolledNr"
+            android:layout_alignLeft="@+id/txtEnrolledNr"
             android:layout_alignParentRight="true"
-            android:text=""
+            android:gravity="center"
+            android:padding="10dp"
             android:textAppearance="?android:attr/textAppearanceMedium" />
 
     </RelativeLayout>
 
 </LinearLayout>
+
+    </ScrollView>

@@ -66,26 +66,14 @@ public class ProfileController {
         return "/users/editProfilePicView";
     }
 
-    /*
-    @RequestMapping(value = "/users/profilePic", method = RequestMethod.GET)
-    public OutputStream showProfilePic(){
+
+    @RequestMapping(value = "/users/profilePic", method = RequestMethod.GET, produces = "image/jpg")
+    public @ResponseBody byte[] showProfilePic(){
        User user = (User) session.getAttribute("user");
-
-
         byte[] imageData = user.getProfilePicture();
-        response.setContentType("image/jpeg");
-        response.getOutputStream().write(imageData);
-        OutputStream output = new ByteArrayOutputStream();
-        try {
-            output.write(imageData);
-
-        } catch (IOException e) {
-            //Unable to get image
-        }
-
-        return output;
+        return imageData;
     }
-    */
+
     @RequestMapping(value = "/users/editProfile", method = RequestMethod.POST)
     public ModelAndView editProfile(@RequestParam String firstName, @RequestParam String lastName, @RequestParam String street,
                                     @RequestParam String houseNr, @RequestParam String city, @RequestParam String postalCode,

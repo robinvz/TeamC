@@ -5,6 +5,7 @@ import java.io.Serializable;
 public class Trip implements Serializable{
 	private String title;
 	private String description;
+	private boolean enrolled; 
 	private int enrollments;
 	private String Privacy;
 
@@ -47,6 +48,16 @@ public class Trip implements Serializable{
 
 	public void setPrivacy(String privacy) {
 		Privacy = privacy;
+	}
+
+	
+	
+	public boolean isEnrolled() {
+		return enrolled;
+	}
+
+	public void setEnrolled(boolean enrolled) {
+		this.enrolled = enrolled;
 	}
 
 	public Trip() {

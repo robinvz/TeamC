@@ -358,7 +358,7 @@ public class TripController {
         }
         if (user != null) {
             try {
-                tripsService.switchLocationSequence(trip, user, fromPosition, toPosition);
+                tripsService.switchLocationSequence(trip, user, fromPosition -1, toPosition-1);
             } catch (TripsException e) {
                 //Switch location failed
                 System.out.println("error2");
