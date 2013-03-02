@@ -165,13 +165,13 @@ public class TripController {
 
     @RequestMapping(value = "/createTimeBoundTrip", method = RequestMethod.POST)
     public ModelAndView createTimeBoundTrip(@RequestParam String title, @RequestParam String description, @RequestParam TripPrivacy privacy,
-                                      @RequestParam String startDate, @RequestParam String endDate, Locale locale) {
+                                            @RequestParam String startDate, @RequestParam String endDate, Locale locale) {
         User user = (User) session.getAttribute("user");
-        if(user!=null) {
+        if (user != null) {
             try {
                 SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
                 Trip test = tripsService.createTimeBoundTrip(title, description, privacy, user, sdf.parse(startDate), sdf.parse(endDate));
-                return new ModelAndView("redirect:trip/"+test.getId());
+                return new ModelAndView("redirect:trip/" + test.getId());
             } catch (TripsException e) {
                 if (e.getMessage().contains("future")) {
                     return new ModelAndView("/users/createTripView", "error", messageSource.getMessage("StartDateFuture", null, locale));
@@ -189,7 +189,7 @@ public class TripController {
     @RequestMapping(value = "/createTimeLessTrip", method = RequestMethod.POST)
     public ModelAndView createTimeLessTrip(@RequestParam String title, @RequestParam String description, @RequestParam TripPrivacy privacy) {
         User user = (User) session.getAttribute("user");
-        if(user!=null) {
+        if (user != null) {
             try {
                 Trip test = tripsService.createTimelessTrip(title, description, privacy, user);
                 return new ModelAndView("redirect:trip/" + test.getId());
@@ -325,7 +325,7 @@ public class TripController {
     }
 
     @RequestMapping(value = "/trip/{tripId}/locations/{locationId}/deleteLocation", method = RequestMethod.GET)
-    public ModelAndView deleteLocation(@PathVariable int tripId, @PathVariable int locationId) {
+    public String deleteLocation(@PathVariable int tripId, @PathVariable int locationId) {
         User user = (User) session.getAttribute("user");
         Trip trip;
         try {
@@ -335,13 +335,11 @@ public class TripController {
             } catch (TripsException e) {
                 //failed to delete location
             }
-            //return "redirect:/trip/" + trip.getId() + "/locations";
-            return new ModelAndView("locationsView");
+            return "redirect:/trip/" + trip.getId() + "/locations";
         } catch (TripsException e) {
             //Failed to find trip
-            return new ModelAndView("tripsView");
         }
-        //return "/trips";
+        return "/trips";
     }
 
     @RequestMapping(value = "/trip/switchLocation", method = RequestMethod.POST)
@@ -382,4 +380,21 @@ public class TripController {
         }
     }
 
+    @RequestMapping(value = "/trip/{tripId}/locations/getLocationsLatLng", method = RequestMethod.GET)
+    @ResponseBody
+    public String getLocationsLatLng(@PathVariable int tripId) {
+        JSONArray jsonArray = new JSONArray();
+        try {
+            Trip trip = tripsService.findTripById(tripId, (User) session.getAttribute("user"));
+            for (Location location : trip.getLocations()) {
+                JSONObject coordinates = new JSONObject();
+                coordinates.put("latitude", location.getLatitude());
+                coordinates.put("longitude", location.getLongitude());
+                jsonArray.add(coordinates);
+            }
+        } catch (TripsException e) {
+            //Trip not found
+        }
+        return jsonArray.toString();
+    }
 }
