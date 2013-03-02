@@ -2,6 +2,8 @@ package be.kdg.groupcandroid;
 
 import java.util.ArrayList;
 import java.util.concurrent.ExecutionException;
+import java.util.concurrent.TimeUnit;
+import java.util.concurrent.TimeoutException;
 
 import android.content.Intent;
 import android.content.SharedPreferences;
@@ -13,6 +15,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.ListView;
+import android.widget.Toast;
 import android.widget.AdapterView.OnItemClickListener;
 
 public class BaseTripsFragment extends Fragment {
@@ -68,6 +71,12 @@ public class BaseTripsFragment extends Fragment {
 						Trip trip = tt.execute(new String[]{ip, port, tripsList.get(arg2).id +"", email, pass}).get();
 						Intent intent = new Intent(view.getContext(), MenuContent.class);
 						intent.putExtra("trip", trip);
+						if (EnrolledTripsFragment.class.isInstance(this)){
+							intent.putExtra("enrolled", true);
+						}
+						else{
+							intent.putExtra("enrolled", false);	
+						}
 						startActivity(intent);
 					} catch (InterruptedException e) {
 						// TODO Auto-generated catch block
@@ -95,13 +104,15 @@ public class BaseTripsFragment extends Fragment {
 			String port = sp.getString("server_port", "8080");
 			SessionManager sm = new SessionManager(getActivity());
 			try {
-				return tt.execute(new String[] { ip, port, type, sm.getEmail(), sm.getPassword() }).get();
+				return tt.execute(new String[] { ip, port, type, sm.getEmail(), sm.getPassword() }).get(3000, TimeUnit.MILLISECONDS);
 			} catch (InterruptedException e) {
 				// TODO Auto-generated catch block
 				e.printStackTrace();
 			} catch (ExecutionException e) {
 				// TODO Auto-generated catch block
 				e.printStackTrace();
+			} catch (TimeoutException e) {
+				Toast.makeText(getActivity(), "Could not connect to server", Toast.LENGTH_LONG).show();
 			}
 			return new ArrayList<Item>();
 			

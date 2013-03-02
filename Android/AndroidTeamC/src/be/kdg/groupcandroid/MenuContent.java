@@ -1,7 +1,9 @@
 package be.kdg.groupcandroid;
 
 
+import android.annotation.SuppressLint;
 import android.content.Intent;
+import android.opengl.Visibility;
 import android.os.Build;
 import android.os.Bundle;
 import android.support.v4.app.FragmentActivity;
@@ -13,6 +15,7 @@ import android.view.ViewGroup;
 import android.widget.AbsListView;
 import android.widget.AdapterView;
 import android.widget.BaseAdapter;
+import android.widget.Button;
 import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.AdapterView.OnItemClickListener;
@@ -22,6 +25,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 
+@SuppressLint("NewApi")
 public class MenuContent extends FragmentActivity {
 
     private static final String STATE_ACTIVE_POSITION = "net.simonvt.menudrawer.samples.ContentSample.activePosition";
@@ -38,11 +42,12 @@ public class MenuContent extends FragmentActivity {
     
 
 
-    @Override
+	@Override
     protected void onCreate(Bundle inState) {
         super.onCreate(inState);
         Intent myIntent= getIntent();
         Trip trip = (Trip) myIntent.getSerializableExtra("trip");
+        trip.setEnrolled(myIntent.getBooleanExtra("enrolled", false));
         // TODO custom banner -> crashes
         //Integer tripBanner = Integer.parseInt(myIntent.getStringExtra("tripBanner"));
         if (inState != null) {
@@ -91,9 +96,41 @@ public class MenuContent extends FragmentActivity {
         txtEnrolledNr.setText(trip.getEnrollments() + "");
         TextView txtPrivacy = (TextView) findViewById(R.id.txtPrivacyNr);
         txtPrivacy.setText(trip.getPrivacy());
-
-             
+        final Button btnSubscribe = (Button) findViewById(R.id.btnSubscribe);
+        final Button btnStart = (Button) findViewById(R.id.btnStart);
         
+        
+        
+        if (trip.getPrivacy().toLowerCase().contains("public")){
+        	btnSubscribe.setVisibility(View.INVISIBLE);
+        }
+        if (trip.isEnrolled()){
+	        btnSubscribe.setText(R.string.unsubscribe);
+	        btnStart.setVisibility(View.INVISIBLE);
+        }
+        btnStart.setOnClickListener(new View.OnClickListener() {
+        	@Override
+			public void onClick(View v) {
+				if (btnStart.getText().toString().equals(getResources().getString(R.string.start))){
+					btnStart.setText(R.string.stop);		
+				}
+				else{
+					btnStart.setText(R.string.start);	
+				}
+			}
+		});  
+        
+        btnSubscribe.setOnClickListener(new View.OnClickListener() {
+        	@Override
+			public void onClick(View v) {
+				if (btnSubscribe.getText().toString().equals(getResources().getString(R.string.subscribe))){
+					btnSubscribe.setText(R.string.unsubscribe);	
+				}
+				else{
+					btnSubscribe.setText(R.string.subscribe);	
+				}
+			}
+		}); 
     }
     
     

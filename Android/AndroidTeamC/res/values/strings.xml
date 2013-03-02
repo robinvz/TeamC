@@ -25,4 +25,10 @@
     <string name="total_subscribed">Total Subscribed</string>
     <string name="trip_privacy">Trip Privacy</string>
     <string name="app_id">118452395005980</string>
+    <string name="subscribe">Subscribe</string>
+    <string name="start">Start</string>
+        <string name="stop">Stop</string>
+    
+        <string name="unsubscribe">Unsubscribe</string>
+    
 </resources>
