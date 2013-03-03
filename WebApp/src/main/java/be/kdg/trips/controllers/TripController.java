@@ -4,6 +4,8 @@ import be.kdg.trips.beans.LoginBean;
 import be.kdg.trips.exception.TripsException;
 import be.kdg.trips.model.enrollment.Enrollment;
 import be.kdg.trips.model.location.Location;
+import be.kdg.trips.model.trip.TimeBoundTrip;
+import be.kdg.trips.model.trip.TimelessTrip;
 import be.kdg.trips.model.trip.Trip;
 import be.kdg.trips.model.trip.TripPrivacy;
 import be.kdg.trips.model.user.User;
@@ -150,8 +152,14 @@ public class TripController {
 
     @RequestMapping(value = "/trip/{tripId}", method = RequestMethod.GET)
     public ModelAndView getTrip(@PathVariable int tripId) {
+        User user = (User) session.getAttribute("user");
+        Trip trip = null;
         try {
-            Trip trip = tripsService.findTripById(tripId, (User) session.getAttribute("user"));
+            if(tripsService.findTripById(tripId, user).isTimeBoundTrip()) {
+                trip = (TimeBoundTrip)tripsService.findTripById(tripId, user);
+            } else {
+                trip = (TimelessTrip)tripsService.findTripById(tripId, user);
+            }
             return new ModelAndView("tripView", "trip", trip);
         } catch (TripsException e) {
             return new ModelAndView("tripsView");
@@ -273,6 +281,39 @@ public class TripController {
             } catch (TripsException e) {
                 return new ModelAndView("tripView", "error", messageSource.getMessage("NotPublishedError", null, locale));
             }
+        } else {
+            return new ModelAndView("loginView", "loginBean", new LoginBean());
+        }
+    }
+
+    @RequestMapping(value = "/labelsView/{tripId}", method = RequestMethod.GET)
+    public ModelAndView addLabel(@PathVariable int tripId, Locale locale) {
+        User user = (User) session.getAttribute("user");
+        if(user!=null) {
+            Trip trip = null;
+            try {
+                trip = tripsService.findTripById(tripId, user);
+            } catch (TripsException e) {
+                return new ModelAndView("tripView", "error", messageSource.getMessage("FindTripError", null, locale));
+            }
+            return new ModelAndView("labelsView", "trip", trip);
+        } else {
+            return new ModelAndView("loginView", "loginBean", new LoginBean());
+        }
+    }
+
+    @RequestMapping(value = "/labelsView/{tripId}", method = RequestMethod.POST)
+    public ModelAndView addLabel(@PathVariable int tripId, @RequestParam String label, Locale locale) {
+        User user = (User) session.getAttribute("user");
+        if(user!=null) {
+            Trip trip = null;
+            try {
+                trip = tripsService.findTripById(tripId, user);
+                tripsService.addLabelToTrip(trip, user, label);
+            } catch (TripsException e) {
+                return new ModelAndView("labelsView", "error", messageSource.getMessage("LabelError", null, locale));
+            }
+            return new ModelAndView("labelsView", "trip", trip);
         } else {
             return new ModelAndView("loginView", "loginBean", new LoginBean());
         }

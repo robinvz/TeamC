@@ -1,5 +1,6 @@
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@ taglib prefix="spring" uri="http://www.springframework.org/tags" %>
+<%@ taglib prefix="sql" uri="http://java.sun.com/jsp/jstl/sql" %>
 
 <html>
 <head>
@@ -33,6 +34,24 @@
                             <td><label><spring:message code="Active"/></label></td>
                             <td>${trip.active}</td>
                         </tr>
+                        <c:if test="${trip.timeBoundTrip==true}">
+                            </tr>
+                                <td><spring:message code="StartDate"/></td>
+                                <td></td>
+                            <tr>
+                            </tr>
+                                <td><spring:message code="StartDate"/></td>
+                                <td></td>
+                            </tr>
+                        </c:if>
+                        <tr>
+                            <td>Labels</td>
+                            <c:if test="${not empty trip.labels}">
+                                <c:forEach items="${trip.labels}" var="label">
+                                    <td>${label},</td>
+                                </c:forEach>
+                            </c:if>
+                        </tr>
                         <tr>
                             <c:choose>
                                 <c:when test="${trip.published==true}">
@@ -43,27 +62,7 @@
                                 </c:otherwise>
                             </c:choose>
                         </tr>
-                        <tr>
-                            <c:choose>
-                                <c:when test="${not empty trip.labels}">
-                                    <c:forEach items="${trip.labels}" var="label">
-                                        <td>${label}, </td>
-                                    </c:forEach>
-                                </c:when>
-                            <c:otherwise>
-                                <a href="/addLabels">Add labels</a>
-                            </c:otherwise>
-                        </c:choose>
-                        </tr>
                     </table>
-                </div>
-
-                <div class="trip-requirements">
-
-                </div>
-
-                <div class="trip-stops">
-
                 </div>
 
                 <div id="subscribe-buttons">

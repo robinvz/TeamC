@@ -434,4 +434,50 @@ public class TripTest {
         mockMvc.perform(requestBuilder).andExpect(view().name("tripsView"));
     }
 
+    @Test
+    public void labelsView() throws Exception {
+        mockHttpSession.setAttribute("user", testUser);
+        Trip t = new TimelessTrip(title, description, privacy, testUser);
+        when(tripsService.findTripById(t.getId(), testUser)).thenReturn(t);
+        RequestBuilder requestBuilder = MockMvcRequestBuilders.get("/labelsView/"+t.getId());
+        mockMvc.perform(requestBuilder).andExpect(view().name("labelsView")).andExpect(model().attribute("trip", t));
+    }
+
+    @Test
+    public void labelsViewNotLoggedIn() throws Exception {
+        Trip t = new TimelessTrip(title, description, privacy, testUser);
+        RequestBuilder requestBuilder = MockMvcRequestBuilders.get("/labelsView/"+t.getId());
+        mockMvc.perform(requestBuilder).andExpect(view().name("loginView"));
+    }
+
+    @Test
+    public void addLabel() throws Exception {
+        mockHttpSession.setAttribute("user", testUser);
+        Trip t = new TimelessTrip(title, description, privacy, testUser);
+        String label = "voorbeeldLabel";
+        when(tripsService.findTripById(t.getId(), testUser)).thenReturn(t);
+        RequestBuilder requestBuilder = MockMvcRequestBuilders.post("/labelsView/"+t.getId()).param("label", label);
+        mockMvc.perform(requestBuilder).andExpect(view().name("labelsView"));
+    }
+
+    @Test
+    public void labelNotAdded() throws Exception {
+        User notOrganizer = new User("piet", "snot");
+        mockHttpSession.setAttribute("user", notOrganizer);
+        Trip t = new TimelessTrip(title, description, privacy, testUser);
+        String label = "voorbeeldLabel";
+        when(tripsService.findTripById(t.getId(), testUser)).thenReturn(t);
+        Mockito.doThrow(new TripsException("")).when(tripsService).addLabelToTrip(any(Trip.class), any(User.class), anyString());
+        RequestBuilder requestBuilder = MockMvcRequestBuilders.post("/labelsView/"+t.getId()).param("label", label);
+        mockMvc.perform(requestBuilder).andExpect(view().name("labelsView"));
+    }
+
+    @Test
+    public void addLabelNotLoggedIn() throws Exception {
+        Trip t = new TimelessTrip(title, description, privacy, testUser);
+        String label = "voorbeeldLabel";
+        RequestBuilder requestBuilder = MockMvcRequestBuilders.post("/labelsView/"+t.getId()).param("label", label);
+        mockMvc.perform(requestBuilder).andExpect(view().name("loginView"));
+    }
+
 }
