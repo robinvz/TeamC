@@ -285,7 +285,7 @@ public class TripTest {
         mockHttpSession.setAttribute("user", testUser);
         Trip t = new TimelessTrip(title, description, privacy, testUser);
         RequestBuilder requestBuilder = MockMvcRequestBuilders.get("/publishTrip/" + t.getId());
-        mockMvc.perform(requestBuilder).andExpect(view().name("tripsView"));
+        mockMvc.perform(requestBuilder).andExpect(view().name("redirect:/trips"));
     }
 
     @Test
@@ -391,7 +391,7 @@ public class TripTest {
         RequestBuilder requestBuilder = MockMvcRequestBuilders.get("/trip/" + t.getId() + "/participants").param("username", "mathias").param("password", "fred");
         when(tripsService.findTripById(t.getId(), testUser)).thenReturn(t);
         when(tripsService.findEnrollmentsByTrip(t)).thenReturn(new ArrayList());
-        mockMvc.perform(requestBuilder).andExpect(view().name("participantsView")).andExpect(model().attributeExists("enrollments"));
+        mockMvc.perform(requestBuilder).andExpect(view().name("users/participantsView")).andExpect(model().attributeExists("enrollments"));
     }
 
     @Test

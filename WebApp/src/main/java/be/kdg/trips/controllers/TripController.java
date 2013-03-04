@@ -22,8 +22,6 @@ import org.springframework.web.servlet.ModelAndView;
 import javax.mail.MessagingException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
-import java.io.FileWriter;
-import java.io.IOException;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.*;
@@ -590,7 +588,7 @@ public class TripController {
         try {
             Trip trip = tripsService.findTripById(tripId, (User) session.getAttribute("user"));
             List<Enrollment> enr = tripsService.findEnrollmentsByTrip(trip);
-            return new ModelAndView("participantsView", "enrollments", enr);
+            return new ModelAndView("users/participantsView", "enrollments", enr);
         } catch (TripsException e) {
             return new ModelAndView("tripsView");
         }

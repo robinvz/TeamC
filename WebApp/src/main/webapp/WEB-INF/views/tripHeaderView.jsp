@@ -14,7 +14,7 @@
             <li><a href="#">Chat</a></li>
             <li><a href="#"><spring:message code="Results"/></a></li>
             <c:if test="${trip.privacy != 'PUBLIC'}">
-                <li><a href="#"><spring:message code="Participants"/></a></li>
+                <li><a href="/trip/${trip.id}/participants"><spring:message code="Participants"/></a></li>
             </c:if>
             <c:if test="${not empty user && trip.organizer == user}">
                 <li><a href="/labels/${trip.id}">Labels</a></li>
