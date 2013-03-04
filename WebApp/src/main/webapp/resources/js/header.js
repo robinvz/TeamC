@@ -4,6 +4,7 @@ $(document).ready(function(){
     var currentPage = urlParts[urlParts.length - 1];
     //Remove previous selections and select right page
     $(".selected").removeClass("selected");
+    alert(currentPage);
     switch (currentPage){
        case "":
            $("#nav-home").addClass("selected");
@@ -30,9 +31,15 @@ $(document).ready(function(){
        case "editCredentials":
            $("#nav-profile").addClass("selected");
            break;
-       case "trip":
+        case "editProfilePic":
+            $("#nav-profile").addClass("selected");
+            break;
+        case "trip":
            $("#nav-trips").addClass("selected");
            break;
+        default :
+            $("#nav-trips").addClass("selected");
+            break;
     }
     if (currentPage.matches(new RegExp("createTrip"))){
         $("#nav-trips").addClass("selected");

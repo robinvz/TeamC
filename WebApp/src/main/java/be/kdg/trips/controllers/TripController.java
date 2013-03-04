@@ -405,6 +405,7 @@ public class TripController {
         try {
             Trip trip = tripsService.findTripById(tripId, (User) session.getAttribute("user"));
             parameters.put("trip", trip);
+            System.out.println(trip.getLocations());
             parameters.put("locations", trip.getLocations());
             return new ModelAndView("locationsView", parameters);
         } catch (TripsException e) {
