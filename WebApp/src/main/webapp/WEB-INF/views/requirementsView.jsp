@@ -17,9 +17,18 @@
         <c:if test="${error != null}">
             <span class="errorblock">${error}</span>
         </c:if>
-        <table>
 
-        </table>
+        <c:if test="${not empty user && user == trip.organizer}">
+            <table>
+                <form action="/requirements/${trip.id}" method="POST">
+                    <tr>
+                        <td><spring:message code="EnterRequisite" /></td>
+                        <td><input type="text" name="requisite"></td>
+                        <td><input id="btn-save" type="submit" value="<spring:message code="Save" />" class="btn-blue"></td>
+                    </tr>
+                </form>
+            </table>
+        </c:if>
     </div>
 
 </div>

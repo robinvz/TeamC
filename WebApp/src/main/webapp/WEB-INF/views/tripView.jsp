@@ -48,7 +48,7 @@
                             <td>Labels</td>
                             <c:if test="${not empty trip.labels}">
                                 <c:forEach items="${trip.labels}" var="label">
-                                    <td>${label},</td>
+                                    <td>-${label}-</td>
                                 </c:forEach>
                             </c:if>
                         </tr>

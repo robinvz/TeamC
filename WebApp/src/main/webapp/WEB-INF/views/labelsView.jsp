@@ -14,19 +14,21 @@
     <jsp:include page="tripHeaderView.jsp"/>
 
     <div class="inner-content">
-            <c:if test="${error != null}">
-                <span class="errorblock">${error}</span>
-            </c:if>
+        <c:if test="${error != null}">
+            <span class="errorblock">${error}</span>
+        </c:if>
+
+        <c:if test="${not empty user && user == trip.organizer}">
             <table>
-                <form action="/labelsView/${trip.id}" method="POST">
+                <form action="/labels/${trip.id}" method="POST">
                     <tr>
-                        <td>Enter a label</td>
+                        <td><spring:message code="EnterLabel" /></td>
                         <td><input type="text" name="label"></td>
-                        <td><input id="btn-save" type="submit" value="<spring:message code="Save" />" class="btn-blue">
-                        </td>
+                        <td><input id="btn-save" type="submit" value="<spring:message code="Save" />" class="btn-blue"></td>
                     </tr>
                 </form>
             </table>
+        </c:if>
     </div>
 
 </div>

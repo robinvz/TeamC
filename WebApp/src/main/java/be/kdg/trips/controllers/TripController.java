@@ -254,7 +254,7 @@ public class TripController {
             description, @RequestParam TripPrivacy privacy,
                                             @RequestParam String startDate, @RequestParam String endDate, Locale locale) {
         User user = (User) session.getAttribute("user");
-        if (user != null) {
+        if (isLoggedIn()) {
             try {
                 SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
                 Trip test = tripsService.createTimeBoundTrip(title, description, privacy, user, sdf.parse(startDate), sdf.parse(endDate));
@@ -277,7 +277,7 @@ public class TripController {
     public ModelAndView createTimeLessTrip(@RequestParam String title, @RequestParam String
             description, @RequestParam TripPrivacy privacy) {
         User user = (User) session.getAttribute("user");
-        if (user != null) {
+        if (isLoggedIn()) {
             try {
                 Trip test = tripsService.createTimelessTrip(title, description, privacy, user);
                 return new ModelAndView("redirect:trip/" + test.getId());
@@ -292,7 +292,7 @@ public class TripController {
     @RequestMapping(value = "/deleteTrip/{tripId}", method = RequestMethod.GET)
     public ModelAndView deleteTrip(@PathVariable int tripId, Locale locale) {
         User user = (User) session.getAttribute("user");
-        if (user != null) {
+        if (isLoggedIn()) {
             try {
                 tripsService.deleteTrip(tripsService.findTripById(tripId, user), user);
             } catch (TripsException e) {
@@ -309,7 +309,7 @@ public class TripController {
     @RequestMapping(value = "/subscribe", method = RequestMethod.GET)
     public ModelAndView subscribe(@RequestParam int tripId, Locale locale) {
         User user = (User) session.getAttribute("user");
-        if (user != null) {
+        if (isLoggedIn()) {
             try {
                 tripsService.subscribe(tripsService.findTripById(tripId, user), user);
             } catch (TripsException e) {
@@ -335,7 +335,7 @@ public class TripController {
     @RequestMapping(value = "/unSubscribe", method = RequestMethod.GET)
     public ModelAndView unSubscribe(@RequestParam int tripId, Locale locale) {
         User user = (User) session.getAttribute("user");
-        if (user != null) {
+        if (isLoggedIn()) {
             try {
                 tripsService.disenroll(tripsService.findTripById(tripId, user), user);
             } catch (TripsException e) {
@@ -354,7 +354,7 @@ public class TripController {
     @RequestMapping(value = "/publishTrip/{tripId}", method = RequestMethod.GET)
     public ModelAndView publish(@PathVariable int tripId, Locale locale) {
         User user = (User) session.getAttribute("user");
-        if (user != null) {
+        if (isLoggedIn()) {
             try {
                 tripsService.publishTrip(tripsService.findTripById(tripId, user), user);
                 return new ModelAndView("tripsView");
@@ -366,10 +366,10 @@ public class TripController {
         }
     }
 
-    @RequestMapping(value = "/labelsView/{tripId}", method = RequestMethod.GET)
+    @RequestMapping(value = "/labels/{tripId}", method = RequestMethod.GET)
     public ModelAndView addLabel(@PathVariable int tripId, Locale locale) {
         User user = (User) session.getAttribute("user");
-        if(user!=null) {
+        if(isLoggedIn()) {
             Trip trip = null;
             try {
                 trip = tripsService.findTripById(tripId, user);
@@ -382,10 +382,10 @@ public class TripController {
         }
     }
 
-    @RequestMapping(value = "/labelsView/{tripId}", method = RequestMethod.POST)
+    @RequestMapping(value = "/labels/{tripId}", method = RequestMethod.POST)
     public ModelAndView addLabel(@PathVariable int tripId, @RequestParam String label, Locale locale) {
         User user = (User) session.getAttribute("user");
-        if(user!=null) {
+        if(isLoggedIn()) {
             Trip trip = null;
             try {
                 trip = tripsService.findTripById(tripId, user);
@@ -394,6 +394,39 @@ public class TripController {
                 return new ModelAndView("labelsView", "error", messageSource.getMessage("LabelError", null, locale));
             }
             return new ModelAndView("labelsView", "trip", trip);
+        } else {
+            return new ModelAndView("loginView", "loginBean", new LoginBean());
+        }
+    }
+
+    @RequestMapping(value = "/requirements/{tripId}", method = RequestMethod.GET)
+    public ModelAndView requirements(@PathVariable int tripId, Locale locale) {
+        User user = (User)session.getAttribute("user");
+        if(isLoggedIn()) {
+            Trip trip = null;
+            try {
+                trip = tripsService.findTripById(tripId, user);
+            } catch (TripsException e) {
+                return new ModelAndView("tripView", "error", messageSource.getMessage("FindTripError", null, locale));
+            }
+            return new ModelAndView("requirementsView", "trip", trip);
+        } else {
+            return new ModelAndView("loginView", "loginBean", new LoginBean());
+        }
+    }
+
+    @RequestMapping(value = "/requirements/{tripId}", method = RequestMethod.POST)
+    public ModelAndView requirements(@PathVariable int tripId, @RequestParam String requisite, Locale locale) {
+        User user = (User)session.getAttribute("user");
+        if(isLoggedIn()) {
+            Trip trip = null;
+            try {
+                trip = tripsService.findTripById(tripId, user);
+                tripsService.addRequisiteToTrip(requisite, tripId, trip, user);
+            } catch (TripsException e) {
+                return new ModelAndView("labelsView", "error", messageSource.getMessage("RequisiteError", null, locale));
+            }
+            return new ModelAndView("requirementsView", "trip", trip);
         } else {
             return new ModelAndView("loginView", "loginBean", new LoginBean());
         }
@@ -521,4 +554,14 @@ public class TripController {
         }
         return jsonArray.toString();
     }
+
+    public boolean isLoggedIn() {
+        User user = (User)session.getAttribute("user");
+        if(user!=null) {
+            return true;
+        } else {
+            return false;
+        }
+    }
+
 }
