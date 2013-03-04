@@ -232,7 +232,7 @@ public class TripController {
                 User user = tripsService.findUser(username);
                 Trip trip = tripsService.findTripById(id, user);
                 JSONArray jsonArray = new JSONArray();
-                for (Location loc : trip.getLocations()){
+                for (Location loc : trip.getLocations()) {
                     JSONObject loco = new JSONObject();
                     loco.accumulate("id", loc.getId());
                     loco.accumulate("title", loc.getTitle());
@@ -286,10 +286,10 @@ public class TripController {
         User user = (User) session.getAttribute("user");
         Trip trip = null;
         try {
-            if(tripsService.findTripById(tripId, user).isTimeBoundTrip()) {
-                trip = (TimeBoundTrip)tripsService.findTripById(tripId, user);
+            if (tripsService.findTripById(tripId, user).isTimeBoundTrip()) {
+                trip = (TimeBoundTrip) tripsService.findTripById(tripId, user);
             } else {
-                trip = (TimelessTrip)tripsService.findTripById(tripId, user);
+                trip = (TimelessTrip) tripsService.findTripById(tripId, user);
             }
             return new ModelAndView("tripView", "trip", trip);
         } catch (TripsException e) {
@@ -422,7 +422,7 @@ public class TripController {
     @RequestMapping(value = "/labels/{tripId}", method = RequestMethod.GET)
     public ModelAndView addLabel(@PathVariable int tripId, Locale locale) {
         User user = (User) session.getAttribute("user");
-        if(isLoggedIn()) {
+        if (isLoggedIn()) {
             Trip trip = null;
             try {
                 trip = tripsService.findTripById(tripId, user);
@@ -438,7 +438,7 @@ public class TripController {
     @RequestMapping(value = "/labels/{tripId}", method = RequestMethod.POST)
     public ModelAndView addLabel(@PathVariable int tripId, @RequestParam String label, Locale locale) {
         User user = (User) session.getAttribute("user");
-        if(isLoggedIn()) {
+        if (isLoggedIn()) {
             Trip trip = null;
             try {
                 trip = tripsService.findTripById(tripId, user);
@@ -454,8 +454,8 @@ public class TripController {
 
     @RequestMapping(value = "/requirements/{tripId}", method = RequestMethod.GET)
     public ModelAndView requirements(@PathVariable int tripId, Locale locale) {
-        User user = (User)session.getAttribute("user");
-        if(isLoggedIn()) {
+        User user = (User) session.getAttribute("user");
+        if (isLoggedIn()) {
             Trip trip = null;
             try {
                 trip = tripsService.findTripById(tripId, user);
@@ -470,8 +470,8 @@ public class TripController {
 
     @RequestMapping(value = "/requirements/{tripId}", method = RequestMethod.POST)
     public ModelAndView requirements(@PathVariable int tripId, @RequestParam String requisite, Locale locale) {
-        User user = (User)session.getAttribute("user");
-        if(isLoggedIn()) {
+        User user = (User) session.getAttribute("user");
+        if (isLoggedIn()) {
             Trip trip = null;
             try {
                 trip = tripsService.findTripById(tripId, user);
@@ -509,46 +509,53 @@ public class TripController {
     }
 
     @RequestMapping(value = "/trip/{tripId}/locations/createLocation", method = RequestMethod.POST)
-    public String createLocation(@PathVariable int tripId, @RequestParam double latitude,
-                                 @RequestParam double longitude, @RequestParam String street,
-                                 @RequestParam String houseNr, @RequestParam String city, @RequestParam String postalCode,
-                                 @RequestParam String province, @RequestParam String country, @RequestParam String title,
-                                 @RequestParam String description, @RequestParam String question,
-                                 @RequestParam String correctAnswer, HttpServletRequest request) {
+    public ModelAndView createLocation(@PathVariable int tripId, @RequestParam double latitude,
+                                       @RequestParam double longitude, @RequestParam String street,
+                                       @RequestParam String houseNr, @RequestParam String city, @RequestParam String postalCode,
+                                       @RequestParam String province, @RequestParam String country, @RequestParam String title,
+                                       @RequestParam String description, @RequestParam String question,
+                                       @RequestParam String correctAnswer, HttpServletRequest request) {
         User user = (User) session.getAttribute("user");
-        Trip trip;
-        try {
-            trip = tripsService.findTripById(tripId, user);
-            if (question.isEmpty()) {
-                tripsService.addLocationToTrip(user, trip, latitude, longitude, street, houseNr.split("-")[0], city, postalCode, province,
-                        country, title, description);
-            } else {
-                List answers = new ArrayList(Arrays.asList(request.getParameter("possibleAnswers")));
-                tripsService.addLocationToTrip(user, trip, latitude, longitude, street, houseNr.split("-")[0], city, postalCode, province,
-                        country, title, description, question, answers, answers.indexOf(correctAnswer));
+        Trip trip = null;
+        if (isLoggedIn()) {
+            try {
+                trip = tripsService.findTripById(tripId, user);
+                if (question.isEmpty()) {
+                    tripsService.addLocationToTrip(user, trip, latitude, longitude, street, houseNr.split("-")[0], city, postalCode, province,
+                            country, title, description);
+                } else {
+                    List answers = new ArrayList(Arrays.asList(request.getParameter("possibleAnswers")));
+                    tripsService.addLocationToTrip(user, trip, latitude, longitude, street, houseNr.split("-")[0], city, postalCode, province,
+                            country, title, description, question, answers, answers.indexOf(correctAnswer));
+                }
+            } catch (TripsException e) {
+                //failed to add location to trip
             }
-        } catch (TripsException e) {
-            //failed to add location to trip
+        } else {
+            return new ModelAndView("loginView", "loginBean", new LoginBean());
         }
-        return "redirect:/trip/" + tripId + "/locations";
+        return new ModelAndView("redirect:/trip/" + trip.getId() + "/locations");
     }
 
     @RequestMapping(value = "/trip/{tripId}/locations/{locationId}/deleteLocation", method = RequestMethod.GET)
-    public String deleteLocation(@PathVariable int tripId, @PathVariable int locationId) {
+    public ModelAndView deleteLocation(@PathVariable int tripId, @PathVariable int locationId) {
         User user = (User) session.getAttribute("user");
-        Trip trip;
-        try {
-            trip = tripsService.findTripById(tripId, user);
+        Trip trip = null;
+        if (isLoggedIn()) {
             try {
-                tripsService.deleteLocation(trip, user, tripsService.findLocationById(locationId));
+                trip = tripsService.findTripById(tripId, user);
+                try {
+                    tripsService.deleteLocation(trip, user, tripsService.findLocationById(locationId));
+                } catch (TripsException e) {
+                    //failed to delete location
+                }
             } catch (TripsException e) {
-                //failed to delete location
+                //Failed to find trip
             }
-            return "redirect:/trip/" + trip.getId() + "/locations";
-        } catch (TripsException e) {
-            //Failed to find trip
+        } else {
+            return new ModelAndView("loginView", "loginBean", new LoginBean());
         }
-        return "/trips";
+        return new ModelAndView("redirect:/trip/" + trip.getId() + "/locations");
     }
 
     @RequestMapping(value = "/trip/switchLocation", method = RequestMethod.POST)
@@ -609,8 +616,8 @@ public class TripController {
     }
 
     public boolean isLoggedIn() {
-        User user = (User)session.getAttribute("user");
-        if(user!=null) {
+        User user = (User) session.getAttribute("user");
+        if (user != null) {
             return true;
         } else {
             return false;

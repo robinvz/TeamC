@@ -26,7 +26,7 @@ function zoomFit() {
         });
         map.fitBounds(bounds);
     }else if(locations.length == 0){
-        map.setZoom(20);
+        map.setZoom(1);
         map.setCenter(new google.maps.LatLng(0,0))
     } else {
         map.setZoom(12);
