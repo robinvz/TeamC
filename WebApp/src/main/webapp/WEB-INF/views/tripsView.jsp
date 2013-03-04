@@ -30,7 +30,7 @@
             </form>
         </c:if>
         <select id="filter" name="filterTripsMenu">
-            <option>Filter</option>
+            <option><spring:message code="AllTrips" /></option>
             <option value=""><spring:message code="TimeLessTrips" /></option>
             <option value=""><spring:message code="TimeBoundTrips" /></option>
         </select>
@@ -53,7 +53,14 @@
                 <div>
                     <c:if test="${not empty allNonPrivateTrips}">
                         <c:forEach items="${allNonPrivateTrips}" var="allNonPrivateTrip">
-                            <tr id="trip${allNonPrivateTrip.id}">
+                            <tr id="trip${allNonPrivateTrip.id}"
+                                    <c:if test="${allNonPrivateTrip.class == 'class be.kdg.trips.model.trip.TimelessTrip'}">
+                                        class="t-less"
+                                    </c:if>
+                                    <c:if test="${allNonPrivateTrip.class == 'class be.kdg.trips.model.trip.TimeBoundTrip'}">
+                                       class="t-bound"
+                                    </c:if>
+                                    >
                                 <div class="form-row">
                                     <td>
                                             ${allNonPrivateTrip.title}
@@ -78,7 +85,14 @@
                     </c:if>
                     <c:if test="${not empty allPrivateTrips}">
                         <c:forEach items="${allPrivateTrips}" var="allPrivateTrip">
-                            <tr id="trip${allPrivateTrip.id}">
+                            <tr id="trip${allPrivateTrip.id}"
+                                    <c:if test="${allPrivateTrip.class == 'class be.kdg.trips.model.trip.TimelessTrip'}">
+                                        class="t-less"
+                                    </c:if>
+                                    <c:if test="${allPrivateTrip.class == 'class be.kdg.trips.model.trip.TimeBoundTrip'}">
+                                        class="t-bound"
+                                    </c:if>
+                                    >
                                 <div class="form-row">
                                     <td>
                                             ${allPrivateTrip.title}
@@ -120,7 +134,14 @@
                     <div>
                         <c:if test="${not empty allEnrollments}">
                         <c:forEach items="${allEnrollments}" var="enrollment">
-                            <tr id="trip${enrollment.trip.id}">
+                            <tr id="trip${enrollment.trip.id}"
+                                    <c:if test="${enrollment.trip.class == 'class be.kdg.trips.model.trip.TimelessTrip'}">
+                                        class="t-less"
+                                    </c:if>
+                                    <c:if test="${enrollment.trip.class == 'class be.kdg.trips.model.trip.TimeBoundTrip'}">
+                                        class="t-bound"
+                                    </c:if>
+                                    >
                                 <div class="form-row">
                                     <td>
                                             ${enrollment.trip.title}
@@ -156,7 +177,15 @@
                 <div>
                     <c:if test="${not empty allOrganizedTrips}">
                         <c:forEach items="${allOrganizedTrips}" var="organizedTrip">
-                            <tr id="trip${organizedTrip.id}">
+                            <tr id="trip${organizedTrip.id}"
+                                    <c:if test="${organizedTrip.class == 'class be.kdg.trips.model.trip.TimelessTrip'}">
+                                        class="t-less"
+                                    </c:if>
+                                    <c:if test="${organizedTrip.class == 'class be.kdg.trips.model.trip.TimeBoundTrip'}">
+                                        class="t-bound"
+                                    </c:if>
+                                    >
+
                                 <div class="form-row">
                                     <td>
                                             ${organizedTrip.title}
