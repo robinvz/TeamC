@@ -5,6 +5,7 @@ import be.kdg.trips.exception.TripsException;
 import be.kdg.trips.model.address.Address;
 import be.kdg.trips.model.enrollment.Enrollment;
 import be.kdg.trips.model.location.Location;
+import com.sun.org.apache.regexp.internal.RETest;
 import org.mockito.Mockito;
 import be.kdg.trips.model.trip.TimeBoundTrip;
 import be.kdg.trips.model.trip.TimelessTrip;
@@ -33,6 +34,7 @@ import static org.junit.Assert.*;
 import static org.mockito.Matchers.any;
 import static org.mockito.Matchers.eq;
 import static org.mockito.Matchers.anyString;
+import static org.mockito.Mockito.doThrow;
 import static org.mockito.Mockito.when;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 
@@ -407,11 +409,11 @@ public class TripTest {
     @Test
     public void tripbyIdServiceSucces() throws Exception {
         Trip t = new TimelessTrip("Trip 1", "Beschrijving", TripPrivacy.PUBLIC, testUser);
-        RequestBuilder requestBuilder = MockMvcRequestBuilders.get("/service/trip").param("username", "mathias").param("password", "fred").param("id", t.getId() + "");
+        RequestBuilder requestBuilder = MockMvcRequestBuilders.post("/service/trip").param("username", "mathias").param("password", "fred").param("id", t.getId() + "");
         when(tripsService.checkLogin(anyString(), anyString())).thenReturn(true);
         when(tripsService.findUser(anyString())).thenReturn(testUser);
         when(tripsService.findTripById(t.getId(), testUser)).thenReturn(t);
-        mockMvc.perform(requestBuilder).andExpect(content().string("{\"valid\":true,\"title\":\"" + t.getTitle() + "\",\"description\":\"Beschrijving\",\"enrollments\":0,\"privacy\":\"PUBLIC\"}"));
+        mockMvc.perform(requestBuilder).andExpect(content().string("{\"valid\":true,\"id\":" +t.getId() + ",\"title\":\"" + t.getTitle() + "\",\"description\":\"Beschrijving\",\"enrollments\":0,\"privacy\":\"PUBLIC\"}"));
     }
 
     @Test
@@ -432,6 +434,90 @@ public class TripTest {
         RequestBuilder requestBuilder = MockMvcRequestBuilders.get("/trip/" + t.getId() + "/locations").param("username", "mathias").param("password", "fred").param("id", t.getId() + "");
         when(tripsService.findTripById(t.getId(), testUser)).thenThrow(new TripsException("trip not found"));
         mockMvc.perform(requestBuilder).andExpect(view().name("tripsView"));
+    }
+
+    @Test
+    public void subscribeTripServiceSuccess() throws Exception{
+        Trip t = new TimelessTrip("Trip 1", "Beschrijving", TripPrivacy.PUBLIC, testUser);
+        RequestBuilder requestBuilder = MockMvcRequestBuilders.get("/service/enroll").param("username", testUser.getEmail()).param("password", "password").param("id", t.getId() + "");
+        when(tripsService.checkLogin(anyString(), anyString())).thenReturn(true);
+        when(tripsService.findUser(testUser.getEmail())).thenReturn(testUser);
+        when(tripsService.findTripById(t.getId(), testUser)).thenReturn(t);
+        mockMvc.perform(requestBuilder).andExpect(content().string("{\"valid\":true}"));
+    }
+
+    @Test
+    public void subscribeTripServiceFail() throws Exception{
+        Trip t = new TimelessTrip("Trip 1", "Beschrijving", TripPrivacy.PUBLIC, testUser);
+        RequestBuilder requestBuilder = MockMvcRequestBuilders.get("/service/enroll").param("username", testUser.getEmail()).param("password", "password").param("id", t.getId() + "");
+        when(tripsService.checkLogin(anyString(), anyString())).thenReturn(true);
+        when(tripsService.findTripById(t.getId(), testUser)).thenReturn(t);
+        when(tripsService.findUser(testUser.getEmail())).thenReturn(testUser);
+        when(tripsService.subscribe(t, testUser)).thenThrow(new TripsException("Could not subscribe"));
+        mockMvc.perform(requestBuilder).andExpect(content().string("{\"valid\":false}"));
+    }
+
+    @Test
+    public void unsubscribeTripServiceSuccess() throws Exception{
+        Trip t = new TimelessTrip("Trip 1", "Beschrijving", TripPrivacy.PUBLIC, testUser);
+        RequestBuilder requestBuilder = MockMvcRequestBuilders.get("/service/unsubscribe").param("username", testUser.getEmail()).param("password", "password").param("id", t.getId() + "");
+        when(tripsService.checkLogin(anyString(), anyString())).thenReturn(true);
+        when(tripsService.findUser(testUser.getEmail())).thenReturn(testUser);
+        when(tripsService.findTripById(t.getId(), testUser)).thenReturn(t);
+        mockMvc.perform(requestBuilder).andExpect(content().string("{\"valid\":true}"));
+    }
+
+    @Test
+    public void unsubscribeTripServiceFail() throws Exception{
+        Trip t = new TimelessTrip("Trip 1", "Beschrijving", TripPrivacy.PUBLIC, testUser);
+        RequestBuilder requestBuilder = MockMvcRequestBuilders.get("/service/unsubscribe").param("username", testUser.getEmail()).param("password", "password").param("id", t.getId() + "");
+        when(tripsService.checkLogin(anyString(), anyString())).thenReturn(true);
+        when(tripsService.findTripById(t.getId(), testUser)).thenReturn(t);
+        when(tripsService.findUser(testUser.getEmail())).thenReturn(testUser);
+        doThrow(new TripsException("Cannot unsubscribe")).when(tripsService).disenroll(t, testUser);
+        mockMvc.perform(requestBuilder).andExpect(content().string("{\"valid\":false}"));
+    }
+
+    @Test
+    public void startTripServiceSuccess() throws Exception{
+        Trip t = new TimelessTrip("Trip 1", "Beschrijving", TripPrivacy.PUBLIC, testUser);
+        RequestBuilder requestBuilder = MockMvcRequestBuilders.get("/service/start").param("username", testUser.getEmail()).param("password", "password").param("id", t.getId() + "");
+        when(tripsService.checkLogin(anyString(), anyString())).thenReturn(true);
+        when(tripsService.findUser(testUser.getEmail())).thenReturn(testUser);
+        when(tripsService.findTripById(t.getId(), testUser)).thenReturn(t);
+        mockMvc.perform(requestBuilder).andExpect(content().string("{\"valid\":true}"));
+    }
+
+    @Test
+    public void startTripServiceFail() throws Exception{
+        Trip t = new TimelessTrip("Trip 1", "Beschrijving", TripPrivacy.PUBLIC, testUser);
+        RequestBuilder requestBuilder = MockMvcRequestBuilders.get("/service/start").param("username", testUser.getEmail()).param("password", "password").param("id", t.getId() + "");
+        when(tripsService.checkLogin(anyString(), anyString())).thenReturn(true);
+        when(tripsService.findTripById(t.getId(), testUser)).thenReturn(t);
+        when(tripsService.findUser(testUser.getEmail())).thenReturn(testUser);
+        doThrow(new TripsException("Cannot start trip")).when(tripsService).startTrip(t, testUser);
+        mockMvc.perform(requestBuilder).andExpect(content().string("{\"valid\":false}"));
+    }
+
+    @Test
+    public void stopTripServiceSuccess() throws Exception{
+        Trip t = new TimelessTrip("Trip 1", "Beschrijving", TripPrivacy.PUBLIC, testUser);
+        RequestBuilder requestBuilder = MockMvcRequestBuilders.get("/service/stop").param("username", testUser.getEmail()).param("password", "password").param("id", t.getId() + "");
+        when(tripsService.checkLogin(anyString(), anyString())).thenReturn(true);
+        when(tripsService.findUser(testUser.getEmail())).thenReturn(testUser);
+        when(tripsService.findTripById(t.getId(), testUser)).thenReturn(t);
+        mockMvc.perform(requestBuilder).andExpect(content().string("{\"valid\":true}"));
+    }
+
+    @Test
+    public void stopTripServiceFail() throws Exception{
+        Trip t = new TimelessTrip("Trip 1", "Beschrijving", TripPrivacy.PUBLIC, testUser);
+        RequestBuilder requestBuilder = MockMvcRequestBuilders.get("/service/stop").param("username", testUser.getEmail()).param("password", "password").param("id", t.getId() + "");
+        when(tripsService.checkLogin(anyString(), anyString())).thenReturn(true);
+        when(tripsService.findTripById(t.getId(), testUser)).thenReturn(t);
+        when(tripsService.findUser(testUser.getEmail())).thenReturn(testUser);
+        doThrow(new TripsException("Cannot stop trip")).when(tripsService).stopTrip(t, testUser);
+        mockMvc.perform(requestBuilder).andExpect(content().string("{\"valid\":false}"));
     }
 
     @Test

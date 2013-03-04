@@ -105,7 +105,7 @@ public class TripController {
         return js.toString();
     }
 
-    @RequestMapping(value = "/service/trip", method = RequestMethod.GET)
+    @RequestMapping(value = "/service/trip", method = RequestMethod.POST)
     public
     @ResponseBody
     String tripByIdService(@RequestParam int id, @RequestParam String username, @RequestParam String password) throws TripsException {
@@ -114,6 +114,7 @@ public class TripController {
         if (tripsService.checkLogin(username, password)) {
             User user = tripsService.findUser(username);
             Trip trip = tripsService.findTripById(id, user);
+            js.accumulate("id", trip.getId());
             js.accumulate("title", trip.getTitle());
             js.accumulate("description", trip.getDescription());
             js.accumulate("enrollments", trip.getEnrollments().size());
@@ -121,6 +122,83 @@ public class TripController {
             js.accumulate("privacy", trip.getPrivacy());
         }
         return js.toString();
+    }
+
+    @RequestMapping(value = "/service/enroll", method = RequestMethod.POST)
+    public
+    @ResponseBody
+    String subscribeService(@RequestParam int id, @RequestParam String username, @RequestParam String password) {
+        JSONObject js = new JSONObject();
+        try {
+            js.accumulate("valid", tripsService.checkLogin(username, password));
+            if (tripsService.checkLogin(username, password)) {
+                User user = tripsService.findUser(username);
+                Trip trip = tripsService.findTripById(id, user);
+                tripsService.subscribe(trip, user);
+            }
+        } catch (TripsException t) {
+            js.put("valid", false);
+        } finally {
+            return js.toString();
+        }
+    }
+
+    @RequestMapping(value = "/service/start", method = RequestMethod.POST)
+    public
+    @ResponseBody
+    String startTripService(@RequestParam int id, @RequestParam String username, @RequestParam String password) {
+        JSONObject js = new JSONObject();
+        try {
+            js.accumulate("valid", tripsService.checkLogin(username, password));
+            if (tripsService.checkLogin(username, password)) {
+                User user = tripsService.findUser(username);
+                Trip trip = tripsService.findTripById(id, user);
+                tripsService.startTrip(trip, user);
+            }
+        } catch (TripsException t) {
+            js.put("valid", false);
+        } finally {
+            return js.toString();
+        }
+    }
+
+    @RequestMapping(value = "/service/unsubscribe", method = RequestMethod.POST)
+    public
+    @ResponseBody
+    String unsubscribeTripService(@RequestParam int id, @RequestParam String username, @RequestParam String password) {
+        JSONObject js = new JSONObject();
+        try {
+            js.accumulate("valid", tripsService.checkLogin(username, password));
+            if (tripsService.checkLogin(username, password)) {
+                User user = tripsService.findUser(username);
+                Trip trip = tripsService.findTripById(id, user);
+                tripsService.disenroll(trip, user);
+            }
+        } catch (TripsException t) {
+            js.put("valid", false);
+        } finally {
+            return js.toString();
+        }
+    }
+
+
+    @RequestMapping(value = "/service/stop", method = RequestMethod.POST)
+    public
+    @ResponseBody
+    String stopTripService(@RequestParam int id, @RequestParam String username, @RequestParam String password) {
+        JSONObject js = new JSONObject();
+        try {
+            js.accumulate("valid", tripsService.checkLogin(username, password));
+            if (tripsService.checkLogin(username, password)) {
+                User user = tripsService.findUser(username);
+                Trip trip = tripsService.findTripById(id, user);
+                tripsService.stopTrip(trip, user);
+            }
+        } catch (TripsException t) {
+            js.put("valid", false);
+        } finally {
+            return js.toString();
+        }
     }
 
     @RequestMapping(value = "/trips", method = RequestMethod.GET)
@@ -172,7 +250,8 @@ public class TripController {
     }
 
     @RequestMapping(value = "/createTimeBoundTrip", method = RequestMethod.POST)
-    public ModelAndView createTimeBoundTrip(@RequestParam String title, @RequestParam String description, @RequestParam TripPrivacy privacy,
+    public ModelAndView createTimeBoundTrip(@RequestParam String title, @RequestParam String
+            description, @RequestParam TripPrivacy privacy,
                                             @RequestParam String startDate, @RequestParam String endDate, Locale locale) {
         User user = (User) session.getAttribute("user");
         if (user != null) {
@@ -195,7 +274,8 @@ public class TripController {
     }
 
     @RequestMapping(value = "/createTimeLessTrip", method = RequestMethod.POST)
-    public ModelAndView createTimeLessTrip(@RequestParam String title, @RequestParam String description, @RequestParam TripPrivacy privacy) {
+    public ModelAndView createTimeLessTrip(@RequestParam String title, @RequestParam String
+            description, @RequestParam TripPrivacy privacy) {
         User user = (User) session.getAttribute("user");
         if (user != null) {
             try {
@@ -343,10 +423,12 @@ public class TripController {
     }
 
     @RequestMapping(value = "/trip/{tripId}/locations/createLocation", method = RequestMethod.POST)
-    public String createLocation(@PathVariable int tripId, @RequestParam double latitude, @RequestParam double longitude, @RequestParam String street,
+    public String createLocation(@PathVariable int tripId, @RequestParam double latitude,
+                                 @RequestParam double longitude, @RequestParam String street,
                                  @RequestParam String houseNr, @RequestParam String city, @RequestParam String postalCode,
                                  @RequestParam String province, @RequestParam String country, @RequestParam String title,
-                                 @RequestParam String description, @RequestParam String question, @RequestParam String correctAnswer, HttpServletRequest request) {
+                                 @RequestParam String description, @RequestParam String question,
+                                 @RequestParam String correctAnswer, HttpServletRequest request) {
         User user = (User) session.getAttribute("user");
         Trip trip;
         try {
@@ -384,7 +466,8 @@ public class TripController {
     }
 
     @RequestMapping(value = "/trip/switchLocation", method = RequestMethod.POST)
-    public ModelAndView switchLocation(@RequestParam String id, @RequestParam int fromPosition, @RequestParam int toPosition, @RequestParam String direction) {
+    public ModelAndView switchLocation(@RequestParam String id, @RequestParam int fromPosition,
+                                       @RequestParam int toPosition, @RequestParam String direction) {
         System.out.println();
         User user = (User) session.getAttribute("user");
         String[] ids = id.split("-");
@@ -399,7 +482,7 @@ public class TripController {
         }
         if (user != null) {
             try {
-                tripsService.switchLocationSequence(trip, user, fromPosition -1, toPosition-1);
+                tripsService.switchLocationSequence(trip, user, fromPosition - 1, toPosition - 1);
             } catch (TripsException e) {
                 //Switch location failed
                 System.out.println("error2");
