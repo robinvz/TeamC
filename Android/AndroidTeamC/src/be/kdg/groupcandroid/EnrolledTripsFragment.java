@@ -6,6 +6,8 @@ public class EnrolledTripsFragment extends BaseTripsFragment{
 	public EnrolledTripsFragment() {
 		super();
 		setType("enrolled");
+		setSearchVisible(false);
+
 	}
 
 }

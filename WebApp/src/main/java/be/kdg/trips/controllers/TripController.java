@@ -4,6 +4,7 @@ import be.kdg.trips.beans.LoginBean;
 import be.kdg.trips.exception.TripsException;
 import be.kdg.trips.model.enrollment.Enrollment;
 import be.kdg.trips.model.location.Location;
+import be.kdg.trips.model.question.Question;
 import be.kdg.trips.model.trip.TimeBoundTrip;
 import be.kdg.trips.model.trip.TimelessTrip;
 import be.kdg.trips.model.trip.Trip;
@@ -21,8 +22,6 @@ import org.springframework.web.servlet.ModelAndView;
 import javax.mail.MessagingException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
-import java.io.FileWriter;
-import java.io.IOException;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.*;
@@ -239,10 +238,15 @@ public class TripController {
                     loco.accumulate("latitude", loc.getLatitude());
                     loco.accumulate("longitude", loc.getLongitude());
                     loco.accumulate("description", loc.getDescription());
-                    loco.accumulate("question", loc.getQuestion().getQuestion());
-                    JSONArray answers = new JSONArray();
-                    answers.addAll(loc.getQuestion().getPossibleAnswers());
-                    loco.accumulate("possibleAnswers", loc.getQuestion().getQuestion());
+                    Question q = loc.getQuestion();
+                    if (q != null) {
+                        loco.accumulate("question", loc.getQuestion().getQuestion());
+                        JSONArray answers = new JSONArray();
+                        answers.addAll(loc.getQuestion().getPossibleAnswers());
+                        loco.accumulate("possibleAnswers", answers);
+                    } else {
+                        loco.accumulate("question", null);
+                    }
                     jsonArray.add(loco);
                 }
                 js.accumulate("locations", jsonArray);
@@ -410,7 +414,7 @@ public class TripController {
         if (isLoggedIn()) {
             try {
                 tripsService.publishTrip(tripsService.findTripById(tripId, user), user);
-                return new ModelAndView("tripsView");
+                return new ModelAndView("redirect:/trips");//tripsView");
             } catch (TripsException e) {
                 return new ModelAndView("tripView", "error", messageSource.getMessage("NotPublishedError", null, locale));
             }
@@ -591,7 +595,7 @@ public class TripController {
         try {
             Trip trip = tripsService.findTripById(tripId, (User) session.getAttribute("user"));
             List<Enrollment> enr = tripsService.findEnrollmentsByTrip(trip);
-            return new ModelAndView("participantsView", "enrollments", enr);
+            return new ModelAndView("users/participantsView", "enrollments", enr);
         } catch (TripsException e) {
             return new ModelAndView("tripsView");
         }

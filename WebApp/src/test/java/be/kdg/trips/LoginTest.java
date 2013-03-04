@@ -97,7 +97,10 @@ public class LoginTest {
 
     @Test
     public void facebookloginCorrect() throws Exception {
+        User user = new User("bobette@gmail.com", "bobb");
+
         RequestBuilder requestBuilder = MockMvcRequestBuilders.post("/facebooklogin").param("username", "bob").param("password", "bob");
+        when(tripsService.findUser(anyString())).thenReturn(user);
         when(tripsService.checkLogin(anyString(), anyString())).thenReturn(true);
         when(tripsService.createUser(any(User.class))).thenThrow(new TripsException("User already exists"));
         mockMvc.perform(requestBuilder).andExpect(content().string("{\"valid\":true}"));
@@ -106,7 +109,9 @@ public class LoginTest {
 
     @Test
     public void facebookloginNewUser() throws Exception {
+        User user = new User("bobette@gmail.com", "bobb");
         RequestBuilder requestBuilder = MockMvcRequestBuilders.post("/facebooklogin").param("username", "bob").param("password", "bob");
+        when(tripsService.findUser(anyString())).thenReturn(user);
         when(tripsService.checkLogin(anyString(), anyString())).thenReturn(true);
         mockMvc.perform(requestBuilder).andExpect(content().string("{\"valid\":true}"));
     }

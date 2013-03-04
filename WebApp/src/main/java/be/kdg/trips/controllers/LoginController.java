@@ -83,10 +83,10 @@ public class LoginController {
             //User exists in database so just login
         }
         try {
-            if (tripsService.checkLogin(username, password)) {
-                user = tripsService.findUser(username);
+            if (tripsService.checkLogin(user.getEmail(), password)) {
+                user = tripsService.findUser(user.getEmail());
                 session.setAttribute("user", user);
-                js.accumulate("valid", tripsService.checkLogin(username, password));
+                js.accumulate("valid", tripsService.checkLogin(user.getEmail(), password));
             }
         } catch (TripsException e) {
             js.accumulate("valid", false);
@@ -114,7 +114,7 @@ public class LoginController {
         } catch (TripsException e) {
             //will never throw
         }
-        return "indexView";
+        return "redirect:/";
     }
 
     @RequestMapping(value = "/logout", method = RequestMethod.GET)
