@@ -114,7 +114,7 @@ public class LoginController {
         } catch (TripsException e) {
             //will never throw
         }
-        return "redirect:/";//indexView";
+        return "redirect:/";
     }
 
     @RequestMapping(value = "/logout", method = RequestMethod.GET)

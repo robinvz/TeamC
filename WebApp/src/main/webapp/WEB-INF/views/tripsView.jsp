@@ -44,6 +44,7 @@
                 <tr>
                     <th><spring:message code="Title" /></th>
                     <th><spring:message code="Description" /></th>
+                        <th><spring:message code="Type"/></th>
                     <th>Privacy</th>
                 </tr>
                 </thead>
@@ -61,6 +62,14 @@
                                             ${allNonPrivateTrip.description}
                                     </td>
                                     <td>
+                                        <c:if test="${allNonPrivateTrip.class == 'class be.kdg.trips.model.trip.TimelessTrip'}">
+                                            <spring:message code="Timeless" />
+                                        </c:if>
+                                        <c:if test="${allNonPrivateTrip.class == 'class be.kdg.trips.model.trip.TimeBoundTrip'}">
+                                            <spring:message code="TimeBound" />
+                                        </c:if>
+                                    </td>
+                                    <td>
                                             ${allNonPrivateTrip.privacy}
                                     </td>
                                 </div>
@@ -76,6 +85,14 @@
                                     </td>
                                     <td>
                                             ${allPrivateTrip.description}
+                                    </td>
+                                    <td>
+                                        <c:if test="${allPrivateTrip.class == 'class be.kdg.trips.model.trip.TimelessTrip'}">
+                                            <spring:message code="Timeless" />
+                                        </c:if>
+                                        <c:if test="${allNonPrivateTrip.class == 'class be.kdg.trips.model.trip.TimeBoundTrip'}">
+                                            <spring:message code="TimeBound" />
+                                        </c:if>
                                     </td>
                                     <td>
                                             ${allPrivateTrip.privacy}

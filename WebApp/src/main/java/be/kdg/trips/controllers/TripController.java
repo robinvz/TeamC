@@ -410,7 +410,7 @@ public class TripController {
         if (isLoggedIn()) {
             try {
                 tripsService.publishTrip(tripsService.findTripById(tripId, user), user);
-                return new ModelAndView("tripsView");
+                return new ModelAndView("redirect:/trips");//tripsView");
             } catch (TripsException e) {
                 return new ModelAndView("tripView", "error", messageSource.getMessage("NotPublishedError", null, locale));
             }
