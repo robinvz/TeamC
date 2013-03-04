@@ -105,7 +105,7 @@ public class TripController {
         return js.toString();
     }
 
-    @RequestMapping(value = "/service/search", method = RequestMethod.POST)
+    @RequestMapping(value = "/service/searchtrips", method = RequestMethod.POST)
     public
     @ResponseBody
     String searchTripsService(@RequestParam String username, @RequestParam String password, @RequestParam String keyword) throws TripsException {

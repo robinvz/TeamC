@@ -44,6 +44,7 @@
             android:layout_centerVertical="true"
             android:layout_toLeftOf="@+id/btnSearch"
             android:ems="10"
+            android:imeOptions="actionSearch"
             android:selectAllOnFocus="true"
             android:singleLine="true" />
 

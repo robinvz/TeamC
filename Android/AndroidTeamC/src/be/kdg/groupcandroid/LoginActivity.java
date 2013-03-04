@@ -4,6 +4,8 @@ import java.util.concurrent.ExecutionException;
 import java.util.concurrent.TimeUnit;
 import java.util.concurrent.TimeoutException;
 
+import be.kdg.groupcandroid.tasks.LoginTask;
+
 import com.facebook.Request;
 import com.facebook.Response;
 import com.facebook.Session;
@@ -50,7 +52,6 @@ public class LoginActivity extends Activity {
 		final String port = sp.getString("server_port", "8080");
 		btnLogin.setOnClickListener(new View.OnClickListener() {
 			public void onClick(View v) {
-			
 
 				TextView tvUser = (TextView) findViewById(R.id.txtUsername);
 				TextView tvPass = (TextView) findViewById(R.id.txtPassword);
@@ -77,7 +78,7 @@ public class LoginActivity extends Activity {
 					alertDialog.show();
 				} else {
 					doLogin(ip, port, "service/login", username, pass);
-					
+
 				}
 			}
 		});
@@ -91,15 +92,32 @@ public class LoginActivity extends Activity {
 							@Override
 							public void call(Session session,
 									SessionState state, Exception exception) {
-								if (session.isOpened()){
-									Request.executeMeRequestAsync(session, new Request.GraphUserCallback() {
+								if (session.isOpened()) {
+									Request.executeMeRequestAsync(session,
+											new Request.GraphUserCallback() {
 
-										  // callback after Graph API response with user object
-										  @Override
-										  public void onCompleted(GraphUser user, Response response) {
-												doLogin(ip, port, "facebooklogin", user.getProperty("email").toString(), user.getId());
+												// callback after Graph API
+												// response with user object
+												@Override
+												public void onCompleted(
+														GraphUser user,
+														Response response) {
+													if (user != null) {
+														doLogin(ip,
+																port,
+																"facebooklogin",
+																user.getProperty(
+																		"email")
+																		.toString(),
+																user.getId());
+													}
+													else{
+														Toast.makeText(LoginActivity.this,
+																"Could not connect to Facebook", Toast.LENGTH_SHORT)
+																.show();
+													}
 												}
-										});
+											});
 								}
 
 							}
@@ -108,12 +126,13 @@ public class LoginActivity extends Activity {
 
 		});
 	}
-	
-	public void doLogin(String ip, String port, String url, String username, String pass){
+
+	public void doLogin(String ip, String port, String url, String username,
+			String pass) {
 		try {
-			Integer response = new LoginTask().execute(
-					new String[] { ip, port, url, username, pass }).get(
-					3, TimeUnit.SECONDS);
+			Integer response = new LoginTask(this).execute(
+					new String[] { ip, port, url, username, pass }).get(3,
+					TimeUnit.SECONDS);
 			if (response == 1) {
 				session.createLoginSession(username, pass);
 
@@ -124,8 +143,8 @@ public class LoginActivity extends Activity {
 				switch (response) {
 				case 0:
 					Toast.makeText(LoginActivity.this,
-							"Wrong Username/Password",
-							Toast.LENGTH_SHORT).show();
+							"Wrong Username/Password", Toast.LENGTH_SHORT)
+							.show();
 					break;
 
 				case -1:
@@ -135,8 +154,7 @@ public class LoginActivity extends Activity {
 					break;
 
 				case -2:
-					Toast.makeText(
-							LoginActivity.this,
+					Toast.makeText(LoginActivity.this,
 							"Could not connect. Is your Wifi/Data on?",
 							Toast.LENGTH_SHORT).show();
 					break;
@@ -152,17 +170,17 @@ public class LoginActivity extends Activity {
 		} catch (ExecutionException e) {
 			// TODO Auto-generated catch block
 		} catch (TimeoutException e) {
-			Toast.makeText(LoginActivity.this,
-					"Connection Timed Out.", Toast.LENGTH_SHORT)
-					.show();
+			Toast.makeText(LoginActivity.this, "Connection Timed Out.",
+					Toast.LENGTH_SHORT).show();
 		}
 
 	}
-	
+
 	@Override
 	public void onActivityResult(int requestCode, int resultCode, Intent data) {
-	  super.onActivityResult(requestCode, resultCode, data);
-	  Session.getActiveSession().onActivityResult(this, requestCode, resultCode, data);
+		super.onActivityResult(requestCode, resultCode, data);
+		Session.getActiveSession().onActivityResult(this, requestCode,
+				resultCode, data);
 	}
 
 	@Override
@@ -186,5 +204,20 @@ public class LoginActivity extends Activity {
 		}
 		return super.onOptionsItemSelected(item);
 	}
+
+	@Override
+	protected void onResume() {
+		super.onResume();
+		session = new SessionManager(getApplicationContext());
+		if (session.isLoggedIn()) {
+			Intent intent = new Intent(LoginActivity.this, TripsOverview.class);
+			startActivity(intent);
+		} else {
+			setContentView(R.layout.activity_main);
+			createListeners();
+		}
+	}
+	
+	
 
 }
