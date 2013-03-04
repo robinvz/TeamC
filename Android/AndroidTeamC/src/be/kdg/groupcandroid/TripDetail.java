@@ -83,6 +83,7 @@ public class TripDetail extends FragmentActivity {
 		this.trip = trip;
 		TemplateFragment tempFrag = (TemplateFragment) getSupportFragmentManager()
 				.findFragmentById(R.id.fragment1);
+		tempFrag.setTexts(trip);
 		addListeners();
 	}
 
@@ -189,7 +190,14 @@ public class TripDetail extends FragmentActivity {
 					transaction.replace(R.id.fragment1, listfr);
 				} else if (clickItem.id == 0) { // TripTitle is selected so
 					transaction.replace(R.id.fragment1, tempFragment);
-				} else { // TripTitle is selected so title view
+				}
+				else if (clickItem.title.toLowerCase().contains("loc")) { // TripTitle is selected so
+					LocationsFragment locFr = new LocationsFragment();
+					Bundle bundle = new Bundle();
+					bundle.putInt("tripId", Integer.parseInt(trip.getId()));
+					locFr.setArguments(bundle);
+					transaction.replace(R.id.fragment1, locFr);
+				}else { // TripTitle is selected so title view
 					transaction.replace(R.id.fragment1, tempFragment);
 				}
 				transaction.commit();

@@ -4,6 +4,7 @@ import be.kdg.trips.beans.LoginBean;
 import be.kdg.trips.exception.TripsException;
 import be.kdg.trips.model.enrollment.Enrollment;
 import be.kdg.trips.model.location.Location;
+import be.kdg.trips.model.question.Question;
 import be.kdg.trips.model.trip.TimeBoundTrip;
 import be.kdg.trips.model.trip.TimelessTrip;
 import be.kdg.trips.model.trip.Trip;
@@ -232,17 +233,22 @@ public class TripController {
                 User user = tripsService.findUser(username);
                 Trip trip = tripsService.findTripById(id, user);
                 JSONArray jsonArray = new JSONArray();
-                for (Location loc : trip.getLocations()){
+                for (Location loc : trip.getLocations()) {
                     JSONObject loco = new JSONObject();
                     loco.accumulate("id", loc.getId());
                     loco.accumulate("title", loc.getTitle());
                     loco.accumulate("latitude", loc.getLatitude());
                     loco.accumulate("longitude", loc.getLongitude());
                     loco.accumulate("description", loc.getDescription());
-                    loco.accumulate("question", loc.getQuestion().getQuestion());
-                    JSONArray answers = new JSONArray();
-                    answers.addAll(loc.getQuestion().getPossibleAnswers());
-                    loco.accumulate("possibleAnswers", loc.getQuestion().getQuestion());
+                    Question q = loc.getQuestion();
+                    if (q != null) {
+                        loco.accumulate("question", loc.getQuestion().getQuestion());
+                        JSONArray answers = new JSONArray();
+                        answers.addAll(loc.getQuestion().getPossibleAnswers());
+                        loco.accumulate("possibleAnswers", answers);
+                    } else {
+                        loco.accumulate("question", null);
+                    }
                     jsonArray.add(loco);
                 }
                 js.accumulate("locations", jsonArray);
@@ -491,7 +497,6 @@ public class TripController {
         try {
             Trip trip = tripsService.findTripById(tripId, (User) session.getAttribute("user"));
             parameters.put("trip", trip);
-            System.out.println(trip.getLocations());
             parameters.put("locations", trip.getLocations());
             return new ModelAndView("locationsView", parameters);
         } catch (TripsException e) {
