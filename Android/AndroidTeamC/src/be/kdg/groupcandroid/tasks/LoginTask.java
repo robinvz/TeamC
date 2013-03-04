@@ -1,4 +1,4 @@
-package be.kdg.groupcandroid;
+package be.kdg.groupcandroid.tasks;
 
 import java.io.BufferedReader;
 import java.io.IOException;
@@ -21,9 +21,18 @@ import org.apache.http.impl.client.DefaultHttpClient;
 import org.apache.http.message.BasicNameValuePair;
 import org.json.JSONException;
 import org.json.JSONObject;
+
+import android.app.Activity;
+import android.app.ProgressDialog;
 import android.os.AsyncTask;
 
 public class LoginTask extends AsyncTask<String, Void, Integer> {
+
+	private ProgressDialog dialog;
+
+	public LoginTask(Activity activity) {
+		dialog = new ProgressDialog(activity);
+	}
 
 	@Override
 	protected Integer doInBackground(String... params) {
@@ -31,12 +40,13 @@ public class LoginTask extends AsyncTask<String, Void, Integer> {
 		HttpClient client = new DefaultHttpClient();
 		HttpPost httpPost;
 		try {
-			httpPost = new HttpPost(new URI("http://" + params[0] + ":" + params[1]	+ "/"+ params[2]));
-			 List<NameValuePair> nameValuePairs = new ArrayList<NameValuePair>(2); 
-			  nameValuePairs.add(new BasicNameValuePair("password", params[4]));
-		        nameValuePairs.add(new BasicNameValuePair("username", params[3]));
-		        httpPost.setEntity(new UrlEncodedFormEntity(nameValuePairs));
-		        HttpResponse response = client.execute(httpPost);
+			httpPost = new HttpPost(new URI("http://" + params[0] + ":"
+					+ params[1] + "/" + params[2]));
+			List<NameValuePair> nameValuePairs = new ArrayList<NameValuePair>(2);
+			nameValuePairs.add(new BasicNameValuePair("password", params[4]));
+			nameValuePairs.add(new BasicNameValuePair("username", params[3]));
+			httpPost.setEntity(new UrlEncodedFormEntity(nameValuePairs));
+			HttpResponse response = client.execute(httpPost);
 			StatusLine statusLine = response.getStatusLine();
 			int statusCode = statusLine.getStatusCode();
 			if (statusCode == 200) {
@@ -67,4 +77,17 @@ public class LoginTask extends AsyncTask<String, Void, Integer> {
 		}
 	}
 
+	protected void onPreExecute() {
+		this.dialog.setMessage("Logging In");
+		this.dialog.show();
+	}
+
+	
+	
+	@Override
+	protected void onPostExecute(Integer result) {
+		if (dialog.isShowing()) {
+			dialog.dismiss();
+		}
+	}
 }

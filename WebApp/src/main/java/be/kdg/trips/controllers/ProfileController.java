@@ -101,6 +101,13 @@ public class ProfileController {
         File file = new File(request.getParameter("picPath"));
         byte[] bFile = new byte[(int) file.length()];
         try {
+            FileInputStream fileInputStream = null;
+            try {
+                fileInputStream = new FileInputStream(file);
+                fileInputStream.read(bFile);
+            } catch (FileNotFoundException e) {
+            } catch (IOException e) {
+            }
             tripsService.updateUser((User) session.getAttribute("user"), "", "", "", "", "", "", "", "", bFile);
             session.setAttribute("user", tripsService.findUser(((User) session.getAttribute("user")).getEmail()));
         } catch (TripsException e) {
