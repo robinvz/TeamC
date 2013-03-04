@@ -98,6 +98,7 @@ public class ProfileController {
 
     @RequestMapping(value = "/users/editProfilePic", method = RequestMethod.POST)
     public String editProfilePic(HttpServletRequest request) {
+        String path =     request.getParameter("picPath");
         File file = new File(request.getParameter("picPath"));
         byte[] bFile = new byte[(int) file.length()];
         try {
