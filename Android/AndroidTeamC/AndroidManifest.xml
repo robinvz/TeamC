@@ -28,7 +28,7 @@
             </intent-filter>
         </activity>
         <activity
-            android:name="be.kdg.groupcandroid.MenuContent"
+            android:name="be.kdg.groupcandroid.TripDetail"
             android:label="" >
         </activity>
         <activity

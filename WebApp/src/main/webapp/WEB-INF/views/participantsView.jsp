@@ -1,7 +1,6 @@
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@ taglib prefix="spring" uri="http://www.springframework.org/tags" %>
 
-
 <html>
 <head>
     <link rel="stylesheet" href="${pageContext.request.contextPath}/resources/css/main.css"/>
@@ -13,9 +12,8 @@
 <div id="page">
     <jsp:include page="baseView.jsp"/>
 
-    <h2><spring0:message code="PleaseLogIn"/></h2>
+    <h2><spring:message code="PleaseLogIn"/></h2>
     <div id="content">
-
 
         <div class="trip-participants">
             <c:choose>
@@ -36,7 +34,6 @@
                 </c:otherwise>
             </c:choose>
         </div>
-
     </div>
 
 </div>
