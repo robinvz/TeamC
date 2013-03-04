@@ -4,7 +4,6 @@ $(document).ready(function(){
     var currentPage = urlParts[urlParts.length - 1];
     //Remove previous selections and select right page
     $(".selected").removeClass("selected");
-    alert(currentPage);
     switch (currentPage){
        case "":
            $("#nav-home").addClass("selected");
