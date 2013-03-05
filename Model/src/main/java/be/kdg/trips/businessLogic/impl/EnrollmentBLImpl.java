@@ -61,8 +61,8 @@ public class EnrollmentBLImpl implements EnrollmentBL
         return enrollment;
     }
 
-    @Transactional
     @Override
+    @Transactional
     public void disenroll(Trip trip, User user) throws TripsException {
         if(isExistingEnrollment(user, trip) && !trip.isActive())
         {
@@ -73,7 +73,7 @@ public class EnrollmentBLImpl implements EnrollmentBL
                 invitation.setAnswer(Answer.DECLINED);
                 enrollmentDao.saveOrUpdateInvitation(invitation);
             }
-            enrollmentDao.deleteEnrollment(enrollment);
+            enrollmentDao.deleteEnrollment(enrollment.getId());
         }
         else
         {
@@ -81,8 +81,8 @@ public class EnrollmentBLImpl implements EnrollmentBL
         }
     }
 
-    @Transactional
     @Override
+    @Transactional
     public Invitation invite(Trip trip, User organizer, User user) throws TripsException, MessagingException {
         Invitation invitation = null;
         if(isUnexistingInvitation(user, trip))
@@ -105,13 +105,14 @@ public class EnrollmentBLImpl implements EnrollmentBL
     }
 
     @Override
+    @Transactional
     public void uninvite(Trip trip, User organizer, User user) throws TripsException {
         if(isExistingInvitation(user, trip))
         {
             if (tripBL.isOrganizer(trip, organizer)&& isUnexistingEnrollment(user, trip))
             {
                 Invitation invitation = enrollmentDao.getInvitationByUserAndTrip(user, trip);
-                enrollmentDao.deleteInvitation(invitation);
+                enrollmentDao.deleteInvitation(invitation.getId());
             }
             else
             {
@@ -151,6 +152,7 @@ public class EnrollmentBLImpl implements EnrollmentBL
     }
 
     @Override
+    @Transactional
     public void addRequisiteToEnrollment(String name, int amount, Trip trip, User user, User organizer) throws TripsException
     {
         if(isExistingEnrollment(user, trip) &&userBL.isExistingUser(organizer.getEmail()) && tripBL.isOrganizer(trip, organizer))
@@ -162,6 +164,7 @@ public class EnrollmentBLImpl implements EnrollmentBL
     }
 
     @Override
+    @Transactional
     public void removeRequisiteFromEnrollment(String name, int amount, Trip trip, User user, User organizer) throws TripsException
     {
         if(isExistingEnrollment(user, trip) &&userBL.isExistingUser(organizer.getEmail()) && tripBL.isOrganizer(trip, organizer))
@@ -208,8 +211,8 @@ public class EnrollmentBLImpl implements EnrollmentBL
         return false;
     }
 
-    @Transactional
     @Override
+    @Transactional
     public Enrollment acceptInvitation(Trip trip, User user) throws TripsException {
         Enrollment enrollment = null;
         if(isExistingInvitation(user, trip) && !trip.isActive())
@@ -223,6 +226,7 @@ public class EnrollmentBLImpl implements EnrollmentBL
     }
 
     @Override
+    @Transactional
     public void declineInvitation(Trip trip, User user) throws TripsException {
         if(isExistingInvitation(user, trip) && isUnexistingEnrollment(user, trip))
         {
@@ -240,12 +244,12 @@ public class EnrollmentBLImpl implements EnrollmentBL
     }
 
     @Override
+    @Transactional
     public Enrollment subscribe(Trip trip, User user) throws TripsException {
         Enrollment enrollment = null;
-        User userWithDetails = userBL.findUserWithDetails(user.getEmail());
         if(trip.getPrivacy() == TripPrivacy.PROTECTED)
         {
-            enrollment = enroll(trip, userWithDetails);
+            enrollment = enroll(trip, user);
         }
         else
         {
@@ -255,6 +259,7 @@ public class EnrollmentBLImpl implements EnrollmentBL
     }
 
     @Override
+    @Transactional
     public void setLastLocationVisited(Trip trip, User user, Location location) throws TripsException {
         if(isExistingEnrollment(user, trip))
         {
@@ -278,8 +283,8 @@ public class EnrollmentBLImpl implements EnrollmentBL
         }
     }
 
-    @Transactional
     @Override
+    @Transactional
     public void checkAnswerFromQuestion(Question question, int answerIndex, User user) throws TripsException {
         Trip trip = tripBL.findTripByQuestion(question);
         if(isExistingEnrollment(user, trip))
@@ -324,6 +329,7 @@ public class EnrollmentBLImpl implements EnrollmentBL
     }
 
     @Override
+    @Transactional
     public void startTrip(Trip trip, User user) throws TripsException {
         if(isExistingEnrollment(user, trip))
         {
@@ -337,11 +343,11 @@ public class EnrollmentBLImpl implements EnrollmentBL
             {
                 throw new TripsException("Enrollment is already started");
             }
-
         }
     }
 
     @Override
+    @Transactional
     public String stopTrip(Trip trip, User user) throws TripsException {
         if(isExistingEnrollment(user, trip))
         {

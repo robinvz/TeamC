@@ -69,7 +69,7 @@ public class ProfileController {
 
     @RequestMapping(value = "/users/profilePic", method = RequestMethod.GET, produces = "image/jpg")
     public @ResponseBody byte[] showProfilePic(){
-       User user = (User) session.getAttribute("user");
+        User user = (User) session.getAttribute("user");
         byte[] imageData = user.getProfilePicture();
         return imageData;
     }
@@ -94,9 +94,19 @@ public class ProfileController {
 
     @RequestMapping(value = "/users/editProfilePic", method = RequestMethod.POST)
     public String editProfilePic(HttpServletRequest request) {
-        File file = new File(request.getParameter("picPath"));
+        //String path = request.getParameter("file");
+        File file = new File(request.getParameter("file"));
         byte[] bFile = new byte[(int) file.length()];
-        try {
+        try{
+            FileInputStream fileInputStream = null;
+            try {
+                fileInputStream = new FileInputStream(file);
+                fileInputStream.read(bFile);
+            } catch (FileNotFoundException e1) {
+                e1.printStackTrace();  //To change body of catch statement use File | Settings | File Templates.
+            } catch (IOException e1) {
+                e1.printStackTrace();  //To change body of catch statement use File | Settings | File Templates.
+            }
             tripsService.updateUser((User) session.getAttribute("user"), "", "", "", "", "", "", "", "", bFile);
             session.setAttribute("user", tripsService.findUser(((User) session.getAttribute("user")).getEmail()));
         } catch (TripsException e) {

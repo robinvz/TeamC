@@ -7,6 +7,7 @@ import be.kdg.trips.model.user.User;
 import be.kdg.trips.persistence.dao.interfaces.UserDao;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -25,6 +26,7 @@ public class UserBLImpl implements UserBL
     private UserDao userDao;
 
     @Override
+    @Transactional
     public User createUser(User user) throws TripsException {
         if(isUnexistingUser(user.getEmail()))
         {
@@ -41,17 +43,11 @@ public class UserBLImpl implements UserBL
     }
 
     @Override
-    public User findUserWithDetails(String email) throws TripsException
-    {
-        return userDao.getUserWithDetails(email);
-    }
-
-    @Override
     public List<User> findUsersByKeyword(String keyword, User user) throws TripsException {
         List<User> users = new ArrayList<>();
         if(isExistingUser(user.getEmail()))
         {
-            users = userDao.getUsersByKeyword(keyword.toLowerCase(), user);
+            users = userDao.getUsersByKeyword(keyword, user);
         }
         return users;
     }
@@ -75,6 +71,7 @@ public class UserBLImpl implements UserBL
     }
 
     @Override
+    @Transactional
     public void updateUser(User user, String firstName, String lastName, String street, String houseNr, String city, String postalCode, String province, String country, byte[] profilePicture) throws TripsException {
         if(isExistingUser(user.getEmail()))
         {
@@ -119,6 +116,7 @@ public class UserBLImpl implements UserBL
     }
 
     @Override
+    @Transactional
     public void changePassword(User user, String oldPassword, String newPassword) throws TripsException {
         if (isExistingUser(user.getEmail()))
         {
@@ -137,10 +135,11 @@ public class UserBLImpl implements UserBL
     }
 
     @Override
+    @Transactional
     public void deleteUser(User user) throws TripsException {
         if(isExistingUser(user.getEmail()))
         {
-            userDao.deleteUser(user);
+            userDao.deleteUser(user.getId());
         }
     }
 

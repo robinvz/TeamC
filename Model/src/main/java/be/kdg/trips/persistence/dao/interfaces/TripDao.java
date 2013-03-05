@@ -16,8 +16,6 @@ import java.util.List;
  * 2012-2013
  */
 public interface TripDao {
-    public void saveOrUpdateTrip(Trip trip);
-
     public List<Trip> getPublicTrips();
     public List<Trip> getProtectedTrips();
     public List<Trip> getProtectedTripsWithoutDetails();
@@ -29,8 +27,13 @@ public interface TripDao {
     public Trip getTripByQuestion(Question question) throws TripsException;
     public Location getLocationById(int id) throws TripsException;
 
-    public void deleteTrip(Trip trip);
-    public void deleteLocation(Location location);
+    public void createTrip(Trip trip);
+    public void updateTrip(Trip trip);
+    public void saveOrUpdateLocation(Location location);
+
+
+    public void deleteTrip(int id);
+    public void deleteLocation(int id);
 
     public boolean isExistingTrip(int id) throws TripsException;
 }

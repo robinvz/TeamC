@@ -43,37 +43,35 @@ public class TripBLImpl implements TripBL
     @Autowired
     private EnrollmentBL enrollmentBL;
 
-    @Transactional
     @Override
+    @Transactional
     public Trip createTimelessTrip(String title, String description, TripPrivacy privacy, User organizer) throws TripsException {
         Trip trip = null;
         if(userBL.isExistingUser(organizer.getEmail()))
         {
-            User organizerWithDetails = userBL.findUserWithDetails(organizer.getEmail());
-            trip = new TimelessTrip(title, description, privacy, organizerWithDetails);
-            tripDao.saveOrUpdateTrip(trip);
+            trip = new TimelessTrip(title, description, privacy, organizer);
+            tripDao.createTrip(trip);
             if(trip.getPrivacy()==TripPrivacy.PRIVATE)
             {
-                enrollmentBL.enroll(trip, organizerWithDetails);
+                enrollmentBL.enroll(trip, organizer);
             }
         }
         return trip;
     }
 
-    @Transactional
     @Override
+    @Transactional
     public Trip createTimeBoundTrip(String title, String description, TripPrivacy privacy, User organizer, Date startDate, Date endDate) throws TripsException {
         Trip trip=null;
         if(userBL.isExistingUser(organizer.getEmail()))
         {
             if(areDatesValid(startDate, endDate))
             {
-                User organizerWithDetails = userBL.findUserWithDetails(organizer.getEmail());
-                trip = new TimeBoundTrip(title, description, privacy, organizerWithDetails, startDate, endDate);
-                tripDao.saveOrUpdateTrip(trip);
+                trip = new TimeBoundTrip(title, description, privacy, organizer, startDate, endDate);
+                tripDao.createTrip(trip);
                 if(trip.getPrivacy()==TripPrivacy.PRIVATE)
                 {
-                    enrollmentBL.enroll(trip, organizerWithDetails);
+                    enrollmentBL.enroll(trip, organizer);
                 }
             }
         }
@@ -116,8 +114,8 @@ public class TripBLImpl implements TripBL
     @Override
     public List<Trip> findPrivateTrips(User user) throws TripsException {
         List<Trip> trips = new ArrayList<>();
-        User foundUser = userBL.findUserWithDetails(user.getEmail());
-        for(Invitation invitation: foundUser.getInvitations())
+        User dbUser = userBL.findUser(user.getEmail());
+        for(Invitation invitation: dbUser.getInvitations())
         {
             trips.add(invitation.getTrip());
         }
@@ -175,6 +173,7 @@ public class TripBLImpl implements TripBL
     }
 
     @Override
+    @Transactional
     public void editTripDetails(Trip trip, String title, String description, User organizer) throws TripsException
     {
         if(isExistingTrip(trip.getId()) && userBL.isExistingUser(organizer.getEmail()) && isOrganizer(trip, organizer))
@@ -187,11 +186,12 @@ public class TripBLImpl implements TripBL
             {
                 trip.setDescription(description);
             }
-            tripDao.saveOrUpdateTrip(trip);
+            tripDao.updateTrip(trip);
         }
     }
 
     @Override
+    @Transactional
     public void editTripLocationDetails(User organizer, Trip trip, Location location, String street, String houseNr, String city, String postalCode, String province, String country, String title, String description) throws TripsException
     {
         if(isExistingTrip(trip.getId()) && userBL.isExistingUser(organizer.getEmail()) && isOrganizer(trip, organizer) && doesLocationBelongToTrip(location, trip))
@@ -230,12 +230,12 @@ public class TripBLImpl implements TripBL
                 location.setDescription(description);
             }
             location.setAddress(address);
-            tripDao.saveOrUpdateTrip(trip);
+            tripDao.updateTrip(trip);
         }
     }
 
-    @Transactional
     @Override
+    @Transactional
     public void publishTrip(Trip trip, User user) throws TripsException {
         if(isExistingTrip(trip.getId()) && userBL.isExistingUser(user.getEmail()) && isOrganizer(trip, user))
         {
@@ -244,10 +244,9 @@ public class TripBLImpl implements TripBL
                 trip.setPublished(true);
                 if(trip.getPrivacy()!=TripPrivacy.PUBLIC)
                 {
-                    User organizer = userBL.findUserWithDetails(user.getEmail());
-                    enrollmentBL.enroll(trip, organizer);
+                    enrollmentBL.enroll(trip, user);
                 }
-                tripDao.saveOrUpdateTrip(trip);
+                tripDao.updateTrip(trip);
             }
             else
             {
@@ -257,27 +256,30 @@ public class TripBLImpl implements TripBL
     }
 
     @Override
+    @Transactional
     public void addLabelToTrip(Trip trip, User organizer, String label) throws TripsException {
         if(isExistingTrip(trip.getId()) && userBL.isExistingUser(organizer.getEmail()) && isOrganizer(trip, organizer))
         {
             trip.addLabel(label);
-            tripDao.saveOrUpdateTrip(trip);
+            tripDao.updateTrip(trip);
         }
     }
 
     @Override
+    @Transactional
     public Location addLocationToTrip(User user, Trip trip, double latitude, double longitude, String street, String houseNr, String city, String postalCode, String province, String country, String title, String description) throws TripsException {
         Location location = null;
         if(isExistingTrip(trip.getId()) && userBL.isExistingUser(user.getEmail()) && isOrganizer(trip, user))
         {
             location =  new Location(trip, latitude, longitude, new Address(street, houseNr, city, postalCode, province, country), title, description, trip.getLocations().size());
             trip.addLocation(location);
-            tripDao.saveOrUpdateTrip(trip);
+            tripDao.saveOrUpdateLocation(location);
         }
         return location;
     }
 
     @Override
+    @Transactional
     public Location addLocationToTrip(User user, Trip trip, double latitude, double longitude, String street, String houseNr, String city, String postalCode, String province, String country, String title, String description, String question, List<String> possibleAnswers, int correctAnswerIndex) throws TripsException {
         Location location = null;
         if(isExistingTrip(trip.getId()) && userBL.isExistingUser(user.getEmail()) && isOrganizer(trip, user))
@@ -286,7 +288,7 @@ public class TripBLImpl implements TripBL
             {
                 location =  new Location(trip, latitude, longitude, new Address(street, houseNr, city, postalCode, province, country), title, description,trip.getLocations().size(), new Question(question, possibleAnswers, correctAnswerIndex));
                 trip.addLocation(location);
-                tripDao.saveOrUpdateTrip(trip);
+                tripDao.saveOrUpdateLocation(location);
             }
             else
             {
@@ -297,6 +299,7 @@ public class TripBLImpl implements TripBL
     }
 
     @Override
+    @Transactional
     public void deleteLocation(Trip trip, User user, Location location) throws TripsException {
         if(isExistingTrip(trip.getId()) && userBL.isExistingUser(user.getEmail()) && isOrganizer(trip, user))
         {
@@ -304,45 +307,54 @@ public class TripBLImpl implements TripBL
             {
                 if(locationInTrip.equals(location))
                 {
-                    tripDao.deleteLocation(location);
-                    break;
+                    tripDao.deleteLocation(locationInTrip.getId());
+                }
+                else if(locationInTrip.getSequence()>location.getSequence())
+                {
+                    locationInTrip.setSequence(locationInTrip.getSequence()-1);
+                    tripDao.saveOrUpdateLocation(locationInTrip);
                 }
             }
         }
     }
 
     @Override
+    @Transactional
     public void addDateToTimeBoundTrip(Date startDate, Date endDate, Trip trip, User organizer) throws TripsException {
         if(isExistingTrip(trip.getId()) && userBL.isExistingUser(organizer.getEmail()) && isOrganizer(trip, organizer))
         {
             if(areDatesUnoccupied(startDate, endDate, trip))
             {
                 ((TimeBoundTrip) trip).addDates(startDate, endDate);
-                tripDao.saveOrUpdateTrip(trip);
+                tripDao.updateTrip(trip);
             }
         }
     }
 
     @Override
+    @Transactional
     public void addRequisiteToTrip(String name, int amount, Trip trip, User organizer) throws TripsException
     {
         if(isExistingTrip(trip.getId()) && userBL.isExistingUser(organizer.getEmail()) && isOrganizer(trip, organizer) && isTripNotActive(trip))
         {
             trip.addRequisite(name, amount);
-            tripDao.saveOrUpdateTrip(trip);
+            tripDao.updateTrip(trip);
         }
     }
 
     @Override
+    @Transactional
     public void removeRequisiteFromTrip(String name, int amount, Trip trip, User organizer) throws TripsException
     {
         if(isExistingTrip(trip.getId()) && userBL.isExistingUser(organizer.getEmail()) && isOrganizer(trip, organizer) && isTripNotActive(trip))
         {
             trip.removeRequisite(name, amount);
-            tripDao.saveOrUpdateTrip(trip);
+            tripDao.updateTrip(trip);
         }
     }
 
+    @Override
+    @Transactional
     public void switchLocationSequence(Trip trip, User user, int from, int to) throws TripsException {
         if(isExistingTrip(trip.getId()) && userBL.isExistingUser(user.getEmail()) && isOrganizer(trip, user))
         {
@@ -351,31 +363,32 @@ public class TripBLImpl implements TripBL
             {
                 if(to==from)
                 {
-
+                    //nothing happens
                 }
                 else if(from>to)
                 {
                     locations.get(from).setSequence(to);
+                    tripDao.saveOrUpdateLocation(locations.get(from));
                     for (int i = 0; i < Math.abs(to-from); i++){
                         locations.get(to+i).setSequence(locations.get(to+i).getSequence()+1);
+                        tripDao.saveOrUpdateLocation(locations.get(to+i));
                     }
-                    tripDao.saveOrUpdateTrip(trip);
                 }
                 else if(from<to)
                 {
                     locations.get(from).setSequence(to);
+                    tripDao.saveOrUpdateLocation(locations.get(from));
                     for (int i = 0; i < to-from; i++){
                         locations.get(from+1+i).setSequence(locations.get(from+1+i).getSequence()-1);
-
+                        tripDao.saveOrUpdateLocation(locations.get(from+1+i));
                     }
-                    tripDao.saveOrUpdateTrip(trip);
                 }
             }
         }
     }
 
-    @Transactional
     @Override
+    @Transactional
     public void deleteTrip(Trip trip, User user) throws TripsException, MessagingException {
         if(isExistingTrip(trip.getId()) && userBL.isExistingUser(user.getEmail()) && isOrganizer(trip, user))
         {
@@ -384,7 +397,7 @@ public class TripBLImpl implements TripBL
             {
                 recipients.add(InternetAddress.parse(e.getUser().getEmail()));
             }
-            tripDao.deleteTrip(trip);
+            tripDao.deleteTrip(trip.getId());
             sendMail("Trip '"+trip.getTitle()+ "'", "We regret to inform you that the following trip: '"+trip.getTitle()+" - "+trip.getDescription()+"' has been canceled by the organizer.", recipients);
         }
     }

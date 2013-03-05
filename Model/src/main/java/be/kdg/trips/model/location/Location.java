@@ -2,6 +2,7 @@ package be.kdg.trips.model.location;
 
 
 import be.kdg.trips.model.address.Address;
+import be.kdg.trips.model.enrollment.Enrollment;
 import be.kdg.trips.model.question.Question;
 import be.kdg.trips.model.trip.Trip;
 import org.hibernate.validator.constraints.Range;
@@ -9,6 +10,7 @@ import org.hibernate.validator.constraints.Range;
 import javax.persistence.*;
 import javax.validation.constraints.*;
 import java.io.Serializable;
+import java.util.List;
 
 /**
  * Subversion id
@@ -22,7 +24,7 @@ public class Location implements LocationInterface, Serializable
 {
     @Id
     @GeneratedValue(strategy= GenerationType.IDENTITY)
-    private int id;
+    private Integer id;
     @NotNull
     @DecimalMin(value = "-90.00", message = "Latitude must be between -90 and 90")
     @DecimalMax(value = "90.00", message = "Latitude must be between -90 and 90")
@@ -71,7 +73,7 @@ public class Location implements LocationInterface, Serializable
         this.sequence = sequence;
     }
 
-    private Location() {
+    public Location() {
     }
 
     @Override
@@ -140,7 +142,7 @@ public class Location implements LocationInterface, Serializable
         this.sequence = sequence;
     }
 
-    public int getId() {
+    public Integer getId() {
         return id;
     }
 
@@ -157,8 +159,6 @@ public class Location implements LocationInterface, Serializable
 
         if (Double.compare(location.latitude, latitude) != 0) return false;
         if (Double.compare(location.longitude, longitude) != 0) return false;
-        if (sequence != location.sequence) return false;
-        if (!trip.equals(location.trip)) return false;
 
         return true;
     }
@@ -171,8 +171,6 @@ public class Location implements LocationInterface, Serializable
         result = (int) (temp ^ (temp >>> 32));
         temp = longitude != +0.0d ? Double.doubleToLongBits(longitude) : 0L;
         result = 31 * result + (int) (temp ^ (temp >>> 32));
-        result = 31 * result + trip.hashCode();
-        result = 31 * result + sequence;
         return result;
     }
 }

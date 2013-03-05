@@ -11,6 +11,7 @@
     <context:component-scan base-package="be.kdg.trips" />
     <context:annotation-config/>
 
+    <!--Declare datasource-->
     <bean id="dataSource"
           class="org.springframework.jdbc.datasource.DriverManagerDataSource">
         <property name="driverClassName" value="com.mysql.jdbc.Driver" />
@@ -19,20 +20,23 @@
         <property name="password" value="groepC" />
     </bean>
 
-    <bean name="sessionFactory" id="sessionFactory" class="org.springframework.orm.hibernate4.LocalSessionFactoryBean">
+    <!--PersistenceAnnotationBeanPostProcessor supports @PersistenceUnit and @PersistenceContext-->
+    <bean class="org.springframework.orm.jpa.support.PersistenceAnnotationBeanPostProcessor" />
+
+    <!--Configuration settings are read in from a META-INF/persistence.xml config file-->
+    <bean id="entityManagerFactory" class="org.springframework.orm.jpa.LocalContainerEntityManagerFactoryBean">
         <property name="dataSource" ref="dataSource" />
-        <property name="packagesToScan" value="be.kdg.trips.model" />
-        <property name="hibernateProperties">
-            <props>
-                <prop key="hibernate.hbm2ddl.auto">create-drop</prop>
-                <prop key="hibernate.dialect">org.hibernate.dialect.MySQL5InnoDBDialect</prop>
-            </props>
+        <property name="jpaVendorAdapter">
+            <bean class="org.springframework.orm.jpa.vendor.HibernateJpaVendorAdapter">
+                <property name="database" value="MYSQL" />
+                <property name="showSql" value="true" />
+            </bean>
         </property>
     </bean>
 
-    <bean id="transactionManager"
-          class="org.springframework.jdbc.datasource.DataSourceTransactionManager">
-        <property name="dataSource" ref="dataSource" />
+    <!--Transaction manager is responsible for opening and closing sessions when an entity manager is used-->
+    <bean id="transactionManager" class="org.springframework.orm.jpa.JpaTransactionManager">
+        <property name="entityManagerFactory" ref="entityManagerFactory" />
     </bean>
 
     <tx:annotation-driven transaction-manager="transactionManager"/>

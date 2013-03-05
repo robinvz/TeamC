@@ -18,6 +18,7 @@ import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 import static org.junit.Assert.*;
@@ -33,6 +34,7 @@ public class TestTrip {
     private static User user;
     private static DateFormat df;
     private final int FIRST_ELEMENT = 0;
+    private final int SECOND_ELEMENT = 0;
 
     @BeforeClass
     public static void createTripManager() throws TripsException
@@ -283,12 +285,24 @@ public class TestTrip {
     }
 
     @Test
-    public void successfulAddLocation() throws TripsException
+    public void successfulAddLocationWithoutQuestions() throws TripsException
     {
         Trip createdTrip = tripsService.createTimelessTrip("locationTripa", "trip with locations", TripPrivacy.PUBLIC, user);
         tripsService.addLocationToTrip(user, createdTrip, 10.12131, 10.12131, "Nationalestraat", null, "Antwerp", "2000", "Antwerp", "Belgium", "Titel", "Lange straat met tramspoor");
         tripsService.addLocationToTrip(user, createdTrip, 10.12121, 10.12123, "Groenplaats", "53", null, "2000", null, null, "Titel", "Groenplaats");
-        assertEquals(2, createdTrip.getLocations().size());
+        assertEquals(2, tripsService.findTripById(createdTrip.getId(), user).getLocations().size());
+    }
+
+    @Test
+    public void successfulAddLocationWithQuestions() throws TripsException
+    {
+        Trip createdTrip = tripsService.createTimelessTrip("locationTripa", "trip with locations", TripPrivacy.PUBLIC, user);
+        List<String> possibleAnswers = new ArrayList<String>();
+        possibleAnswers.add("yes");
+        possibleAnswers.add("no");
+        tripsService.addLocationToTrip(user, createdTrip, 10.12131, 10.12131, "Nationalestraat", null, "Antwerp", "2000", "Antwerp", "Belgium", "Titel", "Lange straat met tramspoor", "Schijnt de zon?", possibleAnswers, FIRST_ELEMENT);
+        tripsService.addLocationToTrip(user, createdTrip, 10.12121, 10.12123, "Groenplaats", "53", null, "2000", null, null, "Titel", "Groenplaats", "Schijnt de zon nog steeds?",possibleAnswers, SECOND_ELEMENT);
+        assertEquals(2, tripsService.findTripById(createdTrip.getId(), user).getLocations().size());
     }
 
     @Test(expected = TripsException.class)
@@ -377,39 +391,125 @@ public class TestTrip {
         assertFalse(createdTrip.getLocations().get(FIRST_ELEMENT).getQuestion().checkAnswer(1));
     }
 
-   /* @Test
-    public void successfulSwitchLocations1To3() throws TripsException
+    @Test
+    public void successfulSwitchLocations1() throws TripsException
     {
         boolean check = true;
         Trip trip = tripsService.createTimelessTrip("Trip with locations", "trip with locations", TripPrivacy.PUBLIC, user);
-        tripsService.addLocationToTrip(user, trip, 12.00, 13.00, null, null, null, null, null, null, "Location", "Aangename location1");
-        tripsService.addLocationToTrip(user, trip, 13.00, 13.00, null, null, null, null, null, null, "Location", "Aangename location2");
-        tripsService.addLocationToTrip(user, trip, 14.00, 13.00, null, null, null, null, null, null, "Location", "Aangename location3");
-        tripsService.addLocationToTrip(user, trip, 15.00, 13.00, null, null, null, null, null, null, "Location", "Aangename location4");
-        tripsService.addLocationToTrip(user, trip, 16.00, 13.00, null, null, null, null, null, null, "Location", "Aangename location5");
-        tripsService.switchLocationSequence(trip, user, 0, 4);
+        tripsService.addLocationToTrip(user, trip, 12.00, 13.00, null, null, null, null, null, null, "Location1", "Aangename location1");
+        tripsService.addLocationToTrip(user, trip, 11.00, 13.00, null, null, null, null, null, null, "Location2", "Aangename location2");
+        tripsService.addLocationToTrip(user, trip, 14.00, 13.00, null, null, null, null, null, null, "Location3", "Aangename location3");
+        tripsService.addLocationToTrip(user, trip, 15.00, 13.00, null, null, null, null, null, null, "Location4", "Aangename location4");
+        tripsService.addLocationToTrip(user, trip, 16.00, 13.00, null, null, null, null, null, null, "Location5", "Aangename location5");
+        List<Location> oldLocations = tripsService.findTripById(trip.getId(), user).getLocations();
+        tripsService.switchLocationSequence(trip, user, 1, 4);
+        List<Location> newLocations = tripsService.findTripById(trip.getId(), user).getLocations();
 
-    }
+        boolean correct = true;
+        if(!oldLocations.get(0).equals(newLocations.get(0))) correct = false;
+        if(!oldLocations.get(1).equals(newLocations.get(4))) correct = false;
+        if(!oldLocations.get(2).equals(newLocations.get(1))) correct = false;
+        if(!oldLocations.get(3).equals(newLocations.get(2))) correct = false;
+        if(!oldLocations.get(4).equals(newLocations.get(3))) correct = false;
 
-    @Test(expected = TripsException.class)
-    public void failSwitchLocationsInvalidSequence() throws TripsException
-    {
-        Trip trip = tripsService.createTimelessTrip("Trip with locations", "trip with locations", TripPrivacy.PUBLIC, user);
-        tripsService.addLocationToTrip(user, trip, 12.00, 13.00, null, null, null, null, null, null, "Location", "Aangename location1");
-        tripsService.addLocationToTrip(user, trip, 13.00, 13.00, null, null, null, null, null, null, "Location", "Aangename location2");
-        tripsService.addLocationToTrip(user, trip, 14.00, 13.00, null, null, null, null, null, null, "Location", "Aangename location3");
-        tripsService.switchLocationSequence(trip, user, -1, 5);
+        assertTrue(correct);
     }
 
     @Test
-    public void failSwitchLocationsSameSequence() throws TripsException
+    public void successfulSwitchLocations2() throws TripsException
     {
+        boolean check = true;
         Trip trip = tripsService.createTimelessTrip("Trip with locations", "trip with locations", TripPrivacy.PUBLIC, user);
-        tripsService.addLocationToTrip(user, trip, 12.00, 13.00, null, null, null, null, null, null, "Location", "Aangename location1");
-        tripsService.addLocationToTrip(user, trip, 13.00, 13.00, null, null, null, null, null, null, "Location", "Aangename location2");
-        tripsService.addLocationToTrip(user, trip, 14.00, 13.00, null, null, null, null, null, null, "Location", "Aangename location3");
-        tripsService.switchLocationSequence(trip, user, 1, 1);
-    }*/
+        tripsService.addLocationToTrip(user, trip, 12.00, 13.00, null, null, null, null, null, null, "Location1", "Aangename location1");
+        tripsService.addLocationToTrip(user, trip, 11.00, 13.00, null, null, null, null, null, null, "Location2", "Aangename location2");
+        tripsService.addLocationToTrip(user, trip, 14.00, 13.00, null, null, null, null, null, null, "Location3", "Aangename location3");
+        tripsService.addLocationToTrip(user, trip, 15.00, 13.00, null, null, null, null, null, null, "Location4", "Aangename location4");
+        tripsService.addLocationToTrip(user, trip, 16.00, 13.00, null, null, null, null, null, null, "Location5", "Aangename location5");
+        List<Location> oldLocations = tripsService.findTripById(trip.getId(), user).getLocations();
+        tripsService.switchLocationSequence(trip, user, 3, 1);
+        List<Location> newLocations = tripsService.findTripById(trip.getId(), user).getLocations();
+
+        boolean correct = true;
+        if(!oldLocations.get(0).equals(newLocations.get(0))) correct = false;
+        if(!oldLocations.get(1).equals(newLocations.get(2))) correct = false;
+        if(!oldLocations.get(2).equals(newLocations.get(3))) correct = false;
+        if(!oldLocations.get(3).equals(newLocations.get(1))) correct = false;
+        if(!oldLocations.get(4).equals(newLocations.get(4))) correct = false;
+
+        assertTrue(correct);
+    }
+
+    @Test
+    public void successfulSwitchLocations3() throws TripsException
+    {
+        boolean check = true;
+        Trip trip = tripsService.createTimelessTrip("Trip with locations", "trip with locations", TripPrivacy.PUBLIC, user);
+        tripsService.addLocationToTrip(user, trip, 12.00, 13.00, null, null, null, null, null, null, "Location1", "Aangename location1");
+        tripsService.addLocationToTrip(user, trip, 11.00, 13.00, null, null, null, null, null, null, "Location2", "Aangename location2");
+        tripsService.addLocationToTrip(user, trip, 14.00, 13.00, null, null, null, null, null, null, "Location3", "Aangename location3");
+        tripsService.addLocationToTrip(user, trip, 15.00, 13.00, null, null, null, null, null, null, "Location4", "Aangename location4");
+        tripsService.addLocationToTrip(user, trip, 16.00, 13.00, null, null, null, null, null, null, "Location5", "Aangename location5");
+        List<Location> oldLocations = tripsService.findTripById(trip.getId(), user).getLocations();
+        tripsService.switchLocationSequence(trip, user, 3, 3);
+        List<Location> newLocations = tripsService.findTripById(trip.getId(), user).getLocations();
+
+        boolean correct = true;
+        if(!oldLocations.get(0).equals(newLocations.get(0))) correct = false;
+        if(!oldLocations.get(1).equals(newLocations.get(1))) correct = false;
+        if(!oldLocations.get(2).equals(newLocations.get(2))) correct = false;
+        if(!oldLocations.get(3).equals(newLocations.get(3))) correct = false;
+        if(!oldLocations.get(4).equals(newLocations.get(4))) correct = false;
+
+        assertTrue(correct);
+    }
+
+    @Test
+    public void successfulSwitchLocations4() throws TripsException
+    {
+        boolean check = true;
+        Trip trip = tripsService.createTimelessTrip("Trip with locations", "trip with locations", TripPrivacy.PUBLIC, user);
+        tripsService.addLocationToTrip(user, trip, 12.00, 13.00, null, null, null, null, null, null, "Location1", "Aangename location1");
+        tripsService.addLocationToTrip(user, trip, 11.00, 13.00, null, null, null, null, null, null, "Location2", "Aangename location2");
+        tripsService.addLocationToTrip(user, trip, 14.00, 13.00, null, null, null, null, null, null, "Location3", "Aangename location3");
+        tripsService.addLocationToTrip(user, trip, 15.00, 13.00, null, null, null, null, null, null, "Location4", "Aangename location4");
+        tripsService.addLocationToTrip(user, trip, 16.00, 13.00, null, null, null, null, null, null, "Location5", "Aangename location5");
+        List<Location> oldLocations = tripsService.findTripById(trip.getId(), user).getLocations();
+        tripsService.switchLocationSequence(trip, user, 2, 0);
+        List<Location> newLocations = tripsService.findTripById(trip.getId(), user).getLocations();
+
+        boolean correct = true;
+        if(!oldLocations.get(0).equals(newLocations.get(1))) correct = false;
+        if(!oldLocations.get(1).equals(newLocations.get(2))) correct = false;
+        if(!oldLocations.get(2).equals(newLocations.get(0))) correct = false;
+        if(!oldLocations.get(3).equals(newLocations.get(3))) correct = false;
+        if(!oldLocations.get(4).equals(newLocations.get(4))) correct = false;
+
+        assertTrue(correct);
+    }
+
+    @Test
+    public void successfulSwitchLocations5() throws TripsException
+    {
+        boolean check = true;
+        Trip trip = tripsService.createTimelessTrip("Trip with locations", "trip with locations", TripPrivacy.PUBLIC, user);
+        tripsService.addLocationToTrip(user, trip, 12.00, 13.00, null, null, null, null, null, null, "Location1", "Aangename location1");
+        tripsService.addLocationToTrip(user, trip, 11.00, 13.00, null, null, null, null, null, null, "Location2", "Aangename location2");
+        tripsService.addLocationToTrip(user, trip, 14.00, 13.00, null, null, null, null, null, null, "Location3", "Aangename location3");
+        tripsService.addLocationToTrip(user, trip, 15.00, 13.00, null, null, null, null, null, null, "Location4", "Aangename location4");
+        tripsService.addLocationToTrip(user, trip, 16.00, 13.00, null, null, null, null, null, null, "Location5", "Aangename location5");
+        List<Location> oldLocations = tripsService.findTripById(trip.getId(), user).getLocations();
+        tripsService.switchLocationSequence(trip, user, 3, 4);
+        List<Location> newLocations = tripsService.findTripById(trip.getId(), user).getLocations();
+
+        boolean correct = true;
+        if(!oldLocations.get(0).equals(newLocations.get(0))) correct = false;
+        if(!oldLocations.get(1).equals(newLocations.get(1))) correct = false;
+        if(!oldLocations.get(2).equals(newLocations.get(2))) correct = false;
+        if(!oldLocations.get(3).equals(newLocations.get(4))) correct = false;
+        if(!oldLocations.get(4).equals(newLocations.get(3))) correct = false;
+
+        assertTrue(correct);
+    }
 
     @Test
     public void successfulDeleteTrip() throws TripsException, MessagingException, ParseException {
@@ -427,8 +527,9 @@ public class TestTrip {
     public void successfulDeleteLocation() throws TripsException {
         User organizer = tripsService.createUser(new User("keesflodder@hotmail.com","meloen"));
         Trip trip = tripsService.createTimelessTrip("Trip with locations", "trip with locations", TripPrivacy.PUBLIC, organizer);
-        Location loc1 = tripsService.addLocationToTrip(organizer, trip, 12.00, 13.00, null, null, null, null, null, null, "Location", "Aangename location1");
-        Location loc2 = tripsService.addLocationToTrip(organizer, trip, 13.00, 13.00, null, null, null, null, null, null, "Location", "Aangename location2");
+        tripsService.addLocationToTrip(organizer, trip, 12.12, 13.00, null, null, null, null, null, null, "Location", "Delete please");
+        tripsService.addLocationToTrip(organizer, trip, 13.00, 13.00, null, null, null, null, null, null, "Location", "Stay please");
+        Location loc1 = tripsService.findTripById(trip.getId(), organizer).getLocations().get(FIRST_ELEMENT);
         tripsService.deleteLocation(trip, organizer, loc1);
         assertEquals(1,tripsService.findTripsByOrganizer(organizer).get(FIRST_ELEMENT).getLocations().size());
     }
@@ -440,6 +541,5 @@ public class TestTrip {
         Location loc1 = tripsService.addLocationToTrip(organizer, trip, 12.00, 13.00, null, null, null, null, null, null, "Location", "Aangename location1");
         assertNotNull(tripsService.findLocationById(1));
     }
-
-
 }
+

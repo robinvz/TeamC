@@ -7,6 +7,7 @@ import be.kdg.trips.services.interfaces.TripsService;
 import org.junit.BeforeClass;
 import org.junit.Test;
 import org.springframework.context.support.ClassPathXmlApplicationContext;
+import org.springframework.transaction.TransactionSystemException;
 
 import javax.validation.ConstraintViolationException;
 
@@ -33,8 +34,7 @@ public class TestUser {
     @Test
     public void successfulRegister() throws TripsException
     {
-        User testUser = new User("gijs.muys@student.kdg.be", "pazw#rd");
-        User user = tripsService.createUser(testUser);
+        User user = tripsService.createUser(new User("peter_luts@student.kdg.be", "pazw#rd"));
         assertNotNull(user);
     }
 
@@ -137,7 +137,8 @@ public class TestUser {
         tripsService.updateUser(user, "", "", "", "","", "", "", "", bFile);
     }
 
-    @Test(expected = ConstraintViolationException.class)
+    //Doordat er een ConstraintViolationException wordt gethrowd (straat), mislukt de transactie en wordt er gerollbackt
+    @Test(expected = TransactionSystemException.class)
     public void failedUserUpdateInvalidStreet() throws TripsException {
         User user = tripsService.createUser(new User("louis.martens@student.kdg.be","password"));
         tripsService.updateUser(user, "","","straat1212","","","","","", null);
@@ -149,6 +150,7 @@ public class TestUser {
         tripsService.deleteUser(user);
         tripsService.findUser("email@hotmail.com");
     }
+
       /*
       @Test(expected = TripsException.class)
       public void failedDeleteUser() throws TripsException
@@ -187,5 +189,4 @@ public class TestUser {
         User user = tripsService.createUser(new User("zaag@student.kdg.be","tony"));
         tripsService.changePassword(user,"goethals","newpw");
     }
-
 }

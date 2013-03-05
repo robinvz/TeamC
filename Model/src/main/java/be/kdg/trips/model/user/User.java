@@ -29,7 +29,7 @@ public class User implements UserInterface, Serializable {
 
     @Id
     @GeneratedValue(strategy=GenerationType.IDENTITY)
-    private int id;
+    private Integer id;
     @Column(unique = true, nullable = false, updatable = false)
     @Email
     @Size(min = 4, max = 50, message = "Email must be between 4 and 50 characters")
@@ -69,6 +69,10 @@ public class User implements UserInterface, Serializable {
         this.enrollments = new HashSet<>();
         this.invitations = new HashSet<>();
         this.address = new Address(null,null,null,null,null,null);
+    }
+
+    public Integer getId() {
+        return id;
     }
 
     @Override
