@@ -35,7 +35,7 @@ public class UserDaoImpl implements UserDao {
         {
             return (User)query.getSingleResult();
         }
-        catch(NoResultException ex)
+        catch (NoResultException ex)
         {
             throw new TripsException("User with email '"+email+"' doesn't exist");
         }
