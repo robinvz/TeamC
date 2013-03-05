@@ -290,7 +290,7 @@ public class TripController {
         User user = (User) session.getAttribute("user");
         Trip trip = null;
         try {
-            tripsService.findTripById(tripId, user);
+            trip = tripsService.findTripById(tripId, user);
             return new ModelAndView("tripView", "trip", trip);
         } catch (TripsException e) {
             return new ModelAndView("tripsView");
@@ -501,7 +501,7 @@ public class TripController {
             } catch (TripsException e) {
                 return new ModelAndView("inviteUserView", "error", messageSource.getMessage("FindTripError", null, locale));
             }
-            return new ModelAndView("inviteUserView", "trip", trip);
+            return new ModelAndView("/users/inviteUserView", "trip", trip);
         } else {
             return new ModelAndView("loginView", "loginBean", new LoginBean());
         }
