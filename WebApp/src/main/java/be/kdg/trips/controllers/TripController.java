@@ -427,7 +427,7 @@ public class TripController {
             try {
                 trip = tripsService.findTripById(tripId, user);
             } catch (TripsException e) {
-                return new ModelAndView("tripView", "error", messageSource.getMessage("FindTripError", null, locale));
+                return new ModelAndView("tripView", "erro       r", messageSource.getMessage("FindTripError", null, locale));
             }
             return new ModelAndView("labelsView", "trip", trip);
         } else {
@@ -483,7 +483,7 @@ public class TripController {
                 map.put("trip", trip);
                 map.put("error", messageSource.getMessage("RequisiteAdded", null, locale));
             } catch (TripsException e) {
-                return new ModelAndView("labelsView", "error", messageSource.getMessage("RequisiteError", null, locale));
+                return new ModelAndView("requirementsView", "error", messageSource.getMessage("RequisiteError", null, locale));
             }
             return new ModelAndView("requirementsView", map);
         } else {
@@ -606,7 +606,6 @@ public class TripController {
 
         return new ModelAndView("locationsView", "trip", trip);
     }
-
 
     @RequestMapping(value = "/trip/{tripId}/participants", method = RequestMethod.GET)
     public ModelAndView participants(@PathVariable int tripId) {
