@@ -240,7 +240,7 @@ public class TestTrip {
         Trip trip = tripsService.createTimelessTrip("Trip1","TripDescription",TripPrivacy.PUBLIC,user);
         Location location1 = tripsService.addLocationToTrip(user, trip, 10.12131, 10.12131, "Nationalestraat", "1", "Antwerp", "2000", "Antwerp", "Belgium", "Titel", "Lange straat met tramspoor");
         tripsService.editTripLocationDetails(user, trip, location1, "", "2", "", "", "", "", "", "");
-        assertTrue(trip.getLocations().get(FIRST_ELEMENT).getAddress().getHouseNr().equals("2"));
+        assertTrue(tripsService.findTripById(trip.getId(),user).getLocations().get(FIRST_ELEMENT).getAddress().getHouseNr().equals("2"));
     }
 
     @Test
