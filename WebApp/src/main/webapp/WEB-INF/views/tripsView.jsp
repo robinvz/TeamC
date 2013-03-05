@@ -6,6 +6,9 @@
     <link rel="stylesheet" href="${pageContext.request.contextPath}/resources/css/main.css"/>
     <link rel="stylesheet" href="${pageContext.request.contextPath}/resources/css/trips.css"/>
     <link rel="shortcut icon" href="${pageContext.request.contextPath}/resources/res/favicon.ico">
+    <!--[if lt IE 9]>
+    <script src="${pageContext.request.contextPath}/resources/js/html5shiv.js"></script>
+    <![endif]-->
     <title><spring:message code="TripsPage" /></title>
 </head>
 <body>

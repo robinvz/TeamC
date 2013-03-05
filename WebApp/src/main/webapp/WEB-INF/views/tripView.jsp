@@ -7,6 +7,9 @@
     <link rel="stylesheet" href="${pageContext.request.contextPath}/resources/css/main.css"/>
     <link rel="stylesheet" href="${pageContext.request.contextPath}/resources/css/trip.css"/>
     <link rel="shortcut icon" href="${pageContext.request.contextPath}/resources/res/favicon.ico">
+    <!--[if lt IE 9]>
+    <script src="${pageContext.request.contextPath}/resources/js/html5shiv.js"></script>
+    <![endif]-->
     <title><spring:message code="TripPage"/></title>
 </head>
 <body>
@@ -87,11 +90,11 @@
                         </c:otherwise>
                     </c:choose>
                 </div>
-
             </article>
         </section>
     </div>
 
 </div>
+
 </body>
 </html>
