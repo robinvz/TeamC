@@ -6,6 +6,9 @@
     <link rel="stylesheet" href="${pageContext.request.contextPath}/resources/css/main.css"/>
     <link rel="stylesheet" href="${pageContext.request.contextPath}/resources/css/login.css"/>
     <link rel="shortcut icon" href="${pageContext.request.contextPath}/resources/res/favicon.ico">
+    <!--[if lt IE 9]>
+    <script src="${pageContext.request.contextPath}/resources/js/html5shiv.js"></script>
+    <![endif]-->
     <title><spring:message code="TripPage"/></title>
 </head>
 <body>
@@ -14,24 +17,15 @@
     <jsp:include page="../tripHeaderView.jsp"/>
 
     <div class="inner-content">
-        <c:choose>
-            <c:when test="${trip.privacy == 'PUBLIC'}">
-                <!--Do nothing-->
-            </c:when>
-            <c:when test="${empty trip.enrollments}">
-                <spring:message code="NoEnnrollmentsYet"/>
-            </c:when>
-            <c:otherwise>
-                <table>
-                    <c:forEach items="${trip.enrollments}" var="enrollment">
-                        <tr>
-                            <td>${enrollment.user.email}</td>
-                        </tr>
-                    </c:forEach>
-                </table>
-            </c:otherwise>
-        </c:choose>
+        <c:if test="${error != null}">
+            <span class="errorblock">${error}</span>
+        </c:if>
+        <c:if test="${not empty user && trip.organizer == test}">
+
+        </c:if>
     </div>
 
 </div>
+
 </body>
+</html>
