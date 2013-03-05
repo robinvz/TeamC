@@ -40,6 +40,9 @@
         <c:choose>
             <c:when test="${not empty trip.requisites}">
                 <table>
+                    <thead>
+                      <th><spring:message code="Requisites"/></th>
+                    </thead>
                     <c:forEach items="${trip.requisites}" var="requisite">
                         <tr>
                             <td>${requisite.key}</td>

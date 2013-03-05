@@ -19,7 +19,7 @@
                 <!--Do nothing-->
             </c:when>
             <c:when test="${empty trip.enrollments}">
-                <spring:message code="NoEnnrollmentsYet"/>
+                <h3><spring:message code="NoEnnrollmentsYet"/></h3>
             </c:when>
             <c:otherwise>
                 <table>
