@@ -50,6 +50,11 @@ $(document).ready(function(){
       window.location = ref;
     });
 
+
+    $('#filter').change(filterResults);
+
+
+
 });
 
 function setSelected(link){
@@ -57,5 +62,20 @@ function setSelected(link){
     $('#btn-trips-participating').removeClass('inner-selected');
     $('#btn-trips-organised').removeClass('inner-selected');
     link.addClass('inner-selected');
+    filterResults();
+}
 
+function filterResults(){
+    var options = $("#filter option");
+    var index = options.index(options.filter(":selected"));
+    $('.t-bound').show();
+    $('.t-less').show();
+    switch (index){
+        case 1:
+            $('.t-bound').hide();
+            break;
+        case 2:
+            $('.t-less').hide();
+            break;
+    }
 }

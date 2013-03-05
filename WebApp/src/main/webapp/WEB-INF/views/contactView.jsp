@@ -20,10 +20,10 @@
             <label for="name"><spring:message code="Name"/></label>
             <input type="text" name="name" id="name">
 
-            <label for="email">Email: </label>
+            <label for="email">Email</label>
             <input type="text" name="email" id="email">
 
-            <label for="type">Type: </label>
+            <label for="type">Type</label>
             <select name="type" id="type">
                 <option value="question"><spring:message code="Question"/></option>
                 <option value="remark"><spring:message code="Remark"/></option>

@@ -5,12 +5,15 @@ import java.io.Serializable;
 public class Trip implements Serializable{
 	private String title;
 	private String description;
+	private boolean enrolled; 
 	private int enrollments;
 	private String Privacy;
+	private String id;
 
-	public Trip(String title, String description, int enrollments,
+	public Trip(String id, String title, String description, int enrollments,
 			String privacy) {
 		super();
+		this.id = id;
 		this.title = title;
 		this.description = description;
 		this.enrollments = enrollments;
@@ -49,8 +52,23 @@ public class Trip implements Serializable{
 		Privacy = privacy;
 	}
 
+	
+	
+	public boolean isEnrolled() {
+		return enrolled;
+	}
+
+	public void setEnrolled(boolean enrolled) {
+		this.enrolled = enrolled;
+	}
+
 	public Trip() {
 		super();
+	}
+
+	public String getId() {
+		// TODO Auto-generated method stub
+		return this.id;
 	}
 	
 	

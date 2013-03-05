@@ -30,9 +30,15 @@ $(document).ready(function(){
        case "editCredentials":
            $("#nav-profile").addClass("selected");
            break;
-       case "trip":
+        case "editProfilePic":
+            $("#nav-profile").addClass("selected");
+            break;
+        case "trip":
            $("#nav-trips").addClass("selected");
            break;
+        default :
+            $("#nav-trips").addClass("selected");
+            break;
     }
     if (currentPage.matches(new RegExp("createTrip"))){
         $("#nav-trips").addClass("selected");

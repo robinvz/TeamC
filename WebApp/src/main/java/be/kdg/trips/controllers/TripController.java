@@ -4,6 +4,9 @@ import be.kdg.trips.beans.LoginBean;
 import be.kdg.trips.exception.TripsException;
 import be.kdg.trips.model.enrollment.Enrollment;
 import be.kdg.trips.model.location.Location;
+import be.kdg.trips.model.question.Question;
+import be.kdg.trips.model.trip.TimeBoundTrip;
+import be.kdg.trips.model.trip.TimelessTrip;
 import be.kdg.trips.model.trip.Trip;
 import be.kdg.trips.model.trip.TripPrivacy;
 import be.kdg.trips.model.user.User;
@@ -19,8 +22,6 @@ import org.springframework.web.servlet.ModelAndView;
 import javax.mail.MessagingException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
-import java.io.FileWriter;
-import java.io.IOException;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.*;
@@ -43,7 +44,7 @@ public class TripController {
     @Autowired
     private MessageSource messageSource;
 
-    @RequestMapping(value = "/service/alltrips", method = RequestMethod.GET)
+    @RequestMapping(value = "/service/alltrips", method = RequestMethod.POST)
     public
     @ResponseBody
     String allTripsService(@RequestParam String username, @RequestParam String password) throws TripsException {
@@ -63,7 +64,7 @@ public class TripController {
         return js.toString();
     }
 
-    @RequestMapping(value = "/service/enrolledtrips", method = RequestMethod.GET)
+    @RequestMapping(value = "/service/enrolledtrips", method = RequestMethod.POST)
     public
     @ResponseBody
     String enrolledTripsService(@RequestParam String username, @RequestParam String password) throws TripsException {
@@ -83,7 +84,7 @@ public class TripController {
         return js.toString();
     }
 
-    @RequestMapping(value = "/service/createdtrips", method = RequestMethod.GET)
+    @RequestMapping(value = "/service/createdtrips", method = RequestMethod.POST)
     public
     @ResponseBody
     String createdTripsService(@RequestParam String username, @RequestParam String password) throws TripsException {
@@ -103,7 +104,27 @@ public class TripController {
         return js.toString();
     }
 
-    @RequestMapping(value = "/service/trip", method = RequestMethod.GET)
+    @RequestMapping(value = "/service/searchtrips", method = RequestMethod.POST)
+    public
+    @ResponseBody
+    String searchTripsService(@RequestParam String username, @RequestParam String password, @RequestParam String keyword) throws TripsException {
+        JSONObject js = new JSONObject();
+        js.accumulate("valid", tripsService.checkLogin(username, password));
+        if (tripsService.checkLogin(username, password)) {
+            User user = tripsService.findUser(username);
+            JSONArray jsonArray = new JSONArray();
+            for (Trip trip : tripsService.findNonPrivateTripsByKeyword(keyword, user)) {
+                JSONObject obj = new JSONObject();
+                obj.accumulate("title", trip.getTitle());
+                obj.accumulate("id", trip.getId());
+                jsonArray.add(obj);
+            }
+            js.accumulate("trips", jsonArray);
+        }
+        return js.toString();
+    }
+
+    @RequestMapping(value = "/service/trip", method = RequestMethod.POST)
     public
     @ResponseBody
     String tripByIdService(@RequestParam int id, @RequestParam String username, @RequestParam String password) throws TripsException {
@@ -112,6 +133,7 @@ public class TripController {
         if (tripsService.checkLogin(username, password)) {
             User user = tripsService.findUser(username);
             Trip trip = tripsService.findTripById(id, user);
+            js.accumulate("id", trip.getId());
             js.accumulate("title", trip.getTitle());
             js.accumulate("description", trip.getDescription());
             js.accumulate("enrollments", trip.getEnrollments().size());
@@ -119,6 +141,121 @@ public class TripController {
             js.accumulate("privacy", trip.getPrivacy());
         }
         return js.toString();
+    }
+
+    @RequestMapping(value = "/service/enroll", method = RequestMethod.POST)
+    public
+    @ResponseBody
+    String subscribeService(@RequestParam int id, @RequestParam String username, @RequestParam String password) {
+        JSONObject js = new JSONObject();
+        try {
+            js.accumulate("valid", tripsService.checkLogin(username, password));
+            if (tripsService.checkLogin(username, password)) {
+                User user = tripsService.findUser(username);
+                Trip trip = tripsService.findTripById(id, user);
+                tripsService.subscribe(trip, user);
+            }
+        } catch (TripsException t) {
+            js.put("valid", false);
+        } finally {
+            return js.toString();
+        }
+    }
+
+    @RequestMapping(value = "/service/start", method = RequestMethod.POST)
+    public
+    @ResponseBody
+    String startTripService(@RequestParam int id, @RequestParam String username, @RequestParam String password) {
+        JSONObject js = new JSONObject();
+        try {
+            js.accumulate("valid", tripsService.checkLogin(username, password));
+            if (tripsService.checkLogin(username, password)) {
+                User user = tripsService.findUser(username);
+                Trip trip = tripsService.findTripById(id, user);
+                tripsService.startTrip(trip, user);
+            }
+        } catch (TripsException t) {
+            js.put("valid", false);
+        } finally {
+            return js.toString();
+        }
+    }
+
+    @RequestMapping(value = "/service/unsubscribe", method = RequestMethod.POST)
+    public
+    @ResponseBody
+    String unsubscribeTripService(@RequestParam int id, @RequestParam String username, @RequestParam String password) {
+        JSONObject js = new JSONObject();
+        try {
+            js.accumulate("valid", tripsService.checkLogin(username, password));
+            if (tripsService.checkLogin(username, password)) {
+                User user = tripsService.findUser(username);
+                Trip trip = tripsService.findTripById(id, user);
+                tripsService.disenroll(trip, user);
+            }
+        } catch (TripsException t) {
+            js.put("valid", false);
+        } finally {
+            return js.toString();
+        }
+    }
+
+
+    @RequestMapping(value = "/service/stop", method = RequestMethod.POST)
+    public
+    @ResponseBody
+    String stopTripService(@RequestParam int id, @RequestParam String username, @RequestParam String password) {
+        JSONObject js = new JSONObject();
+        try {
+            js.accumulate("valid", tripsService.checkLogin(username, password));
+            if (tripsService.checkLogin(username, password)) {
+                User user = tripsService.findUser(username);
+                Trip trip = tripsService.findTripById(id, user);
+                tripsService.stopTrip(trip, user);
+            }
+        } catch (TripsException t) {
+            js.put("valid", false);
+        } finally {
+            return js.toString();
+        }
+    }
+
+    @RequestMapping(value = "/service/locations", method = RequestMethod.POST)
+    public
+    @ResponseBody
+    String locationsService(@RequestParam int id, @RequestParam String username, @RequestParam String password) {
+        JSONObject js = new JSONObject();
+        try {
+            js.accumulate("valid", tripsService.checkLogin(username, password));
+            if (tripsService.checkLogin(username, password)) {
+                User user = tripsService.findUser(username);
+                Trip trip = tripsService.findTripById(id, user);
+                JSONArray jsonArray = new JSONArray();
+                for (Location loc : trip.getLocations()) {
+                    JSONObject loco = new JSONObject();
+                    loco.accumulate("id", loc.getId());
+                    loco.accumulate("title", loc.getTitle());
+                    loco.accumulate("latitude", loc.getLatitude());
+                    loco.accumulate("longitude", loc.getLongitude());
+                    loco.accumulate("description", loc.getDescription());
+                    Question q = loc.getQuestion();
+                    if (q != null) {
+                        loco.accumulate("question", loc.getQuestion().getQuestion());
+                        JSONArray answers = new JSONArray();
+                        answers.addAll(loc.getQuestion().getPossibleAnswers());
+                        loco.accumulate("possibleAnswers", answers);
+                    } else {
+                        loco.accumulate("question", null);
+                    }
+                    jsonArray.add(loco);
+                }
+                js.accumulate("locations", jsonArray);
+            }
+        } catch (TripsException t) {
+            js.put("valid", false);
+        } finally {
+            return js.toString();
+        }
     }
 
     @RequestMapping(value = "/trips", method = RequestMethod.GET)
@@ -150,8 +287,14 @@ public class TripController {
 
     @RequestMapping(value = "/trip/{tripId}", method = RequestMethod.GET)
     public ModelAndView getTrip(@PathVariable int tripId) {
+        User user = (User) session.getAttribute("user");
+        Trip trip = null;
         try {
-            Trip trip = tripsService.findTripById(tripId, (User) session.getAttribute("user"));
+            if (tripsService.findTripById(tripId, user).isTimeBoundTrip()) {
+                trip = (TimeBoundTrip) tripsService.findTripById(tripId, user);
+            } else {
+                trip = (TimelessTrip) tripsService.findTripById(tripId, user);
+            }
             return new ModelAndView("tripView", "trip", trip);
         } catch (TripsException e) {
             return new ModelAndView("tripsView");
@@ -164,14 +307,15 @@ public class TripController {
     }
 
     @RequestMapping(value = "/createTimeBoundTrip", method = RequestMethod.POST)
-    public ModelAndView createTimeBoundTrip(@RequestParam String title, @RequestParam String description, @RequestParam TripPrivacy privacy,
-                                      @RequestParam String startDate, @RequestParam String endDate, Locale locale) {
+    public ModelAndView createTimeBoundTrip(@RequestParam String title, @RequestParam String
+            description, @RequestParam TripPrivacy privacy,
+                                            @RequestParam String startDate, @RequestParam String endDate, Locale locale) {
         User user = (User) session.getAttribute("user");
-        if(user!=null) {
+        if (isLoggedIn()) {
             try {
                 SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
                 Trip test = tripsService.createTimeBoundTrip(title, description, privacy, user, sdf.parse(startDate), sdf.parse(endDate));
-                return new ModelAndView("redirect:trip/"+test.getId());
+                return new ModelAndView("redirect:trip/" + test.getId());
             } catch (TripsException e) {
                 if (e.getMessage().contains("future")) {
                     return new ModelAndView("/users/createTripView", "error", messageSource.getMessage("StartDateFuture", null, locale));
@@ -187,9 +331,10 @@ public class TripController {
     }
 
     @RequestMapping(value = "/createTimeLessTrip", method = RequestMethod.POST)
-    public ModelAndView createTimeLessTrip(@RequestParam String title, @RequestParam String description, @RequestParam TripPrivacy privacy) {
+    public ModelAndView createTimeLessTrip(@RequestParam String title, @RequestParam String
+            description, @RequestParam TripPrivacy privacy) {
         User user = (User) session.getAttribute("user");
-        if(user!=null) {
+        if (isLoggedIn()) {
             try {
                 Trip test = tripsService.createTimelessTrip(title, description, privacy, user);
                 return new ModelAndView("redirect:trip/" + test.getId());
@@ -204,11 +349,11 @@ public class TripController {
     @RequestMapping(value = "/deleteTrip/{tripId}", method = RequestMethod.GET)
     public ModelAndView deleteTrip(@PathVariable int tripId, Locale locale) {
         User user = (User) session.getAttribute("user");
-        if (user != null) {
+        if (isLoggedIn()) {
             try {
                 tripsService.deleteTrip(tripsService.findTripById(tripId, user), user);
             } catch (TripsException e) {
-                return new ModelAndView("tripView", "error", messageSource.getMessage("DeleteError", null, locale));
+                return new ModelAndView("tripView", "error", messageSource.getMessage("DeleteTripError", null, locale));
             } catch (MessagingException e) {
                 //failed to send email
             }
@@ -221,7 +366,7 @@ public class TripController {
     @RequestMapping(value = "/subscribe", method = RequestMethod.GET)
     public ModelAndView subscribe(@RequestParam int tripId, Locale locale) {
         User user = (User) session.getAttribute("user");
-        if (user != null) {
+        if (isLoggedIn()) {
             try {
                 tripsService.subscribe(tripsService.findTripById(tripId, user), user);
             } catch (TripsException e) {
@@ -247,7 +392,7 @@ public class TripController {
     @RequestMapping(value = "/unSubscribe", method = RequestMethod.GET)
     public ModelAndView unSubscribe(@RequestParam int tripId, Locale locale) {
         User user = (User) session.getAttribute("user");
-        if (user != null) {
+        if (isLoggedIn()) {
             try {
                 tripsService.disenroll(tripsService.findTripById(tripId, user), user);
             } catch (TripsException e) {
@@ -266,13 +411,79 @@ public class TripController {
     @RequestMapping(value = "/publishTrip/{tripId}", method = RequestMethod.GET)
     public ModelAndView publish(@PathVariable int tripId, Locale locale) {
         User user = (User) session.getAttribute("user");
-        if (user != null) {
+        if (isLoggedIn()) {
             try {
                 tripsService.publishTrip(tripsService.findTripById(tripId, user), user);
-                return new ModelAndView("tripsView");
+                return new ModelAndView("redirect:/trips");//tripsView");
             } catch (TripsException e) {
                 return new ModelAndView("tripView", "error", messageSource.getMessage("NotPublishedError", null, locale));
             }
+        } else {
+            return new ModelAndView("loginView", "loginBean", new LoginBean());
+        }
+    }
+
+    @RequestMapping(value = "/labels/{tripId}", method = RequestMethod.GET)
+    public ModelAndView addLabel(@PathVariable int tripId, Locale locale) {
+        User user = (User) session.getAttribute("user");
+        if (isLoggedIn()) {
+            Trip trip = null;
+            try {
+                trip = tripsService.findTripById(tripId, user);
+            } catch (TripsException e) {
+                return new ModelAndView("tripView", "error", messageSource.getMessage("FindTripError", null, locale));
+            }
+            return new ModelAndView("labelsView", "trip", trip);
+        } else {
+            return new ModelAndView("loginView", "loginBean", new LoginBean());
+        }
+    }
+
+    @RequestMapping(value = "/labels/{tripId}", method = RequestMethod.POST)
+    public ModelAndView addLabel(@PathVariable int tripId, @RequestParam String label, Locale locale) {
+        User user = (User) session.getAttribute("user");
+        if (isLoggedIn()) {
+            Trip trip = null;
+            try {
+                trip = tripsService.findTripById(tripId, user);
+                tripsService.addLabelToTrip(trip, user, label);
+            } catch (TripsException e) {
+                return new ModelAndView("labelsView", "error", messageSource.getMessage("LabelError", null, locale));
+            }
+            return new ModelAndView("labelsView", "trip", trip);
+        } else {
+            return new ModelAndView("loginView", "loginBean", new LoginBean());
+        }
+    }
+
+    @RequestMapping(value = "/requirements/{tripId}", method = RequestMethod.GET)
+    public ModelAndView requirements(@PathVariable int tripId, Locale locale) {
+        User user = (User) session.getAttribute("user");
+        if (isLoggedIn()) {
+            Trip trip = null;
+            try {
+                trip = tripsService.findTripById(tripId, user);
+            } catch (TripsException e) {
+                return new ModelAndView("tripView", "error", messageSource.getMessage("FindTripError", null, locale));
+            }
+            return new ModelAndView("requirementsView", "trip", trip);
+        } else {
+            return new ModelAndView("loginView", "loginBean", new LoginBean());
+        }
+    }
+
+    @RequestMapping(value = "/requirements/{tripId}", method = RequestMethod.POST)
+    public ModelAndView requirements(@PathVariable int tripId, @RequestParam String requisite, Locale locale) {
+        User user = (User) session.getAttribute("user");
+        if (isLoggedIn()) {
+            Trip trip = null;
+            try {
+                trip = tripsService.findTripById(tripId, user);
+                tripsService.addRequisiteToTrip(requisite, tripId, trip, user);
+            } catch (TripsException e) {
+                return new ModelAndView("labelsView", "error", messageSource.getMessage("RequisiteError", null, locale));
+            }
+            return new ModelAndView("requirementsView", "trip", trip);
         } else {
             return new ModelAndView("loginView", "loginBean", new LoginBean());
         }
@@ -302,50 +513,58 @@ public class TripController {
     }
 
     @RequestMapping(value = "/trip/{tripId}/locations/createLocation", method = RequestMethod.POST)
-    public String createLocation(@PathVariable int tripId, @RequestParam double latitude, @RequestParam double longitude, @RequestParam String street,
-                                 @RequestParam String houseNr, @RequestParam String city, @RequestParam String postalCode,
-                                 @RequestParam String province, @RequestParam String country, @RequestParam String title,
-                                 @RequestParam String description, @RequestParam String question, @RequestParam String correctAnswer, HttpServletRequest request) {
+    public ModelAndView createLocation(@PathVariable int tripId, @RequestParam double latitude,
+                                       @RequestParam double longitude, @RequestParam String street,
+                                       @RequestParam String houseNr, @RequestParam String city, @RequestParam String postalCode,
+                                       @RequestParam String province, @RequestParam String country, @RequestParam String title,
+                                       @RequestParam String description, @RequestParam String question,
+                                       @RequestParam String correctAnswer, HttpServletRequest request) {
         User user = (User) session.getAttribute("user");
-        Trip trip;
-        try {
-            trip = tripsService.findTripById(tripId, user);
-            if (question.isEmpty()) {
-                tripsService.addLocationToTrip(user, trip, latitude, longitude, street, houseNr.split("-")[0], city, postalCode, province,
-                        country, title, description);
-            } else {
-                List answers = new ArrayList(Arrays.asList(request.getParameter("possibleAnswers")));
-                tripsService.addLocationToTrip(user, trip, latitude, longitude, street, houseNr.split("-")[0], city, postalCode, province,
-                        country, title, description, question, answers, answers.indexOf(correctAnswer));
+        Trip trip = null;
+        if (isLoggedIn()) {
+            try {
+                trip = tripsService.findTripById(tripId, user);
+                if (question.isEmpty()) {
+                    tripsService.addLocationToTrip(user, trip, latitude, longitude, street, houseNr.split("-")[0], city, postalCode, province,
+                            country, title, description);
+                } else {
+                    List answers = new ArrayList(Arrays.asList(request.getParameter("possibleAnswers")));
+                    tripsService.addLocationToTrip(user, trip, latitude, longitude, street, houseNr.split("-")[0], city, postalCode, province,
+                            country, title, description, question, answers, answers.indexOf(correctAnswer));
+                }
+            } catch (TripsException e) {
+                //failed to add location to trip
             }
-        } catch (TripsException e) {
-            //failed to add location to trip
+        } else {
+            return new ModelAndView("loginView", "loginBean", new LoginBean());
         }
-        return "redirect:/trip/" + tripId + "/locations";
+        return new ModelAndView("redirect:/trip/" + trip.getId() + "/locations");
     }
 
     @RequestMapping(value = "/trip/{tripId}/locations/{locationId}/deleteLocation", method = RequestMethod.GET)
     public ModelAndView deleteLocation(@PathVariable int tripId, @PathVariable int locationId) {
         User user = (User) session.getAttribute("user");
-        Trip trip;
-        try {
-            trip = tripsService.findTripById(tripId, user);
+        Trip trip = null;
+        if (isLoggedIn()) {
             try {
-                tripsService.deleteLocation(trip, user, tripsService.findLocationById(locationId));
+                trip = tripsService.findTripById(tripId, user);
+                try {
+                    tripsService.deleteLocation(trip, user, tripsService.findLocationById(locationId));
+                } catch (TripsException e) {
+                    //failed to delete location
+                }
             } catch (TripsException e) {
-                //failed to delete location
+                //Failed to find trip
             }
-            //return "redirect:/trip/" + trip.getId() + "/locations";
-            return new ModelAndView("locationsView");
-        } catch (TripsException e) {
-            //Failed to find trip
-            return new ModelAndView("tripsView");
+        } else {
+            return new ModelAndView("loginView", "loginBean", new LoginBean());
         }
-        //return "/trips";
+        return new ModelAndView("redirect:/trip/" + trip.getId() + "/locations");
     }
 
     @RequestMapping(value = "/trip/switchLocation", method = RequestMethod.POST)
-    public ModelAndView switchLocation(@RequestParam String id, @RequestParam int fromPosition, @RequestParam int toPosition, @RequestParam String direction) {
+    public ModelAndView switchLocation(@RequestParam String id, @RequestParam int fromPosition,
+                                       @RequestParam int toPosition, @RequestParam String direction) {
         System.out.println();
         User user = (User) session.getAttribute("user");
         String[] ids = id.split("-");
@@ -360,7 +579,7 @@ public class TripController {
         }
         if (user != null) {
             try {
-                tripsService.switchLocationSequence(trip, user, fromPosition -1, toPosition-1);
+                tripsService.switchLocationSequence(trip, user, fromPosition - 1, toPosition - 1);
             } catch (TripsException e) {
                 //Switch location failed
                 System.out.println("error2");
@@ -376,9 +595,36 @@ public class TripController {
         try {
             Trip trip = tripsService.findTripById(tripId, (User) session.getAttribute("user"));
             List<Enrollment> enr = tripsService.findEnrollmentsByTrip(trip);
-            return new ModelAndView("participantsView", "enrollments", enr);
+            return new ModelAndView("users/participantsView", "enrollments", enr);
         } catch (TripsException e) {
             return new ModelAndView("tripsView");
+        }
+    }
+
+    @RequestMapping(value = "/trip/{tripId}/locations/getLocationsLatLng", method = RequestMethod.GET)
+    @ResponseBody
+    public String getLocationsLatLng(@PathVariable int tripId) {
+        JSONArray jsonArray = new JSONArray();
+        try {
+            Trip trip = tripsService.findTripById(tripId, (User) session.getAttribute("user"));
+            for (Location location : trip.getLocations()) {
+                JSONObject coordinates = new JSONObject();
+                coordinates.put("latitude", location.getLatitude());
+                coordinates.put("longitude", location.getLongitude());
+                jsonArray.add(coordinates);
+            }
+        } catch (TripsException e) {
+            //Trip not found
+        }
+        return jsonArray.toString();
+    }
+
+    public boolean isLoggedIn() {
+        User user = (User) session.getAttribute("user");
+        if (user != null) {
+            return true;
+        } else {
+            return false;
         }
     }
 

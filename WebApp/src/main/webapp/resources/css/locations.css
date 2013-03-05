@@ -1,3 +1,9 @@
+#content{
+    width: 600px;
+    display: inline-block;
+    vertical-align: top;
+}
+
 #btn-toggleLocations {
     margin-right: 10px;;
 }

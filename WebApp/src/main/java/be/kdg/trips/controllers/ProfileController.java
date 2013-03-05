@@ -6,6 +6,7 @@ import be.kdg.trips.model.user.User;
 import be.kdg.trips.services.interfaces.TripsService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.propertyeditors.StringTrimmerEditor;
+import org.springframework.context.MessageSource;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.ServletRequestDataBinder;
 import org.springframework.web.bind.annotation.*;
@@ -16,6 +17,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 import java.awt.image.BufferedImage;
 import java.io.*;
+import java.util.Locale;
 
 /**
  * Created with IntelliJ IDEA.
@@ -33,6 +35,9 @@ public class ProfileController {
     @Autowired
     private HttpSession session;
 
+    @Autowired
+    private MessageSource messageSource;
+
     @RequestMapping(value = "/users/profile", method = RequestMethod.GET)
     public String showProfile() {
         return "/users/profileView";
@@ -44,7 +49,7 @@ public class ProfileController {
     }
 
     @RequestMapping(value = "/users/editCredentials", method = RequestMethod.POST)
-    public ModelAndView editCredentials(HttpServletRequest request) {
+    public ModelAndView editCredentials(HttpServletRequest request, Locale locale) {
         User user = (User) session.getAttribute("user");
         if(user!=null) {
             try {
@@ -52,10 +57,9 @@ public class ProfileController {
                         request.getParameter("newPassword"));
                 session.setAttribute("user", tripsService.findUser(((User) session.getAttribute("user")).getEmail()));
             } catch (TripsException e) {
-                //TODO:Error msg for edit credentials
-                return new ModelAndView("/users/profileView");
+                return new ModelAndView("/users/profileView", "error", messageSource.getMessage("EditCredentialsError", null, locale));
             }
-            return new ModelAndView("indexView");
+            return new ModelAndView("/users/profileView");
         } else {
             return new ModelAndView("loginView", "loginBean", new LoginBean());
         }
@@ -94,37 +98,39 @@ public class ProfileController {
 
     @RequestMapping(value = "/users/editProfilePic", method = RequestMethod.POST)
     public String editProfilePic(HttpServletRequest request) {
-        //String path = request.getParameter("file");
-        File file = new File(request.getParameter("file"));
+        String path =     request.getParameter("picPath");
+        File file = new File(request.getParameter("picPath"));
         byte[] bFile = new byte[(int) file.length()];
-        try{
+        try {
             FileInputStream fileInputStream = null;
             try {
                 fileInputStream = new FileInputStream(file);
                 fileInputStream.read(bFile);
-            } catch (FileNotFoundException e1) {
-                e1.printStackTrace();  //To change body of catch statement use File | Settings | File Templates.
-            } catch (IOException e1) {
-                e1.printStackTrace();  //To change body of catch statement use File | Settings | File Templates.
+            } catch (FileNotFoundException e) {
+            } catch (IOException e) {
             }
             tripsService.updateUser((User) session.getAttribute("user"), "", "", "", "", "", "", "", "", bFile);
             session.setAttribute("user", tripsService.findUser(((User) session.getAttribute("user")).getEmail()));
         } catch (TripsException e) {
             return "/users/profileView";
         }
-        //TODO test for return to /users/profileView
         return "/users/profileView";
     }
 
     @RequestMapping(value = "/users/deleteProfile", method = RequestMethod.GET)
-    public String deleteProfile() {
-        try {
-            tripsService.deleteUser((User) session.getAttribute("user"));
-            session.invalidate();
-        } catch (TripsException e) {
-            return "/users/profileView";
+    public ModelAndView deleteProfile(Locale locale) {
+        User user = (User) session.getAttribute("user");
+        if (user != null) {
+            try {
+                tripsService.deleteUser(user);
+                session.invalidate();
+            } catch (TripsException e) {
+                return new ModelAndView("/users/profileView", "error", messageSource.getMessage("DeleteUserError", null, locale));
+            }
+            return new ModelAndView("indexView");
+        } else {
+            return new ModelAndView("loginView", "loginBean", new LoginBean());
         }
-        return "indexView";
     }
 
 }
