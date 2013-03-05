@@ -23,26 +23,30 @@ public class Enrollment implements EnrollmentInterface, Serializable
 {
     @Id
     @GeneratedValue(strategy= GenerationType.IDENTITY)
-    private int id;
-    @OneToOne
+    private Integer id;
+    @ManyToOne
     @JoinColumn(name = "tripId")
     @NotNull
     private Trip trip;
-    @OneToOne
+    @ManyToOne
     @JoinColumn(name = "userId")
     @NotNull
     private User user;
     @NotNull
     private Date date;
-    @OneToOne
+    @ManyToOne
     @JoinColumn(name = "locationId")
     private Location lastLocationVisited;
     @ElementCollection(fetch = FetchType.EAGER)
+    @CollectionTable(name = "T_ENROLLMENT_REQUISITE", joinColumns = @JoinColumn(name = "enrollmentId"))
+    @Column(name="requisites_VALUE")
     private Map<String, Integer> requisites;
     private Status status;
     @NotNull
     private int score;
     @ElementCollection(fetch = FetchType.EAGER)
+    @CollectionTable(name = "T_ENROLLMENT_ANSWEREDQUESTION", joinColumns = @JoinColumn(name = "enrollmentId"))
+    @Column(name="questionId")
     private Set<Integer> answeredQuestions;
 
     public Enrollment(Trip trip, User user)
@@ -57,8 +61,12 @@ public class Enrollment implements EnrollmentInterface, Serializable
         this.status = Status.READY;
     }
 
-    private Enrollment()
+    public Enrollment()
     {
+    }
+
+    public Integer getId() {
+        return id;
     }
 
     @Override

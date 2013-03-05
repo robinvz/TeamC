@@ -17,7 +17,8 @@ import java.util.Map;
 @Entity
 public class TimeBoundTrip extends Trip implements Serializable {
     @ElementCollection(fetch = FetchType.EAGER)
-    @CollectionTable(name = "T_TIMEBOUNDTRIP_DATE")
+    @CollectionTable(name = "T_TIMEBOUNDTRIP_DATE", joinColumns = @JoinColumn(name = "timeBoundTripId"))
+    @Column(name="dates_VALUE")
     private Map<Date,Date> dates;
 
     public TimeBoundTrip(String title, String description, TripPrivacy privacy, User organizer, Date startDate, Date endDate) {

@@ -20,12 +20,12 @@ import java.util.Date;
 public class Invitation implements Serializable {
     @Id
     @GeneratedValue(strategy= GenerationType.IDENTITY)
-    private int id;
-    @OneToOne
+    private Integer id;
+    @ManyToOne
     @JoinColumn(name = "tripId")
     @NotNull
     private Trip trip;
-    @OneToOne
+    @ManyToOne
     @JoinColumn(name = "userId")
     @NotNull
     private User user;
@@ -42,7 +42,11 @@ public class Invitation implements Serializable {
         user.addInvitation(this);
     }
 
-    private Invitation() {
+    public Invitation() {
+    }
+
+    public Integer getId() {
+        return id;
     }
 
     public Trip getTrip() {

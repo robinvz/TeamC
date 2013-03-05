@@ -10,9 +10,8 @@
 </head>
 <body>
 <div id="page">
-    <jsp:include page="baseView.jsp"/>
-
-    <h2><spring:message code="PleaseLogIn"/></h2>
+    <jsp:include page="../baseView.jsp"/>
+    <jsp:include page="../tripHeaderView.jsp"/>
     <div id="content">
 
         <div class="trip-participants">

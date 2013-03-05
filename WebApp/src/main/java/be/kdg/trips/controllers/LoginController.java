@@ -75,7 +75,6 @@ public class LoginController {
     @ResponseBody
     public String facebookLogin(@RequestParam String username, @RequestParam String password) {
         User user = new User(username, password);
-        user.setEmail(user.getEmail() + "facebook");
         JSONObject js = new JSONObject();
         try {
             tripsService.createUser(user);   //User never logged in so create a new user
@@ -83,10 +82,10 @@ public class LoginController {
             //User exists in database so just login
         }
         try {
-            if (tripsService.checkLogin(username, password)) {
-                user = tripsService.findUser(username);
+            if (tripsService.checkLogin(user.getEmail(), password)) {
+                user = tripsService.findUser(user.getEmail());
                 session.setAttribute("user", user);
-                js.accumulate("valid", tripsService.checkLogin(username, password));
+                js.accumulate("valid", tripsService.checkLogin(user.getEmail(), password));
             }
         } catch (TripsException e) {
             js.accumulate("valid", false);

@@ -13,13 +13,14 @@ import java.util.List;
  */
 public interface UserDao {
     public User getUser(String email) throws TripsException;
-    public User getUserWithDetails(String email) throws TripsException;
     public List<User> getUsersByKeyword(String keyword, User user);
 
     public void saveOrUpdateUser(User user) throws TripsException;
 
-    public void deleteUser(User user) throws TripsException;
+    public void deleteUser(int id) throws TripsException;
 
     public boolean isExistingUser(String email) throws TripsException;
     public boolean isUnexistingUser(String email) throws TripsException;
 }
+
+

@@ -11,21 +11,21 @@
 
     <nav class="header-nav">
         <ul class="nav">
-            <li><a id="nav-home" class="nav-link" href="/" title="Home"><spring:message code="Home" /></a></li>
-            <li><a id="nav-trips" class="nav-link" href="/trips" title="">Trips</a></li>
-            <c:if test="${not empty user}">
-                <li><a id="nav-profile" class="nav-link" href="/users/profile" title=""><spring:message code="Profile" /></a></li>
+            <li><a id="nav-home" class="nav-link" href="/"><spring:message code="Home" /></a></li>
+            <li><a id="nav-trips" class="nav-link" href="/trips">Trips</a></li>
+            <c:if test="${not empty sessionScope.user}">
+                <li><a id="nav-profile" class="nav-link" href="/users/profile"><spring:message code="Profile" /></a></li>
             </c:if>
             <c:choose>
-                <c:when test="${empty user}">
-                    <li><a id="nav-login" class="nav-link" href="/login" title=""><spring:message code="LogIn" /></a></li>
-                    <li><a id="nav-register" class="nav-link" href="/register" title=""><spring:message code="Register" /></a></li>
+                <c:when test="${empty sessionScope.user}">
+                    <li><a id="nav-login" class="nav-link" href="/login"><spring:message code="LogIn" /></a></li>
+                    <li><a id="nav-register" class="nav-link" href="/register"><spring:message code="Register" /></a></li>
                 </c:when>
                 <c:otherwise>
-                    <li><a id="nav-logout" class="nav-link" href="/logout" title=""><spring:message code="LogOut" /></a></li>
+                    <li><a id="nav-logout" class="nav-link" href="/logout"><spring:message code="LogOut" /></a></li>
                 </c:otherwise>
             </c:choose>
-            <li><a id="nav-contact" class="nav-link" href="/contact" title="">Contact</a></li>
+            <li><a id="nav-contact" class="nav-link" href="/contact">Contact</a></li>
         </ul>
     </nav>
 </header>

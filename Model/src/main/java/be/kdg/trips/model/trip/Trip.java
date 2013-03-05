@@ -5,6 +5,7 @@ import be.kdg.trips.model.enrollment.Enrollment;
 import be.kdg.trips.model.location.Location;
 import be.kdg.trips.model.user.User;
 import org.hibernate.annotations.*;
+import org.hibernate.annotations.CascadeType;
 
 import javax.persistence.*;
 import javax.persistence.Entity;
@@ -33,8 +34,8 @@ public abstract class Trip implements Serializable, TripInterface {
     @Size(max = 150, message = "Description has a maximum amount of 150 characters")
     private String description;
     @ElementCollection(fetch = FetchType.EAGER)
-    @CollectionTable(name = "T_TRIP_LABEL")
-    @Column(nullable = true)
+    @CollectionTable(name = "T_TRIP_LABEL", joinColumns = @JoinColumn(name = "tripId"))
+    @Column(name = "label")
     private Set<String> labels;
     @NotNull
     private TripPrivacy privacy;
@@ -43,14 +44,15 @@ public abstract class Trip implements Serializable, TripInterface {
     private User organizer;
     private boolean published;
     @OneToMany(mappedBy = "trip")
-    @Cascade({org.hibernate.annotations.CascadeType.ALL})
+    @Cascade(CascadeType.REMOVE)
     private List<Location> locations;
     private static int counter=0;
     @OneToMany(mappedBy = "trip")
-    @Cascade({org.hibernate.annotations.CascadeType.ALL})
+    @Cascade(CascadeType.REMOVE)
     private Set<Enrollment> enrollments;
     @ElementCollection
-    @CollectionTable(name = "T_TRIP_REQUISITE")
+    @CollectionTable(name = "T_TRIP_REQUISITE", joinColumns = @JoinColumn(name = "tripId"))
+    @Column(name = "requisite")
     private Map<String, Integer> requisites;
 
     public Trip(String title, String description, TripPrivacy privacy, User organizer) {

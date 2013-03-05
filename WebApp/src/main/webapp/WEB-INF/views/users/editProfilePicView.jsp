@@ -17,7 +17,7 @@
                 <h2>Change picture</h2>
 
                 <div class="profile-general">
-                    <form id="profile-form" action="/users/editProfilePic" method="POST">
+                 <%--   <form id="profile-form" action="/users/editProfilePic" method="POST">
                         <table id="profile-data">
                             <tr>
                                 <td>
@@ -26,11 +26,18 @@
                                 <td>
                                     <input type="text" name="picPath">
                                 </td>
+
                             </tr>
                             <tr>
                                 <input id="btn-save" type="submit" value="Save changes" class="btn-submit btn-blue">
                             </tr>
                         </table>
+                    </form>--%>
+
+                    <form id="profile-form" action="/users/editProfilePic" method="POST">
+                        <%--enctype="multipart/form-data --%>
+                        <input type="file" name="file"><br>
+                        <input type="submit">
                     </form>
                 </div>
                 <!-- Only active trips -->

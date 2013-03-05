@@ -16,21 +16,20 @@ import java.util.List;
  */
 public interface EnrollmentDao
 {
-    public void saveOrUpdateEnrollment(Enrollment enrollment);
-
     public List<Enrollment> getEnrollmentsByUser(User user);
     public List<Enrollment> getEnrollmentsByTrip(Trip trip);
     public Enrollment getEnrollmentByUserAndTrip(User user, Trip trip) throws TripsException;
-    public Invitation getInvitationByUserAndTrip(User user, Trip trip) throws TripsException;
     public List<Invitation> getInvitationsByUser(User user);
+    public Invitation getInvitationByUserAndTrip(User user, Trip trip) throws TripsException;
 
+    public void saveOrUpdateEnrollment(Enrollment enrollment);
     public void saveOrUpdateInvitation(Invitation invitation);
+
+    public void deleteEnrollment(int id);
+    public void deleteInvitation(int id);
 
     public boolean isExistingEnrollment(User user, Trip trip) throws TripsException;
     public boolean isExistingInvitation(User user, Trip trip) throws TripsException;
     public boolean isUnexistingEnrollment(User user, Trip trip) throws TripsException;
     public boolean isUnexistingInvitation(User user, Trip trip) throws TripsException;
-
-    public void deleteEnrollment(Enrollment enrollment);
-    public void deleteInvitation(Invitation invitation);
 }

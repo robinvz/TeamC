@@ -68,7 +68,7 @@ h3 {
 }
 
 #new-answer {
-    width: 550px;
+    width: 530px;
 }
 
 #correct-answer {
@@ -77,6 +77,11 @@ h3 {
 
 #enable-answer {
     display: none;
+}
+
+#btn-answer {
+    float: right;
+    margin-right: 20;
 }
 
 #btn-back {

@@ -30,7 +30,8 @@ public class Question implements QuestionInterface, Serializable
     @NotNull
     private String question;
     @ElementCollection(fetch = FetchType.EAGER)
-    @CollectionTable(name = "T_QUESTION_POSSIBLEANSWER")
+    @CollectionTable(name = "T_QUESTION_POSSIBLEANSWER", joinColumns = @JoinColumn(name = "questionId"))
+    @Column(name="possibleAnswer")
     private List<String> possibleAnswers;
     @NotNull
     private int correctAnswerIndex;
@@ -41,7 +42,7 @@ public class Question implements QuestionInterface, Serializable
         this.correctAnswerIndex = correctAnswerIndex;
     }
 
-    private Question() {
+    public Question() {
     }
 
     @Override
