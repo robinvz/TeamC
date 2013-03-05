@@ -5,6 +5,7 @@ import be.kdg.trips.exception.TripsException;
 import be.kdg.trips.model.address.Address;
 import be.kdg.trips.model.user.User;
 import be.kdg.trips.persistence.dao.interfaces.UserDao;
+import org.apache.tika.Tika;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
@@ -109,7 +110,16 @@ public class UserBLImpl implements UserBL
             }
             if(profilePicture!=null)
             {
-                user.setProfilePicture(profilePicture);
+                String contentType = new Tika().detect(profilePicture);
+                if (contentType.equals("image/gif") || contentType.equals("image/jpeg") || contentType.equals("image/png"))
+                {
+                    user.setProfilePicture(profilePicture);
+                }
+                else
+                {
+                    throw new TripsException("Content types allowed: gif, jpeg and png");
+                }
+
             }
             userDao.saveOrUpdateUser(user);
         }

@@ -121,7 +121,7 @@ public class TestUser {
     @Test(expected = ConstraintViolationException.class)
     public void failedRegisterInvalidEmail() throws TripsException
     {
-        tripsService.createUser(new User("jos", "password"));
+       tripsService.createUser(new User("jos", "password"));
     }
 
     @Test(expected = ConstraintViolationException.class)
@@ -252,56 +252,56 @@ public class TestUser {
         tripsService.updateUser(user, "", "", "", "","", "", "", "", null);
         assertEquals(tripsService.findUser("tony.martens@student.kdg.be").getFirstName(), null);
     }
-    /*
-    @Test(expected = TripsException.class)
+
+    @Test(expected = TransactionSystemException.class)
     public void failedUserUpdateInvalidFirstName() throws TripsException
     {
         User user = tripsService.createUser(new User("gus.muys@student.kdg.be", "password"));
         tripsService.updateUser(user, "123", "", "", "", "", "", "", "", null);
     }
 
-    @Test(expected = TripsException.class)
+    @Test(expected = TransactionSystemException.class)
     public void failedUserUpdateInvalidLastName() throws TripsException
     {
         User user = tripsService.createUser(new User("gis.muys@student.kdg.be", "password"));
         tripsService.updateUser(user, "", "123", "", "", "", "", "", "", null);
     }
 
-    @Test(expected = TripsException.class)
+    @Test(expected = TransactionSystemException.class)
     public void failedUserUpdateInvalidStreet() throws TripsException
     {
         User user = tripsService.createUser(new User("gos.muys@student.kdg.be", "password"));
         tripsService.updateUser(user, "", "", "123", "", "", "", "", "", null);
     }
 
-    @Test(expected = TripsException.class)
+    @Test(expected = TransactionSystemException.class)
     public void failedUserUpdateInvalidHouseNr() throws TripsException
     {
         User user = tripsService.createUser(new User("gzs.muys@student.kdg.be", "password"));
         tripsService.updateUser(user, "", "", "", "aa", "", "", "", "", null);
     }
 
-    @Test(expected = TripsException.class)
+    @Test(expected = TransactionSystemException.class)
     public void failedUserUpdateInvalidCity() throws TripsException
     {
         User user = tripsService.createUser(new User("grs.muys@student.kdg.be", "password"));
         tripsService.updateUser(user, "", "", "", "", "123", "", "", "", null);
     }
 
-    @Test(expected = TripsException.class)
+    @Test(expected = TransactionSystemException.class)
     public void failedUserUpdateInvalidProvince() throws TripsException
     {
-        User user = tripsService.createUser(new User("gts.muys@student.kdg.be", "password"));
+        User user = tripsService.createUser(new User("gxas.muys@student.kdg.be", "password"));
         tripsService.updateUser(user, "", "", "", "", "", "", "123", "", null);
     }
 
-    @Test(expected = TripsException.class)
+    @Test(expected = TransactionSystemException.class)
     public void failedUserUpdateInvalidCountry() throws TripsException
     {
         User user = tripsService.createUser(new User("gts.muys@student.kdg.be", "password"));
         tripsService.updateUser(user, "", "", "", "", "", "", "", "123", null);
     }
-    */
+
     @Test
     public void successfulUserUpdateProfilePicture() throws TripsException
     {
@@ -316,6 +316,24 @@ public class TestUser {
             e.printStackTrace();
         }
         tripsService.updateUser(user, "", "", "", "","", "", "", "", bFile);
+        assertNotNull(tripsService.findUser("gaston.leo@student.kdg.be").getProfilePicture());
+    }
+
+    @Test(expected = TripsException.class)
+    public void failUserUpdateProfilePictureWrongContentType() throws TripsException
+    {
+        User user = tripsService.createUser(new User("laston.geo@student.kdg.be","password"));
+        File file = new File("src/test/resources/testpdf.pdf");
+        byte[] bFile = new byte[(int) file.length()];
+        try {
+            FileInputStream fileInputStream = new FileInputStream(file);
+            fileInputStream.read(bFile);
+            fileInputStream.close();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        tripsService.updateUser(user, "", "", "", "","", "", "", "", bFile);
+        assertNotNull(tripsService.findUser("laston.geo@student.kdg.be").getProfilePicture());
     }
 
     @Test(expected = TripsException.class)

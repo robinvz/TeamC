@@ -566,6 +566,15 @@ public class TripTest {
     }
 
     @Test
+    public void labelsViewTripNotFound() throws Exception {
+        mockHttpSession.setAttribute("user", testUser);
+        Trip t = new TimelessTrip(title, description, privacy, testUser);
+        RequestBuilder requestBuilder = MockMvcRequestBuilders.get("/labels/" + t.getId());
+        when(tripsService.findTripById(anyInt(), any(User.class))).thenThrow(new TripsException("Trip not found"));
+        mockMvc.perform(requestBuilder).andExpect(view().name("tripView"));
+    }
+
+    @Test
     public void labelsView() throws Exception {
         mockHttpSession.setAttribute("user", testUser);
         Trip t = new TimelessTrip(title, description, privacy, testUser);
@@ -598,7 +607,7 @@ public class TripTest {
         Trip t = new TimelessTrip(title, description, privacy, testUser);
         String label = "voorbeeldLabel";
         when(tripsService.findTripById(t.getId(), testUser)).thenReturn(t);
-        Mockito.doThrow(new TripsException("")).when(tripsService).addLabelToTrip(any(Trip.class), any(User.class), anyString());
+        Mockito.doThrow(new TripsException("Not organizer")).when(tripsService).addLabelToTrip(any(Trip.class), any(User.class), anyString());
         RequestBuilder requestBuilder = MockMvcRequestBuilders.post("/labels/" + t.getId()).param("label", label);
         mockMvc.perform(requestBuilder).andExpect(view().name("labelsView"));
     }
@@ -609,6 +618,57 @@ public class TripTest {
         String label = "voorbeeldLabel";
         RequestBuilder requestBuilder = MockMvcRequestBuilders.post("/labels/" + t.getId()).param("label", label);
         mockMvc.perform(requestBuilder).andExpect(view().name("loginView"));
+    }
+
+    @Test
+    public void requirementsView() throws Exception {
+        mockHttpSession.setAttribute("user", testUser);
+        Trip t = new TimelessTrip(title, description, privacy, testUser);
+        RequestBuilder requestBuilder = MockMvcRequestBuilders.get("/requirements/"+t.getId());
+        mockMvc.perform(requestBuilder).andExpect(view().name("requirementsView"));
+    }
+
+    @Test
+    public void requirementsViewNotLoggedIn() throws Exception {
+        Trip t = new TimelessTrip(title, description, privacy, testUser);
+        RequestBuilder requestBuilder = MockMvcRequestBuilders.get("/requirements/"+t.getId());
+        mockMvc.perform(requestBuilder).andExpect(view().name("loginView"));
+    }
+
+    @Test
+    public void addRequirement() throws Exception {
+        mockHttpSession.setAttribute("user", testUser);
+        Trip t = new TimelessTrip(title, description, privacy, testUser);
+        String requisite = "sampleRequisite";
+        RequestBuilder requestBuilder = MockMvcRequestBuilders.post("/requirements/"+t.getId()).param("requisite", requisite);
+        mockMvc.perform(requestBuilder).andExpect(view().name("requirementsView"));
+    }
+
+    @Test
+    public void addRequirementNotLoggedIn() throws Exception {
+        Trip t = new TimelessTrip(title, description, privacy, testUser);
+        String requisite = "sampleRequisite";
+        RequestBuilder requestBuilder = MockMvcRequestBuilders.post("/requirements/"+t.getId()).param("requisite", requisite);
+        mockMvc.perform(requestBuilder).andExpect(view().name("loginView"));
+    }
+
+    @Test
+    public void addRequirementFailed() throws Exception {
+        User notOrganizer = new User("username", "password");
+        mockHttpSession.setAttribute("user", notOrganizer);
+        Trip t = new TimelessTrip(title, description, privacy, testUser);
+        String requisite = "sampleRequisite";
+        //int amount = 1;
+        RequestBuilder requestBuilder = MockMvcRequestBuilders.post("/requirements/"+t.getId()).param("requisite", requisite);
+        mockMvc.perform(requestBuilder).andExpect(view().name("requirementsView"));
+    }
+
+    @Test
+    public void inviteUserView() throws Exception {
+        mockHttpSession.setAttribute("user", testUser);
+        Trip t = new TimelessTrip(title, description, privacy, testUser);
+        RequestBuilder requestBuilder = MockMvcRequestBuilders.get("/inviteUser/"+t.getId());
+        mockMvc.perform(requestBuilder).andExpect(view().name("/users/inviteUserView"));
     }
 
 }

@@ -2,6 +2,7 @@ package be.kdg.trips.model.trip;
 
 import be.kdg.trips.exception.TripsException;
 import be.kdg.trips.model.enrollment.Enrollment;
+import be.kdg.trips.model.invitation.Invitation;
 import be.kdg.trips.model.location.Location;
 import be.kdg.trips.model.user.User;
 import org.hibernate.annotations.*;
@@ -46,14 +47,17 @@ public abstract class Trip implements Serializable, TripInterface {
     @OneToMany(mappedBy = "trip")
     @Cascade(CascadeType.REMOVE)
     private List<Location> locations;
-    private static int counter=0;
     @OneToMany(mappedBy = "trip")
     @Cascade(CascadeType.REMOVE)
     private Set<Enrollment> enrollments;
+    @OneToMany(mappedBy = "trip")
+    @Cascade(CascadeType.REMOVE)
+    private Set<Invitation> invitations;
     @ElementCollection
     @CollectionTable(name = "T_TRIP_REQUISITE", joinColumns = @JoinColumn(name = "tripId"))
     @Column(name = "requisite")
     private Map<String, Integer> requisites;
+    private static int counter=0;
 
     public Trip(String title, String description, TripPrivacy privacy, User organizer) {
         this.id = getNextId();
@@ -63,6 +67,7 @@ public abstract class Trip implements Serializable, TripInterface {
         if(privacy == TripPrivacy.PRIVATE)
         {
             this.published = true;
+            this.invitations = new HashSet<>();
         }
         else
         {
@@ -241,6 +246,19 @@ public abstract class Trip implements Serializable, TripInterface {
                 this.requisites.remove(name);
             }
         }
+    }
+
+    public Set<Invitation> getInvitations() {
+        return invitations;
+    }
+
+    public void setInvitations(Set<Invitation> invitations) {
+        this.invitations = invitations;
+    }
+
+    public void addInvitation(Invitation invitation)
+    {
+        this.invitations.add(invitation);
     }
 
     private synchronized int getNextId() {

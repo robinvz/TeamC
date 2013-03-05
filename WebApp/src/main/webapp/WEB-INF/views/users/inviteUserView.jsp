@@ -20,8 +20,18 @@
         <c:if test="${error != null}">
             <span class="errorblock">${error}</span>
         </c:if>
-        <c:if test="${not empty user && trip.organizer == test}">
 
+        <c:if test="${not empty user && trip.organizer == user}">
+            <h2>Invite a user</h2>
+            <table>
+                <form action="/inviteUser/" method="GET">
+                    <tr>
+                        <td><spring:message code="User"/></td>
+                        <td><input type="text" name="user"></td>
+                        <td><button class="btn-blue" type="submit"><spring:message code="Invite" /></button></td>
+                    </tr>
+                </form>
+            </table>
         </c:if>
     </div>
 
