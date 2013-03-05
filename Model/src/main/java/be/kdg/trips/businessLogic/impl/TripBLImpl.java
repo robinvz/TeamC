@@ -230,7 +230,7 @@ public class TripBLImpl implements TripBL
                 location.setDescription(description);
             }
             location.setAddress(address);
-            tripDao.updateTrip(trip);
+            tripDao.saveOrUpdateLocation(location);
         }
     }
 
