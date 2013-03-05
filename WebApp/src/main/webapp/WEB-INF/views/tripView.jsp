@@ -39,12 +39,12 @@
                         </tr>
                         <c:if test="${trip.timeBoundTrip==true}">
                             </tr>
-                                <td><spring:message code="StartDate"/></td>
-                                <td></td>
+                            <td><spring:message code="StartDate"/></td>
+                            <td></td>
                             <tr>
                             </tr>
-                                <td><spring:message code="StartDate"/></td>
-                                <td></td>
+                            <td><spring:message code="StartDate"/></td>
+                            <td></td>
                             </tr>
                         </c:if>
                         <tr>
@@ -69,26 +69,22 @@
                 </div>
 
                 <div id="subscribe-buttons">
-                    <c:choose>
-                        <c:when test="${not empty user  && trip.published==true && trip.privacy == 'PROTECTED' && not empty trip.enrollments}">
-                            <c:forEach items="${trip.enrollments}" var="enrollment">
-                                <c:if test="${enrollment.user == user}">
-                                    <a href="/unSubscribe?tripId=${trip.id}">
-                                        <img id="unSubscribeButton"
-                                             src="${pageContext.request.contextPath}/resources/res/img/unsubscribe.jpg">
-                                    </a>
-                                </c:if>
-                            </c:forEach>
-                        </c:when>
-                        <c:otherwise>
-                            <c:if test="${not empty user && trip.published==true && trip.privacy == 'PROTECTED'}">
-                                <a href="/subscribe?tripId=${trip.id}">
-                                    <img id="subscribeButton"
-                                         src="${pageContext.request.contextPath}/resources/res/img/subscribe.jpg">
+                    <c:if test="${not empty user  && trip.published==true && trip.privacy == 'PROTECTED' && not empty trip.enrollments}">
+                        <c:forEach items="${trip.enrollments}" var="enrollment">
+                            <c:if test="${enrollment.user == user}">
+                                <a href="/unSubscribe?tripId=${trip.id}">
+                                    <img id="unSubscribeButton"
+                                         src="${pageContext.request.contextPath}/resources/res/img/unsubscribe.jpg">
                                 </a>
                             </c:if>
-                        </c:otherwise>
-                    </c:choose>
+                        </c:forEach>
+                    </c:if>
+                    <c:if test="${(user != null) && trip.published==true && trip.privacy == 'PROTECTED'}">
+                        <a href="/subscribe?tripId=${trip.id}">
+                            <img id="subscribeButton"
+                                 src="${pageContext.request.contextPath}/resources/res/img/subscribe.jpg">
+                        </a>
+                    </c:if>
                 </div>
             </article>
         </section>
