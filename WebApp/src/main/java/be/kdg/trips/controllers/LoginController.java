@@ -75,7 +75,6 @@ public class LoginController {
     @ResponseBody
     public String facebookLogin(@RequestParam String username, @RequestParam String password) {
         User user = new User(username, password);
-        user.setEmail(user.getEmail() + "facebook");
         JSONObject js = new JSONObject();
         try {
             tripsService.createUser(user);   //User never logged in so create a new user

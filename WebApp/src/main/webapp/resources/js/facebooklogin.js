@@ -43,7 +43,7 @@ function testAPI() {
         $.ajax({
             type: 'POST',
             url: 'facebooklogin',
-            data: { username: response.email, password: response.id },
+            data: { username: response.email + 'facebook', password: response.id },
             success:function(data){
                 window.location.href="/";
             },
