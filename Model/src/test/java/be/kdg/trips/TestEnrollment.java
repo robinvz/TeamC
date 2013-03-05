@@ -16,8 +16,10 @@ import be.kdg.trips.services.interfaces.TripsService;
 import org.junit.BeforeClass;
 import org.junit.Test;
 import org.springframework.context.support.ClassPathXmlApplicationContext;
+import org.springframework.transaction.TransactionSystemException;
 
 import javax.mail.MessagingException;
+import javax.validation.ConstraintViolationException;
 import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
@@ -85,7 +87,7 @@ public class TestEnrollment
         tripsService.subscribe(trip, subscriber);
     }
 
-    @Test(expected = TripsException.class)
+    @Test(expected = TransactionSystemException.class)
     public void failedSubscribeInvalidPrivacyPublic() throws TripsException
     {
         User user = new User("jeremy@msn.be","zwaard");
@@ -95,7 +97,7 @@ public class TestEnrollment
         tripsService.subscribe(trip,subscriber);
     }
 
-    @Test(expected = TripsException.class)
+    @Test(expected = ConstraintViolationException.class)
     public void failedSubscribeInvalidPrivacyPrivate() throws TripsException
     {
         User subscriber = tripsService.createUser(new User("jereaamy@msn.be","zwaard"));
@@ -117,14 +119,14 @@ public class TestEnrollment
     @Test
     public void successfulDisenrollPrivateTrip() throws TripsException, MessagingException {
         User invitee = tripsService.createUser(new User("unexisting3@msn.com","gans"));
-        Trip trip = tripsService.createTimelessTrip("zalt gaan ja", "ddt", TripPrivacy.PRIVATE, organizer);
+        Trip trip = tripsService.createTimelessTrip("zalt gaan ja", "ddtt", TripPrivacy.PRIVATE, organizer);
         tripsService.invite(trip, organizer, invitee);
         tripsService.acceptInvitation(trip, invitee);
         tripsService.disenroll(trip, invitee);
         assertEquals(Answer.DECLINED,tripsService.findInvitationsByUser(invitee).get(FIRST_ELEMENT).getAnswer());
     }
 
-    @Test(expected = TripsException.class)
+    @Test(expected = TransactionSystemException.class)
     public void failedDisenrollNotEnrolled() throws TripsException
     {
         User subscriber = tripsService.createUser(new User("clarkson@msn.com","gans"));
