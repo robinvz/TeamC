@@ -4,18 +4,18 @@ import be.kdg.trips.beans.LoginBean;
 import be.kdg.trips.exception.TripsException;
 import be.kdg.trips.model.user.User;
 import be.kdg.trips.services.interfaces.TripsService;
+import com.mysql.jdbc.Blob;
+import org.hibernate.Hibernate;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.propertyeditors.StringTrimmerEditor;
 import org.springframework.context.MessageSource;
 import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.ServletRequestDataBinder;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
+import org.springframework.web.multipart.support.ByteArrayMultipartFileEditor;
 import org.springframework.web.servlet.ModelAndView;
 
-import javax.imageio.ImageIO;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
-import java.awt.image.BufferedImage;
 import java.io.*;
 import java.util.Locale;
 
@@ -97,22 +97,13 @@ public class ProfileController {
     }
 
     @RequestMapping(value = "/users/editProfilePic", method = RequestMethod.POST)
-    public String editProfilePic(HttpServletRequest request) {
-        String path =     request.getParameter("picPath");
-        File file = new File(request.getParameter("picPath"));
-        byte[] bFile = new byte[(int) file.length()];
+    public String editProfilePic(@RequestParam("file") MultipartFile file)
+    {
         try {
-            FileInputStream fileInputStream = null;
-            try {
-                fileInputStream = new FileInputStream(file);
-                fileInputStream.read(bFile);
-            } catch (FileNotFoundException e) {
-            } catch (IOException e) {
-            }
+            byte[] bFile = file.getBytes();
             tripsService.updateUser((User) session.getAttribute("user"), "", "", "", "", "", "", "", "", bFile);
-            session.setAttribute("user", tripsService.findUser(((User) session.getAttribute("user")).getEmail()));
-        } catch (TripsException e) {
-            return "/users/profileView";
+        } catch (IOException | TripsException e) {
+            e.printStackTrace();  //To change body of catch statement use File | Settings | File Templates.
         }
         return "/users/profileView";
     }

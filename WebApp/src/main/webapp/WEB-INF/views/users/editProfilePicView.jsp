@@ -34,10 +34,9 @@
                         </table>
                     </form>--%>
 
-                    <form id="profile-form" action="/users/editProfilePic" method="POST">
-                        <%--enctype="multipart/form-data --%>
-                        <input type="file" name="file"><br>
-                        <input type="submit">
+                    <form id="profile-form" action="/users/editProfilePic" method="POST" enctype="multipart/form-data">
+                            Please select a file to upload : <input type="file" name="file" />
+                            <input type="submit" value="upload" />
                     </form>
                 </div>
                 <!-- Only active trips -->
