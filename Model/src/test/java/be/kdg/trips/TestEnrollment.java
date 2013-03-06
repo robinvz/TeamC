@@ -306,7 +306,7 @@ public class TestEnrollment
         List<String> possibleAnswers = new ArrayList<>();
         possibleAnswers.add("Gijs");
         possibleAnswers.add("Keke");
-        tripsService.addLocationToTrip(organizer, createdTrip, 10.12131, 10.12131, "Nationalestraat", null, "Antwerp", "2000", "Belgium", "Titel", "Lange straat met tramspoor", "Who am I?", possibleAnswers, FIRST_ELEMENT);
+        tripsService.addLocationToTrip(organizer, createdTrip, 10.12131, 10.12131, "Nationalestraat", null, "Antwerp", "2000", "Belgium", "Titel", "Lange straat met tramspoor", "Who am I?", possibleAnswers, FIRST_ELEMENT, null);
         Location location = tripsService.findTripById(createdTrip.getId(), organizer).getLocations().get(FIRST_ELEMENT);
         tripsService.startTrip(createdTrip, organizer);
         tripsService.setLastLocationVisited(createdTrip, organizer, location);
@@ -323,7 +323,7 @@ public class TestEnrollment
         List<String> possibleAnswers = new ArrayList<>();
         possibleAnswers.add("Gijs");
         possibleAnswers.add("Keke");
-        Location location = tripsService.addLocationToTrip(organizer, createdTrip, 10.12131, 10.12131, "Nationalestraat", null, "Antwerp", "2000", "Belgium", "Titel", "Lange straat met tramspoor", "Who were I yesterday?", possibleAnswers, FIRST_ELEMENT);
+        Location location = tripsService.addLocationToTrip(organizer, createdTrip, 10.12131, 10.12131, "Nationalestraat", null, "Antwerp", "2000", "Belgium", "Titel", "Lange straat met tramspoor", "Who were I yesterday?", possibleAnswers, FIRST_ELEMENT, null);
         tripsService.startTrip(createdTrip, organizer);
         tripsService.setLastLocationVisited(createdTrip, organizer, location);
         Question question = createdTrip.getLocations().get(FIRST_ELEMENT).getQuestion();
@@ -339,7 +339,7 @@ public class TestEnrollment
         List<String> possibleAnswers = new ArrayList<>();
         possibleAnswers.add("Gijs");
         possibleAnswers.add("Keke");
-        Location location = tripsService.addLocationToTrip(organizer, createdTrip, 10.12131, 10.12131, "Nationalestraat", null, "Antwerp", "2000", "Belgium", "Titel", "Lange straat met tramspoor", "Who will I be tomorrow?", possibleAnswers, FIRST_ELEMENT);
+        Location location = tripsService.addLocationToTrip(organizer, createdTrip, 10.12131, 10.12131, "Nationalestraat", null, "Antwerp", "2000", "Belgium", "Titel", "Lange straat met tramspoor", "Who will I be tomorrow?", possibleAnswers, FIRST_ELEMENT, null);
         tripsService.startTrip(createdTrip, organizer);
         tripsService.setLastLocationVisited(createdTrip, organizer, location);
         Question question = createdTrip.getLocations().get(FIRST_ELEMENT).getQuestion();
@@ -355,7 +355,7 @@ public class TestEnrollment
         List<String> possibleAnswers = new ArrayList<>();
         possibleAnswers.add("Gijs");
         possibleAnswers.add("Keke");
-        tripsService.addLocationToTrip(organizer, createdTrip, 10.12131, 10.12131, "Nationalestraat", null, "Antwerp", "2000", "Belgium", "Titel", "Lange straat met tramspoor", "Who will I be tomorrow?", possibleAnswers, FIRST_ELEMENT);
+        tripsService.addLocationToTrip(organizer, createdTrip, 10.12131, 10.12131, "Nationalestraat", null, "Antwerp", "2000", "Belgium", "Titel", "Lange straat met tramspoor", "Who will I be tomorrow?", possibleAnswers, FIRST_ELEMENT, null);
         Question question = createdTrip.getLocations().get(FIRST_ELEMENT).getQuestion();
         tripsService.checkAnswerFromQuestion(question,FIRST_ELEMENT,organizer);
     }
@@ -369,7 +369,7 @@ public class TestEnrollment
         possibleAnswers.add("Gijs");
         possibleAnswers.add("Keke");
         Location loc1 = tripsService.addLocationToTrip(organizer, createdTrip, 23.12131, 11.12131, "Groenplaats", null, "Antwerp", "2000", "Belgium", "Titel", "Plein");
-        Location loc2 = tripsService.addLocationToTrip(organizer, createdTrip, 10.12131, 10.12131, "Nationalestraat", null, "Antwerp", "2000", "Belgium", "Titel", "Lange straat met tramspoor", "Who will I be tomorrow?", possibleAnswers, FIRST_ELEMENT);
+        Location loc2 = tripsService.addLocationToTrip(organizer, createdTrip, 10.12131, 10.12131, "Nationalestraat", null, "Antwerp", "2000", "Belgium", "Titel", "Lange straat met tramspoor", "Who will I be tomorrow?", possibleAnswers, FIRST_ELEMENT, null);
         tripsService.startTrip(createdTrip, organizer);
         tripsService.setLastLocationVisited(createdTrip, organizer, loc1);
         Question question = createdTrip.getLocations().get(SECOND_ELEMENT).getQuestion();

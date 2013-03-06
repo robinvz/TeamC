@@ -147,8 +147,8 @@ public class TripsServiceImpl implements TripsService
     }
 
     @Override
-    public Location addLocationToTrip(User loggedInUser, Trip trip, double latitude, double longitude, String street, String houseNr, String city, String postalCode, String country, String title, String description, String question, List<String> possibleAnswers, int correctAnswerIndex) throws TripsException {
-        return tripController.addLocationToTrip(loggedInUser, trip, latitude, longitude, street, houseNr, city, postalCode, country, title, description, question, possibleAnswers, correctAnswerIndex);
+    public Location addLocationToTrip(User loggedInUser, Trip trip, double latitude, double longitude, String street, String houseNr, String city, String postalCode, String country, String title, String description, String question, List<String> possibleAnswers, int correctAnswerIndex, byte[] image) throws TripsException {
+        return tripController.addLocationToTrip(loggedInUser, trip, latitude, longitude, street, houseNr, city, postalCode, country, title, description, question, possibleAnswers, correctAnswerIndex, image);
     }
 
     @Override

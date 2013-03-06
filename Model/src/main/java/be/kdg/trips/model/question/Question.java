@@ -35,11 +35,14 @@ public class Question implements QuestionInterface, Serializable
     private List<String> possibleAnswers;
     @NotNull
     private int correctAnswerIndex;
+    @Lob
+    private byte[] image;
 
-    public Question(String question, List<String> possibleAnswers, int correctAnswerIndex) {
+    public Question(String question, List<String> possibleAnswers, int correctAnswerIndex, byte[] image) {
         this.question = question;
         this.possibleAnswers = possibleAnswers;
         this.correctAnswerIndex = correctAnswerIndex;
+        this.image = image;
     }
 
     public Question() {
@@ -80,6 +83,14 @@ public class Question implements QuestionInterface, Serializable
             return true;
         }
         return false;
+    }
+
+    public byte[] getImage() {
+        return image;
+    }
+
+    public void setImage(byte[] image) {
+        this.image = image;
     }
 
     @Override

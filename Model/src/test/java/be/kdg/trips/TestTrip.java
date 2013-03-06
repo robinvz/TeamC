@@ -343,9 +343,29 @@ public class TestTrip {
         List<String> possibleAnswers = new ArrayList<String>();
         possibleAnswers.add("yes");
         possibleAnswers.add("no");
-        tripsService.addLocationToTrip(user, createdTrip, 10.12131, 10.12131, "Nationalestraat", null, "Antwerp", "2000", "Belgium", "Titel", "Lange straat met tramspoor", "Schijnt de zon?", possibleAnswers, FIRST_ELEMENT);
-        tripsService.addLocationToTrip(user, createdTrip, 10.12121, 10.12123, "Groenplaats", "53", null, "2000", null, "Titel", "Groenplaats", "Schijnt de zon nog steeds?",possibleAnswers, SECOND_ELEMENT);
+        tripsService.addLocationToTrip(user, createdTrip, 10.12131, 10.12131, "Nationalestraat", null, "Antwerp", "2000", "Belgium", "Titel", "Lange straat met tramspoor", "Schijnt de zon?", possibleAnswers, FIRST_ELEMENT, null);
+        tripsService.addLocationToTrip(user, createdTrip, 10.12121, 10.12123, "Groenplaats", "53", null, "2000", null, "Titel", "Groenplaats", "Schijnt de zon nog steeds?",possibleAnswers, SECOND_ELEMENT, null);
         assertEquals(2, tripsService.findTripById(createdTrip.getId(), user).getLocations().size());
+    }
+
+    @Test
+    public void successfulAddLocationWithQuestionAndImage() throws TripsException
+    {
+        Trip createdTrip = tripsService.createTimelessTrip("locationTripa", "trip with locations", TripPrivacy.PUBLIC, user);
+        List<String> possibleAnswers = new ArrayList<String>();
+        possibleAnswers.add("yes");
+        possibleAnswers.add("no");
+        File file = new File("src/test/resources/testimage.jpg");
+        byte[] bFile = new byte[(int) file.length()];
+        try {
+            FileInputStream fileInputStream = new FileInputStream(file);
+            fileInputStream.read(bFile);
+            fileInputStream.close();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        tripsService.addLocationToTrip(user, createdTrip, 10.12131, 10.12131, "Nationalestraat", null, "Antwerp", "2000", "Belgium", "Titel", "Lange straat met tramspoor", "Schijnt de zon?", possibleAnswers, FIRST_ELEMENT, bFile);
+        assertNotNull(tripsService.findTripById(createdTrip.getId(), user).getLocations().get(FIRST_ELEMENT).getQuestion().getImage());
     }
 
     @Test(expected = TripsException.class)
@@ -370,7 +390,7 @@ public class TestTrip {
         List<String> possibleAnswers = new ArrayList<>();
         possibleAnswers.add("Gijs");
         possibleAnswers.add("Keke");
-        tripsService.addLocationToTrip(user, createdTrip, 10.12131, 10.12131, "Nationalestraat", null, "Antwerp", "2000", "Belgium", "Titel", "Lange straat met tramspoor", "Who am I?", possibleAnswers, 4);
+        tripsService.addLocationToTrip(user, createdTrip, 10.12131, 10.12131, "Nationalestraat", null, "Antwerp", "2000", "Belgium", "Titel", "Lange straat met tramspoor", "Who am I?", possibleAnswers, 4, null);
     }
 
     @Test
@@ -419,7 +439,7 @@ public class TestTrip {
         List<String> possibleAnswers = new ArrayList<>();
         possibleAnswers.add("Gijs");
         possibleAnswers.add("Keke");
-        tripsService.addLocationToTrip(user, createdTrip, 10.12131, 10.12131, "Nationalestraat", null, "Antwerp", "2000", "Belgium", "Titel", "Lange straat met tramspoor", "Who am I?", possibleAnswers, FIRST_ELEMENT);
+        tripsService.addLocationToTrip(user, createdTrip, 10.12131, 10.12131, "Nationalestraat", null, "Antwerp", "2000", "Belgium", "Titel", "Lange straat met tramspoor", "Who am I?", possibleAnswers, FIRST_ELEMENT, null);
         assertTrue(createdTrip.getLocations().get(FIRST_ELEMENT).getQuestion().checkAnswer(FIRST_ELEMENT));
     }
 
@@ -430,7 +450,7 @@ public class TestTrip {
         List<String> possibleAnswers = new ArrayList<>();
         possibleAnswers.add("Gijs");
         possibleAnswers.add("Keke");
-        tripsService.addLocationToTrip(user, createdTrip, 10.12131, 10.12131, "Nationalestraat", null, "Antwerp", "2000", "Belgium", "Titel", "Lange straat met tramspoor", "Who am I?", possibleAnswers, 0);
+        tripsService.addLocationToTrip(user, createdTrip, 10.12131, 10.12131, "Nationalestraat", null, "Antwerp", "2000", "Belgium", "Titel", "Lange straat met tramspoor", "Who am I?", possibleAnswers, FIRST_ELEMENT, null);
         assertFalse(createdTrip.getLocations().get(FIRST_ELEMENT).getQuestion().checkAnswer(1));
     }
 
