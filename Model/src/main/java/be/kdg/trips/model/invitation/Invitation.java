@@ -40,6 +40,7 @@ public class Invitation implements Serializable {
         this.date = new Date();
         this.answer = Answer.UNANSWERED;
         user.addInvitation(this);
+        trip.addInvitation(this);
     }
 
     public Invitation() {

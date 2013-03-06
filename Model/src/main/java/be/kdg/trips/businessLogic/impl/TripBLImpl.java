@@ -53,7 +53,7 @@ public class TripBLImpl implements TripBL
             tripDao.createTrip(trip);
             if(trip.getPrivacy()==TripPrivacy.PRIVATE)
             {
-                enrollmentBL.enroll(trip, organizer);
+                enrollOrganizer(organizer, trip);
             }
         }
         return trip;
@@ -71,7 +71,7 @@ public class TripBLImpl implements TripBL
                 tripDao.createTrip(trip);
                 if(trip.getPrivacy()==TripPrivacy.PRIVATE)
                 {
-                    enrollmentBL.enroll(trip, organizer);
+                    enrollOrganizer(organizer, trip);
                 }
             }
         }
@@ -503,5 +503,10 @@ public class TripBLImpl implements TripBL
             throw new TripsException("Trip is not a TimeBound trip");
         }
         return true;
+    }
+
+    private void enrollOrganizer(User organizer, Trip trip) throws TripsException {
+        enrollmentBL.selfInvite(trip, organizer);
+        enrollmentBL.acceptInvitation(trip, organizer);
     }
 }

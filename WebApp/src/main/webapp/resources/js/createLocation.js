@@ -71,6 +71,7 @@ function fillInputAddress() {
     $('#latitude').val(latCoord);
     $('#longitude').val(lngCoord);
     $('#btn-next').removeAttr('disabled');
+    checkAddress();
 }
 
 function clearInputAddress() {
@@ -81,11 +82,19 @@ function clearInputAddress() {
     $('#btn-next').attr('disabled', 'disabled');
 }
 
-
-//adres checken op lege of andere velden
-// (sublocality wordt soms administrative_area_level
-/*function checkAddress() {
- }        */
+function checkAddress() {
+    if (usedAddressComponents.indexOf('sublocality') == -1) {
+        if (usedAddressComponents.indexOf('locality') != -1) {
+            $('#sublocality').val(usedAddressComponents[usedAddressComponents.indexOf('locality') + 1]);
+        } else if (usedAddressComponents.indexOf('administrative_area_level_3') != -1) {
+            $('#sublocality').val(usedAddressComponents[usedAddressComponents.indexOf('administrative_area_level_3') + 1]);
+        } else if (usedAddressComponents.indexOf('administrative_area_level_2') != -1) {
+            $('#sublocality').val(usedAddressComponents[usedAddressComponents.indexOf('administrative_area_level_2') + 1]);
+        } else if (usedAddressComponents.indexOf('administrative_area_level_1') != -1) {
+            $('#sublocality').val(usedAddressComponents[usedAddressComponents.indexOf('administrative_area_level_1') + 1]);
+        }
+    }
+}
 
 function btnListeners() {
     $('#btn-next').on('click', function () {
