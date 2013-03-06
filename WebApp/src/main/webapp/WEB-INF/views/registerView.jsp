@@ -91,14 +91,6 @@
                     </tr>
                     <tr>
                         <td>
-                            <label><spring:message code="Province" /></label>
-                        </td>
-                        <td>
-                            <form:input path="address.province"></form:input>
-                            <form:errors path="address.province" cssClass="error"></form:errors></td>
-                    </tr>
-                    <tr>
-                        <td>
                             <label><spring:message code="Country" /></label>
                         </td>
                         <td>

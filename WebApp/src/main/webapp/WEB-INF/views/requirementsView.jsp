@@ -28,8 +28,13 @@
                     <tr>
                         <td><spring:message code="EnterRequisite"/></td>
                         <td><input type="text" name="requisite"></td>
-                        <td><input id="btn-save" type="submit" value="<spring:message code="Save" />" class="btn-blue">
-                        </td>
+                    </tr>
+                    <tr>
+                        <td><spring:message code="Amount"/></td>
+                        <td><input type="text" name="amount"></td>
+                    </tr>
+                    <tr>
+                        <td><input id="btn-save" type="submit" value="<spring:message code="Save" />" class="btn-blue"></td>
                     </tr>
                 </form>
             </table>
@@ -41,11 +46,13 @@
             <c:when test="${not empty trip.requisites}">
                 <table>
                     <thead>
-                      <th><spring:message code="Requisites"/></th>
+                        <th><spring:message code="Requisites"/></th>
+                        <th><spring:message code="Amount"/></th>
                     </thead>
                     <c:forEach items="${trip.requisites}" var="requisite">
                         <tr>
                             <td>${requisite.key}</td>
+                            <td>${requisite.value}</td>
                         </tr>
                     </c:forEach>
                 </table>
