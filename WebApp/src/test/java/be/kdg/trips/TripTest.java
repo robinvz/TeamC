@@ -294,7 +294,7 @@ public class TripTest {
         mockHttpSession.setAttribute("user", testUser);
         Trip t = new TimelessTrip(title, description, privacy, testUser);
         RequestBuilder requestBuilder = MockMvcRequestBuilders.get("/publishTrip/" + t.getId());
-        mockMvc.perform(requestBuilder).andExpect(view().name("redirect:/trips"));
+        mockMvc.perform(requestBuilder).andExpect(view().name("tripView"));
     }
 
     @Test
@@ -705,6 +705,16 @@ public class TripTest {
         RequestBuilder requestBuilder = MockMvcRequestBuilders.get("/inviteUser/"+t.getId());
         when(tripsService.findTripById(anyInt(), any(User.class))).thenThrow(new TripsException("Trip not found"));
         mockMvc.perform(requestBuilder).andExpect(view().name("/users/inviteUserView"));
+    }
+
+    @Test
+    public void startTrip() {
+
+    }
+
+    @Test
+    public void stopTrip() {
+
     }
 
     @Test

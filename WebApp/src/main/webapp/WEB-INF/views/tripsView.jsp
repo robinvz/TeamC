@@ -16,6 +16,9 @@
     <jsp:include page="baseView.jsp"/>
 
     <h2><spring:message code="Overview" /></h2>
+    <c:if test="${error != null}">
+        <span class="errorblock">${error}</span>
+    </c:if>
     <c:if test="${not empty user}">
         <nav class="inner-nav">
             <ul class="nav-inner">

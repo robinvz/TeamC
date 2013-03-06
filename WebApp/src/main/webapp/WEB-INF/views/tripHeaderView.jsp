@@ -16,18 +16,16 @@
             <li><a href="/trip/${trip.id}/locations"><spring:message code="Locations"/></a></li>
             <li><a href="#">Chat</a></li>
             <li><a href="#"><spring:message code="Results"/></a></li>
-            <c:if test="${trip.privacy != 'PUBLIC'}">
+            <c:if test="${trip.privacy != 'PUBLIC' && trip.published == true}">
                 <li><a href="/trip/${trip.id}/participants"><spring:message code="Participants"/></a></li>
-                <c:if test="${trip.published == true}">
-                    <c:forEach items="${trip.enrollments}" var="enrollment">
-                        <c:if test="${enrollment.user == user && enrollment.status == 'READY'}">
-                            <li><a href="/startTrip/${tripId}">Start trip</a></li>
-                        </c:if>
-                        <c:if test="${enrollment.user == user && enrollment.status == 'BUSY'}">
-                            <li><a href="/stopTrip/${tripId}">Stop trip</a></li>
-                        </c:if>
-                    </c:forEach>
-                </c:if>
+                <c:forEach items="${trip.enrollments}" var="enrollment">
+                    <c:if test="${enrollment.user == user && enrollment.status == 'READY'}">
+                        <li><a href="/startTrip/${tripId}">Start trip</a></li>
+                    </c:if>
+                    <c:if test="${enrollment.user == user && enrollment.status == 'BUSY'}">
+                        <li><a href="/stopTrip/${tripId}">Stop trip</a></li>
+                    </c:if>
+                </c:forEach>
             </c:if>
 
             <c:if test="${not empty user && trip.organizer == user}">
