@@ -2,7 +2,7 @@
     -moz-box-shadow: 3px 3px 4px rgb(3, 3, 3);
     -webkit-box-shadow: 3px 3px 4px rgb(3, 3, 3);
     box-shadow: 3px 3px 4px rgb(0, 0, 0);
-    background: url('../res/img/templates/exampleBanner.png');
+
 }
 
 h2{
@@ -32,3 +32,7 @@ h2{
     width:120px;
 }
 
+#myCanvas{
+    height: 200px;
+    width: 960px;
+}

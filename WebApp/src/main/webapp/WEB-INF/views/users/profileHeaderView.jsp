@@ -1,7 +1,7 @@
 <%@ taglib prefix="spring" uri="http://www.springframework.org/tags" %>
 
 <aside class="above-footer">
-    <img id="profilepic" src="/users/profilePic" title="kjsfdkl">
+    <img id="profilepic" src="/users/profilePic" title="It's you!">
 
     <nav class="trip-nav">
         <ul class="trip-nav">

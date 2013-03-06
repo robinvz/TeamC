@@ -4,9 +4,26 @@
 <script src="${pageContext.request.contextPath}/resources/js/html5shiv.js"></script>
 <![endif]-->
 
-<div id="trip-header">
-    <h2>${trip.title}</h2>
-</div>
+
+<canvas id="myCanvas" ></canvas>
+<script>
+    var canvas = document.getElementById('myCanvas');
+    var context = canvas.getContext('2d');
+    var imageObj = new Image();
+    var x = canvas.width / 2;
+    var y = canvas.height / 2;
+
+    context.font = '30pt Calibri';
+    context.textAlign = 'center';
+    context.fillStyle = '#FF0000';
+    context.fillText('${trip.title}', x, y);
+    imageObj.onload = function() {
+        context.drawImage(imageObj, 0, 0);
+        context.fillText('${trip.title}', x, y);
+    };
+    imageObj.src = '/tripPic/${trip.id}';
+</script>
+
 <aside class="above-footer">
     <nav class="trip-nav">
         <h3>Trip</h3>
@@ -30,6 +47,7 @@
 
             <c:if test="${not empty user && trip.organizer == user}">
                 <li><a href="/labels/${trip.id}">Labels</a></li>
+                <li><a href="/editTripPic/${trip.id}"><spring:message code="EditTripHeader"/></a></li>
                 <c:if test="${trip.published == false}">
                     <li><a href="/publishTrip/${trip.id}"><spring:message code="Publish"/></a></li>
                 </c:if>

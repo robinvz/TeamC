@@ -17,6 +17,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.MessageSource;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.ModelAndView;
 
 import javax.mail.MessagingException;
@@ -800,5 +801,46 @@ public class TripController {
         }
         return new ModelAndView("redirect:/trip/" + trip.getId() + "/locations");
         //return new ModelAndView("locationsView");
+    }
+
+    @RequestMapping(value = "/editTripPic/{tripId}", method = RequestMethod.GET)
+    public ModelAndView showEditTripPic(@PathVariable int tripId) {
+        User user = (User)  session.getAttribute("user");
+        Trip trip = null;
+        try {
+            trip = tripsService.findTripById(tripId, user);
+            return new ModelAndView("editTripPicView", "trip", trip);
+        } catch (TripsException e) {
+            e.printStackTrace();  //To change body of catch statement use File | Settings | File Templates.
+        }
+        return new ModelAndView("tripsView");
+    }
+
+    @RequestMapping(value = "/tripPic/{tripId}", method = RequestMethod.GET, produces = "image/jpg")
+    public @ResponseBody byte[] showProfilePic(@PathVariable int tripId){
+        User user = (User) session.getAttribute("user");
+        byte[] imageData = null;
+        try {
+            Trip trip = tripsService.findTripById(tripId, user);
+            imageData = trip.getImage();
+        } catch (TripsException e) {
+            //Trip not found
+        }
+        return imageData;
+    }
+
+    @RequestMapping(value = "/editTripPic/{tripId}", method = RequestMethod.POST)
+    public ModelAndView editProfilePic(@PathVariable int tripId,@RequestParam("file") MultipartFile file)
+    {
+        try {
+            byte[] bFile = file.getBytes();
+            User user = (User) session.getAttribute("user");
+            Trip trip = tripsService.findTripById(tripId, user);
+            tripsService.addImageToTrip(trip, user, bFile);
+            return new ModelAndView("editTripPicView", "trip", trip);
+        } catch (IOException | TripsException e) {
+            //TODO: tripsexception kan zijn: user bestaat niet of bfile is foute type (niet jpeg, gif of png)
+        }
+        return new ModelAndView("tripsView");
     }
 }
