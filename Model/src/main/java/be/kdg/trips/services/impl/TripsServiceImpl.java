@@ -9,6 +9,7 @@ import be.kdg.trips.model.enrollment.Enrollment;
 import be.kdg.trips.model.invitation.Invitation;
 import be.kdg.trips.model.location.Location;
 import be.kdg.trips.model.question.Question;
+import be.kdg.trips.model.trip.Repeatable;
 import be.kdg.trips.model.trip.Trip;
 import be.kdg.trips.model.trip.TripPrivacy;
 import be.kdg.trips.model.user.User;
@@ -83,9 +84,9 @@ public class TripsServiceImpl implements TripsService
     }
 
     @Override
-    public Trip createTimeBoundTrip(String title, String description, TripPrivacy privacy, User organizer, Date startDate, Date endDate) throws TripsException
+    public Trip createTimeBoundTrip(String title, String description, TripPrivacy privacy, User organizer, Date startDate, Date endDate, Repeatable repeatable, Date limit) throws TripsException
     {
-        return tripController.createTimeBoundTrip(title, description, privacy, organizer, startDate, endDate);
+        return tripController.createTimeBoundTrip(title, description, privacy, organizer, startDate, endDate, repeatable, limit);
     }
 
     @Override
