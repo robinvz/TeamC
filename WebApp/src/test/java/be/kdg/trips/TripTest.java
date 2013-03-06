@@ -671,4 +671,16 @@ public class TripTest {
         mockMvc.perform(requestBuilder).andExpect(view().name("/users/inviteUserView"));
     }
 
+    @Test
+    public void editLocationSuccess() throws Exception {
+        mockHttpSession.setAttribute("user", testUser);
+        Trip t = new TimelessTrip(title, description, privacy, testUser);
+        Location l = new Location(t, 1.00, 1.00, new Address("street", "houseNr", "city", "postalCode", "province", "country"), "title", "description", 0);
+        l.setDescription("newDescription");
+        RequestBuilder requestBuilder = MockMvcRequestBuilders.post("/trip/" + t.getId() + "/locations/editLocation").param("value", "ingevuldeWaarde")
+                .param("id", "1-29").param("rowId", "1").param("columnPosition", "2").param("columnId", "2").param("columnName", "Beschrijving");
+        when(tripsService.findTripById(anyInt(), any(User.class))).thenReturn(t);
+        when(tripsService.findLocationById(anyInt())).thenReturn(l);
+        mockMvc.perform(requestBuilder).andExpect(view().name("redirect:/trip/" + t.getId() + "/locations"));
+    }
 }
