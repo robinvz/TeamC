@@ -104,6 +104,14 @@ public class EnrollmentBLImpl implements EnrollmentBL
         return invitation;
     }
 
+    @Transactional
+    @Override
+    public Invitation selfInvite(Trip trip, User organizer) {
+        Invitation invitation = new Invitation(trip, organizer);
+        enrollmentDao.saveOrUpdateInvitation(invitation);
+        return invitation;
+    }
+
     @Override
     @Transactional
     public void uninvite(Trip trip, User organizer, User user) throws TripsException {

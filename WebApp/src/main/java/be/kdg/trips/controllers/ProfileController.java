@@ -103,7 +103,7 @@ public class ProfileController {
             byte[] bFile = file.getBytes();
             tripsService.updateUser((User) session.getAttribute("user"), "", "", "", "", "", "", "", "", bFile);
         } catch (IOException | TripsException e) {
-            e.printStackTrace();  //To change body of catch statement use File | Settings | File Templates.
+            //TODO: tripsexception kan zijn: user bestaat niet of bfile is foute type (niet jpeg, gif of png)
         }
         return "/users/profileView";
     }

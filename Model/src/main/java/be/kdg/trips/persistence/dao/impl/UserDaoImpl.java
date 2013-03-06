@@ -4,6 +4,7 @@ import be.kdg.trips.exception.TripsException;
 import be.kdg.trips.model.user.User;
 import be.kdg.trips.persistence.dao.interfaces.UserDao;
 import org.springframework.stereotype.Repository;
+import org.springframework.transaction.annotation.Transactional;
 
 import javax.persistence.EntityManager;
 import javax.persistence.NoResultException;
@@ -35,7 +36,7 @@ public class UserDaoImpl implements UserDao {
         {
             return (User)query.getSingleResult();
         }
-        catch(NoResultException ex)
+        catch (NoResultException ex)
         {
             throw new TripsException("User with email '"+email+"' doesn't exist");
         }

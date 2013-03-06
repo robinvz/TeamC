@@ -21,17 +21,40 @@
             <span class="errorblock">${error}</span>
         </c:if>
 
+        <p>
         <c:if test="${not empty user && user == trip.organizer}">
             <table>
                 <form action="/requirements/${trip.id}" method="POST">
                     <tr>
-                        <td><spring:message code="EnterRequisite" /></td>
+                        <td><spring:message code="EnterRequisite"/></td>
                         <td><input type="text" name="requisite"></td>
-                        <td><input id="btn-save" type="submit" value="<spring:message code="Save" />" class="btn-blue"></td>
+                        <td><input id="btn-save" type="submit" value="<spring:message code="Save" />" class="btn-blue">
+                        </td>
                     </tr>
                 </form>
             </table>
         </c:if>
+        </p>
+
+        <p>
+        <c:choose>
+            <c:when test="${not empty trip.requisites}">
+                <table>
+                    <thead>
+                      <th><spring:message code="Requisites"/></th>
+                    </thead>
+                    <c:forEach items="${trip.requisites}" var="requisite">
+                        <tr>
+                            <td>${requisite.key}</td>
+                        </tr>
+                    </c:forEach>
+                </table>
+            </c:when>
+            <c:otherwise>
+                <h3><spring:message code="NoRequisites"/></h3>
+            </c:otherwise>
+        </c:choose>
+        </p>
     </div>
 
 </div>
