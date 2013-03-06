@@ -67,7 +67,7 @@ h3 {
     width: 400px;
 }
 
-#new-answer {
+#new-answer, #location-question {
     width: 530px;
 }
 
@@ -79,7 +79,7 @@ h3 {
     display: none;
 }
 
-#btn-answer {
+#btn-answer, #btn-picture {
     float: right;
     margin-right: 20;
 }
