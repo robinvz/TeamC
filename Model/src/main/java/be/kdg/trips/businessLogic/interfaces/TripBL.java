@@ -3,6 +3,7 @@ package be.kdg.trips.businessLogic.interfaces;
 import be.kdg.trips.exception.TripsException;
 import be.kdg.trips.model.location.Location;
 import be.kdg.trips.model.question.Question;
+import be.kdg.trips.model.trip.Repeatable;
 import be.kdg.trips.model.trip.Trip;
 import be.kdg.trips.model.trip.TripPrivacy;
 import be.kdg.trips.model.user.User;
@@ -21,7 +22,7 @@ import java.util.List;
 public interface TripBL
 {
     public Trip createTimelessTrip(String title, String description, TripPrivacy privacy, User organizer) throws TripsException;
-    public Trip createTimeBoundTrip(String title, String description, TripPrivacy privacy, User organizer, Date startDate, Date endDate) throws TripsException;
+    public Trip createTimeBoundTrip(String title, String description, TripPrivacy privacy, User organizer, Date startDate, Date endDate, Repeatable repeatable, Date limit) throws TripsException;
 
     public List<Trip> findNonPrivateTripsByKeyword(String keyword, User user) throws TripsException;
     public List<Trip> findAllNonPrivateTrips(User user) throws TripsException;

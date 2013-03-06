@@ -10,10 +10,7 @@ import be.kdg.trips.model.enrollment.Status;
 import be.kdg.trips.model.invitation.Invitation;
 import be.kdg.trips.model.location.Location;
 import be.kdg.trips.model.question.Question;
-import be.kdg.trips.model.trip.TimeBoundTrip;
-import be.kdg.trips.model.trip.TimelessTrip;
-import be.kdg.trips.model.trip.Trip;
-import be.kdg.trips.model.trip.TripPrivacy;
+import be.kdg.trips.model.trip.*;
 import be.kdg.trips.model.user.User;
 import be.kdg.trips.persistence.dao.interfaces.TripDao;
 import be.kdg.trips.utility.ImageChecker;
@@ -62,13 +59,70 @@ public class TripBLImpl implements TripBL
 
     @Override
     @Transactional
-    public Trip createTimeBoundTrip(String title, String description, TripPrivacy privacy, User organizer, Date startDate, Date endDate) throws TripsException {
-        Trip trip=null;
+    public Trip createTimeBoundTrip(String title, String description, TripPrivacy privacy, User organizer, Date startDate, Date endDate, Repeatable repeatable, Date limit) throws TripsException {
+        TimeBoundTrip trip=null;
         if(userBL.isExistingUser(organizer.getEmail()))
         {
             if(areDatesValid(startDate, endDate))
             {
                 trip = new TimeBoundTrip(title, description, privacy, organizer, startDate, endDate);
+
+                if(repeatable!=null & limit!=null)
+                {
+                    boolean loop = true;
+                    Calendar startCalendar = Calendar.getInstance();
+                    Calendar endCalendar = Calendar.getInstance();
+                    startCalendar.setTime(startDate);
+                    endCalendar.setTime(endDate);
+                    switch(repeatable)
+                    {
+                        case WEEKLY:
+                            while(loop)
+                            {
+                                startCalendar.add(Calendar.DATE, 7);
+                                endCalendar.add(Calendar.DATE, 7);
+                                Date startCalendarDate = startCalendar.getTime();
+                                Date endCalendarDate = endCalendar.getTime();
+                                if(endCalendarDate.before(limit) && startCalendarDate.after(endDate))
+                                {
+                                    trip.addDates(startCalendarDate, endCalendarDate);
+                                }
+                                else
+                                {
+                                    loop = false;
+                                }
+                            }
+                            break;
+                        case MONTHLY:
+                            while(loop)
+                            {
+                                startCalendar.add(Calendar.MONTH, 1);
+                                endCalendar.add(Calendar.MONTH, 1);
+                                if(endCalendar.getTime().before(limit) && startCalendar.getTime().after(endDate))
+                                {
+                                    trip.addDates(startCalendar.getTime(), endCalendar.getTime());
+                                }
+                                else
+                                {
+                                    loop = false;
+                                }
+                            }
+                        case ANNUALLY:
+                            while(loop)
+                            {
+                                startCalendar.add(Calendar.YEAR, 1);
+                                endCalendar.add(Calendar.YEAR, 1);
+                                if(endCalendar.getTime().before(limit) && startCalendar.getTime().after(endDate))
+                                {
+                                    trip.addDates(startCalendar.getTime(), endCalendar.getTime());
+                                }
+                                else
+                                {
+                                    loop = false;
+                                }
+                            };
+                    }
+                }
                 tripDao.createTrip(trip);
                 if(trip.getPrivacy()==TripPrivacy.PRIVATE)
                 {
