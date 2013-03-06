@@ -69,7 +69,7 @@ tr:hover{
     width: 100%;
 }
 
-.nav li{
+.nav-inner li{
     display: inline;
     margin-right:30px;
     padding-left: 0px;

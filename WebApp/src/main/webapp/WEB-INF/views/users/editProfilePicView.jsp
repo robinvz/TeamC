@@ -1,4 +1,5 @@
 <%@ taglib prefix="form" uri="http://www.springframework.org/tags/form" %>
+<%@ taglib prefix="spring" uri="http://www.springframework.org/tags" %>
 <html>
 <head>
     <link rel="stylesheet" href="${pageContext.request.contextPath}/resources/css/main.css"/>
@@ -35,8 +36,8 @@
                     </form>--%>
 
                     <form id="profile-form" action="/users/editProfilePic" method="POST" enctype="multipart/form-data">
-                            Please select a file to upload : <input type="file" name="file" />
-                            <input type="submit" value="upload" />
+                        <spring:message code="UploadFile" /><input type="file" name="file" />
+                            <input type="submit" value="<spring:message code="UploadButton" />"  >
                     </form>
                 </div>
                 <!-- Only active trips -->
