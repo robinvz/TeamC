@@ -20,7 +20,7 @@ public interface UserBL
     public List<User> findUsersByKeyword(String keyword, User user) throws TripsException;
     public boolean checkLogin(String email, String password);
 
-    public void updateUser(User user, String firstName, String lastName, String street, String houseNr, String city, String postalCode, String province, String country, byte[] profilePicture) throws TripsException;
+    public void updateUser(User user, String firstName, String lastName, String street, String houseNr, String city, String postalCode, String country, byte[] profilePicture) throws TripsException;
     public void changePassword(User user, String oldPassword, String newPassword) throws TripsException;
 
     public void deleteUser(User user) throws TripsException;

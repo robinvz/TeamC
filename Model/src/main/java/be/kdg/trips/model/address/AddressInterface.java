@@ -15,8 +15,6 @@ public interface AddressInterface {
     public void setCity(String city);
     public String getPostalCode();
     public void setPostalCode(String postalCode);
-    public String getProvince();
-    public void setProvince(String province);
     public String getCountry();
     public void setCountry(String country);
 }

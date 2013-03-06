@@ -59,9 +59,9 @@ public class TripsServiceImpl implements TripsService
     }
 
     @Override
-    public void updateUser(User user, String firstName, String lastName, String street, String houseNr, String city, String postalCode, String province, String country, byte[] profilePicture) throws TripsException
+    public void updateUser(User user, String firstName, String lastName, String street, String houseNr, String city, String postalCode, String country, byte[] profilePicture) throws TripsException
     {
-        userController.updateUser(user, firstName, lastName, street, houseNr, city, postalCode, province, country, profilePicture);
+        userController.updateUser(user, firstName, lastName, street, houseNr, city, postalCode, country, profilePicture);
     }
 
     @Override
@@ -126,8 +126,8 @@ public class TripsServiceImpl implements TripsService
     }
 
     @Override
-    public void editTripLocationDetails(User organizer, Trip trip, Location location, String street, String houseNr, String city, String postalCode, String province, String country, String title, String description) throws TripsException {
-        tripController.editTripLocationDetails(organizer, trip, location, street, houseNr, city, postalCode, province, country, title, description);
+    public void editTripLocationDetails(User organizer, Trip trip, Location location, String street, String houseNr, String city, String postalCode, String country, String title, String description) throws TripsException {
+        tripController.editTripLocationDetails(organizer, trip, location, street, houseNr, city, postalCode, country, title, description);
     }
 
     @Override
@@ -142,13 +142,13 @@ public class TripsServiceImpl implements TripsService
     }
 
     @Override
-    public Location addLocationToTrip(User loggedInUser, Trip trip, double latitude, double longitude, String street, String houseNr, String city, String postalCode, String province, String country, String title, String description) throws TripsException {
-        return tripController.addLocationToTrip(loggedInUser, trip, latitude, longitude, street, houseNr, city, postalCode, province, country, title, description);
+    public Location addLocationToTrip(User loggedInUser, Trip trip, double latitude, double longitude, String street, String houseNr, String city, String postalCode, String country, String title, String description) throws TripsException {
+        return tripController.addLocationToTrip(loggedInUser, trip, latitude, longitude, street, houseNr, city, postalCode, country, title, description);
     }
 
     @Override
-    public Location addLocationToTrip(User loggedInUser, Trip trip, double latitude, double longitude, String street, String houseNr, String city, String postalCode, String province, String country, String title, String description, String question, List<String> possibleAnswers, int correctAnswerIndex) throws TripsException {
-        return tripController.addLocationToTrip(loggedInUser, trip, latitude, longitude, street, houseNr, city, postalCode, province, country, title, description, question, possibleAnswers, correctAnswerIndex);
+    public Location addLocationToTrip(User loggedInUser, Trip trip, double latitude, double longitude, String street, String houseNr, String city, String postalCode, String country, String title, String description, String question, List<String> possibleAnswers, int correctAnswerIndex) throws TripsException {
+        return tripController.addLocationToTrip(loggedInUser, trip, latitude, longitude, street, houseNr, city, postalCode, country, title, description, question, possibleAnswers, correctAnswerIndex);
     }
 
     @Override
