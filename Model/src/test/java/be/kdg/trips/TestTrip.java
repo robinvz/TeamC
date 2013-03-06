@@ -15,6 +15,8 @@ import org.springframework.transaction.TransactionSystemException;
 
 import javax.mail.MessagingException;
 import javax.validation.ConstraintViolationException;
+import java.io.File;
+import java.io.FileInputStream;
 import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
@@ -283,7 +285,7 @@ public class TestTrip {
         Trip trip = tripsService.createTimelessTrip("Trip1","TripDescription",TripPrivacy.PUBLIC,user);
         Location location1 = tripsService.addLocationToTrip(user, trip, 10.12131, 10.12131, "Nationalestraat", "1", "Antwerp", "2000", "Belgium", "Titel", "Lange straat met tramspoor");
         tripsService.editTripLocationDetails(user, trip, location1, "", "2", "", "", "", "", "");
-        assertTrue(tripsService.findTripById(trip.getId(),user).getLocations().get(FIRST_ELEMENT).getAddress().getHouseNr().equals("2"));
+        assertTrue(tripsService.findTripById(trip.getId(), user).getLocations().get(FIRST_ELEMENT).getAddress().getHouseNr().equals("2"));
     }
 
     @Test
@@ -581,6 +583,23 @@ public class TestTrip {
         Trip trip = tripsService.createTimelessTrip("Trip with locations", "trip with locations", TripPrivacy.PUBLIC, organizer);
         Location loc1 = tripsService.addLocationToTrip(organizer, trip, 12.00, 13.00, null, null, null, null, null, "Location", "Aangename location1");
         assertNotNull(tripsService.findLocationById(1));
+    }
+
+    @Test
+    public void successfulUpdateTripImage() throws TripsException
+    {
+        Trip trip = tripsService.createTimelessTrip("Trip", "trip", TripPrivacy.PUBLIC, organizer);
+        File file = new File("src/test/resources/testimage.jpg");
+        byte[] bFile = new byte[(int) file.length()];
+        try {
+            FileInputStream fileInputStream = new FileInputStream(file);
+            fileInputStream.read(bFile);
+            fileInputStream.close();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        tripsService.addImageToTrip(trip, organizer, bFile);
+        assertNotNull(tripsService.findTripById(trip.getId(), organizer).getImage());
     }
 }
 

@@ -174,6 +174,11 @@ public class TripsServiceImpl implements TripsService
     }
 
     @Override
+    public void addImageToTrip(Trip trip, User organizer, byte[] image) throws TripsException {
+        tripController.addImageToTrip(trip, organizer, image);
+    }
+
+    @Override
     public void deleteTrip(Trip trip, User loggedInUser) throws TripsException, MessagingException {
         tripController.deleteTrip(trip, loggedInUser);
     }

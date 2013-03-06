@@ -58,6 +58,8 @@ public abstract class Trip implements Serializable, TripInterface {
     @Column(name = "requisite")
     private Map<String, Integer> requisites;
     private static int counter=0;
+    @Lob
+    private byte[] image;
 
     public Trip(String title, String description, TripPrivacy privacy, User organizer) {
         this.id = getNextId();
@@ -263,6 +265,14 @@ public abstract class Trip implements Serializable, TripInterface {
     public void addInvitation(Invitation invitation)
     {
         this.invitations.add(invitation);
+    }
+
+    public byte[] getImage() {
+        return image;
+    }
+
+    public void setImage(byte[] image) {
+        this.image = image;
     }
 
     private synchronized int getNextId() {
