@@ -18,7 +18,7 @@
     <h2><spring:message code="Overview" /></h2>
     <c:if test="${not empty user}">
         <nav class="inner-nav">
-            <ul class="nav">
+            <ul class="nav-inner">
                 <li id="btn-trips" class="inner-nav-link inner-selected"><spring:message code="ShowAllTrips" /></li>
                 <li id="btn-trips-participating" class="inner-nav-link"><spring:message code="ShowEnrolledTrips" /></li>
                 <li id="btn-trips-organised" class="inner-nav-link"><spring:message code="ShowOrganizedTrips" /></li>
