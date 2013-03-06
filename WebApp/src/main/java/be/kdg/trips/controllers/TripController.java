@@ -17,6 +17,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.MessageSource;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.ModelAndView;
 
 import javax.mail.MessagingException;
@@ -389,7 +390,7 @@ public class TripController {
             } catch (TripsException e) {
                 if (e.getMessage().contains("Trip with id")) {
                     return new ModelAndView("tripsView", "error", messageSource.getMessage("FindTripError", null, locale));
-                } else if (e.getMessage().contains("published")){
+                } else if (e.getMessage().contains("published")) {
                     map.put("trip", trip);
                     map.put("error", messageSource.getMessage("NotSubscribedError", null, locale));
                     return new ModelAndView("tripView", map);
@@ -651,7 +652,7 @@ public class TripController {
     public ModelAndView createLocation(@PathVariable int tripId, @RequestParam double latitude,
                                        @RequestParam double longitude, @RequestParam String street,
                                        @RequestParam String houseNr, @RequestParam String city, @RequestParam String postalCode,
-                                       @RequestParam String country, @RequestParam String title,
+                                       @RequestParam String country, @RequestParam String title, @RequestParam("file") MultipartFile file,
                                        @RequestParam String description, @RequestParam String question,
                                        @RequestParam String correctAnswer, HttpServletRequest request) {
         User user = (User) session.getAttribute("user");
@@ -664,11 +665,14 @@ public class TripController {
                             country, title, description);
                 } else {
                     List answers = new ArrayList(Arrays.asList(request.getParameter("possibleAnswers")));
+                    byte[] bFile = file.getBytes();
                     tripsService.addLocationToTrip(user, trip, latitude, longitude, street, houseNr.split("-")[0], city, postalCode,
-                            country, title, description, question, answers, answers.indexOf(correctAnswer),null);
+                            country, title, description, question, answers, answers.indexOf(correctAnswer), bFile);
                 }
             } catch (TripsException e) {
                 //failed to add location to trip
+            } catch (IOException e) {
+                //TODO: bfile is foute type (niet jpeg, gif of png)
             }
         } else {
             return new ModelAndView("loginView", "loginBean", new LoginBean());
@@ -781,11 +785,11 @@ public class TripController {
                     switch (Integer.parseInt(columnId)) {
                         case 1:
                             newValue = value.trim().substring(location.getTitle().length());
-                            tripsService.editTripLocationDetails(user,trip, location,"","","","","",newValue,"");
+                            tripsService.editTripLocationDetails(user, trip, location, "", "", "", "", "", newValue, "");
                             break;
                         case 2:
                             newValue = value.trim().substring(location.getDescription().length());
-                            tripsService.editTripLocationDetails(user,trip, location,"","","","","","",newValue);
+                            tripsService.editTripLocationDetails(user, trip, location, "", "", "", "", "", "", newValue);
                             break;
                     }
                 } catch (TripsException e) {
@@ -799,6 +803,22 @@ public class TripController {
             return new ModelAndView("loginView", "loginBean", new LoginBean());
         }
         return new ModelAndView("redirect:/trip/" + trip.getId() + "/locations");
-        //return new ModelAndView("locationsView");
+    }
+
+    @RequestMapping(value = "/inviteUser/{tripId}/findUsersByKeyword", method = RequestMethod.GET)
+    public ModelAndView getUsersByKeyword(@PathVariable int tripId, @RequestParam String keyword) {
+        User user = (User) session.getAttribute("user");
+        Map parameters;
+        if (isLoggedIn()) {
+            parameters = new HashMap();
+            try {
+                parameters.put("usersByKeyword", tripsService.findUsersByKeyword(keyword, user));
+            } catch (TripsException e) {
+                // keyword not found in users
+            }
+        } else {
+            return new ModelAndView("loginView", "loginBean", new LoginBean());
+        }
+        return new ModelAndView("inviteUserView", parameters);
     }
 }

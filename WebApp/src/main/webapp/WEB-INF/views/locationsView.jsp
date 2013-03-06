@@ -66,7 +66,7 @@
                                     ${location.getAddress().country}
                             </td>
                             <td class="read_only">
-                                <a href="/trip/${trip.id}/locations//${location.id}/deleteLocation">
+                                <a href="/trip/${trip.id}/locations/${location.id}/deleteLocation">
                                     <button type="button" id="btn-deleteLocation"><spring:message code="Delete"/>
                                     </button>
                                 </a>

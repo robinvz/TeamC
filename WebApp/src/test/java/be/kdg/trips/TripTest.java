@@ -730,4 +730,12 @@ public class TripTest {
         mockMvc.perform(requestBuilder).andExpect(view().name("redirect:/trip/" + t.getId() + "/locations"));
     }
 
+    @Test
+    public void inviteFindUsers() throws Exception {
+        TimelessTrip t = new TimelessTrip(title, description, privacy, testUser);
+        mockHttpSession.setAttribute("user", testUser);
+        RequestBuilder requestBuilder = MockMvcRequestBuilders.get("/inviteUser/" + t.getId() + "/findUsersByKeyword?keyword=test");
+        when(tripsService.findUsersByKeyword("keyword", (User) mockHttpSession.getAttribute("user"))).thenReturn(new ArrayList());
+        mockMvc.perform(requestBuilder).andExpect(view().name("inviteUserView"));
+    }
 }

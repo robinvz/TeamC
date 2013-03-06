@@ -15,7 +15,7 @@
     <div id="content">
         <div id="inner-content">
             <div id="add-location">
-                <form:form action="createLocation" method="POST">
+                <form:form action="createLocation" method="POST" enctype="multipart/form-data">
                     <div class="page">
                         <div id="mapcanvas" class="map-canvas"></div>
                         <h3><spring:message code="SelectLocation"/></h3>
@@ -48,7 +48,7 @@
                             <textarea id="location-description" name="description" type="text"></textarea>
                             <label><spring:message code="Question"/>: </label>
                             <input id="location-question" name="question" type="text">
-                            <button id="btn-picture" type="button"><spring:message code="LocationPicture"/></button>
+                            <input id="btn-picture" type="file" name="file" value="<spring:message code="LocationPicture"/>"/>
                             <div id="answers">
                             </div>
                             <label><spring:message code="AddAnswer"/>: </label>
