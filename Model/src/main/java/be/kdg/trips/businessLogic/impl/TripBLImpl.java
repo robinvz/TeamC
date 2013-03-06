@@ -16,6 +16,7 @@ import be.kdg.trips.model.trip.Trip;
 import be.kdg.trips.model.trip.TripPrivacy;
 import be.kdg.trips.model.user.User;
 import be.kdg.trips.persistence.dao.interfaces.TripDao;
+import be.kdg.trips.utility.ImageChecker;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
@@ -379,6 +380,19 @@ public class TripBLImpl implements TripBL
                         tripDao.saveOrUpdateLocation(locations.get(from+1+i));
                     }
                 }
+            }
+        }
+    }
+
+    @Override
+    @Transactional
+    public void addImageToTrip(Trip trip, User organizer, byte[] image) throws TripsException {
+        if(isExistingTrip(trip.getId()) && userBL.isExistingUser(organizer.getEmail()) && isOrganizer(trip, organizer))
+        {
+            if(ImageChecker.isValidImage(image))
+            {
+                trip.setImage(image);
+                tripDao.updateTrip(trip);
             }
         }
     }

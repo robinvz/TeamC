@@ -57,6 +57,7 @@ public interface TripsService
     public void addRequisiteToTrip(String name, int amount, Trip trip, User organizer) throws TripsException;
     public void removeRequisiteFromTrip(String name, int amount, Trip trip, User organizer) throws TripsException;
     public void switchLocationSequence(Trip trip, User user, int location1, int location2) throws TripsException;
+    public void addImageToTrip(Trip trip, User organizer, byte[] image) throws TripsException;
 
     public void deleteTrip(Trip trip, User organizer) throws TripsException, MessagingException;
     public void deleteLocation(Trip trip, User organizer, Location location) throws TripsException;
