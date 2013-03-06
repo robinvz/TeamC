@@ -39,21 +39,30 @@
                         </tr>
                         <c:if test="${trip.timeBoundTrip==true}">
                             </tr>
-                            <td><spring:message code="StartDate"/></td>
-                            <td></td>
+                                <td><spring:message code="StartDate"/></td>
+                                <td></td>
                             <tr>
                             </tr>
-                            <td><spring:message code="StartDate"/></td>
-                            <td></td>
+                                <td><spring:message code="StartDate"/></td>
+                                <td></td>
                             </tr>
                         </c:if>
                         <tr>
-                            <td>Labels</td>
                             <c:if test="${not empty trip.labels}">
+                                <td>Labels</td>
                                 <c:forEach items="${trip.labels}" var="label">
                                     <td>-${label}-</td>
                                 </c:forEach>
                             </c:if>
+                        </tr>
+                        <tr>
+                            <td>
+                                <c:forEach items="${trip.enrollments}" var="enrollment">
+                                    <c:if test="${enrollment.status == 'BUSY'}">
+                                        Enrollment is active
+                                    </c:if>
+                                </c:forEach>
+                            </td>
                         </tr>
                         <tr>
                             <c:choose>

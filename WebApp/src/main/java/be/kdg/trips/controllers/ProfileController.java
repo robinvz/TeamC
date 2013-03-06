@@ -81,11 +81,11 @@ public class ProfileController {
     @RequestMapping(value = "/users/editProfile", method = RequestMethod.POST)
     public ModelAndView editProfile(@RequestParam String firstName, @RequestParam String lastName, @RequestParam String street,
                                     @RequestParam String houseNr, @RequestParam String city, @RequestParam String postalCode,
-                                    @RequestParam String province, @RequestParam String country) {
+                                    @RequestParam String country) {
         User user = (User) session.getAttribute("user");
         if (user != null) {
             try {
-                tripsService.updateUser(user, firstName, lastName, street, houseNr, city, postalCode, province, country, null);
+                tripsService.updateUser(user, firstName, lastName, street, houseNr, city, postalCode, country, null);
                 session.setAttribute("user", tripsService.findUser(((User) session.getAttribute("user")).getEmail()));
             } catch (TripsException e) {
                 return new ModelAndView("/users/profileView");
@@ -101,7 +101,7 @@ public class ProfileController {
     {
         try {
             byte[] bFile = file.getBytes();
-            tripsService.updateUser((User) session.getAttribute("user"), "", "", "", "", "", "", "", "", bFile);
+            tripsService.updateUser((User) session.getAttribute("user"), "", "", "", "", "", "", "", bFile);
         } catch (IOException | TripsException e) {
             //TODO: tripsexception kan zijn: user bestaat niet of bfile is foute type (niet jpeg, gif of png)
         }
