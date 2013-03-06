@@ -1,6 +1,7 @@
 package be.kdg.trips;
 
 import be.kdg.trips.exception.TripsException;
+import be.kdg.trips.model.address.Address;
 import be.kdg.trips.model.user.User;
 import be.kdg.trips.services.impl.TripsServiceImpl;
 import be.kdg.trips.services.interfaces.TripsService;
@@ -13,6 +14,7 @@ import javax.validation.ConstraintViolationException;
 
 import java.io.File;
 import java.io.FileInputStream;
+import java.util.Date;
 
 import static org.junit.Assert.*;
 
@@ -56,6 +58,13 @@ public class TestUser {
     }
 
     @Test
+    public void successfulSetAdress()
+    {
+        User user = new User("kp@gmail.com", "password");
+        user.setAddress(new Address("street", "1", "city", "2000", "country"));
+    }
+
+    @Test
     public void successfulSetAndGetStreet()
     {
         User user = new User("ke@gmail.com", "password");
@@ -93,6 +102,14 @@ public class TestUser {
         User user = new User("ki@gmail.com", "password");
         user.getAddress().setCountry("Test");
         assertEquals("Test", user.getAddress().getCountry());
+    }
+
+    @Test
+    public void successfulGetRegisterDate()
+    {
+        User user = new User("ko@gmail.com", "password");
+        Date date = user.getRegisterDate();
+        assertNotNull(date);
     }
 
     @Test
@@ -232,7 +249,7 @@ public class TestUser {
     public void successfulUserUpdateNullValues() throws TripsException
     {
         User user = tripsService.createUser(new User("tony.martens@student.kdg.be","password"));
-        tripsService.updateUser(user, "", "", "", "","", "", "", null);
+        tripsService.updateUser(user, "", "", "", "", "", "", "", null);
         assertEquals(tripsService.findUser("tony.martens@student.kdg.be").getFirstName(), null);
     }
 
