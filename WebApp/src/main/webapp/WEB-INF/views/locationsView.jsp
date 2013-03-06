@@ -26,28 +26,12 @@
                 <th><spring:message code="Street"/></th>
                 <th><spring:message code="HouseNr"/></th>
                 <th><spring:message code="City"/></th>
-                <th><spring:message code="Province"/></th>
                 <th><spring:message code="PostalCode"/></th>
                 <th><spring:message code="Country"/></th>
                 <th></th>
             </tr>
             </thead>
-            <tfoot>
-            <tr>
-                <th></th>
-                <th><spring:message code="Title"/></th>
-                <th><spring:message code="Description"/></th>
-                <th><spring:message code="Street"/></th>
-                <th><spring:message code="HouseNr"/></th>
-                <th><spring:message code="City"/></th>
-                <th><spring:message code="Province"/></th>
-                <th><spring:message code="PostalCode"/></th>
-                <th><spring:message code="Country"/></th>
-                <th></th>
-            </tr>
-            </tfoot>
             <tbody>
-
             <c:choose>
                 <c:when test="${empty locations}">
                     <h3><spring:message code="NoLocations"/>.</h3>
@@ -56,7 +40,7 @@
                     <c:set var="count" value="0" scope="page"/>
                     <c:forEach items="${locations}" var="location">
                         <tr id="${trip.id}-${location.id}">
-                            <td  class="read_only">
+                            <td class="read_only">
                                 <c:set var="count" value="${count + 1}" scope="page"/>
                                 <c:out value="${count}"></c:out>
                             </td>
@@ -74,9 +58,6 @@
                             </td>
                             <td class="read_only">
                                     ${location.getAddress().city}
-                            </td>
-                            <td class="read_only">
-                                    ${location.getAddress().province}
                             </td>
                             <td class="read_only">
                                     ${location.getAddress().postalCode}

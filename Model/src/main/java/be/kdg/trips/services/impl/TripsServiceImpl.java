@@ -216,8 +216,8 @@ public class TripsServiceImpl implements TripsService
     }
 
     @Override
-    public void checkAnswerFromQuestion(Question question, int answerIndex, User user) throws TripsException {
-        enrollmentController.checkAnswerFromQuestion(question, answerIndex, user);
+    public boolean checkAnswerFromQuestion(Question question, int answerIndex, User user) throws TripsException {
+        return enrollmentController.checkAnswerFromQuestion(question, answerIndex, user);
     }
 
     @Override

@@ -81,15 +81,6 @@
                             </tr>
                             <tr>
                                 <td>
-                                    <label><spring:message code="Province"/></label>
-                                </td>
-                                <td>
-                                    <output class="profile-view">${user.address.province}</output>
-                                    <input class="profile-edit" type="text" name="province">
-                                </td>
-                            </tr>
-                            <tr>
-                                <td>
                                     <label><spring:message code="Country"/></label>
                                 </td>
                                 <td>

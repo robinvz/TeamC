@@ -18,7 +18,18 @@
             <li><a href="#"><spring:message code="Results"/></a></li>
             <c:if test="${trip.privacy != 'PUBLIC'}">
                 <li><a href="/trip/${trip.id}/participants"><spring:message code="Participants"/></a></li>
+                <c:if test="${trip.published == true}">
+                    <c:forEach items="${trip.enrollments}" var="enrollment">
+                        <c:if test="${enrollment.user == user && enrollment.status == 'READY'}">
+                            <li><a href="/startTrip/${tripId}">Start trip</a></li>
+                        </c:if>
+                        <c:if test="${enrollment.user == user && enrollment.status == 'BUSY'}">
+                            <li><a href="/stopTrip/${tripId}">Stop trip</a></li>
+                        </c:if>
+                    </c:forEach>
+                </c:if>
             </c:if>
+
             <c:if test="${not empty user && trip.organizer == user}">
                 <li><a href="/labels/${trip.id}">Labels</a></li>
                 <c:if test="${trip.published == false}">
