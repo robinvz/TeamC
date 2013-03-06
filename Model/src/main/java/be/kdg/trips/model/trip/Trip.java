@@ -223,13 +223,17 @@ public abstract class Trip implements Serializable, TripInterface {
     @Override
     public void addRequisite(String name, int amount)
     {
+        if(amount == 0)
+        {
+            amount = 1;
+        }
         if(this.requisites.containsKey(name))
         {
-            this.requisites.put(name, this.requisites.get(name) + amount);
+            this.requisites.put(name, this.requisites.get(name) + Math.abs(amount));
         }
         else
         {
-            this.requisites.put(name, amount);
+            this.requisites.put(name, Math.abs(amount));
         }
     }
 
@@ -241,7 +245,7 @@ public abstract class Trip implements Serializable, TripInterface {
             int value = this.requisites.get(name);
             if(amount < value)
             {
-                this.requisites.put(name, value - amount);
+                this.requisites.put(name, value - Math.abs(amount));
             }
             else
             {
