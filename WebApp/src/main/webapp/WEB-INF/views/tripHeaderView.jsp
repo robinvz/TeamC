@@ -23,6 +23,9 @@
                         <c:if test="${enrollment.user == user && enrollment.status == 'READY'}">
                             <li><a href="/startTrip/${tripId}">Start trip</a></li>
                         </c:if>
+                        <c:if test="${enrollment.user == user && enrollment.status == 'BUSY'}">
+                            <li><a href="/stopTrip/${tripId}">Stop trip</a></li>
+                        </c:if>
                     </c:forEach>
                 </c:if>
             </c:if>
