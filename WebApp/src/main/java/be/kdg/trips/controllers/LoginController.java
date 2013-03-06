@@ -119,7 +119,7 @@ public class LoginController {
     @RequestMapping(value = "/logout", method = RequestMethod.GET)
     public String logout() {
         session.invalidate();
-        return "logoutView";
+        return "redirect:/";
     }
 
     @RequestMapping(value = "/register", method = RequestMethod.GET)

@@ -12,7 +12,7 @@
     <nav class="header-nav">
         <ul class="nav">
             <li><a id="nav-home" class="nav-link" href="/"><spring:message code="Home" /></a></li>
-            <li><a id="nav-trips" class="nav-link" href="/trips">Trips</a></li>
+            <li><a id="nav-trips" class="nav-link" href="/trips"><spring:message code="Trips" /></a></li>
             <c:if test="${not empty sessionScope.user}">
                 <li><a id="nav-profile" class="nav-link" href="/users/profile"><spring:message code="Profile" /></a></li>
             </c:if>
