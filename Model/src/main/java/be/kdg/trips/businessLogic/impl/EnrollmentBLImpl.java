@@ -10,6 +10,7 @@ import be.kdg.trips.model.invitation.Answer;
 import be.kdg.trips.model.invitation.Invitation;
 import be.kdg.trips.model.location.Location;
 import be.kdg.trips.model.question.Question;
+import be.kdg.trips.model.trip.TimelessTrip;
 import be.kdg.trips.model.trip.Trip;
 import be.kdg.trips.model.trip.TripPrivacy;
 import be.kdg.trips.model.user.User;
@@ -341,15 +342,22 @@ public class EnrollmentBLImpl implements EnrollmentBL
     public void startTrip(Trip trip, User user) throws TripsException {
         if(isExistingEnrollment(user, trip))
         {
-            Enrollment enrollment = enrollmentDao.getEnrollmentByUserAndTrip(user, trip);
-            if(enrollment.getStatus()==Status.READY)
+            if(trip.isActive() || !trip.isTimeBoundTrip())
             {
-                enrollment.setStatus(Status.BUSY);
-                enrollmentDao.saveOrUpdateEnrollment(enrollment);
+                Enrollment enrollment = enrollmentDao.getEnrollmentByUserAndTrip(user, trip);
+                if(enrollment.getStatus()==Status.READY)
+                {
+                    enrollment.setStatus(Status.BUSY);
+                    enrollmentDao.saveOrUpdateEnrollment(enrollment);
+                }
+                else
+                {
+                    throw new TripsException("Enrollment is already started");
+                }
             }
             else
             {
-                throw new TripsException("Enrollment is already started");
+                throw new TripsException("Trip is not active yet");
             }
         }
     }
