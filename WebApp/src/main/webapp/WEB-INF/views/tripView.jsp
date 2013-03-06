@@ -71,13 +71,15 @@
                 <div id="subscribe-buttons">
                     <c:set value="false" var="validTrip"/>
                     <c:set value="false" var="subscribed"/>
-                    <c:if test="${not empty user  && trip.published==true && trip.privacy == 'PROTECTED' && not empty trip.enrollments}">
+                    <c:if test="${not empty user  && trip.published==true && trip.privacy == 'PROTECTED'}">
                         <c:set value="true" var="validTrip"/>
-                        <c:forEach items="${trip.enrollments}" var="enrollment">
-                            <c:if test="${enrollment.user == user}">
-                                <c:set value="true" var="subscribed"/>
-                            </c:if>
-                        </c:forEach>
+                        <c:if test="${not empty trip.enrollments}">
+                            <c:forEach items="${trip.enrollments}" var="enrollment">
+                                <c:if test="${enrollment.user == user}">
+                                    <c:set value="true" var="subscribed"/>
+                                </c:if>
+                            </c:forEach>
+                        </c:if>
                     </c:if>
                     valid ${validTrip}
                     subscribed ${subscribed}
