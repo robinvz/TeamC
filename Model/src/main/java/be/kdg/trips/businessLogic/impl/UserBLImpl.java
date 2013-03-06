@@ -73,7 +73,7 @@ public class UserBLImpl implements UserBL
 
     @Override
     @Transactional
-    public void updateUser(User user, String firstName, String lastName, String street, String houseNr, String city, String postalCode, String province, String country, byte[] profilePicture) throws TripsException {
+    public void updateUser(User user, String firstName, String lastName, String street, String houseNr, String city, String postalCode, String country, byte[] profilePicture) throws TripsException {
         if(isExistingUser(user.getEmail()))
         {
             if(!firstName.equals(""))
@@ -100,10 +100,6 @@ public class UserBLImpl implements UserBL
             {
                 user.getAddress().setPostalCode(postalCode);
             }
-            if(!province.equals(""))
-            {
-                user.getAddress().setProvince(province);
-            }
             if(!country.equals(""))
             {
                 user.getAddress().setCountry(country);
@@ -111,13 +107,13 @@ public class UserBLImpl implements UserBL
             if(profilePicture!=null)
             {
                 String contentType = new Tika().detect(profilePicture);
-                if (contentType.equals("image/gif") || contentType.equals("image/jpeg") || contentType.equals("image/png"))
+                if ((contentType.equals("image/gif") || contentType.equals("image/jpeg") || contentType.equals("image/png")) && profilePicture.length/(1024*1024)<=3)
                 {
                     user.setProfilePicture(profilePicture);
                 }
                 else
                 {
-                    throw new TripsException("Content types allowed: gif, jpeg and png");
+                    throw new TripsException("Content types allowed: gif, jpeg and png and maximum size file: 3 MB");
                 }
 
             }

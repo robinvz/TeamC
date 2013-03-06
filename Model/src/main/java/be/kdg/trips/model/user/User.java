@@ -68,7 +68,7 @@ public class User implements UserInterface, Serializable {
         this.registerDate = new Date();
         this.enrollments = new HashSet<>();
         this.invitations = new HashSet<>();
-        this.address = new Address(null,null,null,null,null,null);
+        this.address = new Address(null,null,null,null,null);
     }
 
     public Integer getId() {

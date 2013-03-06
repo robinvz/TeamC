@@ -88,14 +88,6 @@ public class TestUser {
     }
 
     @Test
-    public void successfulSetAndGetProvince()
-    {
-        User user = new User("ku@gmail.com", "password");
-        user.getAddress().setProvince("Test");
-        assertEquals("Test", user.getAddress().getProvince());
-    }
-
-    @Test
     public void successfulSetAndGetCountry()
     {
         User user = new User("ki@gmail.com", "password");
@@ -152,7 +144,6 @@ public class TestUser {
         user.getAddress().setHouseNr("1a");
         user.getAddress().setPostalCode("2000");
         user.getAddress().setCity("Antwerpen");
-        user.getAddress().setProvince("Antwerpen");
         user.getAddress().setCountry("België");
         User createdUser = tripsService.createUser(user);
         User foundUser = tripsService.findUser("lola@hotmail.com");
@@ -184,14 +175,6 @@ public class TestUser {
     }
 
     @Test(expected = ConstraintViolationException.class)
-    public void failedRegisterInvalidProvince() throws TripsException
-    {
-        User user = new User("lole@hotmail.com","testest");
-        user.getAddress().setProvince("123");
-        tripsService.createUser(user);
-    }
-
-    @Test(expected = ConstraintViolationException.class)
     public void failedRegisterInvalidCountry() throws TripsException
     {
         User user = new User("lolz@hotmail.com","testest");
@@ -216,9 +199,9 @@ public class TestUser {
         User loggedInUser = tripsService.createUser(new User("gino.frank@docent.kdg.be", "password"));
         tripsService.createUser(new User("mathias.vandepol@docent.kdg.be", "password"));
         User createdUser2 = tripsService.createUser(new User("lore.coppens@student.kdg.be", "password"));
-        tripsService.updateUser(createdUser2, "docent", "", "", "", "", "", "", "", null);
+        tripsService.updateUser(createdUser2, "docent", "", "", "", "", "", "", null);
         User createdUser3 = tripsService.createUser(new User("lotte.verezen@student.kdg.be", "password"));
-        tripsService.updateUser(createdUser3, "", "docent", "", "", "", "", "", "", null);
+        tripsService.updateUser(createdUser3, "", "docent", "", "", "", "", "", null);
         assertEquals(3, tripsService.findUsersByKeyword("doCent", loggedInUser).size());
     }
 
@@ -234,7 +217,7 @@ public class TestUser {
     public void successfulUserUpdateNewValues() throws TripsException
     {
         User user = tripsService.createUser(new User("tony.mertens@student.kdg.be","password"));
-        tripsService.updateUser(user, "hans", "martens", "beerstraat", "11", "Antwerpen", "2000", "Antwerpen","België",null);
+        tripsService.updateUser(user, "hans", "martens", "beerstraat", "11", "Antwerpen", "2000","België",null);
         assertEquals("hans", tripsService.findUser("tony.mertens@student.kdg.be").getFirstName());
     }
 
@@ -242,14 +225,14 @@ public class TestUser {
     public void failedUserUpdateUnexistingUser() throws TripsException
     {
         tripsService.createUser(new User("ges.muys@student.kdg.be", "password"));
-        tripsService.updateUser(new User("pffffft@gmail.com", "looool"), "", "", "", "", "", "", "", "", null);
+        tripsService.updateUser(new User("pffffft@gmail.com", "looool"), "", "", "", "", "", "", "", null);
     }
 
     @Test
     public void successfulUserUpdateNullValues() throws TripsException
     {
         User user = tripsService.createUser(new User("tony.martens@student.kdg.be","password"));
-        tripsService.updateUser(user, "", "", "", "","", "", "", "", null);
+        tripsService.updateUser(user, "", "", "", "","", "", "", null);
         assertEquals(tripsService.findUser("tony.martens@student.kdg.be").getFirstName(), null);
     }
 
@@ -257,49 +240,49 @@ public class TestUser {
     public void failedUserUpdateInvalidFirstName() throws TripsException
     {
         User user = tripsService.createUser(new User("gus.muys@student.kdg.be", "password"));
-        tripsService.updateUser(user, "123", "", "", "", "", "", "", "", null);
+        tripsService.updateUser(user, "123", "", "", "", "", "", "", null);
     }
 
     @Test(expected = TransactionSystemException.class)
     public void failedUserUpdateInvalidLastName() throws TripsException
     {
         User user = tripsService.createUser(new User("gis.muys@student.kdg.be", "password"));
-        tripsService.updateUser(user, "", "123", "", "", "", "", "", "", null);
+        tripsService.updateUser(user, "", "123", "", "", "", "", "", null);
     }
 
     @Test(expected = TransactionSystemException.class)
     public void failedUserUpdateInvalidStreet() throws TripsException
     {
         User user = tripsService.createUser(new User("gos.muys@student.kdg.be", "password"));
-        tripsService.updateUser(user, "", "", "123", "", "", "", "", "", null);
+        tripsService.updateUser(user, "", "", "123", "", "", "", "", null);
     }
 
     @Test(expected = TransactionSystemException.class)
     public void failedUserUpdateInvalidHouseNr() throws TripsException
     {
         User user = tripsService.createUser(new User("gzs.muys@student.kdg.be", "password"));
-        tripsService.updateUser(user, "", "", "", "aa", "", "", "", "", null);
+        tripsService.updateUser(user, "", "", "", "aa", "", "", "", null);
     }
 
     @Test(expected = TransactionSystemException.class)
     public void failedUserUpdateInvalidCity() throws TripsException
     {
         User user = tripsService.createUser(new User("grs.muys@student.kdg.be", "password"));
-        tripsService.updateUser(user, "", "", "", "", "123", "", "", "", null);
+        tripsService.updateUser(user, "", "", "", "", "123", "", "", null);
     }
 
     @Test(expected = TransactionSystemException.class)
     public void failedUserUpdateInvalidProvince() throws TripsException
     {
         User user = tripsService.createUser(new User("gxas.muys@student.kdg.be", "password"));
-        tripsService.updateUser(user, "", "", "", "", "", "", "123", "", null);
+        tripsService.updateUser(user, "", "", "", "", "", "", "123", null);
     }
 
     @Test(expected = TransactionSystemException.class)
     public void failedUserUpdateInvalidCountry() throws TripsException
     {
         User user = tripsService.createUser(new User("gts.muys@student.kdg.be", "password"));
-        tripsService.updateUser(user, "", "", "", "", "", "", "", "123", null);
+        tripsService.updateUser(user, "", "", "", "", "", "", "123", null);
     }
 
     @Test
@@ -315,7 +298,7 @@ public class TestUser {
         } catch (Exception e) {
             e.printStackTrace();
         }
-        tripsService.updateUser(user, "", "", "", "","", "", "", "", bFile);
+        tripsService.updateUser(user, "", "", "", "","", "", "", bFile);
         assertNotNull(tripsService.findUser("gaston.leo@student.kdg.be").getProfilePicture());
     }
 
@@ -332,8 +315,25 @@ public class TestUser {
         } catch (Exception e) {
             e.printStackTrace();
         }
-        tripsService.updateUser(user, "", "", "", "","", "", "", "", bFile);
+        tripsService.updateUser(user, "", "", "", "","", "", "", bFile);
         assertNotNull(tripsService.findUser("laston.geo@student.kdg.be").getProfilePicture());
+    }
+
+    @Test(expected = TripsException.class)
+    public void failUserUpdateProfilePictureSizeTooBig() throws TripsException
+    {
+        User user = tripsService.createUser(new User("hehe.geo@student.kdg.be","password"));
+        File file = new File("src/test/resources/testimage6MB.jpg");
+        byte[] bFile = new byte[(int) file.length()];
+        try {
+            FileInputStream fileInputStream = new FileInputStream(file);
+            fileInputStream.read(bFile);
+            fileInputStream.close();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        tripsService.updateUser(user, "", "", "", "","", "", "", bFile);
+        assertNotNull(tripsService.findUser("hehe.geo@student.kdg.be").getProfilePicture());
     }
 
     @Test(expected = TripsException.class)

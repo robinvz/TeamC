@@ -192,7 +192,7 @@ public class TripBLImpl implements TripBL
 
     @Override
     @Transactional
-    public void editTripLocationDetails(User organizer, Trip trip, Location location, String street, String houseNr, String city, String postalCode, String province, String country, String title, String description) throws TripsException
+    public void editTripLocationDetails(User organizer, Trip trip, Location location, String street, String houseNr, String city, String postalCode, String country, String title, String description) throws TripsException
     {
         if(isExistingTrip(trip.getId()) && userBL.isExistingUser(organizer.getEmail()) && isOrganizer(trip, organizer) && doesLocationBelongToTrip(location, trip))
         {
@@ -212,10 +212,6 @@ public class TripBLImpl implements TripBL
             if(!postalCode.equals(""))
             {
                 address.setPostalCode(postalCode);
-            }
-            if(!province.equals(""))
-            {
-                address.setProvince(province);
             }
             if(!country.equals(""))
             {
@@ -267,11 +263,11 @@ public class TripBLImpl implements TripBL
 
     @Override
     @Transactional
-    public Location addLocationToTrip(User user, Trip trip, double latitude, double longitude, String street, String houseNr, String city, String postalCode, String province, String country, String title, String description) throws TripsException {
+    public Location addLocationToTrip(User user, Trip trip, double latitude, double longitude, String street, String houseNr, String city, String postalCode, String country, String title, String description) throws TripsException {
         Location location = null;
         if(isExistingTrip(trip.getId()) && userBL.isExistingUser(user.getEmail()) && isOrganizer(trip, user))
         {
-            location =  new Location(trip, latitude, longitude, new Address(street, houseNr, city, postalCode, province, country), title, description, trip.getLocations().size());
+            location =  new Location(trip, latitude, longitude, new Address(street, houseNr, city, postalCode, country), title, description, trip.getLocations().size());
             trip.addLocation(location);
             tripDao.saveOrUpdateLocation(location);
         }
@@ -280,13 +276,13 @@ public class TripBLImpl implements TripBL
 
     @Override
     @Transactional
-    public Location addLocationToTrip(User user, Trip trip, double latitude, double longitude, String street, String houseNr, String city, String postalCode, String province, String country, String title, String description, String question, List<String> possibleAnswers, int correctAnswerIndex) throws TripsException {
+    public Location addLocationToTrip(User user, Trip trip, double latitude, double longitude, String street, String houseNr, String city, String postalCode, String country, String title, String description, String question, List<String> possibleAnswers, int correctAnswerIndex) throws TripsException {
         Location location = null;
         if(isExistingTrip(trip.getId()) && userBL.isExistingUser(user.getEmail()) && isOrganizer(trip, user))
         {
             if(correctAnswerIndex<possibleAnswers.size())
             {
-                location =  new Location(trip, latitude, longitude, new Address(street, houseNr, city, postalCode, province, country), title, description,trip.getLocations().size(), new Question(question, possibleAnswers, correctAnswerIndex));
+                location =  new Location(trip, latitude, longitude, new Address(street, houseNr, city, postalCode, country), title, description,trip.getLocations().size(), new Question(question, possibleAnswers, correctAnswerIndex));
                 trip.addLocation(location);
                 tripDao.saveOrUpdateLocation(location);
             }

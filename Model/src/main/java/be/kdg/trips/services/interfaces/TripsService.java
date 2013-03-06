@@ -29,7 +29,7 @@ public interface TripsService
     public List<User> findUsersByKeyword(String keyword, User user) throws TripsException;
     public boolean checkLogin(String email, String password) throws TripsException;
 
-    public void updateUser(User user, String firstName, String lastName, String street, String houseNr, String city, String postalCode, String province, String country, byte[] profilePicture) throws TripsException;
+    public void updateUser(User user, String firstName, String lastName, String street, String houseNr, String city, String postalCode, String country, byte[] profilePicture) throws TripsException;
     public void changePassword(User user, String oldPassword, String newPassword) throws TripsException;
 
     public void deleteUser(User user) throws TripsException;
@@ -47,12 +47,12 @@ public interface TripsService
     public Location findLocationById(int id) throws TripsException;
 
     public void editTripDetails(Trip trip, String title, String description, User organizer) throws TripsException;
-    public void editTripLocationDetails(User organizer, Trip trip, Location location, String street, String houseNr, String city, String postalCode, String province, String country, String title, String description) throws TripsException;
+    public void editTripLocationDetails(User organizer, Trip trip, Location location, String street, String houseNr, String city, String postalCode, String country, String title, String description) throws TripsException;
 
     public void publishTrip(Trip trip, User organizer) throws TripsException;
     public void addLabelToTrip(Trip trip, User organizer, String label) throws TripsException;
-    public Location addLocationToTrip(User organizer, Trip trip, double latitude, double longitude, String street, String houseNr, String city, String postalCode, String province, String country, String title, String description) throws TripsException;
-    public Location addLocationToTrip(User organizer, Trip trip, double latitude, double longitude, String street, String houseNr, String city, String postalCode, String province, String country, String title, String description, String question, List<String> possibleAnswers, int correctAnswerIndex) throws TripsException;
+    public Location addLocationToTrip(User organizer, Trip trip, double latitude, double longitude, String street, String houseNr, String city, String postalCode, String country, String title, String description) throws TripsException;
+    public Location addLocationToTrip(User organizer, Trip trip, double latitude, double longitude, String street, String houseNr, String city, String postalCode, String country, String title, String description, String question, List<String> possibleAnswers, int correctAnswerIndex) throws TripsException;
     public void addDateToTimeBoundTrip(Date startDate, Date endDate, Trip trip, User organizer) throws TripsException;
     public void addRequisiteToTrip(String name, int amount, Trip trip, User organizer) throws TripsException;
     public void removeRequisiteFromTrip(String name, int amount, Trip trip, User organizer) throws TripsException;

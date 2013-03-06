@@ -31,19 +31,15 @@ public class Address implements AddressInterface, Serializable
     private String city;
     @Size(max=15, message = "Postal code has a maximum amount of 15 characters")
     private String postalCode;
-    @Pattern(regexp = noDigitsRegEx, message = "Province should only contain letters")
-    @Size(max=50, message = "Province has a maximum amount of 50 characters")
-    private String province;
     @Pattern(regexp = noDigitsRegEx, message = "Country should only contain letters")
     @Size(max=50, message = "Country has a maximum amount of 50 characters")
     private String country;
 
-    public Address(String street, String houseNr, String city, String postalCode, String province, String country) {
+    public Address(String street, String houseNr, String city, String postalCode, String country) {
         this.street = street;
         this.houseNr = houseNr;
         this.city = city;
         this.postalCode = postalCode;
-        this.province = province;
         this.country = country;
     }
 
@@ -92,16 +88,6 @@ public class Address implements AddressInterface, Serializable
     }
 
     @Override
-    public String getProvince() {
-        return province;
-    }
-
-    @Override
-    public void setProvince(String province) {
-        this.province = province;
-    }
-
-    @Override
     public String getCountry() {
         return country;
     }
@@ -122,7 +108,6 @@ public class Address implements AddressInterface, Serializable
         if (country != null ? !country.equals(address.country) : address.country != null) return false;
         if (houseNr != null ? !houseNr.equals(address.houseNr) : address.houseNr != null) return false;
         if (postalCode != null ? !postalCode.equals(address.postalCode) : address.postalCode != null) return false;
-        if (province != null ? !province.equals(address.province) : address.province != null) return false;
         if (street != null ? !street.equals(address.street) : address.street != null) return false;
 
         return true;
@@ -134,7 +119,6 @@ public class Address implements AddressInterface, Serializable
         result = 31 * result + (houseNr != null ? houseNr.hashCode() : 0);
         result = 31 * result + (city != null ? city.hashCode() : 0);
         result = 31 * result + (postalCode != null ? postalCode.hashCode() : 0);
-        result = 31 * result + (province != null ? province.hashCode() : 0);
         result = 31 * result + (country != null ? country.hashCode() : 0);
         return result;
     }
