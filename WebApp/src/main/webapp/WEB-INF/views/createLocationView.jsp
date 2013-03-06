@@ -31,8 +31,6 @@
                             <input id="street_number" name="houseNr" type="text">
                             <label><spring:message code="City"/>: </label>
                             <input id="sublocality" name="city" type="text">
-                            <label><spring:message code="Province"/>: </label>
-                            <input id="province" name="province" type="text">
                             <label><spring:message code="PostalCode"/>: </label>
                             <input id="postal_code" name="postalCode" type="text">
                             <label><spring:message code="Country"/>: </label>
@@ -50,7 +48,7 @@
                             <textarea id="location-description" name="description" type="text"></textarea>
                             <label><spring:message code="Question"/>: </label>
                             <input id="location-question" name="question" type="text">
-
+                            <button id="btn-picture" type="button"><spring:message code="LocationPicture"/></button>
                             <div id="answers">
                             </div>
                             <label><spring:message code="AddAnswer"/>: </label>

@@ -537,7 +537,7 @@ public class TripController {
     public ModelAndView createLocation(@PathVariable int tripId, @RequestParam double latitude,
                                        @RequestParam double longitude, @RequestParam String street,
                                        @RequestParam String houseNr, @RequestParam String city, @RequestParam String postalCode,
-                                       @RequestParam String province, @RequestParam String country, @RequestParam String title,
+                                       @RequestParam String country, @RequestParam String title,
                                        @RequestParam String description, @RequestParam String question,
                                        @RequestParam String correctAnswer, HttpServletRequest request) {
         User user = (User) session.getAttribute("user");
@@ -546,12 +546,12 @@ public class TripController {
             try {
                 trip = tripsService.findTripById(tripId, user);
                 if (question.isEmpty()) {
-                    tripsService.addLocationToTrip(user, trip, latitude, longitude, street, houseNr.split("-")[0], city, postalCode, province,
+                    tripsService.addLocationToTrip(user, trip, latitude, longitude, street, houseNr.split("-")[0], city, postalCode,
                             country, title, description);
                 } else {
                     List answers = new ArrayList(Arrays.asList(request.getParameter("possibleAnswers")));
-                    tripsService.addLocationToTrip(user, trip, latitude, longitude, street, houseNr.split("-")[0], city, postalCode, province,
-                            country, title, description, question, answers, answers.indexOf(correctAnswer));
+                    tripsService.addLocationToTrip(user, trip, latitude, longitude, street, houseNr.split("-")[0], city, postalCode,
+                            country, title, description, question, answers, answers.indexOf(correctAnswer),null);
                 }
             } catch (TripsException e) {
                 //failed to add location to trip
@@ -667,11 +667,11 @@ public class TripController {
                     switch (Integer.parseInt(columnId)) {
                         case 1:
                             newValue = value.trim().substring(location.getTitle().length());
-                            tripsService.editTripLocationDetails(user,trip, location,"","","","","","",newValue,"");
+                            tripsService.editTripLocationDetails(user,trip, location,"","","","","",newValue,"");
                             break;
                         case 2:
                             newValue = value.trim().substring(location.getDescription().length());
-                            tripsService.editTripLocationDetails(user,trip, location,"","","","","","","",newValue);
+                            tripsService.editTripLocationDetails(user,trip, location,"","","","","","",newValue);
                             break;
                     }
                 } catch (TripsException e) {
