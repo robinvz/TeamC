@@ -3,6 +3,7 @@ package be.kdg.trips;
 import be.kdg.trips.exception.TripsException;
 import be.kdg.trips.model.location.Location;
 import be.kdg.trips.model.trip.TimeBoundTrip;
+import be.kdg.trips.model.trip.TimelessTrip;
 import be.kdg.trips.model.trip.Trip;
 import be.kdg.trips.model.trip.TripPrivacy;
 import be.kdg.trips.model.user.User;
@@ -267,18 +268,38 @@ public class TestTrip {
         assertTrue(tripsService.findTripsByOrganizer(organizer).isEmpty());
     }
 
+    @Test(expected = TripsException.class)
+    public void failedFindTripsByOrganizerUnexistingUser() throws TripsException
+    {
+        tripsService.findTripsByOrganizer(new User("famke@hotmail.com", "spint"));
+    }
+
     @Test
     public void successfulEditTripDetails() throws TripsException
     {
-        Trip trip = tripsService.createTimelessTrip("Trip1","TripDescription",TripPrivacy.PUBLIC,user);
-        tripsService.editTripDetails(trip, "", "TripDescriptionEdited", user);
-        assertTrue(trip.getDescription().equals("TripDescriptionEdited"));
+        Trip trip = tripsService.createTimelessTrip("Trip1", "TripDescription", TripPrivacy.PUBLIC, organizer);
+        tripsService.editTripDetails(trip, "", "TripDescriptionEdited", organizer);
+        assertTrue(tripsService.findTripById(trip.getId(), organizer).getDescription().equals("TripDescriptionEdited"));
+    }
+
+    @Test(expected = TripsException.class)
+    public void failedEditTripDetailsNoPermissionInvalidOrganizer() throws TripsException
+    {
+        Trip trip = tripsService.createTimelessTrip("Trip2", "TripDescription", TripPrivacy.PUBLIC, organizer);
+        tripsService.editTripDetails(trip, "Trip2", "TripDescription", user);
+    }
+
+    @Test(expected = TripsException.class)
+    public void failedEditTripDetailsNoPermissionInvalidTrip() throws TripsException
+    {
+        Trip trip = new TimelessTrip("Trip2", "TripDescription", TripPrivacy.PUBLIC, organizer);
+        tripsService.editTripDetails(trip, "Trip2", "TripDescription", organizer);
     }
 
     @Test
     public void successfulEditTripLocation() throws TripsException
     {
-        Trip trip = tripsService.createTimelessTrip("Trip1","TripDescription",TripPrivacy.PUBLIC,user);
+        Trip trip = tripsService.createTimelessTrip("Trip1", "TripDescription", TripPrivacy.PUBLIC, user);
         Location location1 = tripsService.addLocationToTrip(user, trip, 10.12131, 10.12131, "Nationalestraat", "1", "Antwerp", "2000", "Belgium", "Titel", "Lange straat met tramspoor");
         tripsService.editTripLocationDetails(user, trip, location1, "", "2", "", "", "", "", "");
         assertTrue(tripsService.findTripById(trip.getId(), user).getLocations().get(FIRST_ELEMENT).getAddress().getHouseNr().equals("2"));
@@ -288,7 +309,7 @@ public class TestTrip {
     public void successfulAddLabelsToTrip() throws TripsException {
         Trip trip = tripsService.createTimelessTrip("The Spartacus", "N/A1", TripPrivacy.PUBLIC, user);
         tripsService.addLabelToTrip(trip,user,"Modder");
-        tripsService.addLabelToTrip(trip,user,"Uitdaging");
+        tripsService.addLabelToTrip(trip, user, "Uitdaging");
         assertEquals(2, trip.getLabels().size());
     }
 
@@ -453,7 +474,6 @@ public class TestTrip {
     @Test
     public void successfulSwitchLocations1() throws TripsException
     {
-        boolean check = true;
         Trip trip = tripsService.createTimelessTrip("Trip with locations", "trip with locations", TripPrivacy.PUBLIC, user);
         tripsService.addLocationToTrip(user, trip, 12.00, 13.00, null, null, null, null, null, "Location1", "Aangename location1");
         tripsService.addLocationToTrip(user, trip, 11.00, 13.00, null, null, null, null, null, "Location2", "Aangename location2");
@@ -477,7 +497,6 @@ public class TestTrip {
     @Test
     public void successfulSwitchLocations2() throws TripsException
     {
-        boolean check = true;
         Trip trip = tripsService.createTimelessTrip("Trip with locations", "trip with locations", TripPrivacy.PUBLIC, user);
         tripsService.addLocationToTrip(user, trip, 12.00, 13.00, null, null, null, null, null, "Location1", "Aangename location1");
         tripsService.addLocationToTrip(user, trip, 11.00, 13.00, null, null, null, null, null, "Location2", "Aangename location2");
@@ -501,7 +520,6 @@ public class TestTrip {
     @Test
     public void successfulSwitchLocations3() throws TripsException
     {
-        boolean check = true;
         Trip trip = tripsService.createTimelessTrip("Trip with locations", "trip with locations", TripPrivacy.PUBLIC, user);
         tripsService.addLocationToTrip(user, trip, 12.00, 13.00, null, null, null, null, null, "Location1", "Aangename location1");
         tripsService.addLocationToTrip(user, trip, 11.00, 13.00, null, null, null, null, null, "Location2", "Aangename location2");
@@ -525,7 +543,6 @@ public class TestTrip {
     @Test
     public void successfulSwitchLocations4() throws TripsException
     {
-        boolean check = true;
         Trip trip = tripsService.createTimelessTrip("Trip with locations", "trip with locations", TripPrivacy.PUBLIC, user);
         tripsService.addLocationToTrip(user, trip, 12.00, 13.00, null, null, null, null, null, "Location1", "Aangename location1");
         tripsService.addLocationToTrip(user, trip, 11.00, 13.00, null, null, null, null, null, "Location2", "Aangename location2");
@@ -549,7 +566,6 @@ public class TestTrip {
     @Test
     public void successfulSwitchLocations5() throws TripsException
     {
-        boolean check = true;
         Trip trip = tripsService.createTimelessTrip("Trip with locations", "trip with locations", TripPrivacy.PUBLIC, user);
         tripsService.addLocationToTrip(user, trip, 12.00, 13.00, null, null, null, null, null, "Location1", "Aangename location1");
         tripsService.addLocationToTrip(user, trip, 11.00, 13.00, null, null, null, null, null, "Location2", "Aangename location2");
