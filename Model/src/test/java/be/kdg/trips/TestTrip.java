@@ -119,20 +119,37 @@ public class TestTrip {
         assertEquals(createdTrip, foundTrip);
     }
 
-    /*
-    @Test
-    public void failedCreateTimeBoundTripNullValues() throws TripsException, ParseException {
-        Trip trip = tripsService.createTimeBoundTrip(null, null, TripPrivacy.PUBLIC, user, df.parse("14/12/2014"), df.parse("15/12/2014"));
-        assertNotNull(trip);
+
+    @Test(expected = TransactionSystemException.class)
+    public void failedCreateTimeBoundTripInvalidTitle() throws TripsException, ParseException
+    {
+        tripsService.createTimeBoundTrip("", "Langlaufen in de Ardennen", TripPrivacy.PUBLIC, user, df.parse("14/12/2014"), df.parse("15/12/2014"));
     }
-    */
-    /*
-    @Test
-    public void failedCreateTimeBoundTripInvalidDates() throws TripsException, ParseException {
-        Trip trip = tripsService.createTimeBoundTrip("Langlauf", "Langlaufen in de Ardennen", TripPrivacy.PUBLIC, user, df.parse("14/14/2014"), df.parse("15/14/2014"));
-        assertNotNull(trip);
+
+    @Test(expected = TransactionSystemException.class)
+    public void failedCreateTimeBoundTripInvalidDescription() throws TripsException, ParseException
+    {
+        tripsService.createTimeBoundTrip("Langlauf", "", TripPrivacy.PUBLIC, user, df.parse("14/12/2014"), df.parse("15/12/2014"));
     }
-    */
+
+    @Test(expected = TripsException.class)
+    public void failedCreateTimeBoundTripInvalidOrganizer() throws TripsException, ParseException
+    {
+        tripsService.createTimeBoundTrip("Langlauf", "Langlaufen in de Ardennen", TripPrivacy.PUBLIC, new User("hacker@gmail.com", "hacked"), df.parse("14/12/2014"), df.parse("15/12/2014"));
+    }
+
+    @Test(expected = TripsException.class)
+    public void failedCreateTimeBoundTripInvalidDatesEndDateAfterStartDate() throws TripsException, ParseException
+    {
+        tripsService.createTimeBoundTrip("Langlauf", "Langlaufen in de Ardennen", TripPrivacy.PUBLIC, user, df.parse("14/05/2014"), df.parse("15/04/2014"));
+    }
+
+    @Test(expected = ParseException.class)
+    public void failedCreateTimeBoundTripInvalidDatesEmptyDate() throws TripsException, ParseException
+    {
+        tripsService.createTimeBoundTrip("Langlauf", "Langlaufen in de Ardennen", TripPrivacy.PUBLIC, user, df.parse(""), df.parse("15/04/2014"));
+    }
+
     @Test
     public void successfulGuestFindAllTrips() throws TripsException
     {
