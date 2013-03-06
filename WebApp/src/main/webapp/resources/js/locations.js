@@ -1,9 +1,13 @@
+var tripId;
 var map;
 var locations = [];
-$(document).ready(function () {
+
+function getTripId(id) {
+    tripId = id;
+    initDataTable();
     btnListeners();
     initializeMap();
-});
+}
 
 function initializeMap() {
     map = new google.maps.Map(document.getElementById('mapcanvas'), {
@@ -25,18 +29,19 @@ function zoomFit() {
             bounds.extend(new google.maps.LatLng(location.latitude, location.longitude));
         });
         map.fitBounds(bounds);
-    }else if(locations.length == 0){
+    } else if (locations.length == 0) {
         map.setZoom(1);
-        map.setCenter(new google.maps.LatLng(0,0))
+        map.setCenter(new google.maps.LatLng(0, 0))
     } else {
         map.setZoom(12);
-        map.setCenter(new google.maps.LatLng(locations[0].latitude,locations[0].longitude))
+        map.setCenter(new google.maps.LatLng(locations[0].latitude, locations[0].longitude))
     }
 }
 
 function btnListeners() {
     $('#btn-toggleLocations').on('click', function () {
         if ($('#mapcanvas').is(":hidden")) {
+            getLatLng();
             $(this).text('Text Overview');
             $('#example').hide();
             $('#mapcanvas').show();
@@ -48,7 +53,7 @@ function btnListeners() {
     });
 }
 
-function getLatLng(tripId) {
+function getLatLng() {
     $.getJSON("/trip/" + tripId + "/locations/getLocationsLatLng", function (coordinates) {
         $.each(coordinates, function (i, coordinate) {
             createMarker(coordinate.latitude, coordinate.longitude)
@@ -56,4 +61,11 @@ function getLatLng(tripId) {
         });
         zoomFit();
     });
+}
+
+function initDataTable() {
+    $('#example').dataTable({ 'bFilter': false, "bLengthChange": false, "bPaginate": false, "bInfo": false, "bAutoWidth": false })
+        .rowReordering({ sURL: "/trip/switchLocation" })
+        .makeEditable({sUpdateURL: "/trip/" + tripId + "/locations/editLocation",
+            sReadOnlyCellClass: "read_only"});
 }

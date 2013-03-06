@@ -56,7 +56,7 @@
                     <c:set var="count" value="0" scope="page"/>
                     <c:forEach items="${locations}" var="location">
                         <tr id="${trip.id}-${location.id}">
-                            <td>
+                            <td  class="read_only">
                                 <c:set var="count" value="${count + 1}" scope="page"/>
                                 <c:out value="${count}"></c:out>
                             </td>
@@ -66,25 +66,25 @@
                             <td>
                                     ${location.description}
                             </td>
-                            <td>
+                            <td class="read_only">
                                     ${location.getAddress().street}
                             </td>
-                            <td>
+                            <td class="read_only">
                                     ${location.getAddress().houseNr}
                             </td>
-                            <td>
+                            <td class="read_only">
                                     ${location.getAddress().city}
                             </td>
-                            <td>
+                            <td class="read_only">
                                     ${location.getAddress().province}
                             </td>
-                            <td>
+                            <td class="read_only">
                                     ${location.getAddress().postalCode}
                             </td>
-                            <td>
+                            <td class="read_only">
                                     ${location.getAddress().country}
                             </td>
-                            <td>
+                            <td class="read_only">
                                 <a href="/trip/${trip.id}/locations//${location.id}/deleteLocation">
                                     <button type="button" id="btn-deleteLocation"><spring:message code="Delete"/>
                                     </button>
@@ -98,7 +98,7 @@
                 <button type="button" id="btn-createLocation" class="btn-blue"><spring:message
                         code="CreateLocation"/></button>
             </a>
-            <button type="button" id="btn-toggleLocations" onclick="getLatLng(${trip.id})" class="btn-blue">
+            <button type="button" id="btn-toggleLocations" class="btn-blue">
                 <spring:message code="MapOverview"/>
             </button>
             </tbody>
@@ -108,16 +108,16 @@
 </div>
 <script src="http://code.jquery.com/jquery-1.8.3.min.js"></script>
 <script src="${pageContext.request.contextPath}/resources/js/jquery.dataTables.js"></script>
+<script src="${pageContext.request.contextPath}/resources/js/jquery.jeditable.js"></script>
 <script src="//ajax.googleapis.com/ajax/libs/jqueryui/1.8.24/jquery-ui.min.js"></script>
 <script src="${pageContext.request.contextPath}/resources/js/jquery.dataTables.rowReordering.js"></script>
+<script src="${pageContext.request.contextPath}/resources/js/jquery.dataTables.editable.js"></script>
 <script src="http://maps.googleapis.com/maps/api/js?sensor=false"></script>
 <script src="${pageContext.request.contextPath}/resources/js/locations.js"></script>
-
 <script>
     $(document).ready(function () {
-        $('#example').dataTable({ 'bFilter': false, "bLengthChange": false, "bPaginate": false, "bInfo": false, "bAutoWidth": false }).rowReordering({ sURL: "/trip/switchLocation" });
+        getTripId(${trip.id});
     });
 </script>
-
 </body>
 </html>

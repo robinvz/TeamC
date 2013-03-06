@@ -21,7 +21,10 @@ import org.springframework.web.servlet.ModelAndView;
 
 import javax.mail.MessagingException;
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
+import java.io.IOException;
+import java.io.PrintWriter;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.*;
@@ -628,4 +631,39 @@ public class TripController {
         }
     }
 
+    @RequestMapping(value = "/trip/{tripId}/locations/editLocation", method = RequestMethod.POST)
+    public ModelAndView editLocation(@PathVariable int tripId, @RequestParam String value, @RequestParam String id, @RequestParam String rowId,
+                                     @RequestParam String columnPosition, @RequestParam String columnId, @RequestParam String columnName) {
+        User user = (User) session.getAttribute("user");
+        Trip trip = null;
+        if (isLoggedIn()) {
+            try {
+                trip = tripsService.findTripById(tripId, user);
+                int locationId = Integer.parseInt(id.split("-")[1]);
+                try {
+                    Location location = tripsService.findLocationById(locationId);
+                    String newValue;
+                    switch (Integer.parseInt(columnId)) {
+                        case 1:
+                            newValue = value.trim().substring(location.getTitle().length());
+                            tripsService.editTripLocationDetails(user,trip, location,"","","","","","",newValue,"");
+                            break;
+                        case 2:
+                            newValue = value.trim().substring(location.getDescription().length());
+                            tripsService.editTripLocationDetails(user,trip, location,"","","","","","","",newValue);
+                            break;
+                    }
+                } catch (TripsException e) {
+                    // location not found
+                    return new ModelAndView("locationsView");
+                }
+            } catch (TripsException e) {
+                // trip not found
+            }
+        } else {
+            return new ModelAndView("loginView", "loginBean", new LoginBean());
+        }
+        return new ModelAndView("redirect:/trip/" + trip.getId() + "/locations");
+        //return new ModelAndView("locationsView");
+    }
 }

@@ -323,7 +323,7 @@ public class TripTest {
                 .param("latitude", "1.00").param("longitude", "1.00").param("street", "testStreet").param("houseNr", "1").param("city", "testCity")
                 .param("postalCode", "2000").param("province", "testProvince").param("country", "testCountry").param("title", "testTitle").param("description", "testDescription")
                 .param("question", "testQuestion").param("correctAnswer", "testCorrectAnswer").param("request", "testRequest");
-        when(tripsService.findTripById(anyInt(),any(User.class))).thenReturn(t);
+        when(tripsService.findTripById(anyInt(), any(User.class))).thenReturn(t);
         mockMvc.perform(requestBuilder).andExpect(view().name("redirect:/trip/" + t.getId() + "/locations"));
         assertEquals(1, t.getLocations().size());
     }
@@ -348,7 +348,7 @@ public class TripTest {
         Location l = new Location(t, 1.00, 1.00, new Address("street", "1", "city", "2000", "province", "country"), "", "", 0);
         t.addLocation(l);
         RequestBuilder requestBuilder = MockMvcRequestBuilders.get("/trip/" + t.getId() + "/locations/" + l.getId() + "/deleteLocation");
-        when(tripsService.findTripById(anyInt(),any(User.class))).thenReturn(t);
+        when(tripsService.findTripById(anyInt(), any(User.class))).thenReturn(t);
         when(tripsService.findLocationById(anyInt())).thenReturn(l);
         mockMvc.perform(requestBuilder).andExpect(view().name("redirect:/trip/" + t.getId() + "/locations"));
     }
@@ -561,7 +561,7 @@ public class TripTest {
         RequestBuilder requestBuilder = MockMvcRequestBuilders.post("/service/searchtrips").param("username", "mathias").param("password", "fred").param("keyword", "een");
         when(tripsService.checkLogin(anyString(), anyString())).thenReturn(true);
         when(tripsService.findUser(anyString())).thenReturn(testUser);
-        when(tripsService.findNonPrivateTripsByKeyword( anyString(), any(User.class))).thenReturn(trips);
+        when(tripsService.findNonPrivateTripsByKeyword(anyString(), any(User.class))).thenReturn(trips);
         mockMvc.perform(requestBuilder).andExpect(content().string("{\"valid\":true,\"trips\":[{\"title\":\"Trip Een\",\"id\":" + t.getId() + "}]}"));
     }
 
@@ -609,6 +609,19 @@ public class TripTest {
         String label = "voorbeeldLabel";
         RequestBuilder requestBuilder = MockMvcRequestBuilders.post("/labels/" + t.getId()).param("label", label);
         mockMvc.perform(requestBuilder).andExpect(view().name("loginView"));
+    }
+
+    @Test
+    public void editLocationSuccess() throws Exception {
+        mockHttpSession.setAttribute("user", testUser);
+        Trip t = new TimelessTrip(title, description, privacy, testUser);
+        Location l = new Location(t, 1.00, 1.00, new Address("street", "houseNr", "city", "postalCode", "province", "country"), "title", "description", 0);
+        l.setDescription("newDescription");
+        RequestBuilder requestBuilder = MockMvcRequestBuilders.post("/trip/" + t.getId() + "/locations/editLocation").param("value", "ingevuldeWaarde")
+                .param("id", "1-29").param("rowId", "1").param("columnPosition", "2").param("columnId", "2").param("columnName", "Beschrijving");
+        when(tripsService.findTripById(anyInt(), any(User.class))).thenReturn(t);
+        when(tripsService.findLocationById(anyInt())).thenReturn(l);
+        mockMvc.perform(requestBuilder).andExpect(view().name("redirect:/trip/" + t.getId() + "/locations"));
     }
 
 }
