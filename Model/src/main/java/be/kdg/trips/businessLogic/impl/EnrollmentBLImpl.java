@@ -294,8 +294,9 @@ public class EnrollmentBLImpl implements EnrollmentBL
 
     @Override
     @Transactional
-    public void checkAnswerFromQuestion(Question question, int answerIndex, User user) throws TripsException {
+    public boolean checkAnswerFromQuestion(Question question, int answerIndex, User user) throws TripsException {
         Trip trip = tripBL.findTripByQuestion(question);
+        boolean correct = false;
         if(isExistingEnrollment(user, trip))
         {
             Enrollment enrollment = enrollmentDao.getEnrollmentByUserAndTrip(user, trip);
@@ -312,6 +313,7 @@ public class EnrollmentBLImpl implements EnrollmentBL
                                 if(question.checkAnswer(answerIndex))
                                 {
                                     enrollment.incrementScore();
+                                    correct = true;
                                 }
                                 enrollment.addAnsweredQuestion(question.getId());
                                 enrollmentDao.saveOrUpdateEnrollment(enrollment);
@@ -328,13 +330,13 @@ public class EnrollmentBLImpl implements EnrollmentBL
                 {
                     throw new TripsException("You haven't started the trip yet");
                 }
-
             }
             else
             {
                 throw new TripsException("You already answered this question");
             }
         }
+        return correct;
     }
 
     @Override
