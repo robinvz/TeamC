@@ -17,6 +17,9 @@
         <c:if test="${error != null}">
             <span class="errorblock">${error}</span>
         </c:if>
+        <c:if test="${success != null}">
+            <span class="successblock">${success}</span>
+        </c:if>
 
         <c:if test="${not empty user && user == trip.organizer}">
             <table>

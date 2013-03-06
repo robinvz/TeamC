@@ -23,6 +23,10 @@
                 <c:if test="${error != null}">
                     <span class="errorblock">${error}</span>
                 </c:if>
+                <c:if test="${success != null}">
+                    <span class="successblock">${success}</span>
+                </c:if>
+
                 <div class="trip-info">
                     <table>
                         <tr>
