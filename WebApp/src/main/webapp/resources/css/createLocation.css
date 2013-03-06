@@ -79,7 +79,11 @@ h3 {
     display: none;
 }
 
-#btn-answer, #btn-picture {
+#btn-picture{
+    margin-left: 333px;
+}
+
+#btn-answer{
     float: right;
     margin-right: 20;
 }

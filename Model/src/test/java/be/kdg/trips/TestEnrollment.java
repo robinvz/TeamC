@@ -49,7 +49,7 @@ public class TestEnrollment
         tripsService = (TripsServiceImpl)ctx.getBean("tripsService");
         df = new SimpleDateFormat("dd/MM/yyyy");
         organizer  = tripsService.createUser(new User("keke.kokelenberg@student.kdg.be", "Keke"));
-        trip = tripsService.createTimeBoundTrip("Spartacus run", "Lopen door de modder!", TripPrivacy.PROTECTED, organizer, df.parse("14/12/2014"), df.parse("15/12/2014"));
+        trip = tripsService.createTimeBoundTrip("Spartacus run", "Lopen door de modder!", TripPrivacy.PROTECTED, organizer, df.parse("14/12/2014"), df.parse("15/12/2014"), null, null);
         tripsService.publishTrip(trip, organizer);
     }
 
@@ -153,9 +153,9 @@ public class TestEnrollment
     public void successfulFindEnrollmentByTrip() throws ParseException, TripsException {
         User user = new User("general@kdg.be","pass");
         User subscriber = tripsService.createUser(user);
-        Trip trip = tripsService.createTimeBoundTrip("Spartacus run", "Lopen door de modder!", TripPrivacy.PROTECTED, organizer, df.parse("14/12/2014"), df.parse("15/12/2014"));
+        Trip trip = tripsService.createTimeBoundTrip("Spartacus run", "Lopen door de modder!", TripPrivacy.PROTECTED, organizer, df.parse("14/12/2014"), df.parse("15/12/2014"), null, null);
         tripsService.publishTrip(trip, organizer);
-        Enrollment enrollment = tripsService.subscribe(trip, subscriber);
+        tripsService.subscribe(trip, subscriber);
         assertEquals(2, tripsService.findEnrollmentsByTrip(trip).size());
     }
 
