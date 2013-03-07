@@ -49,19 +49,21 @@
                                 </c:choose>
                             </td>
                         </tr>
-                        <tr>
-                            <td><label><spring:message code="Active"/></label></td>
-                            <td>
-                                <c:choose>
-                                    <c:when test="${trip.active==true}">
-                                        <spring:message code="IsActive"/>
-                                    </c:when>
-                                    <c:otherwise>
-                                        <spring:message code="IsNotActive"/>
-                                    </c:otherwise>
-                                </c:choose>
-                            </td>
-                        </tr>
+                        <c:if test="${trip.timeBoundTrip==true}">
+                            <tr>
+                                <td><label><spring:message code="Active"/></label></td>
+                                <td>
+                                    <c:choose>
+                                        <c:when test="${trip.active==true}">
+                                            <spring:message code="IsActive"/>
+                                        </c:when>
+                                        <c:otherwise>
+                                            <spring:message code="IsNotActive"/>
+                                        </c:otherwise>
+                                    </c:choose>
+                                </td>
+                            </tr>
+                        </c:if>
                         <c:if test="${trip.timeBoundTrip==true}">
                             </tr>
                                 <td><spring:message code="StartDate"/></td>

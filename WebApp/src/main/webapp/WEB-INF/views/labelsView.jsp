@@ -23,7 +23,6 @@
         </c:if>
 
         <c:if test="${not empty user && user == trip.organizer}">
-            <h2>Labels</h2>
             <table>
                 <form action="/labels/${trip.id}" method="POST">
                     <tr>
