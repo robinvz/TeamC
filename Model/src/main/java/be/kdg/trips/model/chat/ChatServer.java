@@ -14,11 +14,11 @@ import javax.persistence.*;
 @Table(name = "T_CHATSERVER")
 public class ChatServer {
     @ManyToOne
-    @JoinColumn(name = "chatServerId")
+    @JoinColumn(name = "user1Id")
     @NotNull
     private User user1;
     @ManyToOne
-    @JoinColumn(name = "chatServerId")
+    @JoinColumn(name = "user2Id")
     @NotNull
     private User user2;
 
