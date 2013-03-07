@@ -35,7 +35,15 @@ public class ChatBLImpl implements ChatBL {
                 {
                     chatServer = new ChatServer(enrollment1.getUser(), enrollment2.getUser());
                 }
+                else
+                {
+                    throw new TripsException("Users have not yet both started the trip");
+                }
             }
+        }
+        else
+        {
+            throw new TripsException("Trips do not match");
         }
         return chatServer;
     }
