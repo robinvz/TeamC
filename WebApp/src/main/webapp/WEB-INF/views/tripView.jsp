@@ -18,8 +18,10 @@
     <jsp:include page="tripHeaderView.jsp"/>
 
     <div class="inner-content">
+
         <section>
             <article>
+                <h3><spring:message code="General"/></h3>
                 <c:if test="${error != null}">
                     <span class="errorblock">${error}</span>
                 </c:if>
