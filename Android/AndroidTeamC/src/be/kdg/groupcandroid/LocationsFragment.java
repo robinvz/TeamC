@@ -7,10 +7,13 @@ import java.util.concurrent.TimeoutException;
 
 import be.kdg.groupcandroid.tasks.LocationsTask;
 
+import android.app.Activity;
+import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
 import android.support.v4.app.ListFragment;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -40,16 +43,21 @@ public class LocationsFragment extends ListFragment {
 		super.onActivityCreated(savedInstanceState);
 		LocationListAdapter lla = new LocationListAdapter(getActivity(), getLocations(), R.layout.listitemrow);
 		setListAdapter(lla);
-		ListView lv = getListView();
+		final ListView lv = getListView();
 		lv.setOnItemClickListener(new OnItemClickListener() {
 			@Override
-			public void onItemClick(AdapterView<?> arg0, View arg1, int arg2,
+			public void onItemClick(AdapterView<?> arg0, View arg1, int position,
 					long arg3) {
-				Toast.makeText(getActivity(), arg2 + "", Toast.LENGTH_LONG).show();
+				Bundle bundle = new Bundle();
+				Intent inten = new Intent(getActivity(), Maptivity.class);
+				Location tmp = (Location) arg0.getItemAtPosition(position);
+				inten.putExtra("location", ((Location) arg0.getItemAtPosition(position)));
+				startActivity(inten);
+				Toast.makeText(getActivity(), position + "", Toast.LENGTH_LONG).show();
 			}		
 		});
 	}
-	
+		
 	private ArrayList<Location> getLocations() {
 		LocationsTask lt = new LocationsTask(getActivity());
 		SharedPreferences sp = PreferenceManager
@@ -67,5 +75,13 @@ public class LocationsFragment extends ListFragment {
 			e.printStackTrace();
 		}
 		return null;
+	}	
+	
+	public void onActivityResult(int requestCode, int resultCode, Intent data) 
+	{
+	if(requestCode == 1 && resultCode == Activity.RESULT_OK)
+	    {
+	        Log.d("ja", "ja");          
+	    }
 	}
 }
