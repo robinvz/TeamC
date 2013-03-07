@@ -314,7 +314,7 @@ public class TripController {
         if (isLoggedIn()) {
             try {
                 SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
-                Trip test = tripsService.createTimeBoundTrip(title, description, privacy, user, sdf.parse(startDate), sdf.parse(endDate));
+                Trip test = tripsService.createTimeBoundTrip(title, description, privacy, user, sdf.parse(startDate), sdf.parse(endDate),null,null);
                 return new ModelAndView("redirect:trip/" + test.getId());
             } catch (TripsException e) {
                 if (e.getMessage().contains("future")) {
@@ -445,12 +445,12 @@ public class TripController {
                 return new ModelAndView("tripView", map);
             } catch (TripsException e) {
                 if (e.getMessage().contains("Trip with id")) {
-                    return new ModelAndView("tripsView", "error", messageSource.getMessage("FindTripError", null, locale));//map.put("error", );
+                    return new ModelAndView("tripsView", "error", messageSource.getMessage("FindTripError", null, locale));
                 } else if (e.getMessage().contains("is not the organizer")) {
                     map.put("trip", trip);
                     map.put("error", messageSource.getMessage("NotOrganizerError", null, locale));
                     return new ModelAndView("tripView", map);
-                } else {
+                } else {   //e.getMessage().contains("published")
                     map.put("trip", trip);
                     map.put("error", messageSource.getMessage("AlreadyPublishedError", null, locale));
                     return new ModelAndView("tripView", map);
@@ -490,9 +490,9 @@ public class TripController {
                 map.put("success", messageSource.getMessage("LabelAdded", null, locale));
                 return new ModelAndView("labelsView", map);
             } catch (TripsException e) {
-                if (e.getMessage().contains("Trip not found")) {
+                if (e.getMessage().contains("Trip with id")) {
                     return new ModelAndView("tripsView", "error", messageSource.getMessage("FindTripError", null, locale));
-                } else {
+                } else {    //e.getMessage().contains("is not the organizer")
                     map.put("trip", trip);
                     map.put("error", messageSource.getMessage("NotOrganizerError", null, locale));
                     return new ModelAndView("tripView", map);
@@ -538,7 +538,7 @@ public class TripController {
                     map.put("trip", trip);
                     map.put("error", messageSource.getMessage("NotOrganizerError", null, locale));
                     return new ModelAndView("requirementsView", map);
-                } else {
+                } else {    //e.getMessage().contains("already active")
                     map.put("trip", trip);
                     map.put("error", messageSource.getMessage("AlreadyActiveError", null, locale));
                     return new ModelAndView("requirementsView", map);
@@ -805,7 +805,7 @@ public class TripController {
         return new ModelAndView("redirect:/trip/" + trip.getId() + "/locations");
     }
 
-    @RequestMapping(value = "/inviteUser/{tripId}/findUsersByKeyword", method = RequestMethod.GET)
+    @RequestMapping(value = "/inviteUser/{tripId}/findUsersByKeyword", method = RequestMethod.POST)
     public ModelAndView getUsersByKeyword(@PathVariable int tripId, @RequestParam String keyword) {
         User user = (User) session.getAttribute("user");
         Map parameters;
@@ -820,6 +820,27 @@ public class TripController {
             return new ModelAndView("loginView", "loginBean", new LoginBean());
         }
         return new ModelAndView("inviteUserView", parameters);
+    }
+
+    @RequestMapping(value = "/inviteUser/{tripId}/{userByKeywordEmail}/sendInvite", method = RequestMethod.GET)
+    public ModelAndView inviteUser(@PathVariable int tripId, @PathVariable String userByKeywordEmail) {
+        User user = (User) session.getAttribute("user");
+        Trip trip = null;
+        if (isLoggedIn()) {
+            try {
+                trip = tripsService.findTripById(tripId, user);
+                try {
+                    tripsService.invite(trip, user, tripsService.findUser(userByKeywordEmail));
+                } catch (MessagingException e) {
+                    // failed to invite user
+                }
+            } catch (TripsException e) {
+                //Failed to find trip
+            }
+        } else {
+            return new ModelAndView("loginView", "loginBean", new LoginBean());
+        }
+        return new ModelAndView("redirect:/inviteUser/{tripId}");
     }
 
     @RequestMapping(value = "/editTripPic/{tripId}", method = RequestMethod.GET)

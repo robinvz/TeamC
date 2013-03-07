@@ -1,6 +1,7 @@
 package be.kdg.trips.services.interfaces;
 
 import be.kdg.trips.exception.TripsException;
+import be.kdg.trips.model.chat.ChatServer;
 import be.kdg.trips.model.enrollment.Enrollment;
 import be.kdg.trips.model.invitation.Invitation;
 import be.kdg.trips.model.location.Location;
@@ -38,7 +39,7 @@ public interface TripsService
 
     //Trip Service
     public Trip createTimelessTrip(String title, String description, TripPrivacy privacy, User organizer) throws TripsException;
-    public Trip createTimeBoundTrip(String title, String description, TripPrivacy privacy, User organizer, Date startDate, Date endDate, Repeatable repeatable, Date limit) throws TripsException;
+    public Trip createTimeBoundTrip(String title, String description, TripPrivacy privacy, User organizer, Date startDate, Date endDate, Repeatable repeatable, Integer amount) throws TripsException;
 
     public List<Trip> findNonPrivateTripsByKeyword(String keyword, User user) throws TripsException;
     public List<Trip> findAllNonPrivateTrips(User user) throws TripsException;
@@ -84,4 +85,7 @@ public interface TripsService
 
     public void startTrip(Trip trip, User user) throws TripsException;
     public String stopTrip(Trip trip, User user) throws TripsException;
+
+    //Chat service
+    public ChatServer initializeConversation(Enrollment enrollment1, Enrollment enrollment2) throws TripsException;
 }

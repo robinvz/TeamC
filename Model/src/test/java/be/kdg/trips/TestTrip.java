@@ -118,20 +118,20 @@ public class TestTrip {
 
     @Test
     public void successfulCreateTimeBoundWeeklyRepeatableTrip() throws ParseException, TripsException {
-        Trip trip = tripsService.createTimeBoundTrip("Herhaalbaar iedere week", "repeatable each week", TripPrivacy.PUBLIC, organizer, df.parse("14/12/2014"), df.parse("15/12/2014"), Repeatable.WEEKLY, df.parse("14/01/2015"));
-        assertEquals(5,((TimeBoundTrip)tripsService.findTripById(trip.getId(), organizer)).getDates().size());
+        Trip trip = tripsService.createTimeBoundTrip("Herhaalbaar iedere week", "repeatable each week", TripPrivacy.PUBLIC, organizer, df.parse("14/12/2014"), df.parse("15/12/2014"), Repeatable.WEEKLY, 2);
+        assertEquals(3,((TimeBoundTrip)tripsService.findTripById(trip.getId(), organizer)).getDates().size());
     }
 
     @Test
     public void successfulCreateTimeBoundMonthlyRepeatableTrip() throws ParseException, TripsException {
-        Trip trip = tripsService.createTimeBoundTrip("Herhaalbaar iedere maand", "repeatable each month", TripPrivacy.PUBLIC, organizer, df.parse("14/12/2014"), df.parse("15/12/2014"), Repeatable.MONTHLY, df.parse("14/02/2015"));
-        assertEquals(2,((TimeBoundTrip)tripsService.findTripById(trip.getId(), organizer)).getDates().size());
+        Trip trip = tripsService.createTimeBoundTrip("Herhaalbaar iedere maand", "repeatable each month", TripPrivacy.PUBLIC, organizer, df.parse("14/12/2014"), df.parse("15/12/2014"), Repeatable.MONTHLY, 4);
+        assertEquals(5,((TimeBoundTrip)tripsService.findTripById(trip.getId(), organizer)).getDates().size());
     }
 
     @Test
     public void successfulCreateTimeBoundYearlyRepeatableTrip() throws ParseException, TripsException {
-        Trip trip = tripsService.createTimeBoundTrip("Herhaalbaar ieder jaar", "repeatable each year", TripPrivacy.PUBLIC, organizer, df.parse("14/12/2014"), df.parse("15/12/2014"), Repeatable.ANNUALLY, df.parse("16/12/2016"));
-        assertEquals(3,((TimeBoundTrip)tripsService.findTripById(trip.getId(), organizer)).getDates().size());
+        Trip trip = tripsService.createTimeBoundTrip("Herhaalbaar ieder jaar", "repeatable each year", TripPrivacy.PUBLIC, organizer, df.parse("14/12/2014"), df.parse("15/12/2014"), Repeatable.ANNUALLY, 1);
+        assertEquals(2,((TimeBoundTrip)tripsService.findTripById(trip.getId(), organizer)).getDates().size());
     }
 
     @Test(expected = TransactionSystemException.class)
