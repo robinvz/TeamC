@@ -45,7 +45,7 @@ public class UserDaoImpl implements UserDao {
     @Override
     public List<User> getUsersByKeyword(String keyword, User user)
     {
-        Query query = entityManager.createQuery("SELECT u FROM User u WHERE (lower(u.email) LIKE :keyword OR lower(u.firstName) LIKE :keyword OR lower(u.lastName) LIKE :keyword) AND u <> :user");
+        Query query = entityManager.createQuery("SELECT DISTINCT u FROM User u WHERE (lower(u.email) LIKE :keyword OR lower(u.firstName) LIKE :keyword OR lower(u.lastName) LIKE :keyword) AND u <> :user");
         query.setParameter("keyword", "%"+keyword.toLowerCase()+"%");
         query.setParameter("user", user);
         return query.getResultList();
