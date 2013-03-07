@@ -12,9 +12,6 @@
 <div id="page">
     <jsp:include page="baseView.jsp"/>
 
-    <script>
-        alert(''+${pageContext.request.contextPath});
-    </script>
     <div id="content">
         <c:choose>
             <c:when test="${not empty user}">
@@ -37,9 +34,9 @@
         <span style="float: left">
     <a href="?theme=default">default</a>
     |
-    <a href="?theme=green">blk</a>
+    <a href="?theme=green">green</a>
     |
-    <a href="?theme=red">blu</a>
+    <a href="?theme=red">red</a>
 </span>
     </div>
 
