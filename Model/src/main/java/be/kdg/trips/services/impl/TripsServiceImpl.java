@@ -1,10 +1,12 @@
 package be.kdg.trips.services.impl;
 
 
+import be.kdg.trips.businessLogic.interfaces.ChatBL;
 import be.kdg.trips.businessLogic.interfaces.EnrollmentBL;
 import be.kdg.trips.businessLogic.interfaces.TripBL;
 import be.kdg.trips.businessLogic.interfaces.UserBL;
 import be.kdg.trips.exception.TripsException;
+import be.kdg.trips.model.chat.ChatServer;
 import be.kdg.trips.model.enrollment.Enrollment;
 import be.kdg.trips.model.invitation.Invitation;
 import be.kdg.trips.model.location.Location;
@@ -36,6 +38,8 @@ public class TripsServiceImpl implements TripsService
     private TripBL tripController;
     @Autowired
     private EnrollmentBL enrollmentController;
+    @Autowired
+    private ChatBL chatController;
 
     //User Service
     @Override
@@ -266,5 +270,11 @@ public class TripsServiceImpl implements TripsService
     @Override
     public String stopTrip(Trip trip, User user) throws TripsException {
         return enrollmentController.stopTrip(trip, user);
+    }
+
+    //Chat service
+    @Override
+    public ChatServer initializeConversation(Enrollment enrollment1, Enrollment enrollment2) throws TripsException {
+        return chatController.initializeConversation(enrollment1, enrollment2);
     }
 }

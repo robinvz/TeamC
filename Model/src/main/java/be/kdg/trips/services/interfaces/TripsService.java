@@ -1,6 +1,7 @@
 package be.kdg.trips.services.interfaces;
 
 import be.kdg.trips.exception.TripsException;
+import be.kdg.trips.model.chat.ChatServer;
 import be.kdg.trips.model.enrollment.Enrollment;
 import be.kdg.trips.model.invitation.Invitation;
 import be.kdg.trips.model.location.Location;
@@ -84,4 +85,7 @@ public interface TripsService
 
     public void startTrip(Trip trip, User user) throws TripsException;
     public String stopTrip(Trip trip, User user) throws TripsException;
+
+    //Chat service
+    public ChatServer initializeConversation(Enrollment enrollment1, Enrollment enrollment2) throws TripsException;
 }
