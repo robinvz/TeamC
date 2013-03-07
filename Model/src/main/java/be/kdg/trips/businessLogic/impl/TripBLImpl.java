@@ -6,7 +6,6 @@ import be.kdg.trips.businessLogic.interfaces.UserBL;
 import be.kdg.trips.exception.TripsException;
 import be.kdg.trips.model.address.Address;
 import be.kdg.trips.model.enrollment.Enrollment;
-import be.kdg.trips.model.enrollment.Status;
 import be.kdg.trips.model.invitation.Invitation;
 import be.kdg.trips.model.location.Location;
 import be.kdg.trips.model.question.Question;
@@ -69,7 +68,7 @@ public class TripBLImpl implements TripBL
                 trip = new TimeBoundTrip(title, description, privacy, organizer, startDate, endDate);
                 if(repeatable!=null & amount!=null)
                 {
-                    if(amount>1 && amount<15)
+                    if(amount>0 && amount<15)
                     {
                         Calendar startCalendar = Calendar.getInstance();
                         Calendar endCalendar = Calendar.getInstance();
