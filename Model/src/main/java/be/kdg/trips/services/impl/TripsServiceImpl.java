@@ -84,7 +84,7 @@ public class TripsServiceImpl implements TripsService
     }
 
     @Override
-    public Trip createTimeBoundTrip(String title, String description, TripPrivacy privacy, User organizer, Date startDate, Date endDate, Repeatable repeatable, Date limit) throws TripsException
+    public Trip createTimeBoundTrip(String title, String description, TripPrivacy privacy, User organizer, Date startDate, Date endDate, Repeatable repeatable, Integer limit) throws TripsException
     {
         return tripController.createTimeBoundTrip(title, description, privacy, organizer, startDate, endDate, repeatable, limit);
     }
