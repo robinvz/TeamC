@@ -1,8 +1,9 @@
 package be.kdg.groupcandroid;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 
-public class Location {
+public class Location implements Serializable {
 	
 	private int id;
 	private String title;
@@ -10,6 +11,7 @@ public class Location {
 	private double latitude;
 	private double longitude;
 	private String question;
+	private boolean answered;
 	private ArrayList<String> answers = new ArrayList<String>();
 	
 	public Location(int id, String title, String description, double latitude,
@@ -80,6 +82,21 @@ public class Location {
 	public void addAnswer(String answer){
 		this.answers.add(answer);
 	}
+
+	public void addQuestion(String question) {
+		// TODO Auto-generated method stub
+		this.question = question;	
+	}
+
+	public boolean isAnswered() {
+		return answered;
+	}
+
+	public void setAnswered(boolean answered) {
+		this.answered = answered;
+	}
+	
+	
 	
 	
 	

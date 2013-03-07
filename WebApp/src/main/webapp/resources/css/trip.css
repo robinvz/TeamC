@@ -35,4 +35,8 @@ h2{
 #myCanvas{
     height: 200px;
     width: 960px;
+    background: #f5f5dc;
+    -moz-box-shadow: 3px 3px 4px rgb(3, 3, 3);
+    -webkit-box-shadow: 3px 3px 4px rgb(3, 3, 3);
+    box-shadow: 3px 3px 4px rgb(0, 0, 0);
 }

@@ -5,12 +5,16 @@
 <head>
     <link rel="stylesheet" href="${pageContext.request.contextPath}/resources/css/main.css">
     <link rel="shortcut icon" href="${pageContext.request.contextPath}/resources/res/favicon.ico">
+    <link rel="stylesheet" href="<spring:theme code="css"/>" type="text/css"/>
     <title>Home page</title>
 </head>
 <body>
 <div id="page">
     <jsp:include page="baseView.jsp"/>
 
+    <script>
+        alert(''+${pageContext.request.contextPath});
+    </script>
     <div id="content">
         <c:choose>
             <c:when test="${not empty user}">
@@ -29,6 +33,14 @@
             If you are interested in organizing trips yourself, please register first. For further questions or
             remarks please consult our contact page.
         </p>
+
+        <span style="float: left">
+    <a href="?theme=default">default</a>
+    |
+    <a href="?theme=green">blk</a>
+    |
+    <a href="?theme=red">blu</a>
+</span>
     </div>
 
 </div>
