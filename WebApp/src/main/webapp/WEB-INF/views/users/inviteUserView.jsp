@@ -1,14 +1,12 @@
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@ taglib prefix="spring" uri="http://www.springframework.org/tags" %>
+<%@ taglib prefix="form" uri="http://www.springframework.org/tags/form" %>
 
 <html>
 <head>
     <link rel="stylesheet" href="${pageContext.request.contextPath}/resources/css/main.css"/>
     <link rel="stylesheet" href="${pageContext.request.contextPath}/resources/css/trip.css"/>
     <link rel="shortcut icon" href="${pageContext.request.contextPath}/resources/res/favicon.ico">
-    <!--[if lt IE 9]>
-    <script src="${pageContext.request.contextPath}/resources/js/html5shiv.js"></script>
-    <![endif]-->
     <title><spring:message code="TripPage"/></title>
 </head>
 <body>
@@ -22,15 +20,21 @@
         </c:if>
 
         <c:if test="${not empty user && trip.organizer == user}">
+            <c:if test="${not empty trip.invitations}">
+                <c:forEach items="${trip.invitations}" var="invitation">
+                    <c:if test="${invitation.user == user}">
+                        <c:set value="true" var="invited"/>
+                    </c:if>
+                </c:forEach>
+            </c:if>
             <h3>Invite a user</h3>
-
-            <form action="/inviteUser/${trip.id}/findUsersByKeyword" method="GET">
+            <form action="/inviteUser/${trip.id}/findUsersByKeyword" method="POST">
                 <table>
                     <tr>
                         <td><spring:message code="User"/></td>
                         <td><input type="text" name="keyword"></td>
                         <td>
-                            <input type="submit" id="btn-SearchUsers" class="btn-blue" value="Search">
+                            <input type="submit" id="btn-SearchUsers" class="btn-blue" value="Search"/>
                         </td>
                     </tr>
                 </table>
@@ -44,6 +48,7 @@
                 <c:set var="count" value="0" scope="page"/>
                 <table>
                     <c:forEach items="${usersByKeyword}" var="userByKeyword">
+
                         <tr id="user-${userByKeyword.id}">
                             <td>
                                 <c:set var="count" value="${count + 1}" scope="page"/>
@@ -59,9 +64,11 @@
                                     ${userByKeyword.lastName}
                             </td>
                             <td>
-                                <a href="/inviteUser/${trip.id}/sendInvite">
+                                <c:if test="${invited == false}">
+                                <a href="/inviteUser/${trip.id}/sendInvite/${userByKeyword.email}">
                                     <button type="button" id="btn-inviteUser"><spring:message code="Invite"/>
                                     </button>
+                                    </c:if>
                                 </a>
                             </td>
                         </tr>
