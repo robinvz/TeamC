@@ -445,12 +445,12 @@ public class TripController {
                 return new ModelAndView("tripView", map);
             } catch (TripsException e) {
                 if (e.getMessage().contains("Trip with id")) {
-                    return new ModelAndView("tripsView", "error", messageSource.getMessage("FindTripError", null, locale));//map.put("error", );
+                    return new ModelAndView("tripsView", "error", messageSource.getMessage("FindTripError", null, locale));
                 } else if (e.getMessage().contains("is not the organizer")) {
                     map.put("trip", trip);
                     map.put("error", messageSource.getMessage("NotOrganizerError", null, locale));
                     return new ModelAndView("tripView", map);
-                } else {
+                } else {   //e.getMessage().contains("published")
                     map.put("trip", trip);
                     map.put("error", messageSource.getMessage("AlreadyPublishedError", null, locale));
                     return new ModelAndView("tripView", map);
@@ -490,9 +490,9 @@ public class TripController {
                 map.put("success", messageSource.getMessage("LabelAdded", null, locale));
                 return new ModelAndView("labelsView", map);
             } catch (TripsException e) {
-                if (e.getMessage().contains("Trip not found")) {
+                if (e.getMessage().contains("Trip with id")) {
                     return new ModelAndView("tripsView", "error", messageSource.getMessage("FindTripError", null, locale));
-                } else {
+                } else {    //e.getMessage().contains("is not the organizer")
                     map.put("trip", trip);
                     map.put("error", messageSource.getMessage("NotOrganizerError", null, locale));
                     return new ModelAndView("tripView", map);
@@ -538,7 +538,7 @@ public class TripController {
                     map.put("trip", trip);
                     map.put("error", messageSource.getMessage("NotOrganizerError", null, locale));
                     return new ModelAndView("requirementsView", map);
-                } else {
+                } else {    //e.getMessage().contains("already active")
                     map.put("trip", trip);
                     map.put("error", messageSource.getMessage("AlreadyActiveError", null, locale));
                     return new ModelAndView("requirementsView", map);
