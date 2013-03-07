@@ -52,29 +52,29 @@
                     </thead>
                     <tbody>
                     <c:forEach items="${usersByKeyword}" var="userByKeyword">
-                        <tr id="user-${userByKeyword.id}">
-                            <td>
-                                <c:set var="count" value="${count + 1}" scope="page"/>
-                                <c:out value="${count}"></c:out>
-                            </td>
-                            <td>
-                                    ${userByKeyword.firstName}
-                            </td>
-                            <td>
-                                    ${userByKeyword.lastName}
-                            </td>
-                            <td>
-                                    ${userByKeyword.email}
-                            </td>
-                            <td>
-                                <c:if test="${invitation.user != user}">
-                                    <a href="/inviteUser/${trip.id}/sendInvite/${userByKeyword.email}">
-                                        <button type="button" id="btn-inviteUser"><spring:message code="Invite"/>
-                                        </button>
-                                    </a>
-                                </c:if>
-                            </td>
-                        </tr>
+                        <form action="/inviteUser/${trip.id}/sendInvite" method="POST">
+                            <tr id="user-${userByKeyword.id}">
+                                <td>
+                                    <c:set var="count" value="${count + 1}" scope="page"/>
+                                    <c:out value="${count}"></c:out>
+                                </td>
+                                <td>
+                                        ${userByKeyword.firstName}
+                                </td>
+                                <td>
+                                        ${userByKeyword.lastName}
+                                </td>
+                                <td>
+                                        ${userByKeyword.email}
+                                   <input name="userByKeywordEmail" value="${userByKeyword.email}" hidden="hidden"/>
+                                </td>
+                                <td>
+                                    <c:if test="${invitation.user != user}">
+                                        <input type="submit" value="<spring:message code="Invite"/>"/>
+                                    </c:if>
+                                </td>
+                            </tr>
+                        </form>
                     </c:forEach>
                     </tbody>
                 </table>

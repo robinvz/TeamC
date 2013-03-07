@@ -838,10 +838,11 @@ public class TripController {
         return new ModelAndView("/users/inviteUserView", parameters);
     }
 
-    @RequestMapping(value = "/inviteUser/{tripId}/sendInvite/{userByKeywordEmail}", method = RequestMethod.GET)
-    public ModelAndView inviteUser(@PathVariable int tripId, @PathVariable String userByKeywordEmail) {
+    @RequestMapping(value = "/inviteUser/{tripId}/sendInvite", method = RequestMethod.POST)
+    public ModelAndView inviteUser(@PathVariable int tripId, @RequestParam String userByKeywordEmail) {
         User user = (User) session.getAttribute("user");
         Trip trip = null;
+
         if (isLoggedIn()) {
             try {
                 trip = tripsService.findTripById(tripId, user);
