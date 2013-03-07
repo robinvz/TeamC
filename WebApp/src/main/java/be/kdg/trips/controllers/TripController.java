@@ -289,10 +289,17 @@ public class TripController {
     @RequestMapping(value = "/trip/{tripId}", method = RequestMethod.GET)
     public ModelAndView getTrip(@PathVariable int tripId) {
         User user = (User) session.getAttribute("user");
-        Trip trip = null;
+        Map map = new HashMap();
         try {
-            trip = tripsService.findTripById(tripId, user);
-            return new ModelAndView("tripView", "trip", trip);
+            if (tripsService.findTripById(tripId, user).isTimeBoundTrip()) {
+                TimeBoundTrip tb = (TimeBoundTrip) tripsService.findTripById(tripId, user);
+                map.put("trip", tb);
+                map.put("dates", tb.getDates());
+                return new ModelAndView("tripView", map);
+            } else {
+                TimelessTrip tl = (TimelessTrip) tripsService.findTripById(tripId, user);
+                return new ModelAndView("tripView", "trip", tl);
+            }
         } catch (TripsException e) {
             return new ModelAndView("tripsView");
         }
@@ -304,9 +311,9 @@ public class TripController {
     }
 
     @RequestMapping(value = "/createTimeBoundTrip", method = RequestMethod.POST)
-    public ModelAndView createTimeBoundTrip(@RequestParam String title, @RequestParam String
-            description, @RequestParam TripPrivacy privacy,
-                                            @RequestParam String startDate, @RequestParam String endDate, Locale locale, @RequestParam String repeat, @RequestParam String limit) {
+    public ModelAndView createTimeBoundTrip(@RequestParam String title, @RequestParam String description, @RequestParam TripPrivacy privacy,
+                                            @RequestParam String startDate, @RequestParam String endDate, @RequestParam String repeat,
+                                            @RequestParam String limit, Locale locale) {
         User user = (User) session.getAttribute("user");
         if (isLoggedIn()) {
             try {
@@ -318,9 +325,6 @@ public class TripController {
                 if (!repeat.contentEquals("ONCE")){
                     rp = Repeatable.valueOf(repeat);
                     limitInt = Integer.parseInt(limit);
-                }
-                else{
-                    return new ModelAndView("/users/createTripView");
                 }
                 Trip test = tripsService.createTimeBoundTrip(title, description, privacy, user, sdf.parse(startDate), sdf.parse(endDate), rp , limitInt);
                 return new ModelAndView("redirect:trip/" + test.getId());
