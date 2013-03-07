@@ -14,6 +14,7 @@ import be.kdg.trips.model.trip.*;
 import be.kdg.trips.model.user.User;
 import be.kdg.trips.persistence.dao.interfaces.TripDao;
 import be.kdg.trips.utility.ImageChecker;
+import be.kdg.trips.utility.MailSender;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
@@ -450,13 +451,13 @@ public class TripBLImpl implements TripBL
     public void deleteTrip(Trip trip, User user) throws TripsException, MessagingException {
         if(isExistingTrip(trip.getId()) && userBL.isExistingUser(user.getEmail()) && isOrganizer(trip, user))
         {
-            List<InternetAddress[]> recipients = new ArrayList<>();
+            List<String> recipients = new ArrayList<>();
             for (Enrollment e: trip.getEnrollments())
             {
-                recipients.add(InternetAddress.parse(e.getUser().getEmail()));
+                recipients.add(e.getUser().getEmail());
             }
             tripDao.deleteTrip(trip.getId());
-            sendMail("Trip '"+trip.getTitle()+ "'", "We regret to inform you that the following trip: '"+trip.getTitle()+" - "+trip.getDescription()+"' has been canceled by the organizer.", recipients);
+            MailSender.sendMail("Trip '" + trip.getTitle() + "'", "We regret to inform you that the following trip: '" + trip.getTitle() + " - " + trip.getDescription() + "' has been canceled by the organizer.", recipients);
         }
     }
 
@@ -492,38 +493,6 @@ public class TripBLImpl implements TripBL
             return true;
         }
         throw new TripsException("This location does not belong to this trip");
-    }
-
-    @Override
-    public void sendMail(String subject, String text, List<InternetAddress[]> recipients) throws MessagingException {
-        Properties props = new Properties();
-        props.put("mail.smtp.auth", "true");
-        props.put("mail.smtp.starttls.enable", "true");
-        props.put("mail.smtp.host", "smtp.gmail.com");
-        props.put("mail.smtp.port", "587");
-
-        Session session = Session.getInstance(props,
-                new javax.mail.Authenticator() {
-                    protected PasswordAuthentication getPasswordAuthentication() {
-                        return new PasswordAuthentication("tripsnoreply@gmail.com", "tripstrips");
-                    }
-                });
-
-        try
-        {
-            Message message = new MimeMessage(session);
-            message.setSubject(subject);
-            message.setText(text);
-            for (InternetAddress[] recipient :recipients)
-            {
-                message.addRecipients(Message.RecipientType.TO, recipient);
-            }
-            Transport.send(message);
-        }
-        catch(MessagingException msgex)
-        {
-            throw new MessagingException("Failed to send email");
-        }
     }
 
     private boolean areDatesValid(Date startDate, Date endDate) throws TripsException {

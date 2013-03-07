@@ -19,10 +19,20 @@ public class MailSender
     {
         List<InternetAddress[]> recipients = new ArrayList<>();
         recipients.add(InternetAddress.parse(receiverEmail));
-        sendMail(subject, text, recipients);
+        handleMail(subject, text, recipients);
     }
 
-    public static void sendMail(String subject, String text, List<InternetAddress[]> recipients) throws MessagingException
+    public static void sendMail(String subject, String text, List<String> receiverEmailList) throws MessagingException
+    {
+        List<InternetAddress[]> recipients = new ArrayList<>();
+        for(String email : receiverEmailList)
+        {
+            recipients.add(InternetAddress.parse(email));
+        }
+        handleMail(subject, text, recipients);
+    }
+
+    private static void handleMail(String subject, String text, List<InternetAddress[]> recipients) throws MessagingException
     {
         Properties props = new Properties();
         props.put("mail.smtp.auth", "true");

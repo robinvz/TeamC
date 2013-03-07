@@ -15,6 +15,7 @@ import be.kdg.trips.model.trip.Trip;
 import be.kdg.trips.model.trip.TripPrivacy;
 import be.kdg.trips.model.user.User;
 import be.kdg.trips.persistence.dao.interfaces.EnrollmentDao;
+import be.kdg.trips.utility.MailSender;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
@@ -92,10 +93,8 @@ public class EnrollmentBLImpl implements EnrollmentBL
             {
                 invitation = new Invitation(trip, user);
                 enrollmentDao.saveOrUpdateInvitation(invitation);
-                List<InternetAddress[]> recipients = new ArrayList<>();
-                recipients.add(InternetAddress.parse(user.getEmail()));
                 //give link to invitation!
-                tripBL.sendMail("Trip invitation", "You have been invited by " + organizer.getFirstName() + " " + organizer.getLastName() + " for his trip named: '" + trip.getTitle() + "' (" + trip.getDescription() + ").\nClick here xxx if you're interested in joining.", recipients);
+                MailSender.sendMail("Trip invitation", "You have been invited by " + organizer.getFirstName() + " " + organizer.getLastName() + " for his trip named: '" + trip.getTitle() + "' (" + trip.getDescription() + ").\nClick here xxx if you're interested in joining.", user.getEmail());
             }
             else
             {
