@@ -66,16 +66,6 @@
                                 </td>
                             </tr>
                         </c:if>
-                        <c:if test="${trip.timeBoundTrip==true}">
-                            </tr>
-                                <td><spring:message code="StartDate"/></td>
-                                <td></td>
-                            <tr>
-                            </tr>
-                                <td><spring:message code="StartDate"/></td>
-                                <td></td>
-                            </tr>
-                        </c:if>
                         <tr>
                             <c:if test="${not empty trip.labels}">
                                 <td>Labels</td>
@@ -108,6 +98,17 @@
                                 </c:otherwise>
                             </c:choose>
                         </tr>
+                        <c:if test="${trip.timeBoundTrip==true}">
+                            <tr>
+                                <td><spring:message code="Dates"/></td>
+                            </tr>
+                            <c:forEach items="${dates}" var="date">
+                                <tr>
+                                    <td>${date.key}</td>
+                                    <td>${date.value}</td>
+                                </tr>
+                            </c:forEach>
+                        </c:if>
                     </table>
                 </div>
 
