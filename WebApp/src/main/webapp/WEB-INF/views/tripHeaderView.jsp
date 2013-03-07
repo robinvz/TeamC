@@ -32,7 +32,6 @@
             <li><a href="/requirements/${trip.id}"><spring:message code="Requisites"/></a></li>
             <li><a href="/trip/${trip.id}/locations"><spring:message code="Locations"/></a></li>
             <li><a href="#">Chat</a></li>
-            <li><a href="#"><spring:message code="Results"/></a></li>
             <c:if test="${trip.privacy != 'PUBLIC' && trip.published == true}">
                 <li><a href="/trip/${trip.id}/participants"><spring:message code="Participants"/></a></li>
                 <c:forEach items="${trip.enrollments}" var="enrollment">
