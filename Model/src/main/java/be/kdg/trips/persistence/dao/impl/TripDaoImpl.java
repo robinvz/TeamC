@@ -32,46 +32,46 @@ public class TripDaoImpl implements TripDao{
 
     @Override
     public List<Trip> getPublicTrips() {
-        Query query = entityManager.createQuery("SELECT t FROM Trip t LEFT JOIN FETCH t.locations LEFT JOIN FETCH t.enrollments LEFT JOIN FETCH t.requisites LEFT JOIN FETCH t.invitations WHERE t.privacy = 0 AND t.published = true");
+        Query query = entityManager.createQuery("SELECT DISTINCT t FROM Trip t LEFT JOIN FETCH t.locations LEFT JOIN FETCH t.enrollments LEFT JOIN FETCH t.requisites LEFT JOIN FETCH t.invitations WHERE t.privacy = 0 AND t.published = true");
         return query.getResultList();
     }
 
     @Override
     public List<Trip> getProtectedTrips() {
-        Query query = entityManager.createQuery("SELECT t FROM Trip t LEFT JOIN FETCH t.locations LEFT JOIN FETCH t.enrollments LEFT JOIN FETCH t.requisites LEFT JOIN FETCH t.invitations  WHERE t.privacy = 1 AND t.published = true");
+        Query query = entityManager.createQuery("SELECT DISTINCT t FROM Trip t LEFT JOIN FETCH t.locations LEFT JOIN FETCH t.enrollments LEFT JOIN FETCH t.requisites LEFT JOIN FETCH t.invitations  WHERE t.privacy = 1 AND t.published = true");
         return query.getResultList();
     }
 
     @Override
     public List<Trip> getProtectedTripsWithoutDetails() {
-        Query query = entityManager.createQuery("SELECT t FROM Trip t WHERE t.privacy = 1 AND t.published = true");
+        Query query = entityManager.createQuery("SELECT DISTINCT t FROM Trip t WHERE t.privacy = 1 AND t.published = true");
         return query.getResultList();
     }
 
     @Override
     public List<Trip> getPublicTripsByKeyword(String keyword) {
-        Query query = entityManager.createQuery("SELECT t FROM Trip t LEFT OUTER JOIN t.labels label LEFT JOIN FETCH t.locations LEFT JOIN FETCH t.enrollments LEFT JOIN FETCH t.requisites LEFT JOIN FETCH t.invitations WHERE (lower(t.title) LIKE :keyword OR lower(t.description) LIKE :keyword OR lower(label) LIKE :keyword) AND t.privacy = 0 AND t.published = true");
+        Query query = entityManager.createQuery("SELECT DISTINCT t FROM Trip t LEFT OUTER JOIN t.labels label LEFT JOIN FETCH t.locations LEFT JOIN FETCH t.enrollments LEFT JOIN FETCH t.requisites LEFT JOIN FETCH t.invitations WHERE (lower(t.title) LIKE :keyword OR lower(t.description) LIKE :keyword OR lower(label) LIKE :keyword) AND t.privacy = 0 AND t.published = true");
         query.setParameter("keyword", "%"+keyword.toLowerCase()+"%");
         return query.getResultList();
     }
 
     @Override
     public List<Trip> getProtectedTripsByKeyword(String keyword) {
-        Query query = entityManager.createQuery("SELECT t FROM Trip t LEFT OUTER JOIN t.labels label LEFT JOIN FETCH t.locations LEFT JOIN FETCH t.enrollments LEFT JOIN FETCH t.requisites LEFT JOIN FETCH t.invitations WHERE (lower(t.title) LIKE :keyword OR lower(t.description) LIKE :keyword OR lower(label) LIKE :keyword) AND t.privacy = 1 AND t.published = true");
+        Query query = entityManager.createQuery("SELECT DISTINCT t FROM Trip t LEFT OUTER JOIN t.labels label LEFT JOIN FETCH t.locations LEFT JOIN FETCH t.enrollments LEFT JOIN FETCH t.requisites LEFT JOIN FETCH t.invitations WHERE (lower(t.title) LIKE :keyword OR lower(t.description) LIKE :keyword OR lower(label) LIKE :keyword) AND t.privacy = 1 AND t.published = true");
         query.setParameter("keyword", "%"+keyword.toLowerCase()+"%");
         return query.getResultList();
     }
 
     @Override
     public List<Trip> getProtectedTripsWithoutDetailsByKeyword(String keyword) {
-        Query query = entityManager.createQuery("SELECT t FROM Trip t LEFT OUTER JOIN t.labels label WHERE (lower(t.title) LIKE :keyword OR lower(t.description) LIKE :keyword OR lower(label) LIKE :keyword) AND t.privacy = 1 AND t.published = true");
+        Query query = entityManager.createQuery("SELECT DISTINCT t FROM Trip t LEFT OUTER JOIN t.labels label WHERE (lower(t.title) LIKE :keyword OR lower(t.description) LIKE :keyword OR lower(label) LIKE :keyword) AND t.privacy = 1 AND t.published = true");
         query.setParameter("keyword", "%"+keyword.toLowerCase()+"%");
         return query.getResultList();
     }
 
     @Override
     public List<Trip> getTripsByOrganizer(User organizer) {
-        Query query = entityManager.createQuery("SELECT t FROM Trip t LEFT JOIN FETCH t.locations LEFT JOIN FETCH t.enrollments LEFT JOIN FETCH t.requisites LEFT JOIN FETCH t.invitations WHERE t.organizer.email LIKE :email");
+        Query query = entityManager.createQuery("SELECT DISTINCT t FROM Trip t LEFT JOIN FETCH t.locations LEFT JOIN FETCH t.enrollments LEFT JOIN FETCH t.requisites LEFT JOIN FETCH t.invitations WHERE t.organizer.email LIKE :email");
         query.setParameter("email", "%"+organizer.getEmail()+"%");
         return query.getResultList();
     }

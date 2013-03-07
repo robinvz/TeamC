@@ -32,14 +32,14 @@ public class EnrollmentDaoImpl implements EnrollmentDao
 
     @Override
     public List<Enrollment> getEnrollmentsByUser(User user) {
-        Query query = entityManager.createQuery("SELECT e FROM Enrollment e WHERE e.user = :user");
+        Query query = entityManager.createQuery("SELECT DISTINCT e FROM Enrollment e WHERE e.user = :user");
         query.setParameter("user", user);
         return query.getResultList();
     }
 
     @Override
     public List<Enrollment> getEnrollmentsByTrip(Trip trip) {
-        Query query = entityManager.createQuery("SELECT e FROM Enrollment e WHERE e.trip = :trip");
+        Query query = entityManager.createQuery("SELECT DISTINCT e FROM Enrollment e WHERE e.trip = :trip");
         query.setParameter("trip", trip);
         return query.getResultList();
     }
@@ -61,7 +61,7 @@ public class EnrollmentDaoImpl implements EnrollmentDao
 
     @Override
     public List<Invitation> getInvitationsByUser(User user) {
-        Query query = entityManager.createQuery("SELECT i FROM Invitation i WHERE i.user = :user");
+        Query query = entityManager.createQuery("SELECT DISTINCT i FROM Invitation i WHERE i.user = :user");
         query.setParameter("user", user);
         return query.getResultList();
     }
