@@ -2,7 +2,9 @@ package be.kdg.trips;
 
 import be.kdg.trips.businessLogic.interfaces.ChatBL;
 import be.kdg.trips.exception.TripsException;
+import be.kdg.trips.model.chat.ChatServer;
 import be.kdg.trips.model.enrollment.Enrollment;
+import be.kdg.trips.model.trip.TimelessTrip;
 import be.kdg.trips.model.trip.Trip;
 import be.kdg.trips.model.trip.TripPrivacy;
 import be.kdg.trips.model.user.User;
@@ -14,6 +16,7 @@ import org.springframework.context.support.ClassPathXmlApplicationContext;
 
 import java.util.List;
 
+import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
 
 /**
@@ -27,26 +30,57 @@ public class TestChat {
     private final int FIRST_ELEMENT = 0;
     private final int SECOND_ELEMENT = 1;
 
+    private static User organizer;
+    private static User user;
+    private static Trip trip;
+
     @BeforeClass
     public static void createChatManager() throws TripsException {
         ClassPathXmlApplicationContext ctx = new ClassPathXmlApplicationContext("applicationContext.xml");
         tripsService = (TripsServiceImpl)ctx.getBean("tripsService");
+
+        organizer = tripsService.createUser(new User("organizer.121@hotmail.com","xoxoxoxo"));
+        user = tripsService.createUser(new User("chatuser.1.2@hotmail.com","oxoxoxoxo"));
+        trip = tripsService.createTimelessTrip("ChatTrip","Chat", TripPrivacy.PROTECTED, organizer);
+
+        tripsService.publishTrip(trip, organizer);
+        tripsService.subscribe(trip, user);
+        tripsService.startTrip(trip, organizer);
+        tripsService.startTrip(trip, user);
     }
 
     @Test
-    public void successfulInitializeChat() throws TripsException {
-        tripsService.createUser(new User("organizer.121@hotmail.com","xoxoxoxo"));
-        User organizer = tripsService.findUser("organizer.121@hotmail.com");
-        Trip trip = tripsService.createTimelessTrip("ChatTrip","Chat", TripPrivacy.PROTECTED, organizer);
-        tripsService.publishTrip(trip, organizer);
-
-        tripsService.createUser(new User("chatuser.1.2@hotmail.com","oxoxoxoxo"));
-        User subscriber = tripsService.findUser("chatuser.1.2@hotmail.com");
-
-        tripsService.subscribe(trip, subscriber);
-        tripsService.startTrip(trip, organizer);
-        tripsService.startTrip(trip, subscriber);
+    public void successfulInitializeChat() throws TripsException
+    {
         List<Enrollment> enrollments = tripsService.findEnrollmentsByTrip(trip);
-        assertNotNull(tripsService.initializeConversation(enrollments.get(FIRST_ELEMENT), enrollments.get(SECOND_ELEMENT)));
+        assertEquals(ChatServer.class, (tripsService.initializeConversation(enrollments.get(FIRST_ELEMENT), enrollments.get(SECOND_ELEMENT))).getClass());
+    }
+
+    @Test(expected = TripsException.class)
+    public void failedInitializeChatInvalidEnrollment() throws TripsException
+    {
+        List<Enrollment> enrollments = tripsService.findEnrollmentsByTrip(trip);
+        tripsService.initializeConversation(enrollments.get(FIRST_ELEMENT), new Enrollment(trip, new User("Jos@gmail.com", "josjos")));
+    }
+
+    @Test(expected = TripsException.class)
+    public void failedInitializeChatTripNotStarted() throws TripsException
+    {
+        User user = tripsService.createUser(new User("chatuser.1.2.3@hotmail.com","oxoxoxoxo"));
+        Trip trip = tripsService.createTimelessTrip("ChatTrip","Chat", TripPrivacy.PROTECTED, organizer);
+
+        tripsService.publishTrip(trip, organizer);
+        tripsService.subscribe(trip, user);
+        tripsService.startTrip(trip, organizer);
+
+        List<Enrollment> enrollments = tripsService.findEnrollmentsByTrip(trip);
+        tripsService.initializeConversation(enrollments.get(FIRST_ELEMENT), enrollments.get(SECOND_ELEMENT));
+    }
+
+    @Test(expected = TripsException.class)
+    public void failedInitializeChatInvalidTrip() throws TripsException
+    {
+        List<Enrollment> enrollments = tripsService.findEnrollmentsByTrip(trip);
+        tripsService.initializeConversation(enrollments.get(FIRST_ELEMENT), new Enrollment(new TimelessTrip("triptitle", "tripdescription", TripPrivacy.PROTECTED, organizer), user));
     }
 }

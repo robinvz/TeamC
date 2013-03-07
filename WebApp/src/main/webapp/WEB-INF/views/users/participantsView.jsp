@@ -16,6 +16,7 @@
     <jsp:include page="../tripHeaderView.jsp"/>
 
     <div class="inner-content">
+        <h3><spring:message code="Participants"/></h3>
         <c:choose>
             <c:when test="${trip.privacy == 'PUBLIC'}">
                 <!--Do nothing-->

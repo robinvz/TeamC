@@ -17,7 +17,7 @@ h2{
 }
 
 .inner-content{
-    margin-top: 65px;
+
 }
 
 #subscribeButton{
@@ -35,7 +35,7 @@ h2{
 #myCanvas{
     height: 200px;
     width: 960px;
-    background: #f5f5dc;
+    background: rgb(57, 57, 63);
     -moz-box-shadow: 3px 3px 4px rgb(3, 3, 3);
     -webkit-box-shadow: 3px 3px 4px rgb(3, 3, 3);
     box-shadow: 3px 3px 4px rgb(0, 0, 0);

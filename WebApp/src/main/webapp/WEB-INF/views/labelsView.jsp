@@ -15,6 +15,7 @@
     <jsp:include page="tripHeaderView.jsp"/>
 
     <div class="inner-content">
+        <h3>Labels</h3>
         <c:if test="${error != null}">
             <span class="errorblock">${error}</span>
         </c:if>
