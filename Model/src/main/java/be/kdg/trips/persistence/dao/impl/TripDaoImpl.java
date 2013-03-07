@@ -21,6 +21,7 @@ import java.util.List;
  * Karel de Grote-Hogeschool
  * 2012-2013
  */
+@SuppressWarnings("ALL")
 @Repository
 public class TripDaoImpl implements TripDao{
     private EntityManager entityManager;
@@ -78,7 +79,7 @@ public class TripDaoImpl implements TripDao{
 
     @Override
     public Trip getTrip(int id) throws TripsException {
-        Query query = entityManager.createQuery("SELECT t FROM Trip t LEFT JOIN FETCH t.enrollments LEFT JOIN FETCH t.locations LEFT JOIN FETCH t.requisites LEFT JOIN FETCH t.invitations WHERE t.id = :id");
+        Query query = entityManager.createQuery("SELECT DISTINCT t FROM Trip t LEFT JOIN FETCH t.enrollments LEFT JOIN FETCH t.locations LEFT JOIN FETCH t.requisites LEFT JOIN FETCH t.invitations WHERE t.id = :id");
         query.setParameter("id", id);
         try
         {
@@ -92,7 +93,7 @@ public class TripDaoImpl implements TripDao{
 
     @Override
     public Trip getTripByQuestion(Question question) throws TripsException {
-        Query query = entityManager.createQuery("SELECT t FROM Trip t LEFT JOIN FETCH t.locations location WHERE location = (FROM Location l WHERE l.question = :question)");
+        Query query = entityManager.createQuery("SELECT DISTINCT t FROM Trip t LEFT JOIN FETCH t.locations location WHERE location = (SELECT l FROM Location l WHERE l.question = :question)");
         query.setParameter("question", question);
         try
         {
