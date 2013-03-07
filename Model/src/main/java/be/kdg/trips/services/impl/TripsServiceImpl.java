@@ -195,6 +195,11 @@ public class TripsServiceImpl implements TripsService
     }
 
     @Override
+    public void changeThemeOfTrip(Trip trip, String theme) throws TripsException {
+        tripController.changeThemeOfTrip(trip, theme);
+    }
+
+    @Override
     public void deleteTrip(Trip trip, User loggedInUser) throws TripsException, MessagingException {
         tripController.deleteTrip(trip, loggedInUser);
     }

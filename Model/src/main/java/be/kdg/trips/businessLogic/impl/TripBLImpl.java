@@ -465,6 +465,16 @@ public class TripBLImpl implements TripBL
 
     @Override
     @Transactional
+    public void changeThemeOfTrip(Trip trip, String theme) throws TripsException {
+        if(isExistingTrip(trip.getId()))
+        {
+            trip.setTheme(theme);
+            tripDao.updateTrip(trip);
+        }
+    }
+
+    @Override
+    @Transactional
     public void deleteTrip(Trip trip, User user) throws TripsException, MessagingException {
         if(isExistingTrip(trip.getId()) && userBL.isExistingUser(user.getEmail()) && isOrganizer(trip, user))
         {

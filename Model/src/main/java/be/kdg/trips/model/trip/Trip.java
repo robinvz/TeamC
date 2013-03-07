@@ -60,6 +60,8 @@ public abstract class Trip implements Serializable, TripInterface {
     private static int counter=0;
     @Lob
     private byte[] image;
+    @NotNull
+    private String theme;
 
     public Trip(String title, String description, TripPrivacy privacy, User organizer) {
         this.id = getNextId();
@@ -77,10 +79,10 @@ public abstract class Trip implements Serializable, TripInterface {
         }
         this.organizer = organizer;
         this.labels = new HashSet<>();
-
         this.enrollments = new HashSet<>();
         this.locations = new ArrayList<>();
         this.requisites = new HashMap<>();
+        this.theme = "default";
     }
 
     @Override
@@ -273,6 +275,14 @@ public abstract class Trip implements Serializable, TripInterface {
 
     public void setImage(byte[] image) {
         this.image = image;
+    }
+
+    public String getTheme() {
+        return theme;
+    }
+
+    public void setTheme(String theme) {
+        this.theme = theme;
     }
 
     private synchronized int getNextId() {

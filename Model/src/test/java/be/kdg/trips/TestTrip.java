@@ -668,5 +668,12 @@ public class TestTrip {
         tripsService.addImageToTrip(trip, organizer, bFile);
         assertNotNull(tripsService.findTripById(trip.getId(), organizer).getImage());
     }
+
+    @Test
+    public void successfulChangeThemeOfTrip() throws TripsException {
+        Trip trip = tripsService.createTimelessTrip("Stadswandeling", "Wandeling in 't Stad", TripPrivacy.PUBLIC, organizer);
+        tripsService.changeThemeOfTrip(trip, "green");
+        assertEquals("green", trip.getTheme());
+    }
 }
 
