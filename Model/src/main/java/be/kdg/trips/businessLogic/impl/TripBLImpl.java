@@ -49,7 +49,7 @@ public class TripBLImpl implements TripBL
         if(userBL.isExistingUser(organizer.getEmail()))
         {
             trip = new TimelessTrip(title, description, privacy, organizer);
-            tripDao.createTrip(trip);
+            tripDao.saveTrip(trip);
             if(trip.getPrivacy()==TripPrivacy.PRIVATE)
             {
                 enrollOrganizer(organizer, trip);
@@ -118,7 +118,7 @@ public class TripBLImpl implements TripBL
                         throw new TripsException("Trip is only repeatable 1-15 times");
                     }
                 }
-                tripDao.createTrip(trip);
+                tripDao.saveTrip(trip);
                 if(trip.getPrivacy()==TripPrivacy.PRIVATE)
                 {
                     enrollOrganizer(organizer, trip);
@@ -369,10 +369,28 @@ public class TripBLImpl implements TripBL
     public void addDateToTimeBoundTrip(Date startDate, Date endDate, Trip trip, User organizer) throws TripsException {
         if(isExistingTrip(trip.getId()) && userBL.isExistingUser(organizer.getEmail()) && isOrganizer(trip, organizer))
         {
-            if(areDatesUnoccupied(startDate, endDate, trip))
+            if(areDatesUnoccupied(startDate, endDate, trip) && areDatesValid(startDate, endDate))
             {
                 ((TimeBoundTrip) trip).addDates(startDate, endDate);
                 tripDao.updateTrip(trip);
+            }
+        }
+    }
+
+    @Override
+    @Transactional
+    public void removeDateFromTimeBoundTrip(Date startDate, Trip trip, User user) throws TripsException {
+        if(isExistingTrip(trip.getId()) && userBL.isExistingUser(user.getEmail()) && isOrganizer(trip, user) && trip.isTimeBoundTrip())
+        {
+            TimeBoundTrip tbTrip = (TimeBoundTrip)trip;
+            if(tbTrip.getDates().size()>1)
+            {
+                tbTrip.removeDates(startDate);
+                tripDao.updateTrip(trip);
+            }
+            else
+            {
+                throw new TripsException("Timebound trip has to have atleast one start and end date");
             }
         }
     }

@@ -27,7 +27,7 @@ public interface TripDao {
     public Trip getTripByQuestion(Question question) throws TripsException;
     public Location getLocationById(int id) throws TripsException;
 
-    public void createTrip(Trip trip);
+    public void saveTrip(Trip trip);
     public void updateTrip(Trip trip);
     public void saveOrUpdateLocation(Location location);
 

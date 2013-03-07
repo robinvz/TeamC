@@ -111,7 +111,7 @@ public class TripDaoImpl implements TripDao{
     }
 
     @Override
-    public void createTrip(Trip trip)
+    public void saveTrip(Trip trip)
     {
         entityManager.persist(trip);
     }

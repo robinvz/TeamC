@@ -168,6 +168,11 @@ public class TripsServiceImpl implements TripsService
     }
 
     @Override
+    public void removeDateFromTimeBoundTrip(Date startDate, Trip trip, User user) throws TripsException {
+        tripController.removeDateFromTimeBoundTrip(startDate, trip, user);
+    }
+
+    @Override
     public void addRequisiteToTrip(String name, int amount, Trip trip, User organizer) throws TripsException
     {
         tripController.addRequisiteToTrip(name, amount, trip, organizer);

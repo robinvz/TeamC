@@ -145,8 +145,8 @@ public class UserBLImpl implements UserBL
     {
         if(isExistingUser(email))
         {
-            String password = userDao.getUser(email).getPassword();
-            MailSender.sendMail("password retrieved", "Your password is '" + password + "'", email);
+            User user = userDao.getUser(email);
+            MailSender.sendMail("password retrieved", "Your password is '" + user.getPassword() + "'", user.getEmail());
         }
     }
 
