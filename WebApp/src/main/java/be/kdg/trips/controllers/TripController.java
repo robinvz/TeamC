@@ -815,24 +815,30 @@ public class TripController {
         return new ModelAndView("redirect:/trip/" + trip.getId() + "/locations");
     }
 
-    @RequestMapping(value = "/inviteUser/{tripId}/findUsersByKeyword", method = RequestMethod.POST)
+    @RequestMapping(value = "/inviteUser/{tripId}/findUsersByKeyword", method = RequestMethod.GET)
     public ModelAndView getUsersByKeyword(@PathVariable int tripId, @RequestParam String keyword) {
         User user = (User) session.getAttribute("user");
         Map parameters;
         if (isLoggedIn()) {
             parameters = new HashMap();
             try {
-                parameters.put("usersByKeyword", tripsService.findUsersByKeyword(keyword, user));
+                parameters.put("trip", tripsService.findTripById(tripId, user));
+                try {
+                    parameters.put("usersByKeyword", tripsService.findUsersByKeyword(keyword, user));
+                } catch (TripsException e) {
+                    // keyword not found in users
+                }
             } catch (TripsException e) {
-                // keyword not found in users
+                // trip not found
             }
+
         } else {
             return new ModelAndView("loginView", "loginBean", new LoginBean());
         }
-        return new ModelAndView("inviteUserView", parameters);
+        return new ModelAndView("/users/inviteUserView", parameters);
     }
 
-    @RequestMapping(value = "/inviteUser/{tripId}/{userByKeywordEmail}/sendInvite", method = RequestMethod.GET)
+    @RequestMapping(value = "/inviteUser/{tripId}/sendInvite/{userByKeywordEmail}", method = RequestMethod.GET)
     public ModelAndView inviteUser(@PathVariable int tripId, @PathVariable String userByKeywordEmail) {
         User user = (User) session.getAttribute("user");
         Trip trip = null;
@@ -850,7 +856,7 @@ public class TripController {
         } else {
             return new ModelAndView("loginView", "loginBean", new LoginBean());
         }
-        return new ModelAndView("redirect:/inviteUser/{tripId}");
+        return new ModelAndView("redirect:/inviteUser/" + trip.getId());
     }
 
     @RequestMapping(value = "/editTripPic/{tripId}", method = RequestMethod.GET)

@@ -20,15 +20,9 @@
         </c:if>
 
         <c:if test="${not empty user && trip.organizer == user}">
-            <c:if test="${not empty trip.invitations}">
-                <c:forEach items="${trip.invitations}" var="invitation">
-                    <c:if test="${invitation.user == user}">
-                        <c:set value="true" var="invited"/>
-                    </c:if>
-                </c:forEach>
-            </c:if>
             <h3>Invite a user</h3>
-            <form action="/inviteUser/${trip.id}/findUsersByKeyword" method="POST">
+
+            <form action="/inviteUser/${trip.id}/findUsersByKeyword" method="GET">
                 <table>
                     <tr>
                         <td><spring:message code="User"/></td>
@@ -47,15 +41,21 @@
             <c:otherwise>
                 <c:set var="count" value="0" scope="page"/>
                 <table>
+                    <thead>
+                    <tr>
+                        <th></th>
+                        <th><spring:message code="FirstName"/></th>
+                        <th><spring:message code="LastName"/></th>
+                        <th>Email</th>
+                        <th></th>
+                    </tr>
+                    </thead>
+                    <tbody>
                     <c:forEach items="${usersByKeyword}" var="userByKeyword">
-
                         <tr id="user-${userByKeyword.id}">
                             <td>
                                 <c:set var="count" value="${count + 1}" scope="page"/>
                                 <c:out value="${count}"></c:out>
-                            </td>
-                            <td>
-                                    ${userByKeyword.email}
                             </td>
                             <td>
                                     ${userByKeyword.firstName}
@@ -64,15 +64,19 @@
                                     ${userByKeyword.lastName}
                             </td>
                             <td>
-                                <c:if test="${invited == false}">
-                                <a href="/inviteUser/${trip.id}/sendInvite/${userByKeyword.email}">
-                                    <button type="button" id="btn-inviteUser"><spring:message code="Invite"/>
-                                    </button>
-                                    </c:if>
-                                </a>
+                                    ${userByKeyword.email}
+                            </td>
+                            <td>
+                                <c:if test="${invitation.user != user}">
+                                    <a href="/inviteUser/${trip.id}/sendInvite/${userByKeyword.email}">
+                                        <button type="button" id="btn-inviteUser"><spring:message code="Invite"/>
+                                        </button>
+                                    </a>
+                                </c:if>
                             </td>
                         </tr>
                     </c:forEach>
+                    </tbody>
                 </table>
             </c:otherwise>
         </c:choose>
