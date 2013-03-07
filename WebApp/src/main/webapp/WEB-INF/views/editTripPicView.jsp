@@ -14,7 +14,7 @@
     <jsp:include page="baseView.jsp"/>
     <jsp:include page="tripHeaderView.jsp"/>
 
-    <div class="content">
+    <div class="inner-content">
         <section>
             <article>
                 <h3>Change picture</h3>

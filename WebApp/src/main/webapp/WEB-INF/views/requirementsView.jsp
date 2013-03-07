@@ -18,6 +18,7 @@
     <jsp:include page="tripHeaderView.jsp"/>
 
     <div class="inner-content">
+        <h3><spring:message code="Requisites"/></h3>
         <c:if test="${error != null}">
             <span class="errorblock">${error}</span>
         </c:if>

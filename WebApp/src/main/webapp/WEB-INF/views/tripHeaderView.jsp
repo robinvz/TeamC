@@ -5,7 +5,7 @@
 <![endif]-->
 
 
-<canvas id="myCanvas" ></canvas>
+<canvas id="myCanvas" width="960" height="200"></canvas>
 <script>
     var canvas = document.getElementById('myCanvas');
     var context = canvas.getContext('2d');
@@ -15,7 +15,7 @@
 
     context.font = '30pt Calibri';
     context.textAlign = 'center';
-    context.fillStyle = '#FF0000';
+    context.fillStyle = '#FFFFFF';
     context.fillText('${trip.title}', x, y);
     imageObj.onload = function() {
         context.drawImage(imageObj, 0, 0);
