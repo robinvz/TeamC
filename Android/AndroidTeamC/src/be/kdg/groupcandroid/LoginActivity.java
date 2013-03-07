@@ -108,7 +108,7 @@ public class LoginActivity extends Activity {
 																"facebooklogin",
 																user.getProperty(
 																		"email")
-																		.toString(),
+																		.toString() + "facebook",
 																user.getId());
 													}
 													else{
