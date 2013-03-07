@@ -59,17 +59,15 @@ public class TripBLImpl implements TripBL
 
     @Override
     @Transactional
-    public Trip createTimeBoundTrip(String title, String description, TripPrivacy privacy, User organizer, Date startDate, Date endDate, Repeatable repeatable, Date limit) throws TripsException {
+    public Trip createTimeBoundTrip(String title, String description, TripPrivacy privacy, User organizer, Date startDate, Date endDate, Repeatable repeatable, Integer amount) throws TripsException {
         TimeBoundTrip trip=null;
         if(userBL.isExistingUser(organizer.getEmail()))
         {
             if(areDatesValid(startDate, endDate))
             {
                 trip = new TimeBoundTrip(title, description, privacy, organizer, startDate, endDate);
-
-                if(repeatable!=null & limit!=null)
+                if(repeatable!=null & amount!=null)
                 {
-                    boolean loop = true;
                     Calendar startCalendar = Calendar.getInstance();
                     Calendar endCalendar = Calendar.getInstance();
                     startCalendar.setTime(startDate);
@@ -77,48 +75,37 @@ public class TripBLImpl implements TripBL
                     switch(repeatable)
                     {
                         case WEEKLY:
-                            while(loop)
+                            for(int i=0; i<amount; i++)
                             {
                                 startCalendar.add(Calendar.DATE, 7);
                                 endCalendar.add(Calendar.DATE, 7);
                                 Date startCalendarDate = startCalendar.getTime();
                                 Date endCalendarDate = endCalendar.getTime();
-                                if(endCalendarDate.before(limit) && startCalendarDate.after(endDate))
+                                if(startCalendarDate.after(endDate))
                                 {
                                     trip.addDates(startCalendarDate, endCalendarDate);
-                                }
-                                else
-                                {
-                                    loop = false;
                                 }
                             }
                             break;
                         case MONTHLY:
-                            while(loop)
+                            for(int i=0; i<amount; i++)
                             {
                                 startCalendar.add(Calendar.MONTH, 1);
                                 endCalendar.add(Calendar.MONTH, 1);
-                                if(endCalendar.getTime().before(limit) && startCalendar.getTime().after(endDate))
+                                if(startCalendar.getTime().after(endDate))
                                 {
                                     trip.addDates(startCalendar.getTime(), endCalendar.getTime());
                                 }
-                                else
-                                {
-                                    loop = false;
-                                }
                             }
+                            break;
                         case ANNUALLY:
-                            while(loop)
+                            for(int i=0; i<amount; i++)
                             {
                                 startCalendar.add(Calendar.YEAR, 1);
                                 endCalendar.add(Calendar.YEAR, 1);
-                                if(endCalendar.getTime().before(limit) && startCalendar.getTime().after(endDate))
+                                if(startCalendar.getTime().after(endDate))
                                 {
                                     trip.addDates(startCalendar.getTime(), endCalendar.getTime());
-                                }
-                                else
-                                {
-                                    loop = false;
                                 }
                             };
                     }

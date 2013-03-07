@@ -22,7 +22,7 @@ import java.util.List;
 public interface TripBL
 {
     public Trip createTimelessTrip(String title, String description, TripPrivacy privacy, User organizer) throws TripsException;
-    public Trip createTimeBoundTrip(String title, String description, TripPrivacy privacy, User organizer, Date startDate, Date endDate, Repeatable repeatable, Date limit) throws TripsException;
+    public Trip createTimeBoundTrip(String title, String description, TripPrivacy privacy, User organizer, Date startDate, Date endDate, Repeatable repeatable, Integer amount) throws TripsException;
 
     public List<Trip> findNonPrivateTripsByKeyword(String keyword, User user) throws TripsException;
     public List<Trip> findAllNonPrivateTrips(User user) throws TripsException;
