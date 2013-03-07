@@ -35,11 +35,32 @@
                         </tr>
                         <tr>
                             <td><spring:message code="Privacy"/></td>
-                            <td>${trip.privacy}</td>
+                            <td>
+                                <c:choose>
+                                    <c:when test="${trip.privacy == 'PUBLIC'}">
+                                        <spring:message code="Public"/>
+                                    </c:when>
+                                    <c:when test="${trip.privacy == 'PROTECTED'}">
+                                        <spring:message code="Protected"/>
+                                    </c:when>
+                                    <c:otherwise>
+                                        <spring:message code="Private"/>
+                                    </c:otherwise>
+                                </c:choose>
+                            </td>
                         </tr>
                         <tr>
                             <td><label><spring:message code="Active"/></label></td>
-                            <td>${trip.active}</td>
+                            <td>
+                                <c:choose>
+                                    <c:when test="${trip.active==true}">
+                                        <spring:message code="IsActive"/>
+                                    </c:when>
+                                    <c:otherwise>
+                                        <spring:message code="IsNotActive"/>
+                                    </c:otherwise>
+                                </c:choose>
+                            </td>
                         </tr>
                         <c:if test="${trip.timeBoundTrip==true}">
                             </tr>
@@ -62,9 +83,14 @@
                         <tr>
                             <td>
                                 <c:forEach items="${trip.enrollments}" var="enrollment">
-                                    <c:if test="${enrollment.status == 'BUSY'}">
-                                        Enrollment is active
-                                    </c:if>
+                                    <c:choose>
+                                        <c:when test="${enrollment.status == 'BUSY'}">
+                                            <spring:message code="EnrollmentStarted"/>
+                                        </c:when>
+                                        <c:when test="${enrollment.status == 'FINISHED'}">
+                                            <spring:message code="EnrollmentStopped"/>
+                                        </c:when>
+                                    </c:choose>
                                 </c:forEach>
                             </td>
                         </tr>
@@ -94,8 +120,7 @@
                             </c:forEach>
                         </c:if>
                     </c:if>
-                    valid ${validTrip}
-                    subscribed ${subscribed}
+
                     <c:if test="${validTrip == true}">
                         <c:choose>
                             <c:when test="${subscribed}">

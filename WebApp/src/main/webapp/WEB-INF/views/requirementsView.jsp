@@ -24,6 +24,7 @@
            <span class="successblock">${success}</span>
         </c:if>
 
+        <h2><spring:message code="Requisites"/></h2>
         <p>
         <c:if test="${not empty user && user == trip.organizer}">
             <table>
