@@ -120,7 +120,7 @@ public class User implements UserInterface, Serializable {
         return address;
     }
 
-    protected String getPassword() {
+    public String getPassword() {
         return password;
     }
 

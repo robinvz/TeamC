@@ -51,6 +51,4 @@ public interface TripBL
     public boolean isExistingTrip(int id) throws TripsException;
     public boolean isOrganizer(Trip trip, User organizer) throws TripsException;
     public boolean isTripNotActive(Trip trip) throws TripsException;
-
-    public void sendMail(String subject, String text, List<InternetAddress[]> recipients) throws MessagingException;
 }
