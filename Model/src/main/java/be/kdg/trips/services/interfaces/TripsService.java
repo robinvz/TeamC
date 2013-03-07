@@ -33,6 +33,7 @@ public interface TripsService
 
     public void updateUser(User user, String firstName, String lastName, String street, String houseNr, String city, String postalCode, String country, byte[] profilePicture) throws TripsException;
     public void changePassword(User user, String oldPassword, String newPassword) throws TripsException;
+    public void forgotPassword(String email) throws TripsException, MessagingException;
 
     public void deleteUser(User user) throws TripsException;
 

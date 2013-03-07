@@ -83,4 +83,13 @@ public class TestChat {
         List<Enrollment> enrollments = tripsService.findEnrollmentsByTrip(trip);
         tripsService.initializeConversation(enrollments.get(FIRST_ELEMENT), new Enrollment(new TimelessTrip("triptitle", "tripdescription", TripPrivacy.PROTECTED, organizer), user));
     }
+    /*
+    @Test
+    public void successfulSendMessage() throws TripsException
+    {
+        List<Enrollment> enrollments = tripsService.findEnrollmentsByTrip(trip);
+        ChatServer chatServer = tripsService.initializeConversation(enrollments.get(FIRST_ELEMENT), enrollments.get(SECOND_ELEMENT));
+        chatServer.sendMessage("Testje");
+    }
+    */
 }

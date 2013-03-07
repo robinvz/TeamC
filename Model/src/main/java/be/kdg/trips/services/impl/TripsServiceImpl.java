@@ -76,6 +76,12 @@ public class TripsServiceImpl implements TripsService
     }
 
     @Override
+    public void forgotPassword(String email) throws TripsException, MessagingException
+    {
+        userController.forgotPassword(email);
+    }
+
+    @Override
     public void deleteUser(User user) throws TripsException
     {
         userController.deleteUser(user);
