@@ -10,15 +10,9 @@ import javax.persistence.*;
  * Karel de Grote-Hogeschool
  * 2012-2013
  */
-@Entity
-@Table(name = "T_CHATSERVER")
 public class ChatServer {
-    @ManyToOne
-    @JoinColumn(name = "user1Id")
     @NotNull
     private User user1;
-    @ManyToOne
-    @JoinColumn(name = "user2Id")
     @NotNull
     private User user2;
 
