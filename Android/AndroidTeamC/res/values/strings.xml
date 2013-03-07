@@ -7,18 +7,9 @@
     <string name="login">Login</string>
     <string name="username">Username</string>
     <string name="password">Password</string>
-
-
-    <string name="sample_content">Blablabla
-    </string>
-
-
+    <string name="sample_content">Blablabla</string>
     <string name="trips_overview">Trips Overview</string>
-
-
     <string name="login_with_facebook">Login With Facebook</string>
-
-
     <string name="default_image">default_image</string>
     <string name="chat_background_description">Trip Background</string>
     <string name="logout">Logout</string>
@@ -27,8 +18,14 @@
     <string name="app_id">118452395005980</string>
     <string name="subscribe">Subscribe</string>
     <string name="start">Start</string>
-        <string name="stop">Stop</string>
-    
-        <string name="unsubscribe">Unsubscribe</string>
-    
+    <string name="stop">Stop</string>
+    <string name="unsubscribe">Unsubscribe</string>
+    <string name="noquestion">No question for this location!</string>
+    <string name="possibleanswers">Possible Answers</string>
+    <string name="alreadyanswered">You already answered the question</string>
+    <string name="answered">You answered the question</string>
+    <string name="all">All</string>
+     <string name="subscribed">Subscribed</string>
+        <string name="created">Created</string>
+     
 </resources>

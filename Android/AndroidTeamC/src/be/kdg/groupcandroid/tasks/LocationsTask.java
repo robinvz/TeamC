@@ -87,11 +87,11 @@ public class LocationsTask extends AsyncTask<String, Void, ArrayList<Location>> 
 								"question");
 						Location location = new Location(id, title,
 								description, latitude, longitude);
+						location.addQuestion(question);
 						try{
 							JSONArray answers = array.getJSONObject(i)
 									.getJSONArray("possibleAnswers");
-							for (int j = 0; j < answers.length(); answers
-									.getString(j)) {
+							for (int j = 0; j < answers.length(); j++) {
 								location.addAnswer(answers.getString(j));
 							}
 						}catch (Exception e){
@@ -115,7 +115,7 @@ public class LocationsTask extends AsyncTask<String, Void, ArrayList<Location>> 
 	}
 
 	protected void onPreExecute() {
-		this.dialog.setMessage("Logging In");
+		this.dialog.setMessage("Getting Locations");
 		this.dialog.show();
 	}
 

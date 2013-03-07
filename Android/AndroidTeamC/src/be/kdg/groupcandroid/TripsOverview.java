@@ -21,12 +21,12 @@ import android.widget.Toast;
 
 public class TripsOverview extends FragmentActivity {
 
-	private static final String[] CONTENT = new String[] { "All",
-			"Subscribed", "Created" };
+	private static String[] CONTENT;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
+		CONTENT = new String[]{getResources().getString(R.string.all), getResources().getString(R.string.subscribed), getResources().getString(R.string.created)};
 		setContentView(R.layout.tripslist);
 
 		FragmentPagerAdapter adapter = new MyAdapter(

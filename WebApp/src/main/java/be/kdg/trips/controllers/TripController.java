@@ -5,10 +5,7 @@ import be.kdg.trips.exception.TripsException;
 import be.kdg.trips.model.enrollment.Enrollment;
 import be.kdg.trips.model.location.Location;
 import be.kdg.trips.model.question.Question;
-import be.kdg.trips.model.trip.TimeBoundTrip;
-import be.kdg.trips.model.trip.TimelessTrip;
-import be.kdg.trips.model.trip.Trip;
-import be.kdg.trips.model.trip.TripPrivacy;
+import be.kdg.trips.model.trip.*;
 import be.kdg.trips.model.user.User;
 import be.kdg.trips.services.interfaces.TripsService;
 import net.sf.json.JSONArray;
@@ -309,12 +306,23 @@ public class TripController {
     @RequestMapping(value = "/createTimeBoundTrip", method = RequestMethod.POST)
     public ModelAndView createTimeBoundTrip(@RequestParam String title, @RequestParam String
             description, @RequestParam TripPrivacy privacy,
-                                            @RequestParam String startDate, @RequestParam String endDate, Locale locale) {
+                                            @RequestParam String startDate, @RequestParam String endDate, Locale locale, @RequestParam String repeat, @RequestParam String limit) {
         User user = (User) session.getAttribute("user");
         if (isLoggedIn()) {
             try {
-                SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
-                Trip test = tripsService.createTimeBoundTrip(title, description, privacy, user, sdf.parse(startDate), sdf.parse(endDate));
+                startDate =  startDate.replace("T", " ");
+                endDate = endDate.replace('T', ' ');
+                SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm");
+                Repeatable rp = null;
+                Integer limitInt = null;
+                if (!repeat.contentEquals("ONCE")){
+                    rp = Repeatable.valueOf(repeat);
+                    limitInt = Integer.parseInt(limit);
+                }
+                else{
+                    return new ModelAndView("/users/createTripView");
+                }
+                Trip test = tripsService.createTimeBoundTrip(title, description, privacy, user, sdf.parse(startDate), sdf.parse(endDate), rp , limitInt);
                 return new ModelAndView("redirect:trip/" + test.getId());
             } catch (TripsException e) {
                 if (e.getMessage().contains("future")) {
@@ -324,6 +332,8 @@ public class TripController {
                 }
             } catch (ParseException e) {
                 return new ModelAndView("/users/createTripView", "error", e.getMessage());
+            } catch (NumberFormatException n){
+                return new ModelAndView("/users/createTripView", "error", messageSource.getMessage("AmountNotANumber", null, locale));
             }
         } else {
             return new ModelAndView("loginView", "loginBean", new LoginBean());
@@ -805,7 +815,7 @@ public class TripController {
         return new ModelAndView("redirect:/trip/" + trip.getId() + "/locations");
     }
 
-    @RequestMapping(value = "/inviteUser/{tripId}/findUsersByKeyword", method = RequestMethod.GET)
+    @RequestMapping(value = "/inviteUser/{tripId}/findUsersByKeyword", method = RequestMethod.POST)
     public ModelAndView getUsersByKeyword(@PathVariable int tripId, @RequestParam String keyword) {
         User user = (User) session.getAttribute("user");
         Map parameters;
@@ -820,6 +830,27 @@ public class TripController {
             return new ModelAndView("loginView", "loginBean", new LoginBean());
         }
         return new ModelAndView("inviteUserView", parameters);
+    }
+
+    @RequestMapping(value = "/inviteUser/{tripId}/{userByKeywordEmail}/sendInvite", method = RequestMethod.GET)
+    public ModelAndView inviteUser(@PathVariable int tripId, @PathVariable String userByKeywordEmail) {
+        User user = (User) session.getAttribute("user");
+        Trip trip = null;
+        if (isLoggedIn()) {
+            try {
+                trip = tripsService.findTripById(tripId, user);
+                try {
+                    tripsService.invite(trip, user, tripsService.findUser(userByKeywordEmail));
+                } catch (MessagingException e) {
+                    // failed to invite user
+                }
+            } catch (TripsException e) {
+                //Failed to find trip
+            }
+        } else {
+            return new ModelAndView("loginView", "loginBean", new LoginBean());
+        }
+        return new ModelAndView("redirect:/inviteUser/{tripId}");
     }
 
     @RequestMapping(value = "/editTripPic/{tripId}", method = RequestMethod.GET)
