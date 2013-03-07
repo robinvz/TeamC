@@ -68,46 +68,53 @@ public class TripBLImpl implements TripBL
                 trip = new TimeBoundTrip(title, description, privacy, organizer, startDate, endDate);
                 if(repeatable!=null & amount!=null)
                 {
-                    Calendar startCalendar = Calendar.getInstance();
-                    Calendar endCalendar = Calendar.getInstance();
-                    startCalendar.setTime(startDate);
-                    endCalendar.setTime(endDate);
-                    switch(repeatable)
+                    if(amount>1 && amount<15)
                     {
-                        case WEEKLY:
-                            for(int i=0; i<amount; i++)
-                            {
-                                startCalendar.add(Calendar.DATE, 7);
-                                endCalendar.add(Calendar.DATE, 7);
-                                Date startCalendarDate = startCalendar.getTime();
-                                Date endCalendarDate = endCalendar.getTime();
-                                if(startCalendarDate.after(endDate))
+                        Calendar startCalendar = Calendar.getInstance();
+                        Calendar endCalendar = Calendar.getInstance();
+                        startCalendar.setTime(startDate);
+                        endCalendar.setTime(endDate);
+                        switch(repeatable)
+                        {
+                            case WEEKLY:
+                                for(int i=0; i<amount; i++)
                                 {
-                                    trip.addDates(startCalendarDate, endCalendarDate);
+                                    startCalendar.add(Calendar.DATE, 7);
+                                    endCalendar.add(Calendar.DATE, 7);
+                                    Date startCalendarDate = startCalendar.getTime();
+                                    Date endCalendarDate = endCalendar.getTime();
+                                    if(startCalendarDate.after(endDate))
+                                    {
+                                        trip.addDates(startCalendarDate, endCalendarDate);
+                                    }
                                 }
-                            }
-                            break;
-                        case MONTHLY:
-                            for(int i=0; i<amount; i++)
-                            {
-                                startCalendar.add(Calendar.MONTH, 1);
-                                endCalendar.add(Calendar.MONTH, 1);
-                                if(startCalendar.getTime().after(endDate))
+                                break;
+                            case MONTHLY:
+                                for(int i=0; i<amount; i++)
                                 {
-                                    trip.addDates(startCalendar.getTime(), endCalendar.getTime());
+                                    startCalendar.add(Calendar.MONTH, 1);
+                                    endCalendar.add(Calendar.MONTH, 1);
+                                    if(startCalendar.getTime().after(endDate))
+                                    {
+                                        trip.addDates(startCalendar.getTime(), endCalendar.getTime());
+                                    }
                                 }
-                            }
-                            break;
-                        case ANNUALLY:
-                            for(int i=0; i<amount; i++)
-                            {
-                                startCalendar.add(Calendar.YEAR, 1);
-                                endCalendar.add(Calendar.YEAR, 1);
-                                if(startCalendar.getTime().after(endDate))
+                                break;
+                            case ANNUALLY:
+                                for(int i=0; i<amount; i++)
                                 {
-                                    trip.addDates(startCalendar.getTime(), endCalendar.getTime());
-                                }
-                            };
+                                    startCalendar.add(Calendar.YEAR, 1);
+                                    endCalendar.add(Calendar.YEAR, 1);
+                                    if(startCalendar.getTime().after(endDate))
+                                    {
+                                        trip.addDates(startCalendar.getTime(), endCalendar.getTime());
+                                    }
+                                };
+                        }
+                    }
+                    else
+                    {
+                        throw new TripsException("Trip is only repeatable 1-15 times");
                     }
                 }
                 tripDao.createTrip(trip);
