@@ -31,17 +31,14 @@
                     </tr>
                     <tr>
                         <td><label><spring:message code="Privacy"/></label></td>
-                        <td><input type="radio" name="privacy" value="PUBLIC" checked="true"><spring:message
-                                code="Public"/> </input></td>
+                        <td><input type="radio" name="privacy" value="PUBLIC" checked="true"><spring:message code="Public"/> </input></td>
                     <tr>
                         <td></td>
-                        <td><input type="radio" name="privacy" value="PROTECTED"><spring:message
-                                code="Protected"/> </input></td>
+                        <td><input type="radio" name="privacy" value="PROTECTED"><spring:message code="Protected"/> </input></td>
                     </tr>
                     <tr>
                         <td></td>
-                        <td><input type="radio" name="privacy" value="PRIVATE"><spring:message
-                                code="Private"/> </input></td>
+                        <td><input type="radio" name="privacy" value="PRIVATE"><spring:message code="Private"/> </input></td>
                     </tr>
                     <tr>
                         <td><label><spring:message code="CreateTbTrip"/></label></td>
@@ -56,24 +53,20 @@
                         <td><input type="datetime-local" name="endDate"></td>
                     </tr>
                     <tr class="optionsTimeBound">
-                        <td><label><spring:message code="Repeat"/></td>
-                        <td><input type="radio" name="repeat" value="ONCE" checked="true"><spring:message
-                                code="Once"/> </input></td>
+                        <td><label><spring:message code="Repeat"/></label></td>
+                        <td><input type="radio" name="repeat" value="ONCE" checked="true"><spring:message code="Once"/> </input></td>
                     </tr>
                     <tr class="optionsTimeBound">
                         <td></td>
-                        <td><input type="radio" name="repeat" value="WEEKLY"><spring:message
-                                code="Weekly"/> </input></td>
+                        <td><input type="radio" name="repeat" value="WEEKLY"><spring:message code="Weekly"/> </input></td>
                     </tr>
                     <tr class="optionsTimeBound">
                         <td></td>
-                        <td><input type="radio" name="repeat" value="MONTHLY"><spring:message
-                                code="Monthly"/> </input></td>
+                        <td><input type="radio" name="repeat" value="MONTHLY"><spring:message code="Monthly"/> </input></td>
                     </tr>
                     <tr class="optionsTimeBound">
                         <td></td>
-                        <td><input type="radio" name="repeat" value="YEARLY"><spring:message
-                                code="Yearly"/> </input></td>
+                        <td><input type="radio" name="repeat" value="ANNUALLY"><spring:message code="Yearly"/> </input></td>
                     </tr>
                     <tr id="amount">
                         <td><label><spring:message code="Amount"/></label></td>

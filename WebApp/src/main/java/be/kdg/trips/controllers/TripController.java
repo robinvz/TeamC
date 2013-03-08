@@ -318,7 +318,7 @@ public class TripController {
         if (isLoggedIn()) {
             try {
                 startDate =  startDate.replace("T", " ");
-                endDate = endDate.replace('T', ' ');
+                endDate = endDate.replace("T", " ");
                 SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm");
                 Repeatable rp = null;
                 Integer limitInt = null;
@@ -326,7 +326,7 @@ public class TripController {
                     rp = Repeatable.valueOf(repeat);
                     limitInt = Integer.parseInt(limit);
                 }
-                Trip test = tripsService.createTimeBoundTrip(title, description, privacy, user, sdf.parse(startDate), sdf.parse(endDate), rp , limitInt);
+                Trip test = tripsService.createTimeBoundTrip(title, description, privacy, user, sdf.parse(startDate), sdf.parse(endDate), rp, limitInt);
                 return new ModelAndView("redirect:trip/" + test.getId());
             } catch (TripsException e) {
                 if (e.getMessage().contains("future")) {

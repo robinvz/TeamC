@@ -5,6 +5,7 @@
     <link rel="stylesheet" href="${pageContext.request.contextPath}/resources/css/main.css"/>
     <link rel="stylesheet" href="${pageContext.request.contextPath}/resources/css/trip.css"/>
     <link rel="shortcut icon" href="${pageContext.request.contextPath}/resources/res/favicon.ico">
+    <link rel="stylesheet" href="<spring:theme code="css"/>" type="text/css"/>
     <script src="${pageContext.request.contextPath}/resources/js/jquery-1.9.0.min.js"></script>
     <script src="${pageContext.request.contextPath}/resources/js/trip.js"></script>
     <title>Profile page</title>
@@ -26,6 +27,21 @@
                         <spring:message code="UploadFile" /><input type="file" name="file" />
                         <input type="submit" value="<spring:message code="UploadButton" />"  >
                     </form>
+
+                    <h3><spring:message code="selectTheme"/></h3>
+                    <table >
+                        <tr>
+                            <td class="theme default-theme"><input class="rdb-theme" type="radio" name="theme" value="default"><spring:message
+                                    code="defaultTheme"/> </input></td>
+                        <tr>
+                            <td class="theme blue-theme"><input class="rdb-theme" type="radio" name="theme" value="blue"><spring:message
+                                    code="blueTheme"/> </input></td>
+                        </tr>
+                        <tr>
+                            <td class="theme dark-theme"><input class="rdb-theme" id="dark" type="radio" name="theme" value="dark"><spring:message
+                                    code="darkTheme"/> </input></td>
+                        </tr>
+                    </table>
                 </div>
 
 
