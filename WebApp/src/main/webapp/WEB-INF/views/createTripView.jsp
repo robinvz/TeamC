@@ -11,7 +11,7 @@
 </head>
 <body>
 <div id="page">
-    <jsp:include page="../baseView.jsp"/>
+    <jsp:include page="baseView.jsp"/>
 
     <div id="content">
         <c:if test="${error != null}">
@@ -53,7 +53,7 @@
                         <td><input type="datetime-local" name="endDate"></td>
                     </tr>
                     <tr class="optionsTimeBound">
-                        <td><label><spring:message code="Repeat"/></label></td>
+                        <td><label><spring:message code="Occurrence"/></label></td>
                         <td><input type="radio" name="repeat" value="ONCE" checked="true"><spring:message code="Once"/> </input></td>
                     </tr>
                     <tr class="optionsTimeBound">
@@ -66,10 +66,10 @@
                     </tr>
                     <tr class="optionsTimeBound">
                         <td></td>
-                        <td><input type="radio" name="repeat" value="ANNUALLY"><spring:message code="Yearly"/> </input></td>
+                        <td><input type="radio" name="repeat" value="ANNUALLY"><spring:message code="Annually"/> </input></td>
                     </tr>
                     <tr id="amount">
-                        <td><label><spring:message code="Amount"/></label></td>
+                        <td><label><spring:message code="Frequency"/></label></td>
                         <td><input type="number" name="limit" min="1" max="15" value="1"/></td>
                     </tr>
                     <tr>

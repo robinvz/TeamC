@@ -31,7 +31,7 @@
 
     <div id="control-bar">
         <c:if test="${not empty user}">
-            <form action="/users/createTrip" method="GET">
+            <form action="/createTrip" method="GET">
                 <button id="btn-addtrip" type="submit" class="btn-blue"><spring:message code="CreateTrip" /></button>
             </form>
         </c:if>
