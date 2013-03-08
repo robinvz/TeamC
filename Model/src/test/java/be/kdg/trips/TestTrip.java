@@ -483,7 +483,7 @@ public class TestTrip {
         tripsService.removeRequisiteFromTrip("vrienden", 6, trip, user);
         assertEquals(1, trip.getRequisites().size());
     }
-    /*
+
     @Test
     public void successfulAddQuestionToLocation() throws TripsException
     {
@@ -493,7 +493,7 @@ public class TestTrip {
         String question = tripsService.findLocationById(location.getId()).getQuestion().getQuestion();
         assertEquals("Wie is hier den baas?", question);
     }
-    */
+
     @Test
     public void successfulGuessAnswer() throws TripsException
     {

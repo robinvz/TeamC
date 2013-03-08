@@ -505,6 +505,7 @@ public class TripBLImpl implements TripBL
     }
 
     @Override
+    @Transactional
     public void addQuestionToLocation(User organizer, Location location, String question, List<String> possibleAnswers, int correctAnswerIndex, byte[] image) throws TripsException
     {
         if(isExistingLocation(location.getId()) && location.getQuestion() == null && userBL.isExistingUser(organizer.getEmail()) && isOrganizer(location.getTrip(), organizer))
