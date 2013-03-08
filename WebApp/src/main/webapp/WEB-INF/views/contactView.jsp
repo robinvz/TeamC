@@ -16,10 +16,7 @@
             <h2>Contact</h2>
         </div>
 
-        <form id="form-contact">
-            <label for="name"><spring:message code="Name"/></label>
-            <input type="text" name="name" id="name">
-
+        <form id="form-contact" action="contact/sendContactMail" method="POST">
             <label for="email">Email</label>
             <input type="text" name="email" id="email">
 
