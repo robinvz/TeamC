@@ -88,7 +88,4 @@ public interface TripsService
 
     public void startTrip(Trip trip, User user) throws TripsException;
     public String stopTrip(Trip trip, User user) throws TripsException;
-
-    //Chat service
-    public ChatServer initializeConversation(Enrollment enrollment1, Enrollment enrollment2) throws TripsException;
 }
