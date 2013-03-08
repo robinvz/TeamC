@@ -5,7 +5,6 @@ import be.kdg.trips.businessLogic.interfaces.EnrollmentBL;
 import be.kdg.trips.businessLogic.interfaces.TripBL;
 import be.kdg.trips.businessLogic.interfaces.UserBL;
 import be.kdg.trips.exception.TripsException;
-import be.kdg.trips.model.chat.ChatServer;
 import be.kdg.trips.model.enrollment.Enrollment;
 import be.kdg.trips.model.invitation.Invitation;
 import be.kdg.trips.model.location.Location;
@@ -139,6 +138,12 @@ public class TripsServiceImpl implements TripsService
     }
 
     @Override
+    public void editTripQuestionDetails(User organizer, Question question, String questionTitle, List<String> possibleAnswers, int correctAnswerIndex)
+    {
+        //To change body of implemented methods use File | Settings | File Templates.
+    }
+
+    @Override
     public void publishTrip(Trip trip, User loggedInUser) throws TripsException {
         tripController.publishTrip(trip, loggedInUser);
     }
@@ -157,6 +162,18 @@ public class TripsServiceImpl implements TripsService
     @Override
     public Location addLocationToTrip(User loggedInUser, Trip trip, double latitude, double longitude, String street, String houseNr, String city, String postalCode, String country, String title, String description, String question, List<String> possibleAnswers, int correctAnswerIndex, byte[] image) throws TripsException {
         return tripController.addLocationToTrip(loggedInUser, trip, latitude, longitude, street, houseNr, city, postalCode, country, title, description, question, possibleAnswers, correctAnswerIndex, image);
+    }
+
+    @Override
+    public void addQuestionToLocation(User organizer, Location location, String question, List<String> possibleAnswers, int correctAnswerIndex, byte[] image) throws TripsException
+    {
+        tripController.addQuestionToLocation(organizer, location, question, possibleAnswers, correctAnswerIndex, image);
+    }
+
+    @Override
+    public void removeQuestionFromLocation(User organizer, Location location)
+    {
+        //To change body of implemented methods use File | Settings | File Templates.
     }
 
     @Override
@@ -263,6 +280,18 @@ public class TripsServiceImpl implements TripsService
     public void removeRequisiteFromEnrollment(String name, int amount, Trip trip, User user, User organizer) throws TripsException
     {
         enrollmentController.removeRequisiteFromEnrollment(name, amount, trip, user, organizer);
+    }
+
+    @Override
+    public void addCostToEnrollment(String name, int amount, Trip trip, User user) throws TripsException
+    {
+        enrollmentController.addCostToEnrollment(name, amount, trip, user);
+    }
+
+    @Override
+    public void removeCostFromEnrollment(String name, int amount, Trip trip, User user) throws TripsException
+    {
+        enrollmentController.removeCostFromEnrollment(name, amount, trip, user);
     }
 
     @Override

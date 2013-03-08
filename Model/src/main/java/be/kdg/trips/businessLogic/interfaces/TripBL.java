@@ -51,6 +51,9 @@ public interface TripBL
     public void deleteTrip(Trip trip, User user) throws TripsException, MessagingException;
 
     public boolean isExistingTrip(int id) throws TripsException;
+    public boolean isExistingLocation(int id) throws TripsException;
     public boolean isOrganizer(Trip trip, User organizer) throws TripsException;
     public boolean isTripNotActive(Trip trip) throws TripsException;
+
+    public void addQuestionToLocation(User organizer, Location location, String question, List<String> possibleAnswers, int correctAnswerIndex, byte[] image) throws TripsException;
 }

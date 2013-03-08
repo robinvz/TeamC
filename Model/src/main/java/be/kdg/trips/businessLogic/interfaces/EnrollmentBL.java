@@ -37,6 +37,8 @@ public interface EnrollmentBL
 
     public void addRequisiteToEnrollment(String name, int amount, Trip trip, User user, User organizer) throws TripsException;
     public void removeRequisiteFromEnrollment(String name, int amount, Trip trip, User user, User organizer) throws TripsException;
+    public void addCostToEnrollment(String name, int amount, Trip trip, User user) throws TripsException;
+    public void removeCostFromEnrollment(String name, int amount, Trip trip, User user) throws TripsException;
 
     public boolean isExistingEnrollment(User user, Trip trip) throws TripsException;
     public boolean isExistingInvitation(User user, Trip trip) throws TripsException;

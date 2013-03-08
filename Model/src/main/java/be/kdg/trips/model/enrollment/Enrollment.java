@@ -41,6 +41,10 @@ public class Enrollment implements EnrollmentInterface, Serializable
     @CollectionTable(name = "T_ENROLLMENT_REQUISITE", joinColumns = @JoinColumn(name = "enrollmentId"))
     @Column(name="requisites_VALUE")
     private Map<String, Integer> requisites;
+    @ElementCollection(fetch = FetchType.EAGER)
+    @CollectionTable(name = "T_ENROLLMENT_COST", joinColumns = @JoinColumn(name = "enrollmentId"))
+    @Column(name="costs_VALUE")
+    private Map<String, Integer> costs;
     private Status status;
     @NotNull
     private int score;
@@ -146,7 +150,6 @@ public class Enrollment implements EnrollmentInterface, Serializable
         return requisites;
     }
 
-
     @Override
     public void addRequisite(String name, int amount)
     {
@@ -177,6 +180,39 @@ public class Enrollment implements EnrollmentInterface, Serializable
             else
             {
                 this.requisites.remove(name);
+            }
+        }
+    }
+
+    public Map<String, Integer> getCosts()
+    {
+        return costs;
+    }
+
+    public void addCost(String name, int amount)
+    {
+        if(this.costs.containsKey(name))
+        {
+            this.costs.put(name, this.costs.get(name) + Math.abs(amount));
+        }
+        else
+        {
+            this.costs.put(name, Math.abs(amount));
+        }
+    }
+
+    public void removeCost(String name, int amount)
+    {
+        if(this.costs.containsKey(name))
+        {
+            int value = this.costs.get(name);
+            if(amount < value)
+            {
+                this.costs.put(name, value - Math.abs(amount));
+            }
+            else
+            {
+                this.costs.remove(name);
             }
         }
     }

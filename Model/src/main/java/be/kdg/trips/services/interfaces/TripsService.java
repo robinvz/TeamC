@@ -1,7 +1,6 @@
 package be.kdg.trips.services.interfaces;
 
 import be.kdg.trips.exception.TripsException;
-import be.kdg.trips.model.chat.ChatServer;
 import be.kdg.trips.model.enrollment.Enrollment;
 import be.kdg.trips.model.invitation.Invitation;
 import be.kdg.trips.model.location.Location;
@@ -10,7 +9,6 @@ import be.kdg.trips.model.trip.Repeatable;
 import be.kdg.trips.model.trip.Trip;
 import be.kdg.trips.model.trip.TripPrivacy;
 import be.kdg.trips.model.user.User;
-import org.springframework.stereotype.Service;
 
 import javax.mail.MessagingException;
 import java.util.Date;
@@ -51,11 +49,14 @@ public interface TripsService
 
     public void editTripDetails(Trip trip, String title, String description, User organizer) throws TripsException;
     public void editTripLocationDetails(User organizer, Trip trip, Location location, String street, String houseNr, String city, String postalCode, String country, String title, String description) throws TripsException;
+    public void editTripQuestionDetails(User organizer, Question question, String questionTitle, List<String> possibleAnswers, int correctAnswerIndex);
 
     public void publishTrip(Trip trip, User organizer) throws TripsException;
     public void addLabelToTrip(Trip trip, User organizer, String label) throws TripsException;
     public Location addLocationToTrip(User organizer, Trip trip, double latitude, double longitude, String street, String houseNr, String city, String postalCode, String country, String title, String description) throws TripsException;
     public Location addLocationToTrip(User organizer, Trip trip, double latitude, double longitude, String street, String houseNr, String city, String postalCode, String country, String title, String description, String question, List<String> possibleAnswers, int correctAnswerIndex, byte[] image) throws TripsException;
+    public void addQuestionToLocation(User organizer, Location location, String question, List<String> possibleAnswers, int correctAnswerIndex, byte[] image) throws TripsException;
+    public void removeQuestionFromLocation(User organizer, Location location);
     public void addDateToTimeBoundTrip(Date startDate, Date endDate, Trip trip, User organizer) throws TripsException;
     public void removeDateFromTimeBoundTrip(Date startDate, Trip trip, User user) throws TripsException;
     public void addRequisiteToTrip(String name, int amount, Trip trip, User organizer) throws TripsException;
@@ -82,6 +83,8 @@ public interface TripsService
 
     public void addRequisiteToEnrollment(String name, int amount, Trip trip, User user, User organizer) throws TripsException;
     public void removeRequisiteFromEnrollment(String name, int amount, Trip trip, User user, User organizer) throws TripsException;
+    public void addCostToEnrollment(String name, int amount, Trip trip, User user) throws TripsException;
+    public void removeCostFromEnrollment(String name, int amount, Trip trip, User user) throws TripsException;
 
     public Invitation invite(Trip trip, User organizer, User user) throws TripsException, MessagingException;
     public void uninvite(Trip trip, User organizer, User user) throws TripsException;

@@ -184,6 +184,30 @@ public class EnrollmentBLImpl implements EnrollmentBL
     }
 
     @Override
+    @Transactional
+    public void addCostToEnrollment(String name, int amount, Trip trip, User user) throws TripsException
+    {
+        if(isExistingEnrollment(user, trip))
+        {
+            Enrollment enrollment = enrollmentDao.getEnrollmentByUserAndTrip(user, trip);
+            enrollment.addCost(name, amount);
+            enrollmentDao.saveOrUpdateEnrollment(enrollment);
+        }
+    }
+
+    @Override
+    @Transactional
+    public void removeCostFromEnrollment(String name, int amount, Trip trip, User user) throws TripsException
+    {
+        if(isExistingEnrollment(user, trip))
+        {
+            Enrollment enrollment = enrollmentDao.getEnrollmentByUserAndTrip(user, trip);
+            enrollment.removeCost(name, amount);
+            enrollmentDao.saveOrUpdateEnrollment(enrollment);
+        }
+    }
+
+    @Override
     public boolean isExistingEnrollment(User user, Trip trip) throws TripsException {
         if(userBL.isExistingUser(user.getEmail()) && tripBL.isExistingTrip(trip.getId()))
         {
