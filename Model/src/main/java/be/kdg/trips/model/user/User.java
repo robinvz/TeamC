@@ -8,6 +8,8 @@ import org.springframework.stereotype.Component;
 
 import javax.persistence.*;
 import javax.validation.Valid;
+import javax.validation.constraints.DecimalMax;
+import javax.validation.constraints.DecimalMin;
 import javax.validation.constraints.Pattern;
 import javax.validation.constraints.Size;
 import java.io.Serializable;
@@ -55,6 +57,12 @@ public class User implements UserInterface, Serializable {
     private Set<Invitation> invitations;
     @Lob
     private byte[] profilePicture;
+    @DecimalMin(value = "-90.00", message = "Latitude must be between -90 and 90")
+    @DecimalMax(value = "90.00", message = "Latitude must be between -90 and 90")
+    private double latitude;
+    @DecimalMin(value = "-180.00", message = "Longitude must be between -180 and 180")
+    @DecimalMax(value = "180.00", message = "Longitude must be between -180 and 180")
+    private double longitude;
 
 
     public User(String email, String password) {
@@ -169,6 +177,22 @@ public class User implements UserInterface, Serializable {
             return true;
         }
         return false;
+    }
+
+    public double getLatitude() {
+        return latitude;
+    }
+
+    public void setLatitude(double latitude) {
+        this.latitude = latitude;
+    }
+
+    public double getLongitude() {
+        return longitude;
+    }
+
+    public void setLongitude(double longitude) {
+        this.longitude = longitude;
     }
 
     @Override

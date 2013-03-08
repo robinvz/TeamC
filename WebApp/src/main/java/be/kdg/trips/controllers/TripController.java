@@ -19,10 +19,8 @@ import org.springframework.web.servlet.ModelAndView;
 
 import javax.mail.MessagingException;
 import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 import java.io.IOException;
-import java.io.PrintWriter;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.*;
@@ -318,7 +316,7 @@ public class TripController {
         if (isLoggedIn()) {
             try {
                 startDate =  startDate.replace("T", " ");
-                endDate = endDate.replace('T', ' ');
+                endDate = endDate.replace("T", " ");
                 SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm");
                 Repeatable rp = null;
                 Integer limitInt = null;
@@ -326,7 +324,7 @@ public class TripController {
                     rp = Repeatable.valueOf(repeat);
                     limitInt = Integer.parseInt(limit);
                 }
-                Trip test = tripsService.createTimeBoundTrip(title, description, privacy, user, sdf.parse(startDate), sdf.parse(endDate), rp , limitInt);
+                Trip test = tripsService.createTimeBoundTrip(title, description, privacy, user, sdf.parse(startDate), sdf.parse(endDate), rp, limitInt);
                 return new ModelAndView("redirect:trip/" + test.getId());
             } catch (TripsException e) {
                 if (e.getMessage().contains("future")) {
@@ -335,9 +333,9 @@ public class TripController {
                     return new ModelAndView("/users/createTripView", "error", messageSource.getMessage("StartDateBefore", null, locale));
                 }
             } catch (ParseException e) {
-                return new ModelAndView("/users/createTripView", "error", e.getMessage());
+                return new ModelAndView("/users/createTripView", "error", messageSource.getMessage("ParseError", null, locale));
             } catch (NumberFormatException n){
-                return new ModelAndView("/users/createTripView", "error", messageSource.getMessage("AmountNotANumber", null, locale));
+                return new ModelAndView("/users/createTripView", "error", messageSource.getMessage("NotANumberError", null, locale));
             }
         } else {
             return new ModelAndView("loginView", "loginBean", new LoginBean());
@@ -904,4 +902,40 @@ public class TripController {
         }
         return new ModelAndView("tripsView");
     }
+
+    @RequestMapping(value = "/trip/{tripId}/deleteDate/{date}", method = RequestMethod.GET)
+    public ModelAndView deleteDate(@PathVariable int tripId, @PathVariable String date, Locale locale) {
+        User user = (User)  session.getAttribute("user");
+        if(isLoggedIn()){
+            Trip trip = null;
+            Map map = new HashMap();
+            try {
+                trip = tripsService.findTripById(tripId, user);
+                SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm");
+                tripsService.removeDateFromTimeBoundTrip(sdf.parse(date), trip, user);
+                map.put("trip", trip);
+                map.put("success", "Date ("+date+") deleted");
+                return new ModelAndView("tripView", map);
+            } catch (TripsException e) {
+                if (e.getMessage().contains("Trip with id")) {
+                    return new ModelAndView("tripsView", "error", messageSource.getMessage("FindTripError", null, locale));
+                } else if(e.getMessage().contains("is not the organizer")){
+                    map.put("trip", trip);
+                    map.put("error", messageSource.getMessage("NotOrganizerError", null, locale));
+                    return new ModelAndView("tripView", map);
+                } else {
+                    map.put("trip", trip);
+                    map.put("error", e.getMessage());
+                    return new ModelAndView("tripView", map);
+                }
+            } catch (ParseException e) {
+                map.put("trip", trip);
+                map.put("error", messageSource.getMessage("ParseError", null, locale));
+                return new ModelAndView("tripView", map);
+            }
+        } else {
+            return new ModelAndView("loginView", "loginBean", new LoginBean());
+        }
+    }
+
 }

@@ -1,11 +1,13 @@
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@ taglib prefix="spring" uri="http://www.springframework.org/tags" %>
 <%@ taglib prefix="sql" uri="http://java.sun.com/jsp/jstl/sql" %>
+<%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions" %>
 
 <html>
 <head>
     <link rel="stylesheet" href="${pageContext.request.contextPath}/resources/css/main.css"/>
     <link rel="stylesheet" href="${pageContext.request.contextPath}/resources/css/trip.css"/>
+    <link rel="stylesheet" href="<spring:theme code="css"/>" type="text/css"/>
     <link rel="shortcut icon" href="${pageContext.request.contextPath}/resources/res/favicon.ico">
     <!--[if lt IE 9]>
     <script src="${pageContext.request.contextPath}/resources/js/html5shiv.js"></script>
@@ -106,6 +108,11 @@
                                 <tr>
                                     <td>${date.key}</td>
                                     <td>${date.value}</td>
+                                    <td>
+                                        <c:if test="${not empty user && trip.organizer==user}">
+                                            <a href="/trip/${trip.id}/deleteDate/${date.key}">Delete</a>
+                                        </c:if>
+                                    </td>
                                 </tr>
                             </c:forEach>
                         </c:if>

@@ -1,0 +1,45 @@
+#page
+{
+    position: relative;
+    min-height: 100%;
+    width:960px;
+    margin: -50px auto 0;
+    background-color: rgba(171, 198, 217, 0.7);
+    /* Safari 4-5, Chrome 1-9 */
+    background: -webkit-gradient(linear, 0% 0%, 0% 100%, from( rgba(171, 198, 217, 0.7)), to(  rgba(163, 188, 206, 0.7)));
+    /* Safari 5.1, Chrome 10+ */
+    background: -webkit-linear-gradient(top,  rgba(171, 198, 217, 0.7),  rgba(163, 188, 206, 0.7));
+    /* Firefox 3.6+ */
+    background: -moz-linear-gradient(top, rgba(171, 198, 217, 0.7),  rgba(163, 188, 206, 0.7));
+    /* IE 10 */
+    background: -ms-linear-gradient(top, rgba(171, 198, 217, 0.7),  rgba(163, 188, 206, 0.7));
+    /* Opera 11.10+ */
+    background: -o-linear-gradient(top,  rgba(171, 198, 217, 0.7), rgba(163, 188, 206, 0.7));
+    padding: 0px 40px;
+    overflow: hidden;
+}
+
+body, p{
+    color: rgb(51, 46, 38);
+}
+
+.nav-link{
+    color: rgb(89,133,38);
+}
+
+.inner-nav li, .footer{
+    color: rgb(130,130,130);
+}
+
+h1, h2, h3{
+    color: rgb(133, 98, 64);
+    border-color: rgb(163, 122, 82);
+}
+
+.nav-link:hover, .selected{
+    color: rgb(142,198,63);
+}
+
+
+
+

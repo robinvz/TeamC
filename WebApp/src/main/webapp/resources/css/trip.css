@@ -40,3 +40,25 @@ h2{
     -webkit-box-shadow: 3px 3px 4px rgb(3, 3, 3);
     box-shadow: 3px 3px 4px rgb(0, 0, 0);
 }
+
+.theme{
+    border-radius: 5px;
+    border: solid 1px #c5c5c5;
+    padding: 5px 10px 5px 5px;
+    margin: 5px 0px;
+}
+
+.default-theme{
+    background-color: rgb(250,250,250);
+    color:rgb(35,35,35);
+}
+
+.blue-theme{
+    background-color: rgb(171, 198, 217);
+    color: rgb(133, 98, 64);
+}
+
+.dark-theme{
+    background-color: rgb(33, 33, 33);
+    color: rgb(224, 163, 82);
+}
