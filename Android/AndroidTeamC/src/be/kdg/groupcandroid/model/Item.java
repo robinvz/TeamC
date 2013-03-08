@@ -1,4 +1,4 @@
-package be.kdg.groupcandroid;
+package be.kdg.groupcandroid.model;
 
 public class Item {
 	

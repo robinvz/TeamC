@@ -22,7 +22,7 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
-import be.kdg.groupcandroid.Trip;
+import be.kdg.groupcandroid.model.Trip;
 
 import android.content.SharedPreferences;
 import android.os.AsyncTask;
@@ -68,6 +68,11 @@ public class TripByIdTask extends AsyncTask<String, Void, Trip> {
 							jsonObject.getString("description"),
 							jsonObject.getInt("enrollments"),
 							jsonObject.getString("privacy"));
+					trip.setEnrolled(jsonObject.getBoolean("isenrolled"));	
+					trip.setStarted(jsonObject.getBoolean("isstarted"));
+					trip.setOrganizer(jsonObject.getString("organizer"));
+					trip.setActive(jsonObject.getBoolean("isactive"));			
+					trip.setTimeless(jsonObject.getBoolean("istimeless"));			
 					return trip;
 				} else {
 					return null;

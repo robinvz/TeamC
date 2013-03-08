@@ -3,6 +3,7 @@ package be.kdg.trips.controllers;
 import be.kdg.trips.beans.LoginBean;
 import be.kdg.trips.exception.TripsException;
 import be.kdg.trips.model.enrollment.Enrollment;
+import be.kdg.trips.model.enrollment.Status;
 import be.kdg.trips.model.location.Location;
 import be.kdg.trips.model.question.Question;
 import be.kdg.trips.model.trip.*;
@@ -136,8 +137,22 @@ public class TripController {
             js.accumulate("title", trip.getTitle());
             js.accumulate("description", trip.getDescription());
             js.accumulate("enrollments", trip.getEnrollments().size());
-            //      js.accumulate("organizer", trip.getOrganizer()) ;
+            js.accumulate("organizer", trip.getOrganizer().getEmail()) ;
             js.accumulate("privacy", trip.getPrivacy());
+            boolean isEnrolled = false;
+            boolean isStarted = false;
+            for (Enrollment enr : tripsService.findEnrollmentsByUser(user)){
+                if (enr.getTrip().getId() == trip.getId()){
+                    isEnrolled = true;
+                    if (enr.getStatus() == Status.BUSY){
+                        isStarted = true;
+                    }
+                }
+            }
+            js.accumulate("isenrolled", isEnrolled);
+            js.accumulate("isstarted", isStarted);
+            js.accumulate("isactive", trip.isActive());
+            js.accumulate("istimeless", (trip instanceof TimelessTrip) ?  true : false);
         }
         return js.toString();
     }
@@ -249,6 +264,37 @@ public class TripController {
                     jsonArray.add(loco);
                 }
                 js.accumulate("locations", jsonArray);
+            }
+        } catch (TripsException t) {
+            js.put("valid", false);
+        } finally {
+            return js.toString();
+        }
+    }
+
+
+    @RequestMapping(value = "/service/contacts", method = RequestMethod.POST)
+    public
+    @ResponseBody
+    String contactsService(@RequestParam int id, @RequestParam String username, @RequestParam String password) {
+        JSONObject js = new JSONObject();
+        try {
+            js.accumulate("valid", tripsService.checkLogin(username, password));
+            if (tripsService.checkLogin(username, password)) {
+                User user = tripsService.findUser(username);
+                Trip trip = tripsService.findTripById(id, user);
+                JSONArray jsonArray = new JSONArray();
+                for (Enrollment enr : tripsService.findEnrollmentsByTrip(trip)) {
+                    if (enr.getStatus() == Status.BUSY){
+                        JSONObject loco = new JSONObject();
+                        loco.accumulate("firstName", enr.getUser().getFirstName());
+                        loco.accumulate("lastName", enr.getUser().getLastName());
+                        loco.accumulate("email", enr.getUser().getEmail());
+                        jsonArray.add(loco);
+                        // loco.accumulate("city", enr.getLastLocationVisited().getAddress().getCity());
+                    }
+                }
+                js.accumulate("contacts", jsonArray);
             }
         } catch (TripsException t) {
             js.put("valid", false);
