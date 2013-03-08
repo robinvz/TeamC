@@ -30,5 +30,4 @@ public interface UserBL
 
     public boolean isExistingUser(String email) throws TripsException;
     public boolean isUnexistingUser(String email) throws TripsException;
-
 }

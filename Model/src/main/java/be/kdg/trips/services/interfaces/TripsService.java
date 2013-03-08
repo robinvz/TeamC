@@ -88,4 +88,7 @@ public interface TripsService
 
     public void startTrip(Trip trip, User user) throws TripsException;
     public String stopTrip(Trip trip, User user) throws TripsException;
+
+    //MailContact service
+    public void sendContactMail(String subject, String text, String sender) throws MessagingException;
 }

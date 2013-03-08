@@ -15,6 +15,7 @@ import be.kdg.trips.model.trip.Trip;
 import be.kdg.trips.model.trip.TripPrivacy;
 import be.kdg.trips.model.user.User;
 import be.kdg.trips.services.interfaces.TripsService;
+import be.kdg.trips.utility.MailSender;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -283,5 +284,11 @@ public class TripsServiceImpl implements TripsService
     @Override
     public String stopTrip(Trip trip, User user) throws TripsException {
         return enrollmentController.stopTrip(trip, user);
+    }
+
+    //MailContact Service
+    @Override
+    public void sendContactMail(String subject, String text, String sender) throws MessagingException {
+        MailSender.sendMail("'" + subject + "' from " +sender, text, "tripsnoreply@gmail.com");
     }
 }
