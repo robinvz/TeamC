@@ -4,6 +4,7 @@ import be.kdg.trips.beans.LoginBean;
 import be.kdg.trips.exception.TripsException;
 import be.kdg.trips.model.enrollment.Enrollment;
 import be.kdg.trips.model.enrollment.Status;
+import be.kdg.trips.model.invitation.Invitation;
 import be.kdg.trips.model.location.Location;
 import be.kdg.trips.model.question.Question;
 import be.kdg.trips.model.trip.*;
@@ -607,23 +608,7 @@ public class TripController {
         }
     }
 
-    @RequestMapping(value = "/inviteUser/{tripId}", method = RequestMethod.GET)
-    public ModelAndView inviteUser(@PathVariable int tripId, Locale locale) {
-        User user = (User) session.getAttribute("user");
-        if (isLoggedIn()) {
-            Trip trip = null;
-            try {
-                trip = tripsService.findTripById(tripId, user);
-                return new ModelAndView("/users/inviteUserView", "trip", trip);
-            } catch (TripsException e) {
-                return new ModelAndView("tripsView", "error", messageSource.getMessage("FindTripError", null, locale));
-            }
-        } else {
-            return new ModelAndView("loginView", "loginBean", new LoginBean());
-        }
-    }
-
-    @RequestMapping(value = "/startTrip/{tripId}", method = RequestMethod.GET)
+        @RequestMapping(value = "/startTrip/{tripId}", method = RequestMethod.GET)
     public ModelAndView startTrip(@PathVariable int tripId, Locale locale) {
         User user = (User) session.getAttribute("user");
         if (isLoggedIn()) {
@@ -863,15 +848,58 @@ public class TripController {
         return new ModelAndView("redirect:/trip/" + trip.getId() + "/locations");
     }
 
+    @RequestMapping(value = "/inviteUser/{tripId}", method = RequestMethod.GET)
+    public ModelAndView inviteUser(@PathVariable int tripId, Locale locale) {
+        User user = (User) session.getAttribute("user");
+        if (isLoggedIn()) {
+            Map parameters = new HashMap();
+            Trip trip;
+            try {
+                trip = tripsService.findTripById(tripId, user);
+                parameters.put("trip", trip);
+                parameters.put("invitations", trip.getInvitations());
+                return new ModelAndView("/users/inviteUserView", parameters);
+            } catch (TripsException e) {
+                return new ModelAndView("tripsView", "error", messageSource.getMessage("FindTripError", null, locale));
+            }
+        } else {
+            return new ModelAndView("loginView", "loginBean", new LoginBean());
+        }
+    }
+
+    @RequestMapping(value = "/inviteUser/{tripId}/uninvite", method = RequestMethod.POST)
+    public ModelAndView uninviteUser(@PathVariable int tripId, @RequestParam String uninviteEmail) {
+        User user = (User) session.getAttribute("user");
+        Trip trip = null;
+        if (isLoggedIn()) {
+            try {
+                trip = tripsService.findTripById(tripId, user);
+                try {
+                    tripsService.uninvite(trip, user, tripsService.findUser(uninviteEmail));
+                } catch (TripsException e) {
+                    // user not found
+                }
+            } catch (TripsException e) {
+                // trip not found
+            }
+        } else {
+            return new ModelAndView("loginView", "loginBean", new LoginBean());
+        }
+        return new ModelAndView("redirect:/inviteUser/" + trip.getId());
+    }
+
     @RequestMapping(value = "/inviteUser/{tripId}/findUsersByKeyword", method = RequestMethod.GET)
-    public ModelAndView getUsersByKeyword(@PathVariable int tripId, @RequestParam String keyword) {
+    public ModelAndView findUsersByKeyword(@PathVariable int tripId, @RequestParam String keyword) {
         User user = (User) session.getAttribute("user");
         Map parameters;
+        Trip trip;
         if (isLoggedIn()) {
             parameters = new HashMap();
             try {
-                parameters.put("trip", tripsService.findTripById(tripId, user));
+                trip = tripsService.findTripById(tripId, user);
+                parameters.put("trip", trip);
                 try {
+                    parameters.put("invitations", trip.getInvitations());
                     parameters.put("usersByKeyword", tripsService.findUsersByKeyword(keyword, user));
                 } catch (TripsException e) {
                     // keyword not found in users
@@ -879,7 +907,6 @@ public class TripController {
             } catch (TripsException e) {
                 // trip not found
             }
-
         } else {
             return new ModelAndView("loginView", "loginBean", new LoginBean());
         }
@@ -887,10 +914,9 @@ public class TripController {
     }
 
     @RequestMapping(value = "/inviteUser/{tripId}/sendInvite", method = RequestMethod.POST)
-    public ModelAndView inviteUser(@PathVariable int tripId, @RequestParam String userByKeywordEmail) {
+    public ModelAndView sendInvite(@PathVariable int tripId, @RequestParam String userByKeywordEmail) {
         User user = (User) session.getAttribute("user");
         Trip trip = null;
-
         if (isLoggedIn()) {
             try {
                 trip = tripsService.findTripById(tripId, user);
@@ -1048,5 +1074,26 @@ public class TripController {
             e.printStackTrace();  //To change body of catch statement use File | Settings | File Templates.
         }
         return new ModelAndView("tripsView");
+    }
+
+    @RequestMapping(value = "/costs/{tripId}", method = RequestMethod.GET)
+    public ModelAndView costs(@PathVariable int tripId, Locale locale) {
+        if (isLoggedIn()) {
+            Trip trip = null;
+            User user = (User) session.getAttribute("user");
+            try {
+                trip = tripsService.findTripById(tripId, user);
+            } catch (TripsException e) {
+                return new ModelAndView("tripsView", "error", messageSource.getMessage("FindTripError", null, locale));
+            }
+            Map<String, Integer> totalTripCosts = new HashMap<>();
+            for(Enrollment enrollment: trip.getEnrollments())
+            {
+                totalTripCosts.putAll(enrollment.getCosts());
+            }
+            return new ModelAndView("costsView", "totalTripCosts", totalTripCosts);
+        } else {
+            return new ModelAndView("loginView", "loginBean", new LoginBean());
+        }
     }
 }

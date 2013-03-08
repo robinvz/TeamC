@@ -51,12 +51,13 @@
                     <li><a href="/publishTrip/${trip.id}"><spring:message code="Publish"/></a></li>
                 </c:if>
                 <c:if test="${trip.privacy == 'PRIVATE'}">
-                    <li><a href="/inviteUser/${trip.id}"><spring:message code="InviteUser"/></a></li>
+                    <li><a href="/inviteUser/${trip.id}"><spring:message code="InviteUsers"/></a></li>
                 </c:if>
                 <c:if test="${trip.timeBoundTrip==true}">
                     <li><a href="/addDate/${trip.id}"><spring:message code="AddDate"/></a></li>
                 </c:if>
                 <li><a href="/deleteTrip/${trip.id}"><spring:message code="Delete"/></a></li>
+                <li><a href="/costs/${trip.id}"><spring:message code="Costs"/></a></li>
             </c:if>
         </ul>
     </nav>
