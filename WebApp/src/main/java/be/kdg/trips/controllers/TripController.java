@@ -904,4 +904,17 @@ public class TripController {
         }
         return new ModelAndView("tripsView");
     }
+
+    @RequestMapping(value = "/editTripTheme/{tripId}", method = RequestMethod.POST)
+    public ModelAndView editTripTheme(@PathVariable int tripId, @RequestParam String theme){
+        try {
+            User user = (User) session.getAttribute("user");
+            Trip trip = tripsService.findTripById(tripId,user);
+            tripsService.changeThemeOfTrip(trip, theme);
+            return new ModelAndView("redirect:editTripPicView/"+tripId, "trip", trip);
+        } catch (TripsException e) {
+            e.printStackTrace();  //To change body of catch statement use File | Settings | File Templates.
+        }
+        return new ModelAndView("tripsView");
+    }
 }
