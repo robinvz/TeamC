@@ -360,7 +360,7 @@ public class EnrollmentBLImpl implements EnrollmentBL
             if(trip.isActive() || !trip.isTimeBoundTrip())
             {
                 Enrollment enrollment = enrollmentDao.getEnrollmentByUserAndTrip(user, trip);
-                if(enrollment.getStatus()==Status.READY)
+                if(enrollment.getStatus()!=Status.BUSY)
                 {
                     enrollment.setStatus(Status.BUSY);
                     enrollmentDao.saveOrUpdateEnrollment(enrollment);
@@ -385,9 +385,13 @@ public class EnrollmentBLImpl implements EnrollmentBL
             Enrollment enrollment = enrollmentDao.getEnrollmentByUserAndTrip(user, trip);
             if(enrollment.getStatus()==Status.BUSY)
             {
+                String fullScore = enrollment.getFullScore();
+                enrollment.setScore(0);
                 enrollment.setStatus(Status.FINISHED);
+                enrollment.setLastLocationVisited(null);
+                enrollment.setAnsweredQuestions(null);
                 enrollmentDao.saveOrUpdateEnrollment(enrollment);
-                return enrollment.getFullScore();
+                return fullScore;
             }
             else
             {

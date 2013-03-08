@@ -106,9 +106,12 @@ public class Enrollment implements EnrollmentInterface, Serializable
         return lastLocationVisited;
     }
 
-
     public int getScore() {
         return score;
+    }
+
+    public void setScore(int score) {
+        this.score = score;
     }
 
     public void incrementScore() {
@@ -117,6 +120,10 @@ public class Enrollment implements EnrollmentInterface, Serializable
 
     public Set<Integer> getAnsweredQuestions() {
         return answeredQuestions;
+    }
+
+    public void setAnsweredQuestions(Set<Integer> answeredQuestions) {
+        this.answeredQuestions = answeredQuestions;
     }
 
     public void addAnsweredQuestion(int id){
