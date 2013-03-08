@@ -155,6 +155,12 @@
     </div>
 
 </div>
+<script src="${pageContext.request.contextPath}/resources/js/jquery-1.9.0.min.js"></script>
+         <script>
+             if(!window.location.hash) {
+                 window.location = '?theme=${trip.theme}#loaded';
+             }
 
+         </script>
 </body>
 </html>

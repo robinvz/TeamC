@@ -6,8 +6,6 @@
     <link rel="stylesheet" href="${pageContext.request.contextPath}/resources/css/trip.css"/>
     <link rel="shortcut icon" href="${pageContext.request.contextPath}/resources/res/favicon.ico">
     <link rel="stylesheet" href="<spring:theme code="css"/>" type="text/css"/>
-    <script src="${pageContext.request.contextPath}/resources/js/jquery-1.9.0.min.js"></script>
-    <script src="${pageContext.request.contextPath}/resources/js/trip.js"></script>
     <title>Profile page</title>
 </head>
 <body>
@@ -29,16 +27,16 @@
                     </form>
 
                     <h3><spring:message code="selectTheme"/></h3>
-                    <table >
+                    <table>
                         <tr>
-                            <td class="theme default-theme"><input class="rdb-theme" type="radio" name="theme" value="default"><spring:message
+                            <td class="theme default-theme"><input id="default" class="rdb-theme" type="radio" name="theme" value="default"><spring:message
                                     code="defaultTheme"/> </input></td>
                         <tr>
-                            <td class="theme blue-theme"><input class="rdb-theme" type="radio" name="theme" value="blue"><spring:message
+                            <td class="theme blue-theme"><input id="blue" class="rdb-theme" type="radio" name="theme" value="blue"><spring:message
                                     code="blueTheme"/> </input></td>
                         </tr>
                         <tr>
-                            <td class="theme dark-theme"><input class="rdb-theme" id="dark" type="radio" name="theme" value="dark"><spring:message
+                            <td class="theme dark-theme"><input id="dark" class="rdb-theme" id="dark" type="radio" name="theme" value="dark"><spring:message
                                     code="darkTheme"/> </input></td>
                         </tr>
                     </table>
@@ -50,6 +48,12 @@
     </div>
 
 </div>
-
+<script src="${pageContext.request.contextPath}/resources/js/jquery-1.9.0.min.js"></script>
+<script src="${pageContext.request.contextPath}/resources/js/trip.js"></script>
+<script>
+    $(document).ready(function () {
+        setCurrentTheme('${trip.theme}', ${trip.id});
+    });
+</script>
 </body>
 </html>
