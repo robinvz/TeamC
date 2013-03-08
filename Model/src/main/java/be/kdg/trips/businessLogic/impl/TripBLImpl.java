@@ -519,6 +519,23 @@ public class TripBLImpl implements TripBL
         }
     }
 
+    @Override
+    @Transactional
+    public void removeQuestionFromLocation(User organizer, Location location) throws TripsException
+    {
+        if(isExistingLocation(location.getId()) && location.getQuestion() != null && userBL.isExistingUser(organizer.getEmail()) && isOrganizer(location.getTrip(), organizer))
+        {
+            Question question = location.getQuestion();
+            location.setQuestion(null);
+            tripDao.saveOrUpdateLocation(location);
+            tripDao.deleteQuestion(question.getId());
+        }
+        else
+        {
+            throw new TripsException("Location doesn't have a question to remove");
+        }
+    }
+
     public boolean doesLocationBelongToTrip(Location location, Trip trip) throws TripsException
     {
         if(trip.getLocations().contains(location))

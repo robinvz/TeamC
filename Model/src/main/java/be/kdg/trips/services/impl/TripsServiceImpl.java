@@ -178,9 +178,9 @@ public class TripsServiceImpl implements TripsService
     }
 
     @Override
-    public void removeQuestionFromLocation(User organizer, Location location)
+    public void removeQuestionFromLocation(User organizer, Location location) throws TripsException
     {
-        //To change body of implemented methods use File | Settings | File Templates.
+        tripController.removeQuestionFromLocation(organizer, location);
     }
 
     @Override

@@ -56,4 +56,5 @@ public interface TripBL
     public boolean isTripNotActive(Trip trip) throws TripsException;
 
     public void addQuestionToLocation(User organizer, Location location, String question, List<String> possibleAnswers, int correctAnswerIndex, byte[] image) throws TripsException;
+    public void removeQuestionFromLocation(User organizer, Location location) throws TripsException;
 }

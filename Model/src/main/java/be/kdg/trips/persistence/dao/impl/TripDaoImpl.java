@@ -142,6 +142,11 @@ public class TripDaoImpl implements TripDao{
     }
 
     @Override
+    public void deleteQuestion(int id) {
+        entityManager.remove(entityManager.find(Question.class, id));
+    }
+
+    @Override
     public boolean isExistingTrip(int id) throws TripsException {
         getTrip(id);
         return true;
