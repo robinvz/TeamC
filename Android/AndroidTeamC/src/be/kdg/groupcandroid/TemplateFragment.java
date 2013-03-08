@@ -1,5 +1,6 @@
 package be.kdg.groupcandroid;
 
+import be.kdg.groupcandroid.model.Trip;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;

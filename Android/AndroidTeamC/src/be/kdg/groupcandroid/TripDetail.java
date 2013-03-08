@@ -21,6 +21,9 @@ import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.AdapterView.OnItemClickListener;
 import android.widget.Toast;
+import be.kdg.groupcandroid.model.Category;
+import be.kdg.groupcandroid.model.Item;
+import be.kdg.groupcandroid.model.Trip;
 import be.kdg.groupcandroid.tasks.TripActionsTask;
 import net.simonvt.menudrawer.*;
 
@@ -38,19 +41,18 @@ public class TripDetail extends FragmentActivity {
 
 	private MenuDrawer mMenuDrawer;
 
-	private MenuAdapter mAdapter;
+	public MenuAdapter mAdapter;
 	private ListView mList;
 	private int mActivePosition = -1;
 	private String mContentText;
 	private Trip trip;
-	private TextView mContentTextView;
 	final List<Object> items = new ArrayList<Object>();
 
 	@Override
 	protected void onCreate(Bundle inState) {
 		super.onCreate(inState);
 		Intent myIntent = getIntent();
-		final Trip trip = (Trip) myIntent.getSerializableExtra("trip");
+		trip = (Trip) myIntent.getSerializableExtra("trip");
 		if (inState != null) {
 			mActivePosition = inState.getInt(STATE_ACTIVE_POSITION);
 			mContentText = inState.getString(STATE_CONTENT_TEXT);
@@ -80,97 +82,14 @@ public class TripDetail extends FragmentActivity {
 		if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.ICE_CREAM_SANDWICH) {
 			getActionBar().setDisplayHomeAsUpEnabled(true);
 		}
-		this.trip = trip;
-		TemplateFragment tempFrag = (TemplateFragment) getSupportFragmentManager()
-				.findFragmentById(R.id.fragment1);
-		tempFrag.setTexts(trip);
-		addListeners();
-	}
+		TripFragment tp  = new TripFragment();
+		Bundle bundle = new Bundle();
+		bundle.putSerializable("trip", trip);
+		tp.setArguments(bundle);
+		FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
+		transaction.replace(R.id.fragment1, tp);
+		transaction.commit();
 
-	private void addListeners() {
-		SharedPreferences sp = PreferenceManager
-				.getDefaultSharedPreferences(TripDetail.this);
-		final String ip = sp.getString("server_ip", "192.168.2.200");
-		final String port = sp.getString("server_port", "8080");
-		SessionManager sm = new SessionManager(TripDetail.this);
-		final String email = sm.getEmail();
-		final String pass = sm.getPassword();
-		final Button btnSubscribe = (Button) findViewById(R.id.btnSubscribe);
-		final Button btnStart = (Button) findViewById(R.id.btnStart);
-		btnStart.setOnClickListener(new View.OnClickListener() {
-			@Override
-			public void onClick(View v) {
-				TripActionsTask tat = new TripActionsTask(TripDetail.this);
-				try {
-					if (btnStart.getText().toString()
-							.equals(getResources().getString(R.string.start))) {
-
-						if (tat.execute(
-								new String[] { ip, port, "start", email, pass, // Start
-																				// Trip
-										trip.getId() })
-								.get(3, TimeUnit.SECONDS)) {
-							btnStart.setText(R.string.stop);
-						}
-
-					} else {
-						if (tat.execute(
-								new String[] { ip, port, "stop", email, pass, // Stop
-																				// Trip
-										trip.getId() })
-								.get(3, TimeUnit.SECONDS)) {
-							btnStart.setText(R.string.start);
-						}
-					}
-				} catch (Exception e) {
-					Toast.makeText(TripDetail.this,
-							"Could not connect to the server",
-							Toast.LENGTH_LONG).show();
-				}
-			}
-		});
-
-		btnSubscribe.setOnClickListener(new View.OnClickListener() {
-			@Override
-			public void onClick(View v) {
-				TripActionsTask tat = new TripActionsTask(TripDetail.this);
-				try {
-
-					if (btnSubscribe
-							.getText()
-							.toString()
-							.equals(getResources()
-									.getString(R.string.subscribe))) {
-						if (tat.execute(
-								new String[] { ip, port, "enroll", email, pass, // Start
-																				// Trip
-										trip.getId() })
-								.get(3, TimeUnit.SECONDS)) {
-							btnSubscribe.setText(R.string.unsubscribe);
-							btnStart.setVisibility(View.VISIBLE);
-							items.add(new Category("Communicatie"));
-							items.add(new Item("Chat", R.drawable.chat_icon, 1));
-							items.add(new Item("Broadcast",
-									R.drawable.broadcast, 2));
-							mAdapter.notifyDataSetChanged();
-						}
-					} else {
-						if (tat.execute(
-								new String[] { ip, port, "unsubscribe", email,
-										pass, // Start
-										// Trip
-										trip.getId() })
-								.get(3, TimeUnit.SECONDS)) {
-							btnSubscribe.setText(R.string.subscribe);
-						}
-					}
-				} catch (Exception e) {
-					Toast.makeText(TripDetail.this,
-							"Could not connect to the server",
-							Toast.LENGTH_LONG).show();
-				}
-			}
-		});
 	}
 
 	private AdapterView.OnItemClickListener mItemClickListener = new AdapterView.OnItemClickListener() {
@@ -178,18 +97,27 @@ public class TripDetail extends FragmentActivity {
 		public void onItemClick(AdapterView<?> parent, View view, int position,
 				long id) {
 			mMenuDrawer.setActiveView(view, position);
-			TemplateFragment tempFragment = TemplateFragment.newInstance(
-					position, trip);
+	
 			FragmentTransaction transaction = getSupportFragmentManager()
 					.beginTransaction();
 			Object clickedObject = parent.getAdapter().getItem(position);
 			if (clickedObject instanceof Item) {
 				Item clickItem = (Item) clickedObject;
 				if (clickItem.title.toLowerCase().contains("chat")) {
+					/*
 					ChatListFragment listfr = new ChatListFragment();
-					transaction.replace(R.id.fragment1, listfr);
+					transaction.replace(R.id.fragment1, listfr);*/
+					Intent intent = new Intent(TripDetail.this, ChatActivity.class);
+					Bundle bundle = new Bundle();
+					bundle.putString("tripid", trip.getId());
+					intent.putExtras(bundle);
+					startActivity(intent);
 				} else if (clickItem.id == 0) { // TripTitle is selected so
-					transaction.replace(R.id.fragment1, tempFragment);
+					TripFragment tp  = new TripFragment();
+					Bundle bundle = new Bundle();
+					bundle.putSerializable("trip", trip);
+					tp.setArguments(bundle);
+					transaction.replace(R.id.fragment1, tp);
 				}
 				else if (clickItem.title.toLowerCase().contains("loc")) { // TripTitle is selected so
 					LocationsFragment locFr = new LocationsFragment();
@@ -198,6 +126,8 @@ public class TripDetail extends FragmentActivity {
 					locFr.setArguments(bundle);
 					transaction.replace(R.id.fragment1, locFr);
 				}else { // TripTitle is selected so title view
+					TemplateFragment tempFragment = TemplateFragment.newInstance(
+							position, trip);
 					transaction.replace(R.id.fragment1, tempFragment);
 				}
 				transaction.commit();
@@ -229,7 +159,7 @@ public class TripDetail extends FragmentActivity {
 		super.onBackPressed();
 	}
 
-	private class MenuAdapter extends BaseAdapter {
+	class MenuAdapter extends BaseAdapter {
 
 		private List<Object> mItems;
 

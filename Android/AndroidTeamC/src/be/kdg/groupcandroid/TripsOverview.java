@@ -1,5 +1,7 @@
 package be.kdg.groupcandroid;
 
+import com.parse.Parse;
+import com.parse.PushService;
 import com.viewpagerindicator.TabPageIndicator;
 import com.viewpagerindicator.TitlePageIndicator;
 
@@ -22,23 +24,30 @@ import android.widget.Toast;
 public class TripsOverview extends FragmentActivity {
 
 	private static String[] CONTENT;
-
+	FragmentPagerAdapter adapter ;
+	
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
-		CONTENT = new String[]{getResources().getString(R.string.all), getResources().getString(R.string.subscribed), getResources().getString(R.string.created)};
+		Parse.initialize(this, "wMntxG3ilX9JbzFjuxukt21MlRvajx5LDqY7OHtR",
+				"6mJ5wpU6wLXCiushPW3m4jXug3mNQ9FMy9YtI9jN");
+		
+		CONTENT = new String[] { getResources().getString(R.string.all),
+				getResources().getString(R.string.subscribed),
+				getResources().getString(R.string.created) };
 		setContentView(R.layout.tripslist);
 
 		FragmentPagerAdapter adapter = new MyAdapter(
 				getSupportFragmentManager());
-
+		Parse.initialize(this, "wMntxG3ilX9JbzFjuxukt21MlRvajx5LDqY7OHtR", "6mJ5wpU6wLXCiushPW3m4jXug3mNQ9FMy9YtI9jN"); 
+		PushService.setDefaultPushCallback(this, TripsOverview.class);
 		ViewPager pager = (ViewPager) findViewById(R.id.pager);
 		pager.setAdapter(adapter);
 		TabPageIndicator indicator = (TabPageIndicator) findViewById(R.id.indicator);
 		indicator.setViewPager(pager);
 	}
 
-	public static class MyAdapter extends FragmentPagerAdapter {
+	 class MyAdapter extends FragmentPagerAdapter {
 		public MyAdapter(FragmentManager fm) {
 			super(fm);
 		}
@@ -81,13 +90,11 @@ public class TripsOverview extends FragmentActivity {
 		if (item.getItemId() == R.id.menu_settings) {
 			Intent intent = new Intent(this, Preferences.class);
 			startActivity(intent);
-		}
-		else if(item.getItemId() == R.id.logout){
+		} else if (item.getItemId() == R.id.logout) {
 			SessionManager sm = new SessionManager(getBaseContext());
 			sm.logoutUser();
 		}
 		return super.onOptionsItemSelected(item);
 	}
-	
-	
+
 }

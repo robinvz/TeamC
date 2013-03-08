@@ -4,6 +4,8 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 
+import be.kdg.groupcandroid.model.Item;
+
 import android.app.Activity;
 import android.content.Context;
 import android.view.LayoutInflater;

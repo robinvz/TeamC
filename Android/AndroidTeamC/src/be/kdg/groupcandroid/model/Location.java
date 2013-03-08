@@ -1,4 +1,4 @@
-package be.kdg.groupcandroid;
+package be.kdg.groupcandroid.model;
 
 import java.io.Serializable;
 import java.util.ArrayList;

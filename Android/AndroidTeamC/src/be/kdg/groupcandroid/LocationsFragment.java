@@ -5,6 +5,7 @@ import java.util.concurrent.ExecutionException;
 import java.util.concurrent.TimeUnit;
 import java.util.concurrent.TimeoutException;
 
+import be.kdg.groupcandroid.model.Location;
 import be.kdg.groupcandroid.tasks.LocationsTask;
 
 import android.app.Activity;
