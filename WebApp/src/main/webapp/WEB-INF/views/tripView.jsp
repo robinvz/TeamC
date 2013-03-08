@@ -1,11 +1,13 @@
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@ taglib prefix="spring" uri="http://www.springframework.org/tags" %>
 <%@ taglib prefix="sql" uri="http://java.sun.com/jsp/jstl/sql" %>
+<%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions" %>
 
 <html>
 <head>
     <link rel="stylesheet" href="${pageContext.request.contextPath}/resources/css/main.css"/>
     <link rel="stylesheet" href="${pageContext.request.contextPath}/resources/css/trip.css"/>
+    <link rel="stylesheet" href="<spring:theme code="css"/>" type="text/css"/>
     <link rel="shortcut icon" href="${pageContext.request.contextPath}/resources/res/favicon.ico">
     <!--[if lt IE 9]>
     <script src="${pageContext.request.contextPath}/resources/js/html5shiv.js"></script>
@@ -66,16 +68,6 @@
                                 </td>
                             </tr>
                         </c:if>
-                        <c:if test="${trip.timeBoundTrip==true}">
-                            </tr>
-                                <td><spring:message code="StartDate"/></td>
-                                <td></td>
-                            <tr>
-                            </tr>
-                                <td><spring:message code="StartDate"/></td>
-                                <td></td>
-                            </tr>
-                        </c:if>
                         <tr>
                             <c:if test="${not empty trip.labels}">
                                 <td>Labels</td>
@@ -108,6 +100,22 @@
                                 </c:otherwise>
                             </c:choose>
                         </tr>
+                        <c:if test="${trip.timeBoundTrip==true}">
+                            <tr>
+                                <td><spring:message code="Dates"/></td>
+                            </tr>
+                            <c:forEach items="${dates}" var="date">
+                                <tr>
+                                    <td>${date.key}</td>
+                                    <td>${date.value}</td>
+                                    <td>
+                                        <c:if test="${not empty user && trip.organizer==user}">
+                                            <a href="/trip/${trip.id}/deleteDate/${date.key}">Delete</a>
+                                        </c:if>
+                                    </td>
+                                </tr>
+                            </c:forEach>
+                        </c:if>
                     </table>
                 </div>
 
@@ -147,6 +155,12 @@
     </div>
 
 </div>
+<script src="${pageContext.request.contextPath}/resources/js/jquery-1.9.0.min.js"></script>
+         <script>
+             if(!window.location.hash) {
+                 window.location = '?theme=${trip.theme}#loaded';
+             }
 
+         </script>
 </body>
 </html>

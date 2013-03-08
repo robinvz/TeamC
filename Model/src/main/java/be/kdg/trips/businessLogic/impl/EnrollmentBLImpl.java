@@ -15,6 +15,7 @@ import be.kdg.trips.model.trip.Trip;
 import be.kdg.trips.model.trip.TripPrivacy;
 import be.kdg.trips.model.user.User;
 import be.kdg.trips.persistence.dao.interfaces.EnrollmentDao;
+import be.kdg.trips.utility.MailSender;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
@@ -65,20 +66,27 @@ public class EnrollmentBLImpl implements EnrollmentBL
     @Override
     @Transactional
     public void disenroll(Trip trip, User user) throws TripsException {
-        if(isExistingEnrollment(user, trip) && !trip.isActive())
+        if(!trip.getOrganizer().equals(user))
         {
-            Enrollment enrollment = enrollmentDao.getEnrollmentByUserAndTrip(user, trip);
-            if(trip.getPrivacy()==TripPrivacy.PRIVATE)
+            if(isExistingEnrollment(user, trip) && !trip.isActive())
             {
-                Invitation invitation = enrollmentDao.getInvitationByUserAndTrip(user, trip);
-                invitation.setAnswer(Answer.DECLINED);
-                enrollmentDao.saveOrUpdateInvitation(invitation);
+                Enrollment enrollment = enrollmentDao.getEnrollmentByUserAndTrip(user, trip);
+                if(trip.getPrivacy()==TripPrivacy.PRIVATE)
+                {
+                    Invitation invitation = enrollmentDao.getInvitationByUserAndTrip(user, trip);
+                    invitation.setAnswer(Answer.DECLINED);
+                    enrollmentDao.saveOrUpdateInvitation(invitation);
+                }
+                enrollmentDao.deleteEnrollment(enrollment.getId());
             }
-            enrollmentDao.deleteEnrollment(enrollment.getId());
+            else
+            {
+                throw new TripsException("You can't disenroll from a trip that is currently active");
+            }
         }
         else
         {
-            throw new TripsException("You can't disenroll from a trip that is currently active");
+            throw new TripsException("You can't disenroll the organizer");
         }
     }
 
@@ -92,10 +100,8 @@ public class EnrollmentBLImpl implements EnrollmentBL
             {
                 invitation = new Invitation(trip, user);
                 enrollmentDao.saveOrUpdateInvitation(invitation);
-                List<InternetAddress[]> recipients = new ArrayList<>();
-                recipients.add(InternetAddress.parse(user.getEmail()));
                 //give link to invitation!
-                tripBL.sendMail("Trip invitation", "You have been invited by " + organizer.getFirstName() + " " + organizer.getLastName() + " for his trip named: '" + trip.getTitle() + "' (" + trip.getDescription() + ").\nClick here xxx if you're interested in joining.", recipients);
+                MailSender.sendMail("Trip invitation", "You have been invited by " + organizer.getFirstName() + " " + organizer.getLastName() + " for his trip named: '" + trip.getTitle() + "' (" + trip.getDescription() + ").\nClick here xxx if you're interested in joining.", user.getEmail());
             }
             else
             {
@@ -116,17 +122,24 @@ public class EnrollmentBLImpl implements EnrollmentBL
     @Override
     @Transactional
     public void uninvite(Trip trip, User organizer, User user) throws TripsException {
-        if(isExistingInvitation(user, trip))
+        if(!organizer.equals(user))
         {
-            if (tripBL.isOrganizer(trip, organizer)&& isUnexistingEnrollment(user, trip))
+            if(isExistingInvitation(user, trip))
             {
-                Invitation invitation = enrollmentDao.getInvitationByUserAndTrip(user, trip);
-                enrollmentDao.deleteInvitation(invitation.getId());
+                if (tripBL.isOrganizer(trip, organizer)&& isUnexistingEnrollment(user, trip))
+                {
+                    Invitation invitation = enrollmentDao.getInvitationByUserAndTrip(user, trip);
+                    enrollmentDao.deleteInvitation(invitation.getId());
+                }
+                else
+                {
+                    throw new TripsException("Trip is either not published, already active, not private or organizer doesn't exist");
+                }
             }
-            else
-            {
-                throw new TripsException("Trip is either not published, already active, not private or organizer doesn't exist");
-            }
+        }
+        else
+        {
+            throw new TripsException("You can't uninvite the organizer");
         }
     }
 
@@ -180,6 +193,30 @@ public class EnrollmentBLImpl implements EnrollmentBL
         {
             Enrollment enrollment = enrollmentDao.getEnrollmentByUserAndTrip(user, trip);
             enrollment.removeRequisite(name, amount);
+            enrollmentDao.saveOrUpdateEnrollment(enrollment);
+        }
+    }
+
+    @Override
+    @Transactional
+    public void addCostToEnrollment(String name, int amount, Trip trip, User user) throws TripsException
+    {
+        if(isExistingEnrollment(user, trip))
+        {
+            Enrollment enrollment = enrollmentDao.getEnrollmentByUserAndTrip(user, trip);
+            enrollment.addCost(name, amount);
+            enrollmentDao.saveOrUpdateEnrollment(enrollment);
+        }
+    }
+
+    @Override
+    @Transactional
+    public void removeCostFromEnrollment(String name, int amount, Trip trip, User user) throws TripsException
+    {
+        if(isExistingEnrollment(user, trip))
+        {
+            Enrollment enrollment = enrollmentDao.getEnrollmentByUserAndTrip(user, trip);
+            enrollment.removeCost(name, amount);
             enrollmentDao.saveOrUpdateEnrollment(enrollment);
         }
     }
@@ -347,7 +384,7 @@ public class EnrollmentBLImpl implements EnrollmentBL
             if(trip.isActive() || !trip.isTimeBoundTrip())
             {
                 Enrollment enrollment = enrollmentDao.getEnrollmentByUserAndTrip(user, trip);
-                if(enrollment.getStatus()==Status.READY)
+                if(enrollment.getStatus()!=Status.BUSY)
                 {
                     enrollment.setStatus(Status.BUSY);
                     enrollmentDao.saveOrUpdateEnrollment(enrollment);
@@ -372,9 +409,13 @@ public class EnrollmentBLImpl implements EnrollmentBL
             Enrollment enrollment = enrollmentDao.getEnrollmentByUserAndTrip(user, trip);
             if(enrollment.getStatus()==Status.BUSY)
             {
+                String fullScore = enrollment.getFullScore();
+                enrollment.setScore(0);
                 enrollment.setStatus(Status.FINISHED);
+                enrollment.setLastLocationVisited(null);
+                enrollment.setAnsweredQuestions(null);
                 enrollmentDao.saveOrUpdateEnrollment(enrollment);
-                return enrollment.getFullScore();
+                return fullScore;
             }
             else
             {

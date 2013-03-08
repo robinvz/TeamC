@@ -41,16 +41,19 @@ public interface TripBL
     public Location addLocationToTrip(User user, Trip trip, double latitude, double longitude, String street, String houseNr, String city, String postalCode, String country, String title, String description, String question, List<String> possibleAnswers, int correctAnswerIndex, byte[] image) throws TripsException;
     public void deleteLocation(Trip trip, User user, Location location) throws TripsException;
     public void addDateToTimeBoundTrip(Date startDate, Date endDate, Trip trip, User organizer) throws TripsException;
+    public void removeDateFromTimeBoundTrip(Date startDate, Trip trip, User user) throws TripsException;
     public void addRequisiteToTrip(String name, int amount, Trip trip, User organizer) throws TripsException;
     public void removeRequisiteFromTrip(String name, int amount, Trip trip, User organizer) throws TripsException;
     public void switchLocationSequence(Trip trip, User user, int location1, int location2) throws TripsException;
     public void addImageToTrip(Trip trip, User organizer, byte[] image) throws TripsException;
+    public void changeThemeOfTrip(Trip trip, String theme) throws TripsException;
 
     public void deleteTrip(Trip trip, User user) throws TripsException, MessagingException;
 
     public boolean isExistingTrip(int id) throws TripsException;
+    public boolean isExistingLocation(int id) throws TripsException;
     public boolean isOrganizer(Trip trip, User organizer) throws TripsException;
     public boolean isTripNotActive(Trip trip) throws TripsException;
 
-    public void sendMail(String subject, String text, List<InternetAddress[]> recipients) throws MessagingException;
+    public void addQuestionToLocation(User organizer, Location location, String question, List<String> possibleAnswers, int correctAnswerIndex, byte[] image) throws TripsException;
 }

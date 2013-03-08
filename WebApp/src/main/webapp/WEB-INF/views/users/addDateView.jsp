@@ -12,11 +12,11 @@
 </head>
 <body>
 <div id="page">
-    <jsp:include page="baseView.jsp"/>
-    <jsp:include page="tripHeaderView.jsp"/>
+    <jsp:include page="../baseView.jsp"/>
+    <jsp:include page="../tripHeaderView.jsp"/>
 
     <div class="inner-content">
-        <h3>Labels</h3>
+        <h3><spring:message code="AddDate"/></h3>
         <c:if test="${error != null}">
             <span class="errorblock">${error}</span>
         </c:if>
@@ -26,11 +26,17 @@
 
         <c:if test="${not empty user && user == trip.organizer}">
             <table>
-                <form action="/labels/${trip.id}" method="POST">
+                <form action="/addDate/${trip.id}" method="POST">
                     <tr>
-                        <td><spring:message code="EnterLabel" /></td>
-                        <td><input type="text" name="label"></td>
-                        <td><input id="btn-save" type="submit" value="<spring:message code="Save" />" class="btn-blue"></td>
+                        <td><label><spring:message code="StartDate"/></label></td>
+                        <td><input type="datetime-local" class="picker" name="startDate"></td>
+                    </tr>
+                    <tr>
+                        <td><label><spring:message code="EndDate"/></label></td>
+                        <td><input type="datetime-local" name="endDate"></td>
+                    </tr>
+                    <tr>
+                        <td><td><input id="btn-save" type="submit" value="<spring:message code="Save" />" class="btn-blue"></td></td>
                     </tr>
                 </form>
             </table>

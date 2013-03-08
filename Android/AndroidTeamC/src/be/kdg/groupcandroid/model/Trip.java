@@ -1,14 +1,19 @@
-package be.kdg.groupcandroid;
+package be.kdg.groupcandroid.model;
 
 import java.io.Serializable;
 
-public class Trip implements Serializable{
+public class Trip implements Serializable {
 	private String title;
 	private String description;
-	private boolean enrolled; 
+	private boolean enrolled;
+	private String organizer;
 	private int enrollments;
 	private String Privacy;
+	private boolean active = false;
+	private boolean started = false;
+
 	private String id;
+	private boolean timeless = false;
 
 	public Trip(String id, String title, String description, int enrollments,
 			String privacy) {
@@ -52,8 +57,14 @@ public class Trip implements Serializable{
 		Privacy = privacy;
 	}
 
-	
-	
+	public boolean isActive() {
+		return active;
+	}
+
+	public void setActive(boolean active) {
+		this.active = active;
+	}
+
 	public boolean isEnrolled() {
 		return enrolled;
 	}
@@ -67,10 +78,32 @@ public class Trip implements Serializable{
 	}
 
 	public String getId() {
-		// TODO Auto-generated method stub
 		return this.id;
 	}
-	
-	
+
+	public void setStarted(boolean boolean1) {
+		started = boolean1;
+
+	}
+
+	public boolean isStarted() {
+		return started;
+	}
+
+	public void setTimeless(boolean boolean1) {
+		timeless = boolean1;
+	}
+
+	public boolean isTimeless() {
+		return timeless;
+	}
+
+	public void setOrganizer(String string) {
+		this.organizer = string;
+	}
+
+	public String getOrganizer() {
+		return organizer;
+	}
 
 }

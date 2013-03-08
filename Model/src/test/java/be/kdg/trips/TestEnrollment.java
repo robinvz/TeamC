@@ -110,7 +110,7 @@ public class TestEnrollment
     {
         User subscriber = tripsService.createUser(new User("bobette@msn.com","paard"));
         Trip trip = tripsService.createTimelessTrip("suske & wiske avontuur", "dulle griet", TripPrivacy.PROTECTED, organizer);
-        tripsService.publishTrip(trip,organizer);
+        tripsService.publishTrip(trip, organizer);
         tripsService.subscribe(trip, subscriber);
         tripsService.disenroll(trip, subscriber);
        // assertTrue(tripsService.findEnrollmentsByUser(subscriber).isEmpty());
@@ -126,13 +126,19 @@ public class TestEnrollment
         assertEquals(Answer.DECLINED,tripsService.findInvitationsByUser(invitee).get(FIRST_ELEMENT).getAnswer());
     }
 
-    @Test(expected = TransactionSystemException.class)
+    @Test(expected = TripsException.class)
     public void failedDisenrollNotEnrolled() throws TripsException
     {
         User subscriber = tripsService.createUser(new User("clarkson@msn.com","gans"));
-        Trip trip = tripsService.createTimelessTrip("zalt gaan ja", "ddt", TripPrivacy.PROTECTED, organizer);
+        Trip trip = tripsService.createTimelessTrip("zalt gaan ja", "dimitri de tremmerie", TripPrivacy.PROTECTED, organizer);
         tripsService.publishTrip(trip, organizer);
         tripsService.disenroll(trip, subscriber);
+    }
+
+    @Test(expected = TripsException.class)
+    public void failedDisenrollIsOrganizer() throws TripsException {
+        Trip trip = tripsService.createTimelessTrip("zalt gaan ja", "dimitri de tremmerie", TripPrivacy.PROTECTED, organizer);
+        tripsService.disenroll(trip, organizer);
     }
 
     @Test
@@ -196,6 +202,12 @@ public class TestEnrollment
         assertTrue(tripsService.findPrivateTrips(invitee).isEmpty());
     }
 
+    @Test(expected = TripsException.class)
+    public void failedUninviteIsOrganizer() throws TripsException {
+        Trip trip = tripsService.createTimelessTrip("Tenniswedstrijd", "tennis is geen ping pong", TripPrivacy.PRIVATE, organizer);
+        tripsService.uninvite(trip, organizer, organizer);
+    }
+
     @Test
     public void succesfulAcceptInvitation() throws TripsException, MessagingException {
         User user = new User("unexisting9@hotmail.com","pass");
@@ -203,7 +215,7 @@ public class TestEnrollment
         Trip trip = tripsService.createTimelessTrip("Spartacus run", "Lopen door de modder!", TripPrivacy.PRIVATE, organizer);
         Invitation invitation = tripsService.invite(trip, organizer, invitee);
         tripsService.acceptInvitation(trip, invitee);
-        assertEquals(Answer.ACCEPTED,tripsService.findInvitationsByUser(invitee).get(FIRST_ELEMENT).getAnswer());
+        assertEquals(Answer.ACCEPTED, tripsService.findInvitationsByUser(invitee).get(FIRST_ELEMENT).getAnswer());
     }
 
     @Test(expected = TripsException.class)
@@ -228,7 +240,7 @@ public class TestEnrollment
         Trip trip = tripsService.createTimelessTrip("Spartacus run", "Lopen door de modder!", TripPrivacy.PRIVATE, organizer);
         Invitation invitation = tripsService.invite(trip, organizer, invitee);
         tripsService.declineInvitation(trip, invitee);
-        assertEquals(Answer.DECLINED,tripsService.findInvitationsByUser(invitee).get(FIRST_ELEMENT).getAnswer());
+        assertEquals(Answer.DECLINED, tripsService.findInvitationsByUser(invitee).get(FIRST_ELEMENT).getAnswer());
     }
 
     @Test(expected = TripsException.class)
@@ -260,7 +272,7 @@ public class TestEnrollment
     public void successfulSetLastLocationVisited() throws TripsException {
         User user = tripsService.createUser(new User("lampekap@hotmail.com","pass"));
         Trip trip = tripsService.createTimelessTrip("Spartacus run", "Lopen door de modder!", TripPrivacy.PROTECTED, organizer);
-        Location loc1 = tripsService.addLocationToTrip(organizer, trip, 12.00, 160.00, null, null, null, null, null, "Loc1","Location1");
+        Location loc1 = tripsService.addLocationToTrip(organizer, trip, 12.00, 160.00, null, null, null, null, null, "Loc1", "Location1");
         Location loc2 = tripsService.addLocationToTrip(organizer, trip, 12.00, 160.00, null, null, null, null, null, "Loc2","Location2");
         tripsService.publishTrip(trip,organizer);
         tripsService.subscribe(trip, user);
@@ -290,11 +302,41 @@ public class TestEnrollment
         tripsService.subscribe(trip, user);
         tripsService.addRequisiteToEnrollment("liters bier", 10, trip, user, organizer);
         tripsService.addRequisiteToEnrollment("liters bier", 5, trip, user, organizer);
-        // tripsService.addRequisiteToEnrollment("vrienden", 5, trip, user, organizer);
-        // tripsService.removeRequisiteFromEnrollment("liters bier", 12, trip, user, organizer);
-        // tripsService.removeRequisiteFromEnrollment("vrienden", 6, trip, user, organizer);
+        tripsService.addRequisiteToEnrollment("vrienden", 5, trip, user, organizer);
+        tripsService.removeRequisiteFromEnrollment("liters bier", 12, trip, user, organizer);
+        tripsService.removeRequisiteFromEnrollment("vrienden", 6, trip, user, organizer);
         Enrollment enrollment = tripsService.findEnrollmentsByUser(user).get(FIRST_ELEMENT);
         assertEquals(1, enrollment.getRequisites().size());
+    }
+
+    @Test
+    public void successfulAddCostToEnrollment() throws TripsException
+    {
+        Trip trip = tripsService.createTimelessTrip("Trip with costs", "trip with costs", TripPrivacy.PROTECTED, organizer);
+        User user = tripsService.createUser(new User("kuku@hotmail.com", "pass"));
+        tripsService.publishTrip(trip, organizer);
+        tripsService.subscribe(trip, user);
+        tripsService.addCostToEnrollment("bier", 10, trip, user);
+        tripsService.addCostToEnrollment("bier", 5, trip, user);
+        tripsService.addCostToEnrollment("meisjes van plezier", 50, trip, user);
+        Enrollment enrollment = tripsService.findEnrollmentsByUser(user).get(FIRST_ELEMENT);
+        assertTrue(enrollment.getCosts().containsValue(15));
+    }
+
+    @Test
+    public void successfulRemoveCostFromEnrollment() throws TripsException
+    {
+        Trip trip = tripsService.createTimelessTrip("Trip with requisites", "trip with requisites", TripPrivacy.PROTECTED, organizer);
+        User user = tripsService.createUser(new User("kk@hotmail.com", "pass"));
+        tripsService.publishTrip(trip, organizer);
+        tripsService.subscribe(trip, user);
+        tripsService.addCostToEnrollment("bier", 10, trip, user);
+        tripsService.addCostToEnrollment("bier", 5, trip, user);
+        tripsService.addCostToEnrollment("meisjes van plezier", 50, trip, user);
+        tripsService.removeCostFromEnrollment("bier", 12, trip, user);
+        tripsService.removeCostFromEnrollment("meisjes van plezier", 50, trip, user);
+        Enrollment enrollment = tripsService.findEnrollmentsByUser(user).get(FIRST_ELEMENT);
+        assertEquals(1, enrollment.getCosts().size());
     }
 
     @Test

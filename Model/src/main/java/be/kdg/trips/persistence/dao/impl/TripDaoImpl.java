@@ -111,7 +111,7 @@ public class TripDaoImpl implements TripDao{
     }
 
     @Override
-    public void createTrip(Trip trip)
+    public void saveTrip(Trip trip)
     {
         entityManager.persist(trip);
     }
@@ -144,6 +144,13 @@ public class TripDaoImpl implements TripDao{
     @Override
     public boolean isExistingTrip(int id) throws TripsException {
         getTrip(id);
+        return true;
+    }
+
+    @Override
+    public boolean isExistingLocation(int id) throws TripsException
+    {
+        getLocationById(id);
         return true;
     }
 }

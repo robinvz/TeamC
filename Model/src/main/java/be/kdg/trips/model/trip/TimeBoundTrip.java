@@ -43,6 +43,11 @@ public class TimeBoundTrip extends Trip implements Serializable {
         dates.put(startDate, endDate);
     }
 
+    public void removeDates(Date startDate)
+    {
+        dates.remove(startDate);
+    }
+
     @Override
     public boolean isActive(){
         Date now = new Date();

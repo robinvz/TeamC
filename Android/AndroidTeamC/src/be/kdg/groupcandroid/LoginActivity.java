@@ -11,6 +11,9 @@ import com.facebook.Response;
 import com.facebook.Session;
 import com.facebook.SessionState;
 import com.facebook.model.GraphUser;
+import com.parse.Parse;
+import com.parse.ParseObject;
+import com.parse.PushService;
 
 import android.os.Bundle;
 import android.preference.PreferenceManager;
@@ -33,7 +36,9 @@ public class LoginActivity extends Activity {
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
+		
 		super.onCreate(savedInstanceState);
+		
 		session = new SessionManager(getApplicationContext());
 		if (session.isLoggedIn()) {
 			Intent intent = new Intent(LoginActivity.this, TripsOverview.class);
@@ -42,6 +47,7 @@ public class LoginActivity extends Activity {
 			setContentView(R.layout.activity_main);
 			createListeners();
 		}
+		
 	}
 
 	public void createListeners() {

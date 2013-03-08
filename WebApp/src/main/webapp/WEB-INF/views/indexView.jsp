@@ -5,7 +5,6 @@
 <head>
     <link rel="stylesheet" href="${pageContext.request.contextPath}/resources/css/main.css">
     <link rel="shortcut icon" href="${pageContext.request.contextPath}/resources/res/favicon.ico">
-    <link rel="stylesheet" href="<spring:theme code="css"/>" type="text/css"/>
     <title>Home page</title>
 </head>
 <body>
@@ -31,12 +30,18 @@
             remarks please consult our contact page.
         </p>
 
-        <span style="float: left">
-    <a href="?theme=default">default</a>
-    |
-    <a href="?theme=green">green</a>
-    |
-    <a href="?theme=red">red</a>
+        <div id="fb-root"></div>
+        <script>(function(d, s, id) {
+            var js, fjs = d.getElementsByTagName(s)[0];
+            if (d.getElementById(id)) return;
+            js = d.createElement(s); js.id = id;
+            js.src = "//connect.facebook.net/en_GB/all.js#xfbml=1&appId=118452395005980";
+            fjs.parentNode.insertBefore(js, fjs);
+        }(document, 'script', 'facebook-jssdk'));</script>
+        <div class="fb-like-box" data-href="https://www.facebook.com/pages/Trips-Team-C/277962849000758" data-width="292" data-show-faces="true" data-stream="true" data-header="true"></div>
+
+
+
 </span>
     </div>
 

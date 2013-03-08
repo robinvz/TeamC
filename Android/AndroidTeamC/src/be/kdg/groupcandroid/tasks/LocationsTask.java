@@ -21,9 +21,9 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
-import be.kdg.groupcandroid.Item;
-import be.kdg.groupcandroid.Location;
 import be.kdg.groupcandroid.R;
+import be.kdg.groupcandroid.model.Item;
+import be.kdg.groupcandroid.model.Location;
 
 import android.app.Activity;
 import android.app.ProgressDialog;

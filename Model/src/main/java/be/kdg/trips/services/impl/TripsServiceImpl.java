@@ -1,12 +1,10 @@
 package be.kdg.trips.services.impl;
 
 
-import be.kdg.trips.businessLogic.interfaces.ChatBL;
 import be.kdg.trips.businessLogic.interfaces.EnrollmentBL;
 import be.kdg.trips.businessLogic.interfaces.TripBL;
 import be.kdg.trips.businessLogic.interfaces.UserBL;
 import be.kdg.trips.exception.TripsException;
-import be.kdg.trips.model.chat.ChatServer;
 import be.kdg.trips.model.enrollment.Enrollment;
 import be.kdg.trips.model.invitation.Invitation;
 import be.kdg.trips.model.location.Location;
@@ -16,6 +14,7 @@ import be.kdg.trips.model.trip.Trip;
 import be.kdg.trips.model.trip.TripPrivacy;
 import be.kdg.trips.model.user.User;
 import be.kdg.trips.services.interfaces.TripsService;
+import be.kdg.trips.utility.MailSender;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -38,8 +37,6 @@ public class TripsServiceImpl implements TripsService
     private TripBL tripController;
     @Autowired
     private EnrollmentBL enrollmentController;
-    @Autowired
-    private ChatBL chatController;
 
     //User Service
     @Override
@@ -70,9 +67,21 @@ public class TripsServiceImpl implements TripsService
     }
 
     @Override
+    public void setUsersCurrentPosition(User user, double latitude, double longitude) throws TripsException
+    {
+        userController.setUserPosition(user, latitude, longitude);
+    }
+
+    @Override
     public void changePassword(User loggedInUser, String oldPassword, String newPassword) throws TripsException
     {
         userController.changePassword(loggedInUser, oldPassword, newPassword);
+    }
+
+    @Override
+    public void forgotPassword(String email) throws TripsException, MessagingException
+    {
+        userController.forgotPassword(email);
     }
 
     @Override
@@ -136,6 +145,12 @@ public class TripsServiceImpl implements TripsService
     }
 
     @Override
+    public void editTripQuestionDetails(User organizer, Question question, String questionTitle, List<String> possibleAnswers, int correctAnswerIndex)
+    {
+        //To change body of implemented methods use File | Settings | File Templates.
+    }
+
+    @Override
     public void publishTrip(Trip trip, User loggedInUser) throws TripsException {
         tripController.publishTrip(trip, loggedInUser);
     }
@@ -157,8 +172,25 @@ public class TripsServiceImpl implements TripsService
     }
 
     @Override
+    public void addQuestionToLocation(User organizer, Location location, String question, List<String> possibleAnswers, int correctAnswerIndex, byte[] image) throws TripsException
+    {
+        tripController.addQuestionToLocation(organizer, location, question, possibleAnswers, correctAnswerIndex, image);
+    }
+
+    @Override
+    public void removeQuestionFromLocation(User organizer, Location location)
+    {
+        //To change body of implemented methods use File | Settings | File Templates.
+    }
+
+    @Override
     public void addDateToTimeBoundTrip(Date startDate, Date endDate, Trip trip, User loggedInUser) throws TripsException {
         tripController.addDateToTimeBoundTrip(startDate, endDate, trip, loggedInUser);
+    }
+
+    @Override
+    public void removeDateFromTimeBoundTrip(Date startDate, Trip trip, User user) throws TripsException {
+        tripController.removeDateFromTimeBoundTrip(startDate, trip, user);
     }
 
     @Override
@@ -181,6 +213,11 @@ public class TripsServiceImpl implements TripsService
     @Override
     public void addImageToTrip(Trip trip, User organizer, byte[] image) throws TripsException {
         tripController.addImageToTrip(trip, organizer, image);
+    }
+
+    @Override
+    public void changeThemeOfTrip(Trip trip, String theme) throws TripsException {
+        tripController.changeThemeOfTrip(trip, theme);
     }
 
     @Override
@@ -253,6 +290,18 @@ public class TripsServiceImpl implements TripsService
     }
 
     @Override
+    public void addCostToEnrollment(String name, int amount, Trip trip, User user) throws TripsException
+    {
+        enrollmentController.addCostToEnrollment(name, amount, trip, user);
+    }
+
+    @Override
+    public void removeCostFromEnrollment(String name, int amount, Trip trip, User user) throws TripsException
+    {
+        enrollmentController.removeCostFromEnrollment(name, amount, trip, user);
+    }
+
+    @Override
     public Invitation invite(Trip trip, User loggedInUser, User invitee) throws TripsException, MessagingException {
         return enrollmentController.invite(trip, loggedInUser, invitee);
     }
@@ -272,9 +321,9 @@ public class TripsServiceImpl implements TripsService
         return enrollmentController.stopTrip(trip, user);
     }
 
-    //Chat service
+    //MailContact Service
     @Override
-    public ChatServer initializeConversation(Enrollment enrollment1, Enrollment enrollment2) throws TripsException {
-        return chatController.initializeConversation(enrollment1, enrollment2);
+    public void sendContactMail(String subject, String text, String sender) throws MessagingException {
+        MailSender.sendMail("'" + subject + "' from " +sender, text, "tripsnoreply@gmail.com");
     }
 }

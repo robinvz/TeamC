@@ -1,10 +1,15 @@
 package be.kdg.groupcandroid;
 
 import java.util.ArrayList;
+import java.util.List;
 import java.util.concurrent.ExecutionException;
 import java.util.concurrent.TimeUnit;
 import java.util.concurrent.TimeoutException;
 
+import com.parse.PushService;
+
+import be.kdg.groupcandroid.model.Item;
+import be.kdg.groupcandroid.model.Trip;
 import be.kdg.groupcandroid.tasks.TripByIdTask;
 import be.kdg.groupcandroid.tasks.TripsTask;
 
@@ -28,6 +33,7 @@ public class BaseTripsFragment extends Fragment {
 
 	private String type;
 	private Boolean searchVisible;
+	ArrayList<Item> tripsList = new ArrayList<Item>();
 
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
@@ -66,7 +72,7 @@ public class BaseTripsFragment extends Fragment {
 		} catch (Exception e) {
 			// TODO: handle exception
 		}
-		final ArrayList<Item> tripsList = getTrips();
+		tripsList = getTrips();
 		SimpleListAdapter sla = new SimpleListAdapter(view.getContext(),
 				tripsList, R.layout.listitemrow);
 		listView.setAdapter(sla);
@@ -136,10 +142,16 @@ public class BaseTripsFragment extends Fragment {
 				}
 			}
 		});
-
+		if(type.contentEquals("enrolled"));{
+			subscribeToChannel();
+		}
 		return view;
-
 	}
+	
+	private void subscribeToChannel(){
+		for (Item item : tripsList){
+			PushService.subscribe(getActivity(), item.getTitle().replace(" ", "") + item.id, TripsOverview.class);	}
+		}
 
 	private ArrayList<Item> getTrips() {
 		// TODO Ophalen van trips uit backend
