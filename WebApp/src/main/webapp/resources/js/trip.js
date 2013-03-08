@@ -1,13 +1,25 @@
-function setImage(tripId){
-    var context = $('#testen').getContext('2d');
-    var imageObj = new Image();
-    $.get("/tripPic/"+tripId, function (image) {
-      // $('#trip-header').css("background-image", image);
-        imageObj.src = image;
+
+
+
+
+$(document).ready(function(){
+    $('.rdb-theme').on('click', function(){
+        $.POST('',  $(this).attr('value'));
     });
-    context.drawImage(imageObj, 69, 50);
+
+
+});
+
+
+function setCurrentTheme(currentTheme){
+    switch (currentTheme){
+        case 'default' : $('#default').attr('checked', true);
+            break;
+        case 'blue' : $('#blue').attr('checked', true);
+            break;
+        case 'dark' : $('#dark').attr('checked', true);
+            break;
+    }
 }
-
-
 
 
