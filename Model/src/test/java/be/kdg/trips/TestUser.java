@@ -405,4 +405,14 @@ public class TestUser {
         User user = tripsService.createUser(new User("zaag@student.kdg.be","tony"));
         tripsService.changePassword(user,"goethals","newpw");
     }
+
+    @Test
+    public void successfulSetUserPosition() throws TripsException {
+        User user = tripsService.createUser(new User("flingo@robin.bobin","flingo"));
+        tripsService.setUsersCurrentPosition(user, 10.03, 153.8);
+        User foundUser = tripsService.findUser(user.getEmail());
+        boolean correct = false;
+        if(foundUser.getLatitude()==10.03 && foundUser.getLongitude()==153.8) correct = true;
+        assertTrue(correct);
+    }
 }

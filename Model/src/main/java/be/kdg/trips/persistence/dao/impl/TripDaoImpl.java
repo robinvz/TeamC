@@ -146,4 +146,11 @@ public class TripDaoImpl implements TripDao{
         getTrip(id);
         return true;
     }
+
+    @Override
+    public boolean isExistingLocation(int id) throws TripsException
+    {
+        getLocationById(id);
+        return true;
+    }
 }

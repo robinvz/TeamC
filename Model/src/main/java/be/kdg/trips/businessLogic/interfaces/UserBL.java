@@ -23,6 +23,7 @@ public interface UserBL
     public boolean checkLogin(String email, String password);
 
     public void updateUser(User user, String firstName, String lastName, String street, String houseNr, String city, String postalCode, String country, byte[] profilePicture) throws TripsException;
+    public void setUserPosition(User user, double latitude, double longitude) throws TripsException;
     public void changePassword(User user, String oldPassword, String newPassword) throws TripsException;
     public void forgotPassword(String email) throws TripsException, MessagingException;
 

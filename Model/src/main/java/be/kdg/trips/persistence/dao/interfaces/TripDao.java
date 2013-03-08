@@ -36,5 +36,6 @@ public interface TripDao {
     public void deleteLocation(int id);
 
     public boolean isExistingTrip(int id) throws TripsException;
+    public boolean isExistingLocation(int id)throws TripsException;
 }
 

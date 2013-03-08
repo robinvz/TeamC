@@ -74,42 +74,27 @@ public class TripBLImpl implements TripBL
                         Calendar endCalendar = Calendar.getInstance();
                         startCalendar.setTime(startDate);
                         endCalendar.setTime(endDate);
-                        switch(repeatable)
+                        for(int i = 0; i < amount; i++)
                         {
-                            case WEEKLY:
-                                for(int i=0; i<amount; i++)
-                                {
+                            switch(repeatable)
+                            {
+                                case WEEKLY:
                                     startCalendar.add(Calendar.DATE, 7);
                                     endCalendar.add(Calendar.DATE, 7);
-                                    Date startCalendarDate = startCalendar.getTime();
-                                    Date endCalendarDate = endCalendar.getTime();
-                                    if(startCalendarDate.after(endDate))
-                                    {
-                                        trip.addDates(startCalendarDate, endCalendarDate);
-                                    }
-                                }
                                 break;
-                            case MONTHLY:
-                                for(int i=0; i<amount; i++)
-                                {
+                                case MONTHLY:
                                     startCalendar.add(Calendar.MONTH, 1);
                                     endCalendar.add(Calendar.MONTH, 1);
-                                    if(startCalendar.getTime().after(endDate))
-                                    {
-                                        trip.addDates(startCalendar.getTime(), endCalendar.getTime());
-                                    }
-                                }
                                 break;
-                            case ANNUALLY:
-                                for(int i=0; i<amount; i++)
-                                {
+                                case ANNUALLY:
                                     startCalendar.add(Calendar.YEAR, 1);
                                     endCalendar.add(Calendar.YEAR, 1);
-                                    if(startCalendar.getTime().after(endDate))
-                                    {
-                                        trip.addDates(startCalendar.getTime(), endCalendar.getTime());
-                                    }
-                                };
+                                break;
+                            }
+                            if(startCalendar.getTime().after(endDate))
+                            {
+                                trip.addDates(startCalendar.getTime(), endCalendar.getTime());
+                            }
                         }
                     }
                     else
@@ -494,6 +479,12 @@ public class TripBLImpl implements TripBL
     }
 
     @Override
+    public boolean isExistingLocation(int id) throws TripsException
+    {
+        return tripDao.isExistingLocation(id);
+    }
+
+    @Override
     public boolean isOrganizer(Trip trip, User organizer) throws TripsException
     {
         if(trip.getOrganizer().getEmail().equals(organizer.getEmail()))
@@ -511,6 +502,20 @@ public class TripBLImpl implements TripBL
             return true;
         }
         throw new TripsException("Trip is already active");
+    }
+
+    @Override
+    public void addQuestionToLocation(User organizer, Location location, String question, List<String> possibleAnswers, int correctAnswerIndex, byte[] image) throws TripsException
+    {
+        if(isExistingLocation(location.getId()) && location.getQuestion() == null && userBL.isExistingUser(organizer.getEmail()) && isOrganizer(location.getTrip(), organizer))
+        {
+            location.setQuestion(new Question(question, possibleAnswers, correctAnswerIndex, image));
+            tripDao.saveOrUpdateLocation(location);
+        }
+        else
+        {
+            throw new TripsException("Location already has a question");
+        }
     }
 
     public boolean doesLocationBelongToTrip(Location location, Trip trip) throws TripsException
