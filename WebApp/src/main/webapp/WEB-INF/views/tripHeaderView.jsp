@@ -57,6 +57,7 @@
                     <li><a href="/addDate/${trip.id}"><spring:message code="AddDate"/></a></li>
                 </c:if>
                 <li><a href="/deleteTrip/${trip.id}"><spring:message code="Delete"/></a></li>
+                <li><a href="/costs/${trip.id}"><spring:message code="Costs"/></a></li>
             </c:if>
         </ul>
     </nav>

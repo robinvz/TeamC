@@ -1003,4 +1003,25 @@ public class TripController {
         }
         return new ModelAndView("tripsView");
     }
+
+    @RequestMapping(value = "/costs/{tripId}", method = RequestMethod.GET)
+    public ModelAndView costs(@PathVariable int tripId, Locale locale) {
+        if (isLoggedIn()) {
+            Trip trip = null;
+            User user = (User) session.getAttribute("user");
+            try {
+                trip = tripsService.findTripById(tripId, user);
+            } catch (TripsException e) {
+                return new ModelAndView("tripsView", "error", messageSource.getMessage("FindTripError", null, locale));
+            }
+            Map<String, Integer> totalTripCosts = new HashMap<>();
+            for(Enrollment enrollment: trip.getEnrollments())
+            {
+                totalTripCosts.putAll(enrollment.getCosts());
+            }
+            return new ModelAndView("costsView", "totalTripCosts", totalTripCosts);
+        } else {
+            return new ModelAndView("loginView", "loginBean", new LoginBean());
+        }
+    }
 }
