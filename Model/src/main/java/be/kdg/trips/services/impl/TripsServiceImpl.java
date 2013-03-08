@@ -68,6 +68,12 @@ public class TripsServiceImpl implements TripsService
     }
 
     @Override
+    public void setUsersCurrentPosition(User user, double latitude, double longitude) throws TripsException
+    {
+        userController.setUserPosition(user, latitude, longitude);
+    }
+
+    @Override
     public void changePassword(User loggedInUser, String oldPassword, String newPassword) throws TripsException
     {
         userController.changePassword(loggedInUser, oldPassword, newPassword);

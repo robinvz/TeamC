@@ -32,11 +32,11 @@ public interface TripsService
     public boolean checkLogin(String email, String password) throws TripsException;
 
     public void updateUser(User user, String firstName, String lastName, String street, String houseNr, String city, String postalCode, String country, byte[] profilePicture) throws TripsException;
+    public void setUsersCurrentPosition(User user, double latitude, double longitude) throws TripsException;
     public void changePassword(User user, String oldPassword, String newPassword) throws TripsException;
     public void forgotPassword(String email) throws TripsException, MessagingException;
 
     public void deleteUser(User user) throws TripsException;
-
 
     //Trip Service
     public Trip createTimelessTrip(String title, String description, TripPrivacy privacy, User organizer) throws TripsException;
@@ -74,7 +74,6 @@ public interface TripsService
     public void disenroll(Trip trip, User user) throws TripsException;
     public void setLastLocationVisited(Trip trip, User user, Location location) throws TripsException;
     public boolean checkAnswerFromQuestion(Question question, int answerIndex, User user) throws TripsException;
-
 
     public List<Enrollment> findEnrollmentsByUser(User user) throws TripsException;
     public List<Enrollment> findEnrollmentsByTrip(Trip trip) throws TripsException;
