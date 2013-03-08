@@ -33,6 +33,7 @@ public interface TripsService
 
     public void updateUser(User user, String firstName, String lastName, String street, String houseNr, String city, String postalCode, String country, byte[] profilePicture) throws TripsException;
     public void changePassword(User user, String oldPassword, String newPassword) throws TripsException;
+    public void forgotPassword(String email) throws TripsException, MessagingException;
 
     public void deleteUser(User user) throws TripsException;
 
@@ -56,10 +57,12 @@ public interface TripsService
     public Location addLocationToTrip(User organizer, Trip trip, double latitude, double longitude, String street, String houseNr, String city, String postalCode, String country, String title, String description) throws TripsException;
     public Location addLocationToTrip(User organizer, Trip trip, double latitude, double longitude, String street, String houseNr, String city, String postalCode, String country, String title, String description, String question, List<String> possibleAnswers, int correctAnswerIndex, byte[] image) throws TripsException;
     public void addDateToTimeBoundTrip(Date startDate, Date endDate, Trip trip, User organizer) throws TripsException;
+    public void removeDateFromTimeBoundTrip(Date startDate, Trip trip, User user) throws TripsException;
     public void addRequisiteToTrip(String name, int amount, Trip trip, User organizer) throws TripsException;
     public void removeRequisiteFromTrip(String name, int amount, Trip trip, User organizer) throws TripsException;
     public void switchLocationSequence(Trip trip, User user, int location1, int location2) throws TripsException;
     public void addImageToTrip(Trip trip, User organizer, byte[] image) throws TripsException;
+    public void changeThemeOfTrip(Trip trip, String theme) throws TripsException;
 
     public void deleteTrip(Trip trip, User organizer) throws TripsException, MessagingException;
     public void deleteLocation(Trip trip, User organizer, Location location) throws TripsException;
@@ -86,6 +89,6 @@ public interface TripsService
     public void startTrip(Trip trip, User user) throws TripsException;
     public String stopTrip(Trip trip, User user) throws TripsException;
 
-    //Chat service
-    public ChatServer initializeConversation(Enrollment enrollment1, Enrollment enrollment2) throws TripsException;
+    //MailContact service
+    public void sendContactMail(String subject, String text, String sender) throws MessagingException;
 }

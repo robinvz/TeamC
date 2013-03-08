@@ -1,8 +1,8 @@
 package be.kdg.trips.model.chat;
 
 import be.kdg.trips.model.user.User;
+
 import javax.validation.constraints.NotNull;
-import javax.persistence.*;
 
 /**
  * Subversion id
@@ -23,6 +23,11 @@ public class ChatServer {
     }
 
     public ChatServer() {
+    }
+
+    public void sendMessage(String message)
+    {
+
     }
 
     @Override

@@ -3,6 +3,8 @@ package be.kdg.trips.businessLogic.interfaces;
 import be.kdg.trips.exception.TripsException;
 import be.kdg.trips.model.user.User;
 
+import javax.mail.MessagingException;
+import javax.mail.internet.AddressException;
 import java.util.List;
 import java.util.Set;
 
@@ -22,10 +24,10 @@ public interface UserBL
 
     public void updateUser(User user, String firstName, String lastName, String street, String houseNr, String city, String postalCode, String country, byte[] profilePicture) throws TripsException;
     public void changePassword(User user, String oldPassword, String newPassword) throws TripsException;
+    public void forgotPassword(String email) throws TripsException, MessagingException;
 
     public void deleteUser(User user) throws TripsException;
 
     public boolean isExistingUser(String email) throws TripsException;
     public boolean isUnexistingUser(String email) throws TripsException;
-
 }

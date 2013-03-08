@@ -6,7 +6,6 @@ import be.kdg.trips.businessLogic.interfaces.UserBL;
 import be.kdg.trips.exception.TripsException;
 import be.kdg.trips.model.address.Address;
 import be.kdg.trips.model.enrollment.Enrollment;
-import be.kdg.trips.model.enrollment.Status;
 import be.kdg.trips.model.invitation.Invitation;
 import be.kdg.trips.model.location.Location;
 import be.kdg.trips.model.question.Question;
@@ -14,6 +13,7 @@ import be.kdg.trips.model.trip.*;
 import be.kdg.trips.model.user.User;
 import be.kdg.trips.persistence.dao.interfaces.TripDao;
 import be.kdg.trips.utility.ImageChecker;
+import be.kdg.trips.utility.MailSender;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
@@ -48,7 +48,7 @@ public class TripBLImpl implements TripBL
         if(userBL.isExistingUser(organizer.getEmail()))
         {
             trip = new TimelessTrip(title, description, privacy, organizer);
-            tripDao.createTrip(trip);
+            tripDao.saveTrip(trip);
             if(trip.getPrivacy()==TripPrivacy.PRIVATE)
             {
                 enrollOrganizer(organizer, trip);
@@ -68,7 +68,7 @@ public class TripBLImpl implements TripBL
                 trip = new TimeBoundTrip(title, description, privacy, organizer, startDate, endDate);
                 if(repeatable!=null & amount!=null)
                 {
-                    if(amount>1 && amount<15)
+                    if(amount>0 && amount<15)
                     {
                         Calendar startCalendar = Calendar.getInstance();
                         Calendar endCalendar = Calendar.getInstance();
@@ -117,7 +117,7 @@ public class TripBLImpl implements TripBL
                         throw new TripsException("Trip is only repeatable 1-15 times");
                     }
                 }
-                tripDao.createTrip(trip);
+                tripDao.saveTrip(trip);
                 if(trip.getPrivacy()==TripPrivacy.PRIVATE)
                 {
                     enrollOrganizer(organizer, trip);
@@ -368,10 +368,28 @@ public class TripBLImpl implements TripBL
     public void addDateToTimeBoundTrip(Date startDate, Date endDate, Trip trip, User organizer) throws TripsException {
         if(isExistingTrip(trip.getId()) && userBL.isExistingUser(organizer.getEmail()) && isOrganizer(trip, organizer))
         {
-            if(areDatesUnoccupied(startDate, endDate, trip))
+            if(areDatesUnoccupied(startDate, endDate, trip) && areDatesValid(startDate, endDate))
             {
                 ((TimeBoundTrip) trip).addDates(startDate, endDate);
                 tripDao.updateTrip(trip);
+            }
+        }
+    }
+
+    @Override
+    @Transactional
+    public void removeDateFromTimeBoundTrip(Date startDate, Trip trip, User user) throws TripsException {
+        if(isExistingTrip(trip.getId()) && userBL.isExistingUser(user.getEmail()) && isOrganizer(trip, user) && trip.isTimeBoundTrip())
+        {
+            TimeBoundTrip tbTrip = (TimeBoundTrip)trip;
+            if(tbTrip.getDates().size()>1)
+            {
+                tbTrip.removeDates(startDate);
+                tripDao.updateTrip(trip);
+            }
+            else
+            {
+                throw new TripsException("Timebound trip has to have atleast one start and end date");
             }
         }
     }
@@ -447,16 +465,26 @@ public class TripBLImpl implements TripBL
 
     @Override
     @Transactional
+    public void changeThemeOfTrip(Trip trip, String theme) throws TripsException {
+        if(isExistingTrip(trip.getId()))
+        {
+            trip.setTheme(theme);
+            tripDao.updateTrip(trip);
+        }
+    }
+
+    @Override
+    @Transactional
     public void deleteTrip(Trip trip, User user) throws TripsException, MessagingException {
         if(isExistingTrip(trip.getId()) && userBL.isExistingUser(user.getEmail()) && isOrganizer(trip, user))
         {
-            List<InternetAddress[]> recipients = new ArrayList<>();
+            List<String> recipients = new ArrayList<>();
             for (Enrollment e: trip.getEnrollments())
             {
-                recipients.add(InternetAddress.parse(e.getUser().getEmail()));
+                recipients.add(e.getUser().getEmail());
             }
             tripDao.deleteTrip(trip.getId());
-            sendMail("Trip '"+trip.getTitle()+ "'", "We regret to inform you that the following trip: '"+trip.getTitle()+" - "+trip.getDescription()+"' has been canceled by the organizer.", recipients);
+            MailSender.sendMail("Trip '" + trip.getTitle() + "'", "We regret to inform you that the following trip: '" + trip.getTitle() + " - " + trip.getDescription() + "' has been canceled by the organizer.", recipients);
         }
     }
 
@@ -492,38 +520,6 @@ public class TripBLImpl implements TripBL
             return true;
         }
         throw new TripsException("This location does not belong to this trip");
-    }
-
-    @Override
-    public void sendMail(String subject, String text, List<InternetAddress[]> recipients) throws MessagingException {
-        Properties props = new Properties();
-        props.put("mail.smtp.auth", "true");
-        props.put("mail.smtp.starttls.enable", "true");
-        props.put("mail.smtp.host", "smtp.gmail.com");
-        props.put("mail.smtp.port", "587");
-
-        Session session = Session.getInstance(props,
-                new javax.mail.Authenticator() {
-                    protected PasswordAuthentication getPasswordAuthentication() {
-                        return new PasswordAuthentication("tripsnoreply@gmail.com", "tripstrips");
-                    }
-                });
-
-        try
-        {
-            Message message = new MimeMessage(session);
-            message.setSubject(subject);
-            message.setText(text);
-            for (InternetAddress[] recipient :recipients)
-            {
-                message.addRecipients(Message.RecipientType.TO, recipient);
-            }
-            Transport.send(message);
-        }
-        catch(MessagingException msgex)
-        {
-            throw new MessagingException("Failed to send email");
-        }
     }
 
     private boolean areDatesValid(Date startDate, Date endDate) throws TripsException {

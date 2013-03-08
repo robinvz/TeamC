@@ -1,7 +1,6 @@
 package be.kdg.trips.services.impl;
 
 
-import be.kdg.trips.businessLogic.interfaces.ChatBL;
 import be.kdg.trips.businessLogic.interfaces.EnrollmentBL;
 import be.kdg.trips.businessLogic.interfaces.TripBL;
 import be.kdg.trips.businessLogic.interfaces.UserBL;
@@ -16,6 +15,7 @@ import be.kdg.trips.model.trip.Trip;
 import be.kdg.trips.model.trip.TripPrivacy;
 import be.kdg.trips.model.user.User;
 import be.kdg.trips.services.interfaces.TripsService;
+import be.kdg.trips.utility.MailSender;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -38,8 +38,6 @@ public class TripsServiceImpl implements TripsService
     private TripBL tripController;
     @Autowired
     private EnrollmentBL enrollmentController;
-    @Autowired
-    private ChatBL chatController;
 
     //User Service
     @Override
@@ -73,6 +71,12 @@ public class TripsServiceImpl implements TripsService
     public void changePassword(User loggedInUser, String oldPassword, String newPassword) throws TripsException
     {
         userController.changePassword(loggedInUser, oldPassword, newPassword);
+    }
+
+    @Override
+    public void forgotPassword(String email) throws TripsException, MessagingException
+    {
+        userController.forgotPassword(email);
     }
 
     @Override
@@ -162,6 +166,11 @@ public class TripsServiceImpl implements TripsService
     }
 
     @Override
+    public void removeDateFromTimeBoundTrip(Date startDate, Trip trip, User user) throws TripsException {
+        tripController.removeDateFromTimeBoundTrip(startDate, trip, user);
+    }
+
+    @Override
     public void addRequisiteToTrip(String name, int amount, Trip trip, User organizer) throws TripsException
     {
         tripController.addRequisiteToTrip(name, amount, trip, organizer);
@@ -181,6 +190,11 @@ public class TripsServiceImpl implements TripsService
     @Override
     public void addImageToTrip(Trip trip, User organizer, byte[] image) throws TripsException {
         tripController.addImageToTrip(trip, organizer, image);
+    }
+
+    @Override
+    public void changeThemeOfTrip(Trip trip, String theme) throws TripsException {
+        tripController.changeThemeOfTrip(trip, theme);
     }
 
     @Override
@@ -272,9 +286,9 @@ public class TripsServiceImpl implements TripsService
         return enrollmentController.stopTrip(trip, user);
     }
 
-    //Chat service
+    //MailContact Service
     @Override
-    public ChatServer initializeConversation(Enrollment enrollment1, Enrollment enrollment2) throws TripsException {
-        return chatController.initializeConversation(enrollment1, enrollment2);
+    public void sendContactMail(String subject, String text, String sender) throws MessagingException {
+        MailSender.sendMail("'" + subject + "' from " +sender, text, "tripsnoreply@gmail.com");
     }
 }

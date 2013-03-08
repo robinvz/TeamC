@@ -424,7 +424,7 @@ public class TestTrip {
     }
 
     @Test
-    public void successfulAddDatesToTimeBoundTrip() throws ParseException, TripsException
+    public void successfulAddDateToTimeBoundTrip() throws ParseException, TripsException
     {
         Trip trip = tripsService.createTimeBoundTrip("trip met extra dates", "extra dates", TripPrivacy.PROTECTED, user, df.parse("01/01/2014"), df.parse("01/02/2014"), null, null);
         tripsService.publishTrip(trip, user);
@@ -433,11 +433,33 @@ public class TestTrip {
     }
 
     @Test(expected = TripsException.class)
-    public void failedAddDatesToTimeBoundTripOccupiedDate() throws ParseException, TripsException
+    public void failedAddDateToTimeBoundTripOccupiedDate() throws ParseException, TripsException
     {
         Trip trip = tripsService.createTimeBoundTrip("trip met extra dates", "extra dates", TripPrivacy.PROTECTED, user, df.parse("01/01/2014"), df.parse("01/02/2014"), null, null);
         tripsService.publishTrip(trip, user);
         tripsService.addDateToTimeBoundTrip(df.parse("15/01/2014"), df.parse("01/04/2014"), trip, user);
+    }
+
+    @Test
+     public void successfulRemoveDateFromTimeBoundTrip() throws ParseException, TripsException
+    {
+        Trip trip = tripsService.createTimeBoundTrip("trip met extra dates", "extra dates", TripPrivacy.PROTECTED, user, df.parse("01/01/2014"), df.parse("01/02/2014"), null, null);
+        tripsService.publishTrip(trip, user);
+        tripsService.addDateToTimeBoundTrip(df.parse("01/03/2014"), df.parse("01/04/2014"), trip, user);
+        tripsService.addDateToTimeBoundTrip(df.parse("01/07/2014"), df.parse("02/07/2014"), trip, user);
+        tripsService.addDateToTimeBoundTrip(df.parse("01/09/2014"), df.parse("01/10/2014"), trip, user);
+        tripsService.addDateToTimeBoundTrip(df.parse("01/11/2014"), df.parse("02/12/2014"), trip, user);
+        tripsService.removeDateFromTimeBoundTrip(df.parse("01/07/2014"), trip, user);
+        tripsService.removeDateFromTimeBoundTrip(df.parse("01/03/2014"), trip, user);
+        assertEquals(3, ((TimeBoundTrip) trip).getDates().size());
+    }
+
+    @Test(expected = TripsException.class)
+    public void failedRemoveDateFromTimeBoundTrip() throws ParseException, TripsException
+    {
+        Trip trip = tripsService.createTimeBoundTrip("trip met extra dates", "extra dates", TripPrivacy.PROTECTED, user, df.parse("01/01/2014"), df.parse("01/02/2014"), null, null);
+        tripsService.publishTrip(trip, user);
+        tripsService.removeDateFromTimeBoundTrip(df.parse("01/01/2014"), trip, user);
     }
 
     @Test
@@ -645,6 +667,13 @@ public class TestTrip {
         }
         tripsService.addImageToTrip(trip, organizer, bFile);
         assertNotNull(tripsService.findTripById(trip.getId(), organizer).getImage());
+    }
+
+    @Test
+    public void successfulChangeThemeOfTrip() throws TripsException {
+        Trip trip = tripsService.createTimelessTrip("Stadswandeling", "Wandeling in 't Stad", TripPrivacy.PUBLIC, organizer);
+        tripsService.changeThemeOfTrip(trip, "green");
+        assertEquals("green", trip.getTheme());
     }
 }
 
