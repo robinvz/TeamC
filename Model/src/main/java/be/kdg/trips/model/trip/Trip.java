@@ -29,10 +29,10 @@ public abstract class Trip implements Serializable, TripInterface {
     @Id
     private int id;
     @NotNull
-    @Size(min = 4, max = 50, message = "Title has a maximum amount of 50 characters")
+    @Size(min = 4, max = 50, message = "Title has a maximum amount of 50 characters and a minimum of 4 characters")
     private String title;
     @NotNull
-    @Size(min = 4, max = 150, message = "Description has a maximum amount of 150 characters")
+    @Size(min = 4, max = 150, message = "Description has a maximum amount of 50 characters and a minimum of 4 characters")
     private String description;
     @ElementCollection(fetch = FetchType.EAGER)
     @CollectionTable(name = "T_TRIP_LABEL", joinColumns = @JoinColumn(name = "tripId"))

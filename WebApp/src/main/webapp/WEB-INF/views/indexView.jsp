@@ -5,7 +5,6 @@
 <head>
     <link rel="stylesheet" href="${pageContext.request.contextPath}/resources/css/main.css">
     <link rel="shortcut icon" href="${pageContext.request.contextPath}/resources/res/favicon.ico">
-    <link rel="stylesheet" href="<spring:theme code="css"/>" type="text/css"/>
     <title>Home page</title>
 </head>
 <body>
@@ -31,12 +30,8 @@
             remarks please consult our contact page.
         </p>
 
-        <span style="float: left">
-    <a href="?theme=default">default</a>
-    |
-    <a href="?theme=green">green</a>
-    |
-    <a href="?theme=red">red</a>
+
+
 </span>
     </div>
 

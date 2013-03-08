@@ -126,13 +126,19 @@ public class TestEnrollment
         assertEquals(Answer.DECLINED,tripsService.findInvitationsByUser(invitee).get(FIRST_ELEMENT).getAnswer());
     }
 
-    @Test(expected = TransactionSystemException.class)
+    @Test(expected = TripsException.class)
     public void failedDisenrollNotEnrolled() throws TripsException
     {
         User subscriber = tripsService.createUser(new User("clarkson@msn.com","gans"));
-        Trip trip = tripsService.createTimelessTrip("zalt gaan ja", "ddt", TripPrivacy.PROTECTED, organizer);
+        Trip trip = tripsService.createTimelessTrip("zalt gaan ja", "dimitri de tremmerie", TripPrivacy.PROTECTED, organizer);
         tripsService.publishTrip(trip, organizer);
         tripsService.disenroll(trip, subscriber);
+    }
+
+    @Test(expected = TripsException.class)
+    public void failedDisenrollIsOrganizer() throws TripsException {
+        Trip trip = tripsService.createTimelessTrip("zalt gaan ja", "dimitri de tremmerie", TripPrivacy.PROTECTED, organizer);
+        tripsService.disenroll(trip, organizer);
     }
 
     @Test
@@ -194,6 +200,12 @@ public class TestEnrollment
         tripsService.acceptInvitation(trip, invitee);
         tripsService.uninvite(trip, organizer, invitee);
         assertTrue(tripsService.findPrivateTrips(invitee).isEmpty());
+    }
+
+    @Test(expected = TripsException.class)
+    public void failedUninviteIsOrganizer() throws TripsException {
+        Trip trip = tripsService.createTimelessTrip("Tenniswedstrijd", "tennis is geen ping pong", TripPrivacy.PRIVATE, organizer);
+        tripsService.uninvite(trip, organizer, organizer);
     }
 
     @Test

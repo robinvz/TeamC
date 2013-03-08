@@ -123,6 +123,16 @@ public class UserBLImpl implements UserBL
 
     @Override
     @Transactional
+    public void setUserPosition(User user, double latitude, double longitude) throws TripsException {
+        if(isExistingUser(user.getEmail())){
+            user.setLatitude(latitude);
+            user.setLongitude(longitude);
+            userDao.saveOrUpdateUser(user);
+        }
+    }
+
+    @Override
+    @Transactional
     public void changePassword(User user, String oldPassword, String newPassword) throws TripsException {
         if (isExistingUser(user.getEmail()))
         {

@@ -66,20 +66,27 @@ public class EnrollmentBLImpl implements EnrollmentBL
     @Override
     @Transactional
     public void disenroll(Trip trip, User user) throws TripsException {
-        if(isExistingEnrollment(user, trip) && !trip.isActive())
+        if(!trip.getOrganizer().equals(user))
         {
-            Enrollment enrollment = enrollmentDao.getEnrollmentByUserAndTrip(user, trip);
-            if(trip.getPrivacy()==TripPrivacy.PRIVATE)
+            if(isExistingEnrollment(user, trip) && !trip.isActive())
             {
-                Invitation invitation = enrollmentDao.getInvitationByUserAndTrip(user, trip);
-                invitation.setAnswer(Answer.DECLINED);
-                enrollmentDao.saveOrUpdateInvitation(invitation);
+                Enrollment enrollment = enrollmentDao.getEnrollmentByUserAndTrip(user, trip);
+                if(trip.getPrivacy()==TripPrivacy.PRIVATE)
+                {
+                    Invitation invitation = enrollmentDao.getInvitationByUserAndTrip(user, trip);
+                    invitation.setAnswer(Answer.DECLINED);
+                    enrollmentDao.saveOrUpdateInvitation(invitation);
+                }
+                enrollmentDao.deleteEnrollment(enrollment.getId());
             }
-            enrollmentDao.deleteEnrollment(enrollment.getId());
+            else
+            {
+                throw new TripsException("You can't disenroll from a trip that is currently active");
+            }
         }
         else
         {
-            throw new TripsException("You can't disenroll from a trip that is currently active");
+            throw new TripsException("You can't disenroll the organizer");
         }
     }
 
@@ -115,17 +122,24 @@ public class EnrollmentBLImpl implements EnrollmentBL
     @Override
     @Transactional
     public void uninvite(Trip trip, User organizer, User user) throws TripsException {
-        if(isExistingInvitation(user, trip))
+        if(!organizer.equals(user))
         {
-            if (tripBL.isOrganizer(trip, organizer)&& isUnexistingEnrollment(user, trip))
+            if(isExistingInvitation(user, trip))
             {
-                Invitation invitation = enrollmentDao.getInvitationByUserAndTrip(user, trip);
-                enrollmentDao.deleteInvitation(invitation.getId());
+                if (tripBL.isOrganizer(trip, organizer)&& isUnexistingEnrollment(user, trip))
+                {
+                    Invitation invitation = enrollmentDao.getInvitationByUserAndTrip(user, trip);
+                    enrollmentDao.deleteInvitation(invitation.getId());
+                }
+                else
+                {
+                    throw new TripsException("Trip is either not published, already active, not private or organizer doesn't exist");
+                }
             }
-            else
-            {
-                throw new TripsException("Trip is either not published, already active, not private or organizer doesn't exist");
-            }
+        }
+        else
+        {
+            throw new TripsException("You can't uninvite the organizer");
         }
     }
 
@@ -346,7 +360,7 @@ public class EnrollmentBLImpl implements EnrollmentBL
             if(trip.isActive() || !trip.isTimeBoundTrip())
             {
                 Enrollment enrollment = enrollmentDao.getEnrollmentByUserAndTrip(user, trip);
-                if(enrollment.getStatus()==Status.READY)
+                if(enrollment.getStatus()!=Status.BUSY)
                 {
                     enrollment.setStatus(Status.BUSY);
                     enrollmentDao.saveOrUpdateEnrollment(enrollment);
@@ -371,9 +385,13 @@ public class EnrollmentBLImpl implements EnrollmentBL
             Enrollment enrollment = enrollmentDao.getEnrollmentByUserAndTrip(user, trip);
             if(enrollment.getStatus()==Status.BUSY)
             {
+                String fullScore = enrollment.getFullScore();
+                enrollment.setScore(0);
                 enrollment.setStatus(Status.FINISHED);
+                enrollment.setLastLocationVisited(null);
+                enrollment.setAnsweredQuestions(null);
                 enrollmentDao.saveOrUpdateEnrollment(enrollment);
-                return enrollment.getFullScore();
+                return fullScore;
             }
             else
             {
