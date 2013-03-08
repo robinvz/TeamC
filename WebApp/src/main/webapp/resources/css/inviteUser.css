@@ -1,0 +1,29 @@
+.dataTable{
+    display: inline-table;
+    margin-top: 20px;
+    margin-right: 10px;
+    text-align: center;
+    float:left;
+}
+
+.dataTable thead th{
+    background-color:rgb(215,215,215);
+    color:rgb(30,30,30);
+    cursor: default;
+}
+
+.dataTable th{
+    padding: 20px 0px;
+}
+
+.dataTable td{
+    padding: 10px 0px;
+}
+
+.dataTable tr:nth-child(even)    { background-color:rgb(235,235,235); }
+.dataTable tr:nth-child(odd)    { background-color:rgb(248,248,248); }
+
+.dataTable tr:hover{
+    background-color:rgb(0,127,255);
+    color: white;
+}
