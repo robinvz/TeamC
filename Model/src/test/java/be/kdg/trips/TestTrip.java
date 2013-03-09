@@ -490,7 +490,9 @@ public class TestTrip {
     {
         Trip trip = tripsService.createTimelessTrip("Trip with added questions", "Trip with added questions", TripPrivacy.PROTECTED, organizer);
         Location location = tripsService.addLocationToTrip(organizer, trip, 10.12131, 10.12131, "Nationalestraat", null, "Antwerp", "2000", "Belgium", "Titel", "Lange straat met tramspoor");
-        tripsService.addQuestionToLocation(organizer, location, "Wie is hier den baas?", new ArrayList<String>(), 0, null);
+        List<String> possibleAnswers = new ArrayList<>();
+        possibleAnswers.add("ikke");
+        tripsService.addQuestionToLocation(organizer, location, "Wie is hier den baas?", possibleAnswers, 0, null);
         String question = tripsService.findLocationById(location.getId()).getQuestion().getQuestion();
         assertEquals("Wie is hier den baas?", question);
     }
