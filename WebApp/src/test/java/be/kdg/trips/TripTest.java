@@ -35,6 +35,7 @@ import java.util.Locale;
 import static org.junit.Assert.*;
 import static org.mockito.Matchers.*;
 import static org.mockito.Mockito.doThrow;
+import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 
@@ -161,11 +162,22 @@ public class TripTest {
     }
 
     @Test
-    public void getTrip() throws Exception {
+    public void getTLTrip() throws Exception {
+        mockHttpSession.setAttribute("user", testUser);
         TimelessTrip t = new TimelessTrip(title, description, privacy, testUser);
         RequestBuilder requestBuilder = MockMvcRequestBuilders.get("/trip/" + t.getId());
+        when(tripsService.findTripById(t.getId(), testUser)).thenReturn(t);
+        mockMvc.perform(requestBuilder).andExpect(view().name("tripView")).andExpect(model().attribute("trip", t));
+    }
+
+    @Test
+    public void getTBTrip() throws Exception {
         mockHttpSession.setAttribute("user", testUser);
-        when(tripsService.findTripById(t.getId(), (User) mockHttpSession.getAttribute("user"))).thenReturn(t);
+        Date startd = sdf.parse(startDate);
+        Date endd = sdf.parse(endDate);
+        TimeBoundTrip t = new TimeBoundTrip(title, description, privacy, testUser, startd, endd);
+        RequestBuilder requestBuilder = MockMvcRequestBuilders.get("/trip/" + t.getId());
+        when(tripsService.findTripById(t.getId(), testUser)).thenReturn(t);
         mockMvc.perform(requestBuilder).andExpect(view().name("tripView")).andExpect(model().attribute("trip", t));
     }
 
@@ -516,7 +528,7 @@ public class TripTest {
     }
 
     @Test
-    public void unsubscribeTripServiceSuccess() throws Exception {
+    public void unSubscribeTripServiceSuccess() throws Exception {
         Trip t = new TimelessTrip("Trip 1", "Beschrijving", TripPrivacy.PUBLIC, testUser);
         RequestBuilder requestBuilder = MockMvcRequestBuilders.post("/service/unsubscribe").param("username", testUser.getEmail()).param("password", "password").param("id", t.getId() + "");
         when(tripsService.checkLogin(anyString(), anyString())).thenReturn(true);
@@ -526,7 +538,7 @@ public class TripTest {
     }
 
     @Test
-    public void unsubscribeTripServiceFail() throws Exception {
+    public void unSubscribeTripServiceFail() throws Exception {
         Trip t = new TimelessTrip("Trip 1", "Beschrijving", TripPrivacy.PUBLIC, testUser);
         RequestBuilder requestBuilder = MockMvcRequestBuilders.post("/service/unsubscribe").param("username", testUser.getEmail()).param("password", "password").param("id", t.getId() + "");
         when(tripsService.checkLogin(anyString(), anyString())).thenReturn(true);
@@ -610,7 +622,7 @@ public class TripTest {
     }
 
     @Test
-    public void searchServiceSucces() throws Exception {
+    public void searchServiceSuccess() throws Exception {
         Trip t = new TimelessTrip("Trip Een", "Beschrijving", TripPrivacy.PUBLIC, testUser);
         Trip t2 = new TimelessTrip("Trip Twee", "Beschrijving", TripPrivacy.PUBLIC, testUser);
         ArrayList<Trip> trips = new ArrayList<>();
@@ -806,7 +818,7 @@ public class TripTest {
     }
 
     @Test
-    public void startTripEnrollmentUnexisting() throws Exception {
+    public void startTripEnrollmentUnExisting() throws Exception {
         mockHttpSession.setAttribute("user", testUser);
         Trip t = new TimelessTrip(title, description, privacy, testUser);
         RequestBuilder requestBuilder = MockMvcRequestBuilders.get("/startTrip/" + t.getId());
@@ -848,7 +860,7 @@ public class TripTest {
     }
 
     @Test
-    public void stopTripEnrollmentUnexisting() throws Exception {
+    public void stopTripEnrollmentUnExisting() throws Exception {
         mockHttpSession.setAttribute("user", testUser);
         Trip t = new TimelessTrip(title, description, privacy, testUser);
         RequestBuilder requestBuilder = MockMvcRequestBuilders.get("/stopTrip/" + t.getId());
@@ -906,6 +918,7 @@ public class TripTest {
         Date startd = sdf.parse(startDate);
         Date endd = sdf.parse(endDate);
         TimeBoundTrip t = new TimeBoundTrip(title, description, privacy, testUser, startd, endd);
+        //t.addDates(startd,endd);
         RequestBuilder requestBuilder = MockMvcRequestBuilders.get("/trip/" + t.getId() + "/deleteDate/" + startDate);
         mockMvc.perform(requestBuilder).andExpect(view().name("tripView"));
     }
@@ -917,8 +930,8 @@ public class TripTest {
         Date endd = sdf.parse(endDate);
         TimeBoundTrip t = new TimeBoundTrip(title, description, privacy, testUser, startd, endd);
         RequestBuilder requestBuilder = MockMvcRequestBuilders.get("/trip/" + t.getId() + "/deleteDate/" + startDate);
-        //Mockito.doThrow(new TripsException("Trip with id")).when(tripsService).removeDateFromTimeBoundTrip(any(Date.class), any(Trip.class), any((User.class)));
-        mockMvc.perform(requestBuilder).andExpect(view().name("tripView"));
+        Mockito.doThrow(new TripsException("Trip with id")).when(tripsService).removeDateFromTimeBoundTrip(any(Date.class), any(Trip.class), any((User.class)));
+        mockMvc.perform(requestBuilder).andExpect(view().name("tripsView"));
     }
 
     @Test
@@ -928,7 +941,7 @@ public class TripTest {
         Date endd = sdf.parse(endDate);
         TimeBoundTrip t = new TimeBoundTrip(title, description, privacy, testUser, startd, endd);
         RequestBuilder requestBuilder = MockMvcRequestBuilders.get("/trip/" + t.getId() + "/deleteDate/" + startDate);
-        //Mockito.doThrow(new TripsException("is not the organizer")).when(tripsService).removeDateFromTimeBoundTrip(any(Date.class), any(Trip.class), any((User.class)));
+        Mockito.doThrow(new TripsException("is not the organizer")).when(tripsService).removeDateFromTimeBoundTrip(any(Date.class), any(Trip.class), any((User.class)));
         mockMvc.perform(requestBuilder).andExpect(view().name("tripView"));
     }
 
@@ -939,7 +952,7 @@ public class TripTest {
         Date endd = sdf.parse(endDate);
         TimeBoundTrip t = new TimeBoundTrip(title, description, privacy, testUser, startd, endd);
         RequestBuilder requestBuilder = MockMvcRequestBuilders.get("/trip/" + t.getId() + "/deleteDate/2013-03-03 01:01");
-        //Mockito.doThrow(new TripsException("")).when(tripsService).removeDateFromTimeBoundTrip(any(Date.class), any(Trip.class), any((User.class)));
+        Mockito.doThrow(new TripsException("")).when(tripsService).removeDateFromTimeBoundTrip(any(Date.class), any(Trip.class), any((User.class)));
         mockMvc.perform(requestBuilder).andExpect(view().name("tripView"));
     }
 
@@ -949,6 +962,88 @@ public class TripTest {
         Date endd = sdf.parse(endDate);
         TimeBoundTrip t = new TimeBoundTrip(title, description, privacy, testUser, startd, endd);
         RequestBuilder requestBuilder = MockMvcRequestBuilders.get("/trip/" + t.getId() + "/deleteDate/" + startDate);
+        mockMvc.perform(requestBuilder).andExpect(view().name("loginView"));
+    }
+
+    @Test
+    public void addDateView() throws Exception {
+        mockHttpSession.setAttribute("user", testUser);
+        Date startd = sdf.parse(startDate);
+        Date endd = sdf.parse(endDate);
+        TimeBoundTrip t = new TimeBoundTrip(title, description, privacy, testUser, startd, endd);
+        RequestBuilder requestBuilder = MockMvcRequestBuilders.get("/addDate/" + t.getId());
+        mockMvc.perform(requestBuilder).andExpect(view().name("/users/addDateView"));
+    }
+
+    @Test
+    public void addDateViewNotLoggedIn() throws Exception {
+        Date startd = sdf.parse(startDate);
+        Date endd = sdf.parse(endDate);
+        TimeBoundTrip t = new TimeBoundTrip(title, description, privacy, testUser, startd, endd);
+        RequestBuilder requestBuilder = MockMvcRequestBuilders.get("/addDate/" + t.getId());
+        mockMvc.perform(requestBuilder).andExpect(view().name("loginView"));
+    }
+
+    @Test
+    public void addDateViewTripNotFound() throws Exception {
+        mockHttpSession.setAttribute("user", testUser);
+        Date startd = sdf.parse(startDate);
+        Date endd = sdf.parse(endDate);
+        TimeBoundTrip t = new TimeBoundTrip(title, description, privacy, testUser, startd, endd);
+        RequestBuilder requestBuilder = MockMvcRequestBuilders.get("/addDate/" + t.getId());
+        when(tripsService.findTripById(anyInt(), any(User.class))).thenThrow(new TripsException("Trip with id"));
+        mockMvc.perform(requestBuilder).andExpect(view().name("tripsView"));
+    }
+
+    @Test
+    public void addDate() throws Exception {
+        mockHttpSession.setAttribute("user", testUser);
+        Date startd = sdf.parse(startDate);
+        Date endd = sdf.parse(endDate);
+        TimeBoundTrip t = new TimeBoundTrip(title, description, privacy, testUser, startd, endd);
+        RequestBuilder requestBuilder = MockMvcRequestBuilders.post("/addDate/" + t.getId()).param("startDate", "2013-10-10 20:20").param("endDate", "2013-11-11 20:20");
+        mockMvc.perform(requestBuilder).andExpect(view().name("/users/addDateView"));
+    }
+
+    @Test
+    public void addDateTripNotFound() throws Exception {
+        mockHttpSession.setAttribute("user", testUser);
+        Date startd = sdf.parse(startDate);
+        Date endd = sdf.parse(endDate);
+        TimeBoundTrip t = new TimeBoundTrip(title, description, privacy, testUser, startd, endd);
+        RequestBuilder requestBuilder = MockMvcRequestBuilders.post("/addDate/" + t.getId()).param("startDate", "2013-10-10 20:20").param("endDate", "2013-11-11 20:20");
+        when(tripsService.findTripById(anyInt(), any(User.class))).thenThrow(new TripsException("Trip with id"));
+        mockMvc.perform(requestBuilder).andExpect(view().name("tripsView"));
+    }
+
+    @Test
+    public void addDateTripStartDateInPast() throws Exception {
+        mockHttpSession.setAttribute("user", testUser);
+        Date startd = sdf.parse(startDate);
+        Date endd = sdf.parse(endDate);
+        TimeBoundTrip t = new TimeBoundTrip(title, description, privacy, testUser, startd, endd);
+        RequestBuilder requestBuilder = MockMvcRequestBuilders.post("/addDate/" + t.getId()).param("startDate", "2013-10-10 20:20").param("endDate", "2013-11-11 20:20");
+        Mockito.doThrow(new TripsException("future")).when(tripsService).addDateToTimeBoundTrip(any(Date.class), any(Date.class), any(Trip.class), any(User.class));
+        mockMvc.perform(requestBuilder).andExpect(view().name("/users/addDateView"));
+    }
+
+    @Test
+    public void addDateTripEndDateBeforeStartSate() throws Exception {
+        mockHttpSession.setAttribute("user", testUser);
+        Date startd = sdf.parse(startDate);
+        Date endd = sdf.parse(endDate);
+        TimeBoundTrip t = new TimeBoundTrip(title, description, privacy, testUser, startd, endd);
+        RequestBuilder requestBuilder = MockMvcRequestBuilders.post("/addDate/" + t.getId()).param("startDate", "2013-10-10 20:20").param("endDate", "2013-11-11 20:20");
+        Mockito.doThrow(new TripsException("before")).when(tripsService).addDateToTimeBoundTrip(any(Date.class), any(Date.class), any(Trip.class), any(User.class));
+        mockMvc.perform(requestBuilder).andExpect(view().name("/users/addDateView"));
+    }
+
+    @Test
+    public void addDateNotLoggedIn() throws Exception {
+        Date startd = sdf.parse(startDate);
+        Date endd = sdf.parse(endDate);
+        TimeBoundTrip t = new TimeBoundTrip(title, description, privacy, testUser, startd, endd);
+        RequestBuilder requestBuilder = MockMvcRequestBuilders.post("/addDate/" + t.getId()).param("startDate", "2013-10-10 20:20").param("endDate", "2013-11-11 20:20");
         mockMvc.perform(requestBuilder).andExpect(view().name("loginView"));
     }
 

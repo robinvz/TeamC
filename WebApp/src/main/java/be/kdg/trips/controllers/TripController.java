@@ -390,8 +390,7 @@ public class TripController {
     }
 
     @RequestMapping(value = "/createTimeLessTrip", method = RequestMethod.POST)
-    public ModelAndView createTimeLessTrip(@RequestParam String title, @RequestParam String
-            description, @RequestParam TripPrivacy privacy) {
+    public ModelAndView createTimeLessTrip(@RequestParam String title, @RequestParam String description, @RequestParam TripPrivacy privacy) {
         User user = (User) session.getAttribute("user");
         if (isLoggedIn()) {
             try {
@@ -524,9 +523,8 @@ public class TripController {
     public ModelAndView addLabel(@PathVariable int tripId, Locale locale) {
         User user = (User) session.getAttribute("user");
         if (isLoggedIn()) {
-            Trip trip = null;
             try {
-                trip = tripsService.findTripById(tripId, user);
+                Trip trip = tripsService.findTripById(tripId, user);
                 return new ModelAndView("labelsView", "trip", trip);
             } catch (TripsException e) {
                 return new ModelAndView("tripsView", "error", messageSource.getMessage("FindTripError", null, locale));
@@ -566,13 +564,12 @@ public class TripController {
     public ModelAndView requirements(@PathVariable int tripId, Locale locale) {
         User user = (User) session.getAttribute("user");
         if (isLoggedIn()) {
-            Trip trip = null;
             try {
-                trip = tripsService.findTripById(tripId, user);
+                Trip trip = tripsService.findTripById(tripId, user);
+                return new ModelAndView("requirementsView", "trip", trip);
             } catch (TripsException e) {
                 return new ModelAndView("tripsView", "error", messageSource.getMessage("FindTripError", null, locale));
             }
-            return new ModelAndView("requirementsView", "trip", trip);
         } else {
             return new ModelAndView("loginView", "loginBean", new LoginBean());
         }
@@ -608,7 +605,7 @@ public class TripController {
         }
     }
 
-        @RequestMapping(value = "/startTrip/{tripId}", method = RequestMethod.GET)
+    @RequestMapping(value = "/startTrip/{tripId}", method = RequestMethod.GET)
     public ModelAndView startTrip(@PathVariable int tripId, Locale locale) {
         User user = (User) session.getAttribute("user");
         if (isLoggedIn()) {
@@ -979,13 +976,14 @@ public class TripController {
     public ModelAndView deleteDate(@PathVariable int tripId, @PathVariable String date, Locale locale) {
         User user = (User)  session.getAttribute("user");
         if(isLoggedIn()){
-            Trip trip = null;
+            TimeBoundTrip trip = null;
             Map map = new HashMap();
             try {
-                trip = tripsService.findTripById(tripId, user);
+                trip = (TimeBoundTrip) tripsService.findTripById(tripId, user);
                 SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm");
                 tripsService.removeDateFromTimeBoundTrip(sdf.parse(date), trip, user);
                 map.put("trip", trip);
+                map.put("dates", trip.getDates());
                 map.put("success", "Date ("+date+") deleted");
                 return new ModelAndView("tripView", map);
             } catch (TripsException e) {
@@ -1027,41 +1025,41 @@ public class TripController {
     }
 
     @RequestMapping(value = "/addDate/{tripId}", method = RequestMethod.POST)
-        public ModelAndView addDate(@PathVariable int tripId, @RequestParam String startDate, @RequestParam String endDate, Locale locale) {
-            User user = (User) session.getAttribute("user");
-            if (isLoggedIn()) {
-                Trip trip = null;
-                Map map = new HashMap();
-                try {
-                    trip = tripsService.findTripById(tripId, user);
-                    startDate =  startDate.replace("T", " ");
-                    endDate = endDate.replace("T", " ");
-                    SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm");
-                    tripsService.addDateToTimeBoundTrip(sdf.parse(startDate), sdf.parse(endDate), trip, user);
-                    map.put("trip", trip);
-                    map.put("success", "Dates have been added");
-                    return new ModelAndView("/users/addDateView", map);
-                } catch (TripsException e) {
+    public ModelAndView addDate(@PathVariable int tripId, @RequestParam String startDate, @RequestParam String endDate, Locale locale) {
+        User user = (User) session.getAttribute("user");
+        if (isLoggedIn()) {
+            Trip trip = null;
+            Map map = new HashMap();
+            try {
+                trip = tripsService.findTripById(tripId, user);
+                startDate =  startDate.replace("T", " ");
+                endDate = endDate.replace("T", " ");
+                SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm");
+                tripsService.addDateToTimeBoundTrip(sdf.parse(startDate), sdf.parse(endDate), trip, user);
+                map.put("trip", trip);
+                map.put("success", "Dates have been added");
+                return new ModelAndView("/users/addDateView", map);
+            } catch (TripsException e) {
                 if(e.getMessage().contains("Trip with id")) {
                     return new ModelAndView("tripsView", "error", messageSource.getMessage("FindTripError", null, locale));
                 } else if (e.getMessage().contains("future")) {
                     map.put("trip", trip);
                     map.put("error", messageSource.getMessage("StartDateFuture", null, locale));
-                    return new ModelAndView("/users/createTripView", map);
+                    return new ModelAndView("/users/addDateView", map);
                 } else {
                     map.put("trip", trip);
                     map.put("error", messageSource.getMessage("StartDateBefore", null, locale));
-                    return new ModelAndView("/users/createTripView", map);
+                    return new ModelAndView("/users/addDateView", map);
                 }
-                } catch (ParseException e) {
-                    map.put("trip", trip);
-                    map.put("error", messageSource.getMessage("ParseError", null, locale));
-                    return new ModelAndView("/users/createTripView", map);
-                }
-            } else {
-                return new ModelAndView("loginView", "loginBean", new LoginBean());
+            } catch (ParseException e) {
+                map.put("trip", trip);
+                map.put("error", messageSource.getMessage("ParseError", null, locale));
+                return new ModelAndView("/users/addDateView", map);
             }
+        } else {
+            return new ModelAndView("loginView", "loginBean", new LoginBean());
         }
+    }
 
     @RequestMapping(value = "/editTripTheme/{tripId}", method = RequestMethod.POST)
     public ModelAndView editTripTheme(@PathVariable int tripId, @RequestParam String theme){
@@ -1078,22 +1076,25 @@ public class TripController {
 
     @RequestMapping(value = "/costs/{tripId}", method = RequestMethod.GET)
     public ModelAndView costs(@PathVariable int tripId, Locale locale) {
+        User user = (User) session.getAttribute("user");
         if (isLoggedIn()) {
             Trip trip = null;
-            User user = (User) session.getAttribute("user");
+            Map map = new HashMap();
             try {
                 trip = tripsService.findTripById(tripId, user);
+                Map<String, Integer> totalTripCosts = new HashMap<>();
+                for(Enrollment enrollment: trip.getEnrollments()) {
+                    totalTripCosts.putAll(enrollment.getCosts());
+                }
+                map.put("trip", trip);
+                map.put("totalTripCosts", totalTripCosts);
+                return new ModelAndView("costsView", map);
             } catch (TripsException e) {
                 return new ModelAndView("tripsView", "error", messageSource.getMessage("FindTripError", null, locale));
             }
-            Map<String, Integer> totalTripCosts = new HashMap<>();
-            for(Enrollment enrollment: trip.getEnrollments())
-            {
-                totalTripCosts.putAll(enrollment.getCosts());
-            }
-            return new ModelAndView("costsView", "totalTripCosts", totalTripCosts);
         } else {
             return new ModelAndView("loginView", "loginBean", new LoginBean());
         }
     }
+
 }

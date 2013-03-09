@@ -110,7 +110,7 @@
                                     <td>${date.value}</td>
                                     <td>
                                         <c:if test="${not empty user && trip.organizer==user}">
-                                            <a href="/trip/${trip.id}/deleteDate/${date.key}">Delete</a>
+                                            <a href="/trip/${trip.id}/deleteDate/${date.key}"><spring:message code="Delete"/></a>
                                         </c:if>
                                     </td>
                                 </tr>
