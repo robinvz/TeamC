@@ -145,9 +145,8 @@ public class TripsServiceImpl implements TripsService
     }
 
     @Override
-    public void editTripQuestionDetails(User organizer, Question question, String questionTitle, List<String> possibleAnswers, int correctAnswerIndex)
-    {
-        //To change body of implemented methods use File | Settings | File Templates.
+    public void editTripQuestionDetails(User organizer, Location location, Question question, String questionTitle, List<String> possibleAnswers, int correctAnswerIndex) throws TripsException {
+        tripController.editTripQuestionDetails(organizer, location, question, questionTitle, possibleAnswers, correctAnswerIndex);
     }
 
     @Override

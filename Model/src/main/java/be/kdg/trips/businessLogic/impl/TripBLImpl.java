@@ -266,6 +266,32 @@ public class TripBLImpl implements TripBL
 
     @Override
     @Transactional
+    public void editTripQuestionDetails(User organizer, Location location, Question question, String questionTitle, List<String> possibleAnswers, int correctAnswerIndex) throws TripsException {
+        if(isExistingLocation(location.getId()) && location.getQuestion() != null && userBL.isExistingUser(organizer.getEmail()) && isOrganizer(location.getTrip(), organizer))
+        {
+            if(!questionTitle.equals(""))
+            {
+                question.setQuestion(questionTitle);
+            }
+            if(!possibleAnswers.isEmpty())
+            {
+                question.setPossibleAnswers(possibleAnswers);
+            }
+            if(correctAnswerIndex < question.getPossibleAnswers().size())
+            {
+                question.setCorrectAnswerIndex(correctAnswerIndex);
+            }
+            location.setQuestion(question);
+            tripDao.saveOrUpdateLocation(location);
+        }
+        else
+        {
+            throw new TripsException("Location doesn't have a question to edit");
+        }
+    }
+
+    @Override
+    @Transactional
     public void publishTrip(Trip trip, User user) throws TripsException {
         if(isExistingTrip(trip.getId()) && userBL.isExistingUser(user.getEmail()) && isOrganizer(trip, user))
         {
@@ -526,9 +552,9 @@ public class TripBLImpl implements TripBL
         if(isExistingLocation(location.getId()) && location.getQuestion() != null && userBL.isExistingUser(organizer.getEmail()) && isOrganizer(location.getTrip(), organizer))
         {
             Question question = location.getQuestion();
+            tripDao.deleteQuestion(question.getId());
             location.setQuestion(null);
             tripDao.saveOrUpdateLocation(location);
-            tripDao.deleteQuestion(question.getId());
         }
         else
         {

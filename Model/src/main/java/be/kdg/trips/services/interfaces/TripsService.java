@@ -49,7 +49,7 @@ public interface TripsService
 
     public void editTripDetails(Trip trip, String title, String description, User organizer) throws TripsException;
     public void editTripLocationDetails(User organizer, Trip trip, Location location, String street, String houseNr, String city, String postalCode, String country, String title, String description) throws TripsException;
-    public void editTripQuestionDetails(User organizer, Question question, String questionTitle, List<String> possibleAnswers, int correctAnswerIndex);
+    public void editTripQuestionDetails(User organizer, Location location, Question question, String questionTitle, List<String> possibleAnswers, int correctAnswerIndex) throws TripsException;
 
     public void publishTrip(Trip trip, User organizer) throws TripsException;
     public void addLabelToTrip(Trip trip, User organizer, String label) throws TripsException;

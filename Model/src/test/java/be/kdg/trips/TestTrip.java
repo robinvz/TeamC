@@ -489,8 +489,11 @@ public class TestTrip {
     public void successfulAddQuestionToLocation() throws TripsException
     {
         Trip trip = tripsService.createTimelessTrip("Trip with added questions", "Trip with added questions", TripPrivacy.PROTECTED, organizer);
+        List<String> possibleAnswers = new ArrayList<>();
+        possibleAnswers.add("Gijs");
+        possibleAnswers.add("Keke");
         Location location = tripsService.addLocationToTrip(organizer, trip, 10.12131, 10.12131, "Nationalestraat", null, "Antwerp", "2000", "Belgium", "Titel", "Lange straat met tramspoor");
-        tripsService.addQuestionToLocation(organizer, location, "Wie is hier den baas?", new ArrayList<String>(), 0, null);
+        tripsService.addQuestionToLocation(organizer, location, "Wie is hier den baas?", possibleAnswers, 0, null);
         String question = tripsService.findLocationById(location.getId()).getQuestion().getQuestion();
         assertEquals("Wie is hier den baas?", question);
     }
@@ -499,17 +502,24 @@ public class TestTrip {
     public void failedAddQuestionToLocationOccupiedQuestion() throws TripsException
     {
         Trip trip = tripsService.createTimelessTrip("Trip with added questions", "Trip with added questions", TripPrivacy.PROTECTED, organizer);
+        List<String> possibleAnswers = new ArrayList<>();
+        possibleAnswers.add("Gijs");
+        possibleAnswers.add("Keke");
         Location location = tripsService.addLocationToTrip(organizer, trip, 10.12131, 10.12131, "Nationalestraat", null, "Antwerp", "2000", "Belgium", "Titel", "Lange straat met tramspoor");
-        tripsService.addQuestionToLocation(organizer, location, "Wie is hier den baas?", new ArrayList<String>(), 0, null);
+        tripsService.addQuestionToLocation(organizer, location, "Wie is hier den baas?", possibleAnswers, 0, null);
         tripsService.addQuestionToLocation(organizer, location, "failed question", new ArrayList<String>(), 0, null);
     }
-    /*
+
     @Test
      public void successfulRemoveQuestionFromLocation() throws TripsException
     {
         Trip trip = tripsService.createTimelessTrip("Trip with removed questions", "Trip with removed questions", TripPrivacy.PROTECTED, organizer);
+        List<String> possibleAnswers = new ArrayList<>();
+        possibleAnswers.add("Gijs");
+        possibleAnswers.add("Keke");
         Location location = tripsService.addLocationToTrip(organizer, trip, 10.12131, 10.12131, "Nationalestraat", null, "Antwerp", "2000", "Belgium", "Titel", "Lange straat met tramspoor");
-        tripsService.addQuestionToLocation(organizer, location, "Wie is hier den baas?", new ArrayList<String>(), 0, null);
+        tripsService.addQuestionToLocation(organizer, location, "Wie is hier den baas?", possibleAnswers, 0, null);
+        location = tripsService.findTripById(trip.getId(),organizer).getLocations().get(FIRST_ELEMENT);
         tripsService.removeQuestionFromLocation(organizer, location);
         assertNull(tripsService.findLocationById(location.getId()).getQuestion());
     }
@@ -518,8 +528,12 @@ public class TestTrip {
     public void failedRemoveQuestionFromLocation() throws TripsException
     {
         Trip trip = tripsService.createTimelessTrip("Trip with removed questions", "Trip with removed questions", TripPrivacy.PROTECTED, organizer);
+        List<String> possibleAnswers = new ArrayList<>();
+        possibleAnswers.add("Gijs");
+        possibleAnswers.add("Keke");
         Location location = tripsService.addLocationToTrip(organizer, trip, 10.12131, 10.12131, "Nationalestraat", null, "Antwerp", "2000", "Belgium", "Titel", "Lange straat met tramspoor");
-        tripsService.addQuestionToLocation(organizer, location, "Wie is hier den baas?", new ArrayList<String>(), 0, null);
+        tripsService.addQuestionToLocation(organizer, location, "Wie is hier den baas?", possibleAnswers, 0, null);
+        location = tripsService.findTripById(trip.getId(),organizer).getLocations().get(FIRST_ELEMENT);
         tripsService.removeQuestionFromLocation(organizer, location);
         tripsService.removeQuestionFromLocation(organizer, location);
     }
@@ -528,10 +542,14 @@ public class TestTrip {
     public void successfulEditQuestionTitle() throws TripsException
     {
         Trip trip = tripsService.createTimelessTrip("Trip with added questions", "Trip with added questions", TripPrivacy.PROTECTED, organizer);
+        List<String> possibleAnswers = new ArrayList<>();
+        possibleAnswers.add("Gijs");
+        possibleAnswers.add("Keke");
         Location location = tripsService.addLocationToTrip(organizer, trip, 10.12131, 10.12131, "Nationalestraat", null, "Antwerp", "2000", "Belgium", "Titel", "Lange straat met tramspoor");
-        tripsService.addQuestionToLocation(organizer, location, "Wie is hier den baas?", new ArrayList<String>(), 0, null);
+        tripsService.addQuestionToLocation(organizer, location, "Wie is hier den baas?", possibleAnswers, 0, null);
+        location = tripsService.findTripById(trip.getId(),organizer).getLocations().get(FIRST_ELEMENT);
         Question question = tripsService.findLocationById(location.getId()).getQuestion();
-        tripsService.editTripQuestionDetails(organizer, question, "Keke is den baas!", new ArrayList<String>(), 0);
+        tripsService.editTripQuestionDetails(organizer, location, question, "Keke is den baas!", possibleAnswers, 0);
         String questionTitle = question.getQuestion();
         assertEquals("Keke is den baas!", questionTitle);
     }
@@ -540,13 +558,17 @@ public class TestTrip {
     public void successfulEditQuestionCorrectAnswerIndex() throws TripsException
     {
         Trip trip = tripsService.createTimelessTrip("Trip with added questions", "Trip with added questions", TripPrivacy.PROTECTED, organizer);
+        List<String> possibleAnswers = new ArrayList<>();
+        possibleAnswers.add("Gijs");
+        possibleAnswers.add("Keke");
         Location location = tripsService.addLocationToTrip(organizer, trip, 10.12131, 10.12131, "Nationalestraat", null, "Antwerp", "2000", "Belgium", "Titel", "Lange straat met tramspoor");
-        tripsService.addQuestionToLocation(organizer, location, "Wie is hier den baas?", new ArrayList<String>(), 0, null);
+        tripsService.addQuestionToLocation(organizer, location, "Wie is hier den baas?", possibleAnswers, 0, null);
+        location = tripsService.findTripById(trip.getId(),organizer).getLocations().get(FIRST_ELEMENT);
         Question question = tripsService.findLocationById(location.getId()).getQuestion();
-        tripsService.editTripQuestionDetails(organizer, question, "Wie is hier den baas?", new ArrayList<String>(), 1);
+        tripsService.editTripQuestionDetails(organizer, location, question, "Wie is hier den baas?", possibleAnswers, 1);
         assertEquals(true, question.checkAnswer(1));
     }
-    */
+
     @Test
     public void successfulGuessAnswer() throws TripsException
     {
