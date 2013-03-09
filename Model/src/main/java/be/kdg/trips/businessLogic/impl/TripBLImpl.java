@@ -81,15 +81,15 @@ public class TripBLImpl implements TripBL
                                 case WEEKLY:
                                     startCalendar.add(Calendar.DATE, 7);
                                     endCalendar.add(Calendar.DATE, 7);
-                                break;
+                                    break;
                                 case MONTHLY:
                                     startCalendar.add(Calendar.MONTH, 1);
                                     endCalendar.add(Calendar.MONTH, 1);
-                                break;
+                                    break;
                                 case ANNUALLY:
                                     startCalendar.add(Calendar.YEAR, 1);
                                     endCalendar.add(Calendar.YEAR, 1);
-                                break;
+                                    break;
                             }
                             if(startCalendar.getTime().after(endDate))
                             {
@@ -340,15 +340,22 @@ public class TripBLImpl implements TripBL
         Location location = null;
         if(isExistingTrip(trip.getId()) && userBL.isExistingUser(user.getEmail()) && isOrganizer(trip, user))
         {
-            if(correctAnswerIndex<possibleAnswers.size())
+            if(!possibleAnswers.isEmpty())
             {
-                location =  new Location(trip, latitude, longitude, new Address(street, houseNr, city, postalCode, country), title, description,trip.getLocations().size(), new Question(question, possibleAnswers, correctAnswerIndex, image));
-                trip.addLocation(location);
-                tripDao.saveOrUpdateLocation(location);
+                if(correctAnswerIndex<possibleAnswers.size() && correctAnswerIndex>=0)
+                {
+                    location =  new Location(trip, latitude, longitude, new Address(street, houseNr, city, postalCode, country), title, description,trip.getLocations().size(), new Question(question, possibleAnswers, correctAnswerIndex, image));
+                    trip.addLocation(location);
+                    tripDao.saveOrUpdateLocation(location);
+                }
+                else
+                {
+                    throw new TripsException("The answer doesn't exist");
+                }
             }
             else
             {
-                throw new TripsException("The answer doesn't exist");
+                throw new TripsException("Please enter possible answers for this question");
             }
         }
         return location;
@@ -536,8 +543,22 @@ public class TripBLImpl implements TripBL
     {
         if(isExistingLocation(location.getId()) && location.getQuestion() == null && userBL.isExistingUser(organizer.getEmail()) && isOrganizer(location.getTrip(), organizer))
         {
-            location.setQuestion(new Question(question, possibleAnswers, correctAnswerIndex, image));
-            tripDao.saveOrUpdateLocation(location);
+            if(!possibleAnswers.isEmpty())
+            {
+                if(correctAnswerIndex<possibleAnswers.size() && correctAnswerIndex>=0)
+                {
+                    location.setQuestion(new Question(question, possibleAnswers, correctAnswerIndex, image));
+                    tripDao.saveOrUpdateLocation(location);
+                }
+                else
+                {
+                    throw new TripsException("The answer doesn't exist");
+                }
+            }
+            else
+            {
+                throw new TripsException("Please enter possible answers for this question");
+            }
         }
         else
         {
