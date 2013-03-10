@@ -14,6 +14,7 @@ import be.kdg.trips.model.trip.Trip;
 import be.kdg.trips.model.trip.TripPrivacy;
 import be.kdg.trips.model.user.User;
 import be.kdg.trips.services.interfaces.TripsService;
+import be.kdg.trips.utility.Fraction;
 import be.kdg.trips.utility.MailSender;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -21,6 +22,7 @@ import org.springframework.stereotype.Service;
 import javax.mail.MessagingException;
 import java.util.Date;
 import java.util.List;
+import java.util.Map;
 
 /**
  * Subversion Id
@@ -222,6 +224,11 @@ public class TripsServiceImpl implements TripsService
     @Override
     public void deleteLocation(Trip trip, User organizer, Location location) throws TripsException {
         tripController.deleteLocation(trip, organizer, location);
+    }
+
+    @Override
+    public Map<Question, Fraction> getQuestionsWithAnswerPercentage(Trip trip, User organizer) throws TripsException {
+        return tripController.getQuestionsWithAnswerPercentage(trip, organizer);
     }
 
     //Enrollment Service

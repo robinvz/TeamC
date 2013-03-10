@@ -7,6 +7,7 @@ import be.kdg.trips.model.trip.*;
 import be.kdg.trips.model.user.User;
 import be.kdg.trips.services.impl.TripsServiceImpl;
 import be.kdg.trips.services.interfaces.TripsService;
+import be.kdg.trips.utility.Fraction;
 import org.junit.BeforeClass;
 import org.junit.Test;
 import org.springframework.context.support.ClassPathXmlApplicationContext;
@@ -19,9 +20,7 @@ import java.io.FileInputStream;
 import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.List;
+import java.util.*;
 
 import static org.junit.Assert.*;
 
@@ -33,6 +32,7 @@ import static org.junit.Assert.*;
  */
 public class TestTrip {
     private final int FIRST_ELEMENT = 0;
+    private final int SECOND_ELEMENT = 1;
 
     private static TripsService tripsService;
     private static DateFormat df;
@@ -433,8 +433,8 @@ public class TestTrip {
     @Test(expected = TripsException.class)
     public void failedAddLocationInvalidPossibleAnswers() throws TripsException
     {
-            Trip createdTrip = tripsService.createTimelessTrip("Trip with loc with ?", "trip with location and question", TripPrivacy.PUBLIC, user);
-            tripsService.addLocationToTrip(user, createdTrip, 10.12131, 10.12131, "Nationalestraat", null, "Antwerp", "2000", "Belgium", "Titel", "Lange straat met tramspoor", "Who am I?", new ArrayList(), 0, null);
+        Trip createdTrip = tripsService.createTimelessTrip("Trip with loc with ?", "trip with location and question", TripPrivacy.PUBLIC, user);
+        tripsService.addLocationToTrip(user, createdTrip, 10.12131, 10.12131, "Nationalestraat", null, "Antwerp", "2000", "Belgium", "Titel", "Lange straat met tramspoor", "Who am I?", new ArrayList(), 0, null);
     }
 
     @Test(expected = TripsException.class)
@@ -557,7 +557,7 @@ public class TestTrip {
     }
 
     @Test
-     public void successfulRemoveQuestionFromLocation() throws TripsException
+    public void successfulRemoveQuestionFromLocation() throws TripsException
     {
         Trip trip = tripsService.createTimelessTrip("Trip with removed questions", "Trip with removed questions", TripPrivacy.PROTECTED, organizer);
         List<String> possibleAnswers = new ArrayList<>();
@@ -805,6 +805,38 @@ public class TestTrip {
         Trip trip = tripsService.createTimelessTrip("Stadswandeling", "Wandeling in 't Stad", TripPrivacy.PUBLIC, organizer);
         tripsService.changeThemeOfTrip(trip, "green");
         assertEquals("green", trip.getTheme());
+    }
+
+    @Test
+    public void successfulGetQuestionsWithAnswerPercentage() throws TripsException
+    {
+        User organizer = tripsService.createUser(new User("taxileo@msn.com","fraulein"));
+        Trip createdTrip = tripsService.createTimelessTrip("Trip with loc with ?", "trip with location and question", TripPrivacy.PROTECTED, organizer);
+        //organizer is automatically enrolled
+        tripsService.publishTrip(createdTrip, organizer);
+        List<String> possibleAnswers = new ArrayList<>();
+        possibleAnswers.add("Gijs");
+        possibleAnswers.add("Keke");
+        tripsService.addLocationToTrip(organizer, createdTrip, 10.12131, 10.12131, "Nationalestraat", null, "Antwerp", "2000", "Belgium", "Titel", "Lange straat met tramspoor", "Who am I?", possibleAnswers, FIRST_ELEMENT, null);
+        Location location = tripsService.findTripById(createdTrip.getId(), organizer).getLocations().get(FIRST_ELEMENT);
+        tripsService.startTrip(createdTrip, organizer);
+
+        tripsService.setLastLocationVisited(createdTrip, organizer, location);
+        Question question = location.getQuestion();
+        tripsService.checkAnswerFromQuestion(question,FIRST_ELEMENT,organizer);
+
+        User user = tripsService.createUser(new User("capgem@hotmail.com","XDo)a"));
+        tripsService.subscribe(createdTrip, user);
+        tripsService.startTrip(createdTrip, user);
+        tripsService.setLastLocationVisited(createdTrip, user, location);
+        tripsService.checkAnswerFromQuestion(question,SECOND_ELEMENT,user);
+
+        Map<Question, Fraction> questions = tripsService.getQuestionsWithAnswerPercentage(createdTrip, organizer);
+        Iterator it = questions.entrySet().iterator();
+        while(it.hasNext())
+        {
+            assertEquals(0.5,((Fraction)it.next()).getDecimal());
+        }
     }
 }
 
