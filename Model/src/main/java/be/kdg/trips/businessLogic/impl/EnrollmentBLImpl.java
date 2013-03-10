@@ -337,7 +337,7 @@ public class EnrollmentBLImpl implements EnrollmentBL
         if(isExistingEnrollment(user, trip))
         {
             Enrollment enrollment = enrollmentDao.getEnrollmentByUserAndTrip(user, trip);
-            if(!enrollment.getAnsweredQuestions().contains(question.getId()))
+            if(!enrollment.getAnsweredQuestions().containsKey(question))
             {
                 if(enrollment.getStatus() == Status.BUSY)
                 {
@@ -352,7 +352,7 @@ public class EnrollmentBLImpl implements EnrollmentBL
                                     enrollment.incrementScore();
                                     correct = true;
                                 }
-                                enrollment.addAnsweredQuestion(question.getId());
+                                enrollment.addAnsweredQuestion(question, correct);
                                 enrollmentDao.saveOrUpdateEnrollment(enrollment);
                                 break;
                             }
