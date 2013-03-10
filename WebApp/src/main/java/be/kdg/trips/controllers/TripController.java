@@ -338,17 +338,9 @@ public class TripController {
     @RequestMapping(value = "/trip/{tripId}", method = RequestMethod.GET)
     public ModelAndView getTrip(@PathVariable int tripId) {
         User user = (User) session.getAttribute("user");
-        Map map = new HashMap();
         try {
-            if (tripsService.findTripById(tripId, user).isTimeBoundTrip()) {
-                TimeBoundTrip tb = (TimeBoundTrip) tripsService.findTripById(tripId, user);
-                map.put("trip", tb);
-                map.put("dates", tb.getDates());
-                return new ModelAndView("tripView", map);
-            } else {
-                TimelessTrip tl = (TimelessTrip) tripsService.findTripById(tripId, user);
-                return new ModelAndView("tripView", "trip", tl);
-            }
+            Trip trip = tripsService.findTripById(tripId, user);
+            return new ModelAndView("tripView", "trip", trip);
         } catch (TripsException e) {
             return new ModelAndView("tripsView");
         }
@@ -974,42 +966,6 @@ public class TripController {
             //TODO: tripsexception kan zijn: user bestaat niet of bfile is foute type (niet jpeg, gif of png)
         }
         return new ModelAndView("tripsView");
-    }
-
-    @RequestMapping(value = "/trip/{tripId}/deleteDate/{date}", method = RequestMethod.GET)
-    public ModelAndView deleteDate(@PathVariable int tripId, @PathVariable String date, Locale locale) {
-        User user = (User)  session.getAttribute("user");
-        if(isLoggedIn()){
-            TimeBoundTrip trip = null;
-            Map map = new HashMap();
-            try {
-                trip = (TimeBoundTrip) tripsService.findTripById(tripId, user);
-                SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm");
-                tripsService.removeDateFromTimeBoundTrip(sdf.parse(date), trip, user);
-                map.put("trip", trip);
-                map.put("dates", trip.getDates());
-                map.put("success", "Date ("+date+") deleted");
-                return new ModelAndView("tripView", map);
-            } catch (TripsException e) {
-                if (e.getMessage().contains("Trip with id")) {
-                    return new ModelAndView("tripsView", "error", messageSource.getMessage("FindTripError", null, locale));
-                } else if(e.getMessage().contains("is not the organizer")){
-                    map.put("trip", trip);
-                    map.put("error", messageSource.getMessage("NotOrganizerError", null, locale));
-                    return new ModelAndView("tripView", map);
-                } else {
-                    map.put("trip", trip);
-                    map.put("error", e.getMessage());
-                    return new ModelAndView("tripView", map);
-                }
-            } catch (ParseException e) {
-                map.put("trip", trip);
-                map.put("error", messageSource.getMessage("ParseError", null, locale));
-                return new ModelAndView("tripView", map);
-            }
-        } else {
-            return new ModelAndView("loginView", "loginBean", new LoginBean());
-        }
     }
 
     @RequestMapping(value = "/addDate/{tripId}", method = RequestMethod.GET)

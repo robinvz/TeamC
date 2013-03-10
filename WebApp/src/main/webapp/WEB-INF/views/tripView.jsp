@@ -100,22 +100,6 @@
                                 </c:otherwise>
                             </c:choose>
                         </tr>
-                        <c:if test="${trip.timeBoundTrip==true}">
-                            <tr>
-                                <td><spring:message code="Dates"/></td>
-                            </tr>
-                            <c:forEach items="${dates}" var="date">
-                                <tr>
-                                    <td>${date.key}</td>
-                                    <td>${date.value}</td>
-                                    <td>
-                                        <c:if test="${not empty user && trip.organizer==user}">
-                                            <a href="/trip/${trip.id}/deleteDate/${date.key}"><spring:message code="Delete"/></a>
-                                        </c:if>
-                                    </td>
-                                </tr>
-                            </c:forEach>
-                        </c:if>
                     </table>
                 </div>
 
