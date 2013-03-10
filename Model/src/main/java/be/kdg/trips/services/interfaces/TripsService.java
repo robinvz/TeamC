@@ -9,10 +9,12 @@ import be.kdg.trips.model.trip.Repeatable;
 import be.kdg.trips.model.trip.Trip;
 import be.kdg.trips.model.trip.TripPrivacy;
 import be.kdg.trips.model.user.User;
+import be.kdg.trips.utility.Fraction;
 
 import javax.mail.MessagingException;
 import java.util.Date;
 import java.util.List;
+import java.util.Map;
 
 /**
  * Subversion Id
@@ -66,6 +68,8 @@ public interface TripsService
 
     public void deleteTrip(Trip trip, User organizer) throws TripsException, MessagingException;
     public void deleteLocation(Trip trip, User organizer, Location location) throws TripsException;
+
+    public Map<Question, Fraction> getQuestionsWithAnswerPercentage(Trip trip, User organizer) throws TripsException;
 
     //Enrollment Service
     public Enrollment subscribe(Trip trip, User user) throws TripsException;
