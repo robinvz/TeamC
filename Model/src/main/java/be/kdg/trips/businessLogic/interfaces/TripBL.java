@@ -32,7 +32,7 @@ public interface TripBL
     public Trip findTripByQuestion(Question question) throws TripsException;
     public Location findLocationById(int id) throws TripsException;
 
-    public void editTripDetails(Trip trip, String title, String description, User organizer) throws TripsException;
+    public void editTripDetails(Trip trip, String title, String description, boolean chatAllowed, boolean positionVisible, User organizer) throws TripsException;
     public void editTripLocationDetails(User organizer, Trip trip, Location location, String street, String houseNr, String city, String postalCode, String country, String title, String description) throws TripsException;
     public void editTripQuestionDetails(User organizer, Location location, Question question, String questionTitle, List<String> possibleAnswers, int correctAnswerIndex) throws TripsException;
 

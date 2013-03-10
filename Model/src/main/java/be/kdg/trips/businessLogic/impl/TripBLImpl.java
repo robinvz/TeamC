@@ -205,7 +205,7 @@ public class TripBLImpl implements TripBL
 
     @Override
     @Transactional
-    public void editTripDetails(Trip trip, String title, String description, User organizer) throws TripsException
+    public void editTripDetails(Trip trip, String title, String description, boolean chatAllowed, boolean positionVisible, User organizer) throws TripsException
     {
         if(isExistingTrip(trip.getId()) && userBL.isExistingUser(organizer.getEmail()) && isOrganizer(trip, organizer))
         {
@@ -216,6 +216,14 @@ public class TripBLImpl implements TripBL
             if(!description.equals(""))
             {
                 trip.setDescription(description);
+            }
+            if(chatAllowed != trip.isChatAllowed())
+            {
+                trip.setChatAllowed(chatAllowed);
+            }
+            if(positionVisible != trip.isPositionVisible())
+            {
+                trip.setPositionVisible(positionVisible);
             }
             tripDao.updateTrip(trip);
         }
@@ -363,10 +371,12 @@ public class TripBLImpl implements TripBL
     public void deleteLocation(Trip trip, User user, Location location) throws TripsException {
         if(isExistingTrip(trip.getId()) && userBL.isExistingUser(user.getEmail()) && isOrganizer(trip, user))
         {
+            boolean deleted = false;
             for(Location locationInTrip: trip.getLocations())
             {
                 if(locationInTrip.equals(location))
                 {
+                    deleted = true;
                     tripDao.deleteLocation(locationInTrip.getId());
                 }
                 else if(locationInTrip.getSequence()>location.getSequence())
@@ -374,6 +384,10 @@ public class TripBLImpl implements TripBL
                     locationInTrip.setSequence(locationInTrip.getSequence()-1);
                     tripDao.saveOrUpdateLocation(locationInTrip);
                 }
+            }
+            if(deleted)
+            {
+                trip.removeLocation(location);
             }
         }
     }

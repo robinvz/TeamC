@@ -77,6 +77,7 @@ public class EnrollmentBLImpl implements EnrollmentBL
                     invitation.setAnswer(Answer.DECLINED);
                     enrollmentDao.saveOrUpdateInvitation(invitation);
                 }
+                trip.removeEnrollment(enrollment);
                 enrollmentDao.deleteEnrollment(enrollment.getId());
             }
             else

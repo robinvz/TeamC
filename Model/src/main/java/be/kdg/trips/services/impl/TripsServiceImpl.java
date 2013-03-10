@@ -134,9 +134,9 @@ public class TripsServiceImpl implements TripsService
     }
 
     @Override
-    public void editTripDetails(Trip trip, String title, String description, User organizer) throws TripsException
+    public void editTripDetails(Trip trip, String title, String description, boolean chatAllowed, boolean positionVisible, User organizer) throws TripsException
     {
-        tripController.editTripDetails(trip, title, description, organizer);
+        tripController.editTripDetails(trip, title, description,chatAllowed, positionVisible, organizer);
     }
 
     @Override

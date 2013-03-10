@@ -20,12 +20,12 @@ public interface TripInterface {
     public String getDescription();
     public void setDescription(String description);
     public Set<String> getLabels();
-    public void setLabels(Set<String> labels);
+    //public void setLabels(Set<String> labels);
     public TripPrivacy getPrivacy();
-    public void setPrivacy(TripPrivacy privacy);
+    //public void setPrivacy(TripPrivacy privacy);
     public void addLabel(String newLabel);
     public User getOrganizer();
-    public void setOrganizer(User organizer);
+    //public void setOrganizer(User organizer);
     public boolean isPublished();
     public void setPublished(boolean published);
     public boolean isActive();

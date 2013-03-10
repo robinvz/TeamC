@@ -34,4 +34,16 @@ public class TestMailContact
         tripsService.sendContactMail("Trip Location","I can't find the trip location", "tony_corsari@robin.com");
     }
 
+    @Test
+    public void successfulForgotPassword() throws TripsException, MessagingException
+    {
+        tripsService.createUser(new User("kokelenberg@gmail.com", "onder de grond"));
+        tripsService.forgotPassword("kokelenberg@gmail.com");
+    }
+
+    @Test(expected = TripsException.class)
+    public void failedForgotPasswordUnexistingUser() throws MessagingException, TripsException
+    {
+        tripsService.forgotPassword("tripsnoreply@gmail.com");
+    }
 }

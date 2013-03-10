@@ -21,6 +21,7 @@ import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.Date;
 import java.util.List;
 
 import static org.junit.Assert.*;
@@ -295,25 +296,49 @@ public class TestTrip {
     }
 
     @Test
-    public void successfulEditTripDetails() throws TripsException
+    public void successfulEditTripDetailsTitle() throws TripsException
     {
         Trip trip = tripsService.createTimelessTrip("Trip1", "TripDescription", TripPrivacy.PUBLIC, organizer);
-        tripsService.editTripDetails(trip, "", "TripDescriptionEdited", organizer);
+        tripsService.editTripDetails(trip, "TripTitle", "", true, true, organizer);
+        assertTrue(tripsService.findTripById(trip.getId(), organizer).getTitle().equals("TripTitle"));
+    }
+
+    @Test
+    public void successfulEditTripDetailsDescription() throws TripsException
+    {
+        Trip trip = tripsService.createTimelessTrip("Trip1", "TripDescription", TripPrivacy.PUBLIC, organizer);
+        tripsService.editTripDetails(trip, "", "TripDescriptionEdited", true, true, organizer);
         assertTrue(tripsService.findTripById(trip.getId(), organizer).getDescription().equals("TripDescriptionEdited"));
+    }
+
+    @Test
+    public void successfulEditTripDetailsChatAllowed() throws TripsException
+    {
+        Trip trip = tripsService.createTimelessTrip("Trip1", "TripDescription", TripPrivacy.PUBLIC, organizer);
+        tripsService.editTripDetails(trip, "", "", false, true, organizer);
+        assertFalse(tripsService.findTripById(trip.getId(), organizer).isChatAllowed());
+    }
+
+    @Test
+    public void successfulEditTripDetailsPositionVisible() throws TripsException
+    {
+        Trip trip = tripsService.createTimelessTrip("Trip1", "TripDescription", TripPrivacy.PUBLIC, organizer);
+        tripsService.editTripDetails(trip, "", "", true, false, organizer);
+        assertFalse(tripsService.findTripById(trip.getId(), organizer).isPositionVisible());
     }
 
     @Test(expected = TripsException.class)
     public void failedEditTripDetailsNoPermissionInvalidOrganizer() throws TripsException
     {
         Trip trip = tripsService.createTimelessTrip("Trip2", "TripDescription", TripPrivacy.PUBLIC, organizer);
-        tripsService.editTripDetails(trip, "Trip2", "TripDescription", user);
+        tripsService.editTripDetails(trip, "Trip2", "TripDescription", true, true, user);
     }
 
     @Test(expected = TripsException.class)
     public void failedEditTripDetailsNoPermissionInvalidTrip() throws TripsException
     {
         Trip trip = new TimelessTrip("Trip2", "TripDescription", TripPrivacy.PUBLIC, organizer);
-        tripsService.editTripDetails(trip, "Trip2", "TripDescription", organizer);
+        tripsService.editTripDetails(trip, "Trip2", "TripDescription", true, true, organizer);
     }
 
     @Test
@@ -460,8 +485,18 @@ public class TestTrip {
     @Test
     public void successfulAddDateToTimeBoundTrip() throws ParseException, TripsException
     {
-        User organizer = tripsService.createUser(new User("GeoffreyWesle@toko.com","Jean"));
+        User organizer = tripsService.createUser(new User("GeoffreyWesle@toko.com", "Jean"));
         Trip trip = tripsService.createTimeBoundTrip("trip met extra dates spaghetti", "extra dates", TripPrivacy.PROTECTED, organizer, df.parse("01/01/2014"), df.parse("01/02/2014"), null, null);
+        tripsService.addDateToTimeBoundTrip(df.parse("01/03/2014"), df.parse("01/04/2014"), trip, organizer);
+        List<Trip> trips = tripsService.findTripsByOrganizer(organizer);
+        assertEquals(2, trips.size());
+    }
+
+    @Test(expected = TripsException.class)
+    public void failedAddDateToTimeBoundTripInvalidTripType() throws ParseException, TripsException
+    {
+        User organizer = tripsService.createUser(new User("GeoffWesle@toko.com","Jean"));
+        Trip trip = tripsService.createTimelessTrip("trip met extra dates macaroni", "extra dates", TripPrivacy.PROTECTED, organizer);
         tripsService.addDateToTimeBoundTrip(df.parse("01/03/2014"), df.parse("01/04/2014"), trip, organizer);
         List<Trip> trips = tripsService.findTripsByOrganizer(organizer);
         assertEquals(2, trips.size());
@@ -471,6 +506,18 @@ public class TestTrip {
     public void successfulAddRequisiteToTrip() throws TripsException
     {
         Trip trip = tripsService.createTimelessTrip("Trip with requisites", "trip with requisites", TripPrivacy.PUBLIC, user);
+        tripsService.addRequisiteToTrip("liters bier", 10, trip, user);
+        tripsService.addRequisiteToTrip("liters bier", 5, trip, user);
+        tripsService.addRequisiteToTrip("vrienden", 5, trip, user);
+        assertTrue(trip.getRequisites().containsValue(15));
+    }
+
+    @Test(expected = TripsException.class)
+    public void failedAddRequisiteToTripAlreadyActive() throws TripsException, ParseException
+    {
+        Date inAMoment = new Date();
+        inAMoment.setTime(inAMoment.getTime() + 50);
+        Trip trip = tripsService.createTimeBoundTrip("Trip with requisites", "trip with requisites", TripPrivacy.PROTECTED, user, inAMoment, df.parse("01/01/2014"), null, null);
         tripsService.addRequisiteToTrip("liters bier", 10, trip, user);
         tripsService.addRequisiteToTrip("liters bier", 5, trip, user);
         tripsService.addRequisiteToTrip("vrienden", 5, trip, user);

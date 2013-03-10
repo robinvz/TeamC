@@ -62,6 +62,8 @@ public abstract class Trip implements Serializable, TripInterface {
     private byte[] image;
     @NotNull
     private String theme;
+    private boolean chatAllowed;
+    private boolean positionVisible;
 
     public Trip(String title, String description, TripPrivacy privacy, User organizer) {
         this.id = getNextId();
@@ -83,6 +85,8 @@ public abstract class Trip implements Serializable, TripInterface {
         this.locations = new ArrayList<>();
         this.requisites = new HashMap<>();
         this.theme = "default";
+        this.chatAllowed = true;
+        this.positionVisible = true;
     }
 
     public Trip(String title, String description, TripPrivacy privacy, User organizer, byte[] image) {
@@ -122,22 +126,22 @@ public abstract class Trip implements Serializable, TripInterface {
     public Set<String> getLabels() {
         return labels;
     }
-
+    /*
     @Override
     public void setLabels(Set<String> labels) {
         this.labels = labels;
     }
-
+    */
     @Override
     public TripPrivacy getPrivacy() {
         return privacy;
     }
-
+    /*
     @Override
     public void setPrivacy(TripPrivacy privacy) {
         this.privacy = privacy;
     }
-
+    */
     @Override
     public void addLabel(String newLabel){
         this.labels.add(newLabel);
@@ -147,12 +151,12 @@ public abstract class Trip implements Serializable, TripInterface {
     public User getOrganizer() {
         return organizer;
     }
-
+    /*
     @Override
     public void setOrganizer(User organizer) {
         this.organizer = organizer;
     }
-
+    */
     public Map<String, Integer> getRequisites()
     {
         return requisites;
@@ -288,6 +292,22 @@ public abstract class Trip implements Serializable, TripInterface {
 
     public void setTheme(String theme) {
         this.theme = theme;
+    }
+
+    public boolean isPositionVisible() {
+        return positionVisible;
+    }
+
+    public void setPositionVisible(boolean positionVisible) {
+        this.positionVisible = positionVisible;
+    }
+
+    public boolean isChatAllowed() {
+        return chatAllowed;
+    }
+
+    public void setChatAllowed(boolean chatAllowed) {
+        this.chatAllowed = chatAllowed;
     }
 
     private synchronized int getNextId() {
