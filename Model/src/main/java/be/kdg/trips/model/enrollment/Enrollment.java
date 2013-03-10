@@ -50,8 +50,8 @@ public class Enrollment implements EnrollmentInterface, Serializable
     private int score;
     @ElementCollection(fetch = FetchType.EAGER)
     @CollectionTable(name = "T_ENROLLMENT_ANSWEREDQUESTION", joinColumns = @JoinColumn(name = "enrollmentId"))
-    @Column(name="questionId")
-    private Set<Integer> answeredQuestions;
+    @Column(name="answeredQuestions_VALUE")
+    private Map<Question, Boolean> answeredQuestions;
 
     public Enrollment(Trip trip, User user)
     {
@@ -61,7 +61,7 @@ public class Enrollment implements EnrollmentInterface, Serializable
         user.addEnrollment(this);
         this.date = new Date();
         this.requisites = new HashMap<>();
-        this.answeredQuestions = new HashSet<>();
+        this.answeredQuestions = new HashMap<>();
         this.status = Status.READY;
     }
 
@@ -122,16 +122,17 @@ public class Enrollment implements EnrollmentInterface, Serializable
         this.score++;
     }
 
-    public Set<Integer> getAnsweredQuestions() {
+    public Map<Question, Boolean> getAnsweredQuestions() {
         return answeredQuestions;
     }
 
-    public void setAnsweredQuestions(Set<Integer> answeredQuestions) {
+    public void setAnsweredQuestions(Map<Question, Boolean> answeredQuestions) {
         this.answeredQuestions = answeredQuestions;
     }
 
-    public void addAnsweredQuestion(int id){
-        this.answeredQuestions.add(id);
+    public void addAnsweredQuestion(Question question, Boolean correct)
+    {
+        this.answeredQuestions.put(question, correct);
     }
 
     public Status getStatus() {
