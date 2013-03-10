@@ -9,10 +9,12 @@ import be.kdg.trips.model.trip.Repeatable;
 import be.kdg.trips.model.trip.Trip;
 import be.kdg.trips.model.trip.TripPrivacy;
 import be.kdg.trips.model.user.User;
+import be.kdg.trips.utility.Fraction;
 
 import javax.mail.MessagingException;
 import java.util.Date;
 import java.util.List;
+import java.util.Map;
 
 /**
  * Subversion Id
@@ -47,7 +49,7 @@ public interface TripsService
     public List<Trip> findTripsByOrganizer(User organizer) throws TripsException;
     public Location findLocationById(int id) throws TripsException;
 
-    public void editTripDetails(Trip trip, String title, String description, User organizer) throws TripsException;
+    public void editTripDetails(Trip trip, String title, String description, boolean chatAllowed, boolean positionVisible, User organizer) throws TripsException;
     public void editTripLocationDetails(User organizer, Trip trip, Location location, String street, String houseNr, String city, String postalCode, String country, String title, String description) throws TripsException;
     public void editTripQuestionDetails(User organizer, Location location, Question question, String questionTitle, List<String> possibleAnswers, int correctAnswerIndex) throws TripsException;
 
@@ -66,6 +68,8 @@ public interface TripsService
 
     public void deleteTrip(Trip trip, User organizer) throws TripsException, MessagingException;
     public void deleteLocation(Trip trip, User organizer, Location location) throws TripsException;
+
+    public Map<Question, Fraction> getQuestionsWithAnswerPercentage(Trip trip, User organizer) throws TripsException;
 
     //Enrollment Service
     public Enrollment subscribe(Trip trip, User user) throws TripsException;

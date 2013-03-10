@@ -12,6 +12,7 @@ import be.kdg.trips.model.question.Question;
 import be.kdg.trips.model.trip.*;
 import be.kdg.trips.model.user.User;
 import be.kdg.trips.persistence.dao.interfaces.TripDao;
+import be.kdg.trips.utility.Fraction;
 import be.kdg.trips.utility.ImageChecker;
 import be.kdg.trips.utility.MailSender;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -19,8 +20,6 @@ import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
 
 import javax.mail.*;
-import javax.mail.internet.InternetAddress;
-import javax.mail.internet.MimeMessage;
 import java.util.*;
 
 /**
@@ -205,7 +204,7 @@ public class TripBLImpl implements TripBL
 
     @Override
     @Transactional
-    public void editTripDetails(Trip trip, String title, String description, User organizer) throws TripsException
+    public void editTripDetails(Trip trip, String title, String description, boolean chatAllowed, boolean positionVisible, User organizer) throws TripsException
     {
         if(isExistingTrip(trip.getId()) && userBL.isExistingUser(organizer.getEmail()) && isOrganizer(trip, organizer))
         {
@@ -216,6 +215,14 @@ public class TripBLImpl implements TripBL
             if(!description.equals(""))
             {
                 trip.setDescription(description);
+            }
+            if(chatAllowed != trip.isChatAllowed())
+            {
+                trip.setChatAllowed(chatAllowed);
+            }
+            if(positionVisible != trip.isPositionVisible())
+            {
+                trip.setPositionVisible(positionVisible);
             }
             tripDao.updateTrip(trip);
         }
@@ -363,10 +370,12 @@ public class TripBLImpl implements TripBL
     public void deleteLocation(Trip trip, User user, Location location) throws TripsException {
         if(isExistingTrip(trip.getId()) && userBL.isExistingUser(user.getEmail()) && isOrganizer(trip, user))
         {
+            boolean deleted = false;
             for(Location locationInTrip: trip.getLocations())
             {
                 if(locationInTrip.equals(location))
                 {
+                    deleted = true;
                     tripDao.deleteLocation(locationInTrip.getId());
                 }
                 else if(locationInTrip.getSequence()>location.getSequence())
@@ -374,6 +383,10 @@ public class TripBLImpl implements TripBL
                     locationInTrip.setSequence(locationInTrip.getSequence()-1);
                     tripDao.saveOrUpdateLocation(locationInTrip);
                 }
+            }
+            if(deleted)
+            {
+                trip.removeLocation(location);
             }
         }
     }
@@ -564,6 +577,48 @@ public class TripBLImpl implements TripBL
         {
             throw new TripsException("Location doesn't have a question to remove");
         }
+    }
+
+    public Map<Question, Fraction> getQuestionsWithAnswerPercentage(Trip trip, User organizer) throws TripsException {
+        Map<Question, Fraction> questions = new HashMap<>();
+        if(isExistingTrip(trip.getId()) && userBL.isExistingUser(organizer.getEmail()) && isOrganizer(trip, organizer))
+        {
+            for(Enrollment enrollment: trip.getEnrollments())
+            {
+                Map<Question, Boolean> answeredQuestions = enrollment.getAnsweredQuestions();
+                Iterator it = answeredQuestions.keySet().iterator();
+                while(it.hasNext())
+                {
+                    Question answeredQuestion = (Question)it.next();
+                    if(questions.containsKey(answeredQuestion))
+                    {
+                        int denominator = questions.get(answeredQuestion).getDenominator();
+                        int divisor = questions.get(answeredQuestion).getDivisor();
+                        if(answeredQuestions.get(answeredQuestion))
+                        {
+                            questions.put(answeredQuestion, new Fraction(denominator+1, divisor+1));
+                        }
+                        else
+                        {
+                            questions.put(answeredQuestion, new Fraction(denominator, divisor+1));
+                        }
+                        enrollment.getAnsweredQuestions();
+                    }
+                    else
+                    {
+                        if(answeredQuestions.get(answeredQuestion))
+                        {
+                            questions.put(answeredQuestion, new Fraction());
+                        }
+                        else
+                        {
+                            questions.put(answeredQuestion, new Fraction());
+                        }
+                    }
+                }
+            }
+        }
+        return questions;
     }
 
     public boolean doesLocationBelongToTrip(Location location, Trip trip) throws TripsException
