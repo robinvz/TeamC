@@ -42,12 +42,14 @@
             </intent-filter>
         </activity>
         <activity
-            android:name="be.kdg.groupcandroid.TripDetail"
-            android:label="" >
+            android:name="be.kdg.groupcandroid.TripActivity"
+            android:label=""
+            android:screenOrientation="portrait" >
         </activity>
         <activity
             android:name="be.kdg.groupcandroid.Maptivity"
-            android:label="" >
+            android:label=""
+            android:screenOrientation="portrait" >
         </activity>
         <activity
             android:name="be.kdg.groupcandroid.TripsOverview"
@@ -57,13 +59,17 @@
         <activity
             android:name="be.kdg.groupcandroid.ChatActivity"
             android:label=""
+            android:screenOrientation="portrait"
             android:theme="@style/StyledIndicators" >
         </activity>
         <activity
             android:name="com.facebook.LoginActivity"
-            android:label="" >
+            android:label=""
+            android:screenOrientation="portrait" >
         </activity>
-        <activity android:name=".Preferences" >
+        <activity
+            android:name=".Preferences"
+            android:screenOrientation="portrait" >
         </activity>
 
         <meta-data
@@ -79,6 +85,13 @@
             <intent-filter>
                 <action android:name="android.intent.action.BOOT_COMPLETED" />
                 <action android:name="android.intent.action.USER_PRESENT" />
+            </intent-filter>
+        </receiver>
+        <receiver
+            android:name="be.kdg.groupcandroid.ChatReceiver"
+            android:exported="false" >
+            <intent-filter>
+                <action android:name="be.kdg.groupcandroid.CHAT" />
             </intent-filter>
         </receiver>
     </application>

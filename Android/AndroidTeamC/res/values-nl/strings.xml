@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <string name="app_name">GroupCAndroid</string>
+    <string name="hello_world">Hello world!</string>
+    <string name="menu_settings">Instellingen</string>
+    <string name="login">Inloggen</string>
+    <string name="username">Email</string>
+    <string name="password">Wachtwoord</string>
+    <string name="sample_content">Blablabla</string>
+    <string name="trips_overview">Trips Overzicht</string>
+    <string name="login_with_facebook">Inloggen Met Facebook</string>
+    <string name="default_image">default_image</string>
+    <string name="chat_background_description">Trip Achtergrond</string>
+    <string name="logout">Uitloggen</string>
+    <string name="total_subscribed">Totaal Ingeschreven</string>
+    <string name="trip_privacy">Trip Privaatheid</string>
+    <string name="app_id">118452395005980</string>
+    <string name="subscribe">Inschrijven</string>
+    <string name="start">Start</string>
+    <string name="stop">Stop</string>
+    <string name="unsubscribe">Uitschrijven</string>
+    <string name="noquestion">Geen vraag bij deze locatie!</string>
+    <string name="possibleanswers">Mogelijke Antwoorden</string>
+    <string name="alreadyanswered">Je hebt de vraag al beantwoord</string>
+    <string name="answered">Je hebt de vraag beantwoord</string>
+    <string name="all">Alle</string>
+    <string name="subscribed">Ingeschreven</string>
+    <string name="created">Gemaakte</string>
+    <string name="ok">OK</string>
+        <string name="send">Verstuur</string>
+            <string name="broadcastsent">Broadcast verzonden!</string>
+        
+    <string name="cancel">Annuleer</string>
+        <string name="typebroadcast">Schrijf het bericht dat je wil broadcasten</string>
+            <string name="selectcontact">Selecteer een contact door op het icoontje rechtsboven te klikken.</string>
+        
+    
+</resources>

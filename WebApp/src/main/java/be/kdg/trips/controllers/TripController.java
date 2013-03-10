@@ -286,11 +286,15 @@ public class TripController {
                 Trip trip = tripsService.findTripById(id, user);
                 JSONArray jsonArray = new JSONArray();
                 for (Enrollment enr : tripsService.findEnrollmentsByTrip(trip)) {
-                    if (enr.getStatus() == Status.BUSY){
+                    if (enr.getStatus() == Status.BUSY ){   //&& enr.getUser().getId() != user.getId()
                         JSONObject loco = new JSONObject();
-                        loco.accumulate("firstName", enr.getUser().getFirstName());
-                        loco.accumulate("lastName", enr.getUser().getLastName());
+                        String firstname = enr.getUser().getFirstName() == null ? enr.getUser().getEmail() : enr.getUser().getFirstName();
+                        String lastname = enr.getUser().getFirstName() == null ? " " : enr.getUser().getLastName();
+                        loco.accumulate("firstName", firstname);
+                        loco.accumulate("lastName", lastname);
                         loco.accumulate("email", enr.getUser().getEmail());
+                        loco.accumulate("latitude", enr.getUser().getLatitude());
+                        loco.accumulate("longitude", enr.getUser().getLongitude());
                         jsonArray.add(loco);
                         // loco.accumulate("city", enr.getLastLocationVisited().getAddress().getCity());
                     }

@@ -1,6 +1,8 @@
 package be.kdg.groupcandroid;
 
 import android.annotation.SuppressLint;
+import android.app.AlertDialog;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.opengl.Visibility;
@@ -17,6 +19,7 @@ import android.widget.AbsListView;
 import android.widget.AdapterView;
 import android.widget.BaseAdapter;
 import android.widget.Button;
+import android.widget.EditText;
 import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.AdapterView.OnItemClickListener;
@@ -33,8 +36,10 @@ import java.util.concurrent.ExecutionException;
 import java.util.concurrent.TimeUnit;
 import java.util.concurrent.TimeoutException;
 
+import com.parse.ParsePush;
+
 @SuppressLint("NewApi")
-public class TripDetail extends FragmentActivity {
+public class TripActivity extends FragmentActivity {
 
 	private static final String STATE_ACTIVE_POSITION = "net.simonvt.menudrawer.samples.ContentSample.activePosition";
 	private static final String STATE_CONTENT_TEXT = "net.simonvt.menudrawer.samples.ContentSample.contentText";
@@ -107,7 +112,7 @@ public class TripDetail extends FragmentActivity {
 					/*
 					ChatListFragment listfr = new ChatListFragment();
 					transaction.replace(R.id.fragment1, listfr);*/
-					Intent intent = new Intent(TripDetail.this, ChatActivity.class);
+					Intent intent = new Intent(TripActivity.this, ChatActivity.class);
 					Bundle bundle = new Bundle();
 					bundle.putString("tripid", trip.getId());
 					intent.putExtras(bundle);
@@ -125,7 +130,34 @@ public class TripDetail extends FragmentActivity {
 					bundle.putInt("tripId", Integer.parseInt(trip.getId()));
 					locFr.setArguments(bundle);
 					transaction.replace(R.id.fragment1, locFr);
-				}else { // TripTitle is selected so title view
+				}
+				else if (clickItem.title.toLowerCase().contentEquals("broadcast")){
+					AlertDialog.Builder alert = new AlertDialog.Builder(TripActivity.this);
+					alert.setMessage(getResources().getString(R.string.typebroadcast));
+					alert.setTitle("Broadcast");
+					final EditText input = new EditText(TripActivity.this);
+					alert.setView(input);
+
+					alert.setPositiveButton(getResources().getString(R.string.send), new DialogInterface.OnClickListener() {
+					public void onClick(DialogInterface dialog, int whichButton) {
+					  String value = input.getText().toString();
+					  ParsePush push = new ParsePush();
+					  push.setChannel(trip.getTitle().replace(" ", "") + trip.getId());
+					  push.setMessage(trip.getTitle()+ ": " + value);
+					  push.sendInBackground();
+					  Toast.makeText(TripActivity.this, getResources().getString(R.string.broadcastsent), Toast.LENGTH_LONG).show();
+					  }
+					});
+
+					alert.setNegativeButton(getResources().getString(R.string.cancel), new DialogInterface.OnClickListener() {
+					  public void onClick(DialogInterface dialog, int whichButton) {
+					  }
+					});
+
+					alert.show();
+				}
+				
+				else { // TripTitle is selected so title view
 					TemplateFragment tempFragment = TemplateFragment.newInstance(
 							position, trip);
 					transaction.replace(R.id.fragment1, tempFragment);

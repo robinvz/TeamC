@@ -25,7 +25,13 @@
     <string name="alreadyanswered">You already answered the question</string>
     <string name="answered">You answered the question</string>
     <string name="all">All</string>
-     <string name="subscribed">Subscribed</string>
-        <string name="created">Created</string>
-     
+    <string name="subscribed">Subscribed</string>
+    <string name="created">Created</string>
+    <string name="ok">OK</string>
+    <string name="cancel">Cancel</string>
+    <string name="typebroadcast">Enter the message you would like to broadcast</string>
+    <string name="send">Send</string>
+    <string name="broadcastsent">Broadcast verzonden!</string>
+    <string name="selectcontact">Select a contact by pressing the top right icon</string>
+
 </resources>

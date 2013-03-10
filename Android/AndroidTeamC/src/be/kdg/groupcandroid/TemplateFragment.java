@@ -47,7 +47,7 @@ public class TemplateFragment extends Fragment {
 		case 3:
 			return inflater.inflate(R.layout.broadcast, container, false);
 		default:
-			return inflater.inflate(R.layout.positie, container, false);
+			return inflater.inflate(R.layout.trip, container, false);
 		}
 	}
 
