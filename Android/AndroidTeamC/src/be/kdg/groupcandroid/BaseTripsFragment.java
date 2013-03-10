@@ -94,7 +94,7 @@ public class BaseTripsFragment extends Fragment {
 									tripsList.get(arg2).id + "", email, pass })
 							.get(3, TimeUnit.SECONDS);
 					Intent intent = new Intent(view.getContext(),
-							TripDetail.class);
+							TripActivity.class);
 					if (EnrolledTripsFragment.class.isInstance(this)) {
 						trip.setEnrolled(true);
 					}

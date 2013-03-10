@@ -49,6 +49,7 @@ public class SessionManager {
         editor.putString(KEY_NAME, email);
  
         editor.putString(KEY_PASSWORD, password);
+        
  
         // commit changes
         editor.commit();

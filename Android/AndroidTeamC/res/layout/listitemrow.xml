@@ -6,26 +6,26 @@
     android:paddingBottom="5dp"
     android:paddingLeft="5dp"
     android:paddingTop="5dp" >
-    
-     <ImageView
-       android:id="@+id/imgIcon"
-       android:contentDescription="@string/default_image"
-       android:layout_width="60dp"
-       android:layout_height="60dp"	
-       android:layout_marginRight="6dp"
-       />
-    
-     <TextView
-        
+
+    <ImageView
+        android:id="@+id/imgIcon"
+        android:layout_width="60dp"
+        android:layout_height="60dp"
+        android:layout_marginRight="6dp"
+        android:contentDescription="@string/default_image" />
+
+    <TextView
         android:id="@+id/txtTitle"
-        android:drawableLeft="@color/highlight"
         android:layout_width="fill_parent"
         android:layout_height="fill_parent"
+        android:drawableLeft="@color/highlight"
+        android:ellipsize="end"
         android:gravity="center_vertical"
-        android:textSize="18sp"
-        android:textColor="#000000"
+        android:lines="1"
         android:paddingLeft="20dp"
-       
-       />
-        
-     </LinearLayout>
+        android:scrollHorizontally="true"
+        android:singleLine="true"
+        android:textColor="#000000"
+        android:textSize="18sp" />
+
+</LinearLayout>

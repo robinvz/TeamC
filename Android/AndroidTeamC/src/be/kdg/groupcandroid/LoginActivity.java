@@ -38,7 +38,8 @@ public class LoginActivity extends Activity {
 	protected void onCreate(Bundle savedInstanceState) {
 		
 		super.onCreate(savedInstanceState);
-		
+		Parse.initialize(this, "wMntxG3ilX9JbzFjuxukt21MlRvajx5LDqY7OHtR", "6mJ5wpU6wLXCiushPW3m4jXug3mNQ9FMy9YtI9jN"); 
+		PushService.setDefaultPushCallback(this, ChatActivity.class);
 		session = new SessionManager(getApplicationContext());
 		if (session.isLoggedIn()) {
 			Intent intent = new Intent(LoginActivity.this, TripsOverview.class);
@@ -141,7 +142,7 @@ public class LoginActivity extends Activity {
 					TimeUnit.SECONDS);
 			if (response == 1) {
 				session.createLoginSession(username, pass);
-
+				PushService.subscribe(this, "user" +  username.hashCode(), LoginActivity.class);	//Subscribing to channel for chat
 				Intent intent = new Intent(LoginActivity.this,
 						TripsOverview.class);
 				startActivity(intent);

@@ -39,8 +39,7 @@ public class TripsOverview extends FragmentActivity {
 
 		FragmentPagerAdapter adapter = new MyAdapter(
 				getSupportFragmentManager());
-		Parse.initialize(this, "wMntxG3ilX9JbzFjuxukt21MlRvajx5LDqY7OHtR", "6mJ5wpU6wLXCiushPW3m4jXug3mNQ9FMy9YtI9jN"); 
-		PushService.setDefaultPushCallback(this, TripsOverview.class);
+
 		ViewPager pager = (ViewPager) findViewById(R.id.pager);
 		pager.setAdapter(adapter);
 		TabPageIndicator indicator = (TabPageIndicator) findViewById(R.id.indicator);
