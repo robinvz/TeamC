@@ -58,7 +58,6 @@ public interface TripsService
     public void addQuestionToLocation(User organizer, Location location, String question, List<String> possibleAnswers, int correctAnswerIndex, byte[] image) throws TripsException;
     public void removeQuestionFromLocation(User organizer, Location location) throws TripsException;
     public void addDateToTimeBoundTrip(Date startDate, Date endDate, Trip trip, User organizer) throws TripsException;
-    public void removeDateFromTimeBoundTrip(Date startDate, Trip trip, User user) throws TripsException;
     public void addRequisiteToTrip(String name, int amount, Trip trip, User organizer) throws TripsException;
     public void removeRequisiteFromTrip(String name, int amount, Trip trip, User organizer) throws TripsException;
     public void switchLocationSequence(Trip trip, User user, int location1, int location2) throws TripsException;

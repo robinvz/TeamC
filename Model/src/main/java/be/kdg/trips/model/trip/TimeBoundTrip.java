@@ -3,6 +3,7 @@ package be.kdg.trips.model.trip;
 import be.kdg.trips.model.user.User;
 
 import javax.persistence.*;
+import javax.validation.constraints.NotNull;
 import java.io.Serializable;
 import java.util.Date;
 import java.util.HashMap;
@@ -16,45 +17,47 @@ import java.util.Map;
  */
 @Entity
 public class TimeBoundTrip extends Trip implements Serializable {
-    @ElementCollection(fetch = FetchType.EAGER)
-    @CollectionTable(name = "T_TIMEBOUNDTRIP_DATE", joinColumns = @JoinColumn(name = "timeBoundTripId"))
-    @Column(name="dates_VALUE")
-    private Map<Date,Date> dates;
+    @NotNull
+    private Date startDate;
+    @NotNull
+    private Date endDate;
 
     public TimeBoundTrip(String title, String description, TripPrivacy privacy, User organizer, Date startDate, Date endDate) {
         super(title, description, privacy, organizer);
-        dates = new HashMap<>();
-        dates.put(startDate,endDate);
+        this.startDate = startDate;
+        this.endDate = endDate;
+    }
+
+    public TimeBoundTrip(String title, String description, TripPrivacy privacy, User organizer, Date startDate, Date endDate, byte[] image) {
+        super(title, description, privacy, organizer, image);
+        this.startDate = startDate;
+        this.endDate = endDate;
     }
 
     public TimeBoundTrip() {
     }
 
-    public Map<Date, Date> getDates() {
-        return dates;
+    public Date getStartDate() {
+        return startDate;
     }
 
-    public void setDates(Map<Date, Date> dates) {
-        this.dates = dates;
+    public void setStartDate(Date startDate) {
+        this.startDate = startDate;
     }
 
-    public void addDates(Date startDate, Date endDate)
-    {
-        dates.put(startDate, endDate);
+    public Date getEndDate() {
+        return endDate;
     }
 
-    public void removeDates(Date startDate)
-    {
-        dates.remove(startDate);
+    public void setEndDate(Date endDate) {
+        this.endDate = endDate;
     }
 
     @Override
     public boolean isActive(){
         Date now = new Date();
-        for (Map.Entry datePair : dates.entrySet()) {
-            if(((Date)datePair.getKey()).before(now) && ((Date)datePair.getValue()).after(now)){
-                return true;
-            }
+        if(startDate.before(now) && endDate.after(now)){
+            return true;
         }
         return false;
     }
@@ -73,7 +76,8 @@ public class TimeBoundTrip extends Trip implements Serializable {
 
         TimeBoundTrip that = (TimeBoundTrip) o;
 
-        if (dates != null ? !dates.equals(that.dates) : that.dates != null) return false;
+        if (!endDate.equals(that.endDate)) return false;
+        if (!startDate.equals(that.startDate)) return false;
 
         return true;
     }
@@ -81,7 +85,8 @@ public class TimeBoundTrip extends Trip implements Serializable {
     @Override
     public int hashCode() {
         int result = super.hashCode();
-        result = 31 * result + (dates != null ? dates.hashCode() : 0);
+        result = 31 * result + startDate.hashCode();
+        result = 31 * result + endDate.hashCode();
         return result;
     }
 }

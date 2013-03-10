@@ -85,6 +85,11 @@ public abstract class Trip implements Serializable, TripInterface {
         this.theme = "default";
     }
 
+    public Trip(String title, String description, TripPrivacy privacy, User organizer, byte[] image) {
+        this(title, description, privacy, organizer);
+        this.image = image;
+    }
+
     @Override
     public int getId() {
         return id;

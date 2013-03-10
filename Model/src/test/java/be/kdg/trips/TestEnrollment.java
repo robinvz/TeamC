@@ -260,7 +260,7 @@ public class TestEnrollment
     }
 
     @Test(expected = TripsException.class)
-    public void failedDeclineInvitationAlreadDeclined() throws TripsException, MessagingException {
+    public void rfailedDeclineInvitationAlreadDeclined() throws TripsException, MessagingException {
         User invitee = tripsService.createUser(new User("unexisting201@hotmail.com","pass"));
         Trip trip = tripsService.createTimelessTrip("Spartacus run", "Lopen door de modder!", TripPrivacy.PRIVATE, organizer);
         Invitation invitation = tripsService.invite(trip, organizer, invitee);

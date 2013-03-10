@@ -68,7 +68,7 @@ public class TripBLImpl implements TripBL
                 trip = new TimeBoundTrip(title, description, privacy, organizer, startDate, endDate);
                 if(repeatable!=null & amount!=null)
                 {
-                    if(amount>0 && amount<15)
+                    if(amount>0 && amount<16)
                     {
                         Calendar startCalendar = Calendar.getInstance();
                         Calendar endCalendar = Calendar.getInstance();
@@ -89,12 +89,9 @@ public class TripBLImpl implements TripBL
                                 case ANNUALLY:
                                     startCalendar.add(Calendar.YEAR, 1);
                                     endCalendar.add(Calendar.YEAR, 1);
-                                    break;
                             }
-                            if(startCalendar.getTime().after(endDate))
-                            {
-                                trip.addDates(startCalendar.getTime(), endCalendar.getTime());
-                            }
+                            Trip newTrip = new TimeBoundTrip(title, description, privacy, organizer, startCalendar.getTime(), endCalendar.getTime());
+                            tripDao.saveTrip(newTrip);
                         }
                     }
                     else
@@ -386,28 +383,14 @@ public class TripBLImpl implements TripBL
     public void addDateToTimeBoundTrip(Date startDate, Date endDate, Trip trip, User organizer) throws TripsException {
         if(isExistingTrip(trip.getId()) && userBL.isExistingUser(organizer.getEmail()) && isOrganizer(trip, organizer))
         {
-            if(areDatesUnoccupied(startDate, endDate, trip) && areDatesValid(startDate, endDate))
+            if(areDatesValid(startDate, endDate) && trip.isTimeBoundTrip())
             {
-                ((TimeBoundTrip) trip).addDates(startDate, endDate);
-                tripDao.updateTrip(trip);
-            }
-        }
-    }
-
-    @Override
-    @Transactional
-    public void removeDateFromTimeBoundTrip(Date startDate, Trip trip, User user) throws TripsException {
-        if(isExistingTrip(trip.getId()) && userBL.isExistingUser(user.getEmail()) && isOrganizer(trip, user) && trip.isTimeBoundTrip())
-        {
-            TimeBoundTrip tbTrip = (TimeBoundTrip)trip;
-            if(tbTrip.getDates().size()>1)
-            {
-                tbTrip.removeDates(startDate);
-                tripDao.updateTrip(trip);
+                Trip newTrip = new TimeBoundTrip(trip.getTitle(), trip.getDescription(), trip.getPrivacy(), organizer, startDate, endDate, trip.getImage());
+                tripDao.saveTrip(newTrip);
             }
             else
             {
-                throw new TripsException("Timebound trip has to have atleast one start and end date");
+                throw new TripsException("Trip must be timebound");
             }
         }
     }
@@ -608,25 +591,6 @@ public class TripBLImpl implements TripBL
         {
             throw new TripsException("Start date must be in the future");
         }
-    }
-
-    private boolean areDatesUnoccupied(Date startDate, Date endDate, Trip trip) throws TripsException {
-        if(trip.isTimeBoundTrip())
-        {
-            Map<Date, Date> dates = ((TimeBoundTrip) trip).getDates();
-            for(Map.Entry datePair : dates.entrySet())
-            {
-                if((((Date)datePair.getKey()).before(startDate) && ((Date)datePair.getValue()).after(startDate) || (((Date)datePair.getKey()).before(endDate) && ((Date)datePair.getValue()).after(endDate))))
-                {
-                    throw new TripsException("Dates are already occupied");
-                }
-            }
-        }
-        else
-        {
-            throw new TripsException("Trip is not a TimeBound trip");
-        }
-        return true;
     }
 
     private void enrollOrganizer(User organizer, Trip trip) throws TripsException {

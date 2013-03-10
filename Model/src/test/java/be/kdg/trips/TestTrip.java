@@ -119,20 +119,26 @@ public class TestTrip {
 
     @Test
     public void successfulCreateTimeBoundWeeklyRepeatableTrip() throws ParseException, TripsException {
-        Trip trip = tripsService.createTimeBoundTrip("Herhaalbaar iedere week", "repeatable each week", TripPrivacy.PUBLIC, organizer, df.parse("14/12/2014"), df.parse("15/12/2014"), Repeatable.WEEKLY, 2);
-        assertEquals(3,((TimeBoundTrip)tripsService.findTripById(trip.getId(), organizer)).getDates().size());
+        User organizer = tripsService.createUser(new User("JeanBaptise@toko.com","Jean"));
+        tripsService.createTimeBoundTrip("Herhaalbaar iedere week", "repeatable each week", TripPrivacy.PUBLIC, organizer, df.parse("14/12/2014"), df.parse("15/12/2014"), Repeatable.WEEKLY, 2);
+        List<Trip> trips = tripsService.findTripsByOrganizer(organizer);
+        assertEquals(3, trips.size());
     }
 
     @Test
     public void successfulCreateTimeBoundMonthlyRepeatableTrip() throws ParseException, TripsException {
-        Trip trip = tripsService.createTimeBoundTrip("Herhaalbaar iedere maand", "repeatable each month", TripPrivacy.PUBLIC, organizer, df.parse("14/12/2014"), df.parse("15/12/2014"), Repeatable.MONTHLY, 4);
-        assertEquals(5,((TimeBoundTrip)tripsService.findTripById(trip.getId(), organizer)).getDates().size());
+        User organizer = tripsService.createUser(new User("JefTokomoto@toko.com","Jean"));
+        tripsService.createTimeBoundTrip("Herhaalbaar iedere maand", "repeatable each month", TripPrivacy.PUBLIC, organizer, df.parse("14/12/2014"), df.parse("15/12/2014"), Repeatable.MONTHLY, 4);
+        List<Trip> trips = tripsService.findTripsByOrganizer(organizer);
+        assertEquals(5, trips.size());
     }
 
     @Test
     public void successfulCreateTimeBoundYearlyRepeatableTrip() throws ParseException, TripsException {
-        Trip trip = tripsService.createTimeBoundTrip("Herhaalbaar ieder jaar", "repeatable each year", TripPrivacy.PUBLIC, organizer, df.parse("14/12/2014"), df.parse("15/12/2014"), Repeatable.ANNUALLY, 1);
-        assertEquals(2,((TimeBoundTrip)tripsService.findTripById(trip.getId(), organizer)).getDates().size());
+        User organizer = tripsService.createUser(new User("LouisPaul@toko.com","Jean"));
+        tripsService.createTimeBoundTrip("Herhaalbaar ieder jaar", "repeatable each year", TripPrivacy.PUBLIC, organizer, df.parse("14/12/2014"), df.parse("15/12/2014"), Repeatable.ANNUALLY, 1);
+        List<Trip> trips = tripsService.findTripsByOrganizer(organizer);
+        assertEquals(2, trips.size());
     }
 
     @Test(expected = TransactionSystemException.class)
@@ -454,40 +460,11 @@ public class TestTrip {
     @Test
     public void successfulAddDateToTimeBoundTrip() throws ParseException, TripsException
     {
-        Trip trip = tripsService.createTimeBoundTrip("trip met extra dates", "extra dates", TripPrivacy.PROTECTED, user, df.parse("01/01/2014"), df.parse("01/02/2014"), null, null);
-        tripsService.publishTrip(trip, user);
-        tripsService.addDateToTimeBoundTrip(df.parse("01/03/2014"), df.parse("01/04/2014"), trip, user);
-        assertEquals(2, ((TimeBoundTrip) trip).getDates().size());
-    }
-
-    @Test(expected = TripsException.class)
-    public void failedAddDateToTimeBoundTripOccupiedDate() throws ParseException, TripsException
-    {
-        Trip trip = tripsService.createTimeBoundTrip("trip met extra dates", "extra dates", TripPrivacy.PROTECTED, user, df.parse("01/01/2014"), df.parse("01/02/2014"), null, null);
-        tripsService.publishTrip(trip, user);
-        tripsService.addDateToTimeBoundTrip(df.parse("15/01/2014"), df.parse("01/04/2014"), trip, user);
-    }
-
-    @Test
-     public void successfulRemoveDateFromTimeBoundTrip() throws ParseException, TripsException
-    {
-        Trip trip = tripsService.createTimeBoundTrip("trip met extra dates", "extra dates", TripPrivacy.PROTECTED, user, df.parse("01/01/2014"), df.parse("01/02/2014"), null, null);
-        tripsService.publishTrip(trip, user);
-        tripsService.addDateToTimeBoundTrip(df.parse("01/03/2014"), df.parse("01/04/2014"), trip, user);
-        tripsService.addDateToTimeBoundTrip(df.parse("01/07/2014"), df.parse("02/07/2014"), trip, user);
-        tripsService.addDateToTimeBoundTrip(df.parse("01/09/2014"), df.parse("01/10/2014"), trip, user);
-        tripsService.addDateToTimeBoundTrip(df.parse("01/11/2014"), df.parse("02/12/2014"), trip, user);
-        tripsService.removeDateFromTimeBoundTrip(df.parse("01/07/2014"), trip, user);
-        tripsService.removeDateFromTimeBoundTrip(df.parse("01/03/2014"), trip, user);
-        assertEquals(3, ((TimeBoundTrip) trip).getDates().size());
-    }
-
-    @Test(expected = TripsException.class)
-    public void failedRemoveDateFromTimeBoundTrip() throws ParseException, TripsException
-    {
-        Trip trip = tripsService.createTimeBoundTrip("trip met extra dates", "extra dates", TripPrivacy.PROTECTED, user, df.parse("01/01/2014"), df.parse("01/02/2014"), null, null);
-        tripsService.publishTrip(trip, user);
-        tripsService.removeDateFromTimeBoundTrip(df.parse("01/01/2014"), trip, user);
+        User organizer = tripsService.createUser(new User("GeoffreyWesle@toko.com","Jean"));
+        Trip trip = tripsService.createTimeBoundTrip("trip met extra dates spaghetti", "extra dates", TripPrivacy.PROTECTED, organizer, df.parse("01/01/2014"), df.parse("01/02/2014"), null, null);
+        tripsService.addDateToTimeBoundTrip(df.parse("01/03/2014"), df.parse("01/04/2014"), trip, organizer);
+        List<Trip> trips = tripsService.findTripsByOrganizer(organizer);
+        assertEquals(2, trips.size());
     }
 
     @Test
