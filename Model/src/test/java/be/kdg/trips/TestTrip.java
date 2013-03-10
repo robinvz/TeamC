@@ -424,6 +424,33 @@ public class TestTrip {
         tripsService.addLocationToTrip(user, createdTrip, 10.12131, 10.12131, "Nationalestraat", null, "Antwerp", "2000", "Belgium", "Titel", "Lange straat met tramspoor", "Who am I?", possibleAnswers, 4, null);
     }
 
+    @Test(expected = TripsException.class)
+    public void failedAddLocationInvalidPossibleAnswers() throws TripsException
+    {
+            Trip createdTrip = tripsService.createTimelessTrip("Trip with loc with ?", "trip with location and question", TripPrivacy.PUBLIC, user);
+            tripsService.addLocationToTrip(user, createdTrip, 10.12131, 10.12131, "Nationalestraat", null, "Antwerp", "2000", "Belgium", "Titel", "Lange straat met tramspoor", "Who am I?", new ArrayList(), 0, null);
+    }
+
+    @Test(expected = TripsException.class)
+    public void failedAddLocationInvalidAnswerIndex1() throws TripsException
+    {
+        Trip trip = tripsService.createTimelessTrip("Trip with added questions", "Trip with added questions", TripPrivacy.PROTECTED, organizer);
+        List<String> possibleAnswers = new ArrayList<>();
+        possibleAnswers.add("Gijs");
+        possibleAnswers.add("Keke");
+        tripsService.addLocationToTrip(organizer, trip, 10.12131, 10.12131, "Nationalestraat", null, "Antwerp", "2000", "Belgium", "Titel", "Lange straat met tramspoor", "Who am I?", possibleAnswers, -2, null);
+    }
+
+    @Test(expected = TripsException.class)
+    public void failedAddLocationInvalidAnswerIndex2() throws TripsException
+    {
+        Trip trip = tripsService.createTimelessTrip("Trip with added questions", "Trip with added questions", TripPrivacy.PROTECTED, organizer);
+        List<String> possibleAnswers = new ArrayList<>();
+        possibleAnswers.add("Gijs");
+        possibleAnswers.add("Keke");
+        tripsService.addLocationToTrip(user, trip, 10.12131, 10.12131, "Nationalestraat", null, "Antwerp", "2000", "Belgium", "Titel", "Lange straat met tramspoor", "Who am I?", possibleAnswers, 5, null);
+    }
+
     @Test
     public void successfulAddDateToTimeBoundTrip() throws ParseException, TripsException
     {
@@ -500,6 +527,48 @@ public class TestTrip {
 
     @Test(expected = TripsException.class)
     public void failedAddQuestionToLocationOccupiedQuestion() throws TripsException
+    {
+        Trip trip = tripsService.createTimelessTrip("Trip with added questions", "Trip with added questions", TripPrivacy.PROTECTED, organizer);
+        List<String> possibleAnswers = new ArrayList<>();
+        possibleAnswers.add("Gijs");
+        possibleAnswers.add("Keke");
+        Location location = tripsService.addLocationToTrip(organizer, trip, 10.12131, 10.12131, "Nationalestraat", null, "Antwerp", "2000", "Belgium", "Titel", "Lange straat met tramspoor");
+        tripsService.addQuestionToLocation(organizer, location, "Wie is hier den baas?", possibleAnswers, 0, null);
+        tripsService.addQuestionToLocation(organizer, location, "failed question", new ArrayList<String>(), 0, null);
+    }
+
+    @Test(expected = TripsException.class)
+    public void failedAddQuestionToLocationInvalidPossibleAnswers() throws TripsException
+    {
+        Trip trip = tripsService.createTimelessTrip("Trip with added questions", "Trip with added questions", TripPrivacy.PROTECTED, organizer);
+        Location location = tripsService.addLocationToTrip(organizer, trip, 10.12131, 10.12131, "Nationalestraat", null, "Antwerp", "2000", "Belgium", "Titel", "Lange straat met tramspoor");
+        tripsService.addQuestionToLocation(organizer, location, "failed question", new ArrayList<String>(), 0, null);
+    }
+
+    @Test(expected = TripsException.class)
+    public void failedAddQuestionToLocationInvalidAnswerIndex1() throws TripsException
+    {
+        Trip trip = tripsService.createTimelessTrip("Trip with added questions", "Trip with added questions", TripPrivacy.PROTECTED, organizer);
+        List<String> possibleAnswers = new ArrayList<>();
+        possibleAnswers.add("Gijs");
+        possibleAnswers.add("Keke");
+        Location location = tripsService.addLocationToTrip(organizer, trip, 10.12131, 10.12131, "Nationalestraat", null, "Antwerp", "2000", "Belgium", "Titel", "Lange straat met tramspoor");
+        tripsService.addQuestionToLocation(organizer, location, "failed question", possibleAnswers, -2, null);
+    }
+
+    @Test(expected = TripsException.class)
+    public void failedAddQuestionToLocationInvalidAnswerIndex2() throws TripsException
+    {
+        Trip trip = tripsService.createTimelessTrip("Trip with added questions", "Trip with added questions", TripPrivacy.PROTECTED, organizer);
+        List<String> possibleAnswers = new ArrayList<>();
+        possibleAnswers.add("Gijs");
+        possibleAnswers.add("Keke");
+        Location location = tripsService.addLocationToTrip(organizer, trip, 10.12131, 10.12131, "Nationalestraat", null, "Antwerp", "2000", "Belgium", "Titel", "Lange straat met tramspoor");
+        tripsService.addQuestionToLocation(organizer, location, "failed question", possibleAnswers, 5, null);
+    }
+
+    @Test(expected = TripsException.class)
+    public void te() throws TripsException
     {
         Trip trip = tripsService.createTimelessTrip("Trip with added questions", "Trip with added questions", TripPrivacy.PROTECTED, organizer);
         List<String> possibleAnswers = new ArrayList<>();
