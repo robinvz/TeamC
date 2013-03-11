@@ -177,6 +177,8 @@ public class TripController {
         }
     }
 
+
+
     @RequestMapping(value = "/service/start", method = RequestMethod.POST)
     public
     @ResponseBody
@@ -427,6 +429,13 @@ public class TripController {
         } else {
             return new ModelAndView("loginView", "loginBean", new LoginBean());
         }
+    }
+
+    @RequestMapping(value = "/isEnrolled", method = RequestMethod.GET)
+    public boolean  isEnrolled(@RequestParam int tripId){
+        User user = (User) session.getAttribute("user");
+        //TODO Check if user is enrolled in trip
+        return true;
     }
 
     @RequestMapping(value = "/subscribe", method = RequestMethod.GET)

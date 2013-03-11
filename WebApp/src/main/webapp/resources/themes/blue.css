@@ -31,7 +31,7 @@ body, p{
     color: rgb(130,130,130);
 }
 
-h1, h2, h3{
+h1, h2, h3, strong{
     color: rgb(133, 98, 64);
     border-color: rgb(163, 122, 82);
 }

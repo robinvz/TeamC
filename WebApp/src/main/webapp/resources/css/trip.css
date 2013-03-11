@@ -62,6 +62,11 @@ h2{
     color: rgb(224, 163, 82);
 }
 
+.jump-in{
+    padding-left: 10px;
+    border-left: solid 1px #727272;
+}
+
 /*Attending button*/
 
 section.attending {

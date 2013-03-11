@@ -6,8 +6,19 @@
 <![endif]-->
 <script type="text/javascript">
     $(document).ready(function(){
+       /* function setEnrolledState(){
+
+        }   */
+
+
         $('#button').on('click', function(){
 
+         /*   $.ajax({
+                type: "GET",
+                url: "/subscribe",
+                data: { id : ${trip.id}}
+            }).done(function(){
+                    });    */
             $(this).toggleClass('on');
         });
     });
@@ -40,37 +51,42 @@
     <nav class="trip-nav">
         <h3>Trip</h3>
         <ul class="trip-nav">
-            <li><a href="/trip/${trip.id}"><spring:message code="General"/></a></li>
+            <li><strong>Trip info</strong></li>
+            <li class="jump-in"><a href="/trip/${trip.id}"><spring:message code="General"/></a></li>
             <c:if test="${not empty user}">
-                <li><a href="#">Chat</a></li>
-                <li><a href="/trip/${trip.id}/locations"><spring:message code="Locations"/></a></li>
-                <li><a href="/requirements/${trip.id}"><spring:message code="Requisites"/></a></li>
-                <li><a href="/costs/${trip.id}"><spring:message code="Costs"/></a></li>
+
+                <li class="jump-in"><a href="/trip/${trip.id}/locations"><spring:message code="Locations"/></a></li>
+                <li class="jump-in"><a href="/requirements/${trip.id}"><spring:message code="Requisites"/></a></li>
+                <li class="jump-in"><a href="/costs/${trip.id}"><spring:message code="Costs"/></a></li>
+
                 <c:if test="${trip.privacy != 'PUBLIC' && trip.published == true}">
-                    <li><a href="/trip/${trip.id}/participants"><spring:message code="Participants"/></a></li>
+                    <li class="jump-in"><a href="/trip/${trip.id}/participants"><spring:message code="Participants"/></a></li>
                     <c:forEach items="${trip.enrollments}" var="enrollment">
                         <c:if test="${enrollment.user == user && enrollment.status == 'READY' || 'FINISHED'}">
-                            <li><a href="/startTrip/${tripId}">Start trip</a></li>
+                            <li class="jump-in"><a href="/startTrip/${tripId}">Start trip</a></li>
                         </c:if>
                         <c:if test="${enrollment.user == user && enrollment.status == 'BUSY'}">
-                            <li><a href="/stopTrip/${tripId}">Stop trip</a></li>
+                            <li class="jump-in"><a href="/stopTrip/${tripId}">Stop trip</a></li>
                         </c:if>
                     </c:forEach>
                 </c:if>
+                <li><strong>Chat</strong></li>
+                <li class="jump-in"><a href="#">Chat</a></li>
             </c:if>
             <c:if test="${not empty user && trip.organizer == user}">
-                <li><a href="/labels/${trip.id}">Labels</a></li>
-                <li><a href="/editTripPic/${trip.id}"><spring:message code="EditTripHeader"/></a></li>
+                <li><strong>Admin Tools</strong></li>
+                <li class="jump-in"><a href="/labels/${trip.id}">Labels</a></li>
+                <li class="jump-in"><a href="/editTripPic/${trip.id}"><spring:message code="EditTripHeader"/></a></li>
                 <c:if test="${trip.published == false}">
-                    <li><a href="/publishTrip/${trip.id}"><spring:message code="Publish"/></a></li>
+                    <li class="jump-in"><a href="/publishTrip/${trip.id}"><spring:message code="Publish"/></a></li>
                 </c:if>
                 <c:if test="${trip.privacy == 'PRIVATE'}">
-                    <li><a href="/inviteUser/${trip.id}"><spring:message code="InviteUsers"/></a></li>
+                    <li class="jump-in"><a href="/inviteUser/${trip.id}"><spring:message code="InviteUsers"/></a></li>
                 </c:if>
                 <c:if test="${trip.timeBoundTrip==true}">
-                    <li><a href="/addDate/${trip.id}"><spring:message code="AddDate"/></a></li>
+                    <li class="jump-in"><a href="/addDate/${trip.id}"><spring:message code="AddDate"/></a></li>
                 </c:if>
-                <li><a href="/deleteTrip/${trip.id}"><spring:message code="Delete"/></a></li>
+                <li class="jump-in"><a href="/deleteTrip/${trip.id}"><spring:message code="Delete"/></a></li>
             </c:if>
         </ul>
     </nav>
