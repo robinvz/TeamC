@@ -38,12 +38,11 @@ public class Location implements LocationInterface, Serializable
     private String title;
     @Size(max = 150, message = "Description has a maximum amount of 150 characters")
     private String description;
-    @OneToOne(cascade = CascadeType.ALL)
+    @ManyToOne(cascade = CascadeType.ALL)
     @JoinColumn(name = "addressId")
     @NotNull
     private Address address;
     @OneToOne(cascade = CascadeType.ALL)
-    @JoinColumn(name = "questionId")
     private Question question;
     @ManyToOne
     @JoinColumn(name = "tripId")

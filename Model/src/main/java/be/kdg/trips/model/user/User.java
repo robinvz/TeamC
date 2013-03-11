@@ -47,7 +47,7 @@ public class User implements UserInterface, Serializable {
     @Pattern(regexp =  "^\\D*$", message = "Last name should only contain letters")
     @Size(max = 50, message = "Last name has a maximum amount of 50 characters")
     private String lastName;
-    @OneToOne(cascade = CascadeType.ALL)
+    @ManyToOne(cascade = CascadeType.ALL)
     @JoinColumn(name = "addressId")
     @Valid
     private Address address;
