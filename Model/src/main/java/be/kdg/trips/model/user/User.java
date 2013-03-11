@@ -33,7 +33,7 @@ public class User implements UserInterface, Serializable {
     @GeneratedValue(strategy=GenerationType.IDENTITY)
     private Integer id;
     @Column(unique = true, nullable = false, updatable = false)
-    @Email
+    @Pattern(regexp = "^[_A-Za-z0-9-\\+]+(\\.[_A-Za-z0-9-]+)*@[A-Za-z0-9-]+(\\.[A-Za-z0-9]+)*(\\.[A-Za-z]{2,})$", message = "Email must be valid")
     @Size(min = 4, max = 50, message = "Email must be between 4 and 50 characters")
     private String email;
     @Column(nullable = false)
