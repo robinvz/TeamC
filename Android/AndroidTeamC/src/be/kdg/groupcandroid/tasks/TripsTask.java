@@ -111,4 +111,15 @@ public class TripsTask extends AsyncTask<String, Void, ArrayList<Item>>{
 		}
 	}
 
+
+
+	@Override
+	protected void onCancelled() {
+		if (dialog.isShowing()) {
+			dialog.dismiss();
+		}
+	}
+	
+	
+
 }

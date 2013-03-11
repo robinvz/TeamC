@@ -286,7 +286,7 @@ public class TripController {
                 Trip trip = tripsService.findTripById(id, user);
                 JSONArray jsonArray = new JSONArray();
                 for (Enrollment enr : tripsService.findEnrollmentsByTrip(trip)) {
-                    if (enr.getStatus() == Status.BUSY ){   //&& enr.getUser().getId() != user.getId()
+                    if (enr.getStatus() == Status.BUSY  && enr.getUser().getId() != user.getId()){
                         JSONObject loco = new JSONObject();
                         String firstname = enr.getUser().getFirstName() == null ? enr.getUser().getEmail() : enr.getUser().getFirstName();
                         String lastname = enr.getUser().getFirstName() == null ? " " : enr.getUser().getLastName();

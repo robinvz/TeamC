@@ -90,4 +90,11 @@ public class LoginTask extends AsyncTask<String, Void, Integer> {
 			dialog.dismiss();
 		}
 	}
+	
+	@Override
+	protected void onCancelled() {
+		if (dialog.isShowing()) {
+			dialog.dismiss();
+		}
+	}
 }

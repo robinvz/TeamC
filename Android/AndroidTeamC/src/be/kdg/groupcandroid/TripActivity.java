@@ -87,11 +87,12 @@ public class TripActivity extends FragmentActivity {
 		if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.ICE_CREAM_SANDWICH) {
 			getActionBar().setDisplayHomeAsUpEnabled(true);
 		}
-		TripFragment tp  = new TripFragment();
+		TripFragment tp = new TripFragment();
 		Bundle bundle = new Bundle();
 		bundle.putSerializable("trip", trip);
 		tp.setArguments(bundle);
-		FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
+		FragmentTransaction transaction = getSupportFragmentManager()
+				.beginTransaction();
 		transaction.replace(R.id.fragment1, tp);
 		transaction.commit();
 
@@ -102,7 +103,7 @@ public class TripActivity extends FragmentActivity {
 		public void onItemClick(AdapterView<?> parent, View view, int position,
 				long id) {
 			mMenuDrawer.setActiveView(view, position);
-	
+
 			FragmentTransaction transaction = getSupportFragmentManager()
 					.beginTransaction();
 			Object clickedObject = parent.getAdapter().getItem(position);
@@ -110,56 +111,75 @@ public class TripActivity extends FragmentActivity {
 				Item clickItem = (Item) clickedObject;
 				if (clickItem.title.toLowerCase().contains("chat")) {
 					/*
-					ChatListFragment listfr = new ChatListFragment();
-					transaction.replace(R.id.fragment1, listfr);*/
-					Intent intent = new Intent(TripActivity.this, ChatActivity.class);
+					 * ChatListFragment listfr = new ChatListFragment();
+					 * transaction.replace(R.id.fragment1, listfr);
+					 */
+					Intent intent = new Intent(TripActivity.this,
+							ChatActivity.class);
 					Bundle bundle = new Bundle();
 					bundle.putString("tripid", trip.getId());
 					intent.putExtras(bundle);
 					startActivity(intent);
 				} else if (clickItem.id == 0) { // TripTitle is selected so
-					TripFragment tp  = new TripFragment();
+					TripFragment tp = new TripFragment();
 					Bundle bundle = new Bundle();
 					bundle.putSerializable("trip", trip);
 					tp.setArguments(bundle);
 					transaction.replace(R.id.fragment1, tp);
-				}
-				else if (clickItem.title.toLowerCase().contains("loc")) { // TripTitle is selected so
+				} else if (clickItem.title.toLowerCase().contains("loc")) { // TripTitle
+																			// is
+																			// selected
+																			// so
 					LocationsFragment locFr = new LocationsFragment();
 					Bundle bundle = new Bundle();
 					bundle.putInt("tripId", Integer.parseInt(trip.getId()));
 					locFr.setArguments(bundle);
 					transaction.replace(R.id.fragment1, locFr);
-				}
-				else if (clickItem.title.toLowerCase().contentEquals("broadcast")){
-					AlertDialog.Builder alert = new AlertDialog.Builder(TripActivity.this);
-					alert.setMessage(getResources().getString(R.string.typebroadcast));
+				} else if (clickItem.title.toLowerCase().contentEquals(
+						"broadcast")) {
+					AlertDialog.Builder alert = new AlertDialog.Builder(
+							TripActivity.this);
+					alert.setMessage(getResources().getString(
+							R.string.typebroadcast));
 					alert.setTitle("Broadcast");
 					final EditText input = new EditText(TripActivity.this);
 					alert.setView(input);
 
-					alert.setPositiveButton(getResources().getString(R.string.send), new DialogInterface.OnClickListener() {
-					public void onClick(DialogInterface dialog, int whichButton) {
-					  String value = input.getText().toString();
-					  ParsePush push = new ParsePush();
-					  push.setChannel(trip.getTitle().replace(" ", "") + trip.getId());
-					  push.setMessage(trip.getTitle()+ ": " + value);
-					  push.sendInBackground();
-					  Toast.makeText(TripActivity.this, getResources().getString(R.string.broadcastsent), Toast.LENGTH_LONG).show();
-					  }
-					});
+					alert.setPositiveButton(
+							getResources().getString(R.string.send),
+							new DialogInterface.OnClickListener() {
+								public void onClick(DialogInterface dialog,
+										int whichButton) {
+									String value = input.getText().toString();
+									ParsePush push = new ParsePush();
+									push.setChannel(trip.getTitle().replace(
+											" ", "")
+											+ trip.getId());
+									push.setMessage(trip.getTitle() + ": "
+											+ value);
+									push.sendInBackground();
+									Toast.makeText(
+											TripActivity.this,
+											getResources().getString(
+													R.string.broadcastsent),
+											Toast.LENGTH_LONG).show();
+								}
+							});
 
-					alert.setNegativeButton(getResources().getString(R.string.cancel), new DialogInterface.OnClickListener() {
-					  public void onClick(DialogInterface dialog, int whichButton) {
-					  }
-					});
+					alert.setNegativeButton(
+							getResources().getString(R.string.cancel),
+							new DialogInterface.OnClickListener() {
+								public void onClick(DialogInterface dialog,
+										int whichButton) {
+								}
+							});
 
 					alert.show();
 				}
-				
+
 				else { // TripTitle is selected so title view
-					TemplateFragment tempFragment = TemplateFragment.newInstance(
-							position, trip);
+					TemplateFragment tempFragment = TemplateFragment
+							.newInstance(position, trip);
 					transaction.replace(R.id.fragment1, tempFragment);
 				}
 				transaction.commit();
@@ -170,7 +190,6 @@ public class TripActivity extends FragmentActivity {
 			mMenuDrawer.closeMenu();
 		}
 	};
-
 
 	@Override
 	protected void onSaveInstanceState(Bundle outState) {
@@ -189,6 +208,33 @@ public class TripActivity extends FragmentActivity {
 		}
 
 		super.onBackPressed();
+	}
+
+	@Override
+	public boolean onOptionsItemSelected(MenuItem item) {
+		final int drawerState = mMenuDrawer.getDrawerState();
+		switch (item.getItemId()) {
+		case android.R.id.home:
+			if (drawerState == MenuDrawer.STATE_OPEN
+					|| drawerState == MenuDrawer.STATE_OPENING) {
+				mMenuDrawer.closeMenu();
+			}
+			else{
+				mMenuDrawer.openMenu(true);
+			}
+			return true;
+		case R.id.menu_settings:
+			Intent preferences = new Intent(this, Preferences.class);
+			startActivity(preferences);
+			return true;
+		case R.id.logout:
+			SessionManager sm = new SessionManager(getBaseContext());
+			sm.logoutUser();
+			return true;
+
+		default:
+			return super.onOptionsItemSelected(item);
+		}
 	}
 
 	class MenuAdapter extends BaseAdapter {
@@ -276,15 +322,4 @@ public class TripActivity extends FragmentActivity {
 		return true;
 	}
 
-	@Override
-	public boolean onOptionsItemSelected(MenuItem item) {
-		if (item.getItemId() == R.id.menu_settings) {
-			Intent intent = new Intent(this, Preferences.class);
-			startActivity(intent);
-		} else if (item.getItemId() == R.id.logout) {
-			SessionManager sm = new SessionManager(getBaseContext());
-			sm.logoutUser();
-		}
-		return super.onOptionsItemSelected(item);
-	}
 }

@@ -2,7 +2,11 @@ package be.kdg.groupcandroid;
 
 import java.util.ArrayList;
 
+import be.kdg.groupcandroid.model.ChatMessage;
+
 import android.content.Context;
+import android.text.SpannableString;
+import android.text.style.UnderlineSpan;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -43,7 +47,9 @@ public class ChatListAdapter extends ArrayAdapter<ChatMessage>{
 				icon.setBackgroundResource(chatMessage.image);
 			}
 			if (name != null){
-				name.setText(chatMessage.name);
+				SpannableString nameSpan = new SpannableString(chatMessage.name);
+				nameSpan.setSpan(new UnderlineSpan(), 0, nameSpan.length(), 0);
+				name.setText(nameSpan);
 				if (firstName.equals(chatMessage.name)){
 					chatRow.setBackgroundColor(colorListItemB);
 				}else{

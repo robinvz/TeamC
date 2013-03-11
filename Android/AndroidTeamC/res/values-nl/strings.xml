@@ -28,12 +28,17 @@
     <string name="subscribed">Ingeschreven</string>
     <string name="created">Gemaakte</string>
     <string name="ok">OK</string>
-        <string name="send">Verstuur</string>
-            <string name="broadcastsent">Broadcast verzonden!</string>
-        
+    <string name="send">Verstuur</string>
+    <string name="search">Zoek</string>
+    <string name="broadcastsent">Broadcast verzonden!</string>
     <string name="cancel">Annuleer</string>
-        <string name="typebroadcast">Schrijf het bericht dat je wil broadcasten</string>
-            <string name="selectcontact">Selecteer een contact door op het icoontje rechtsboven te klikken.</string>
-        
+    <string name="typebroadcast">Schrijf het bericht dat je wil broadcasten</string>
+    <string name="selectcontact">Selecteer een contact door op het icoontje rechtsboven te klikken.</string>
+    <string name="installGoogleMaps">Je moet google maps installeren om deze functie te gebruiken</string>
+    <string name="install">Installeer</string>
+    <string name="androidtolow">We kunnen de map niet weergeven op je apparaat :( overweeg een update!</string>
+    <string name="currentlocation">Huidige Locatie</string>
+    <string name="currentlocationsnippet">Je bent momenteel hier en moet bij de andere marker geraken!</string>
+    <string name="notcloseenough">U bent te ver om de vraag te kunnen beantwoorden!</string>
     
 </resources>

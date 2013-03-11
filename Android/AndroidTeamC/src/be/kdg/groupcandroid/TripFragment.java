@@ -97,7 +97,8 @@ public class TripFragment extends Fragment {
 										trip.getId() })
 								.get(3, TimeUnit.SECONDS)) {
 							btnStart.setText(R.string.start);
-							btnSubscribe.setVisibility(View.INVISIBLE);
+							btnSubscribe.setVisibility(View.VISIBLE);
+							removeItemsFromMenu();
 						}
 					}
 				} catch (Exception e) {
@@ -154,9 +155,10 @@ public class TripFragment extends Fragment {
 	}
 	
 	private void addItemsToMenu(){
-		if (!trip.getPrivacy().contentEquals("public")){
+		TripActivity detail = (TripActivity) getActivity();
+		if (!trip.getPrivacy().contentEquals("public") && detail.items.size() < 4 ){
 			menuItems = new ArrayList<Object>();
-			TripActivity detail = (TripActivity) getActivity();
+			addCommunicationCategory();
 			menuItems.add(new Item("Chat",
 					R.drawable.chat_icon, 2));
 		
@@ -167,10 +169,10 @@ public class TripFragment extends Fragment {
 	
 	private void addOrganizerMenu(){
 		TripActivity detail = (TripActivity) getActivity();
-		addCommunicationCategory();
 		if (trip.getOrganizer().contentEquals(sm.getEmail())){
 			detail.items.add(new Item("Broadcast", R.drawable.broadcast, 1)); 
 		}
+		detail.mAdapter.notifyDataSetChanged();
 	}
 	
 	private void addCommunicationCategory(){

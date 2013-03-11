@@ -125,4 +125,11 @@ public class LocationsTask extends AsyncTask<String, Void, ArrayList<Location>> 
 			dialog.dismiss();
 		}
 	}
+	
+	@Override
+	protected void onCancelled() {
+		if (dialog.isShowing()) {
+			dialog.dismiss();
+		}
+	}
 }

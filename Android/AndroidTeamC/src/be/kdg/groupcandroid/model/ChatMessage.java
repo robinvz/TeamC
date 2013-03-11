@@ -1,10 +1,10 @@
-package be.kdg.groupcandroid;
+package be.kdg.groupcandroid.model;
 
 public class ChatMessage {
 	public String content;
 	public Integer image;
-	public String name;
-	public String time;
+	public String name = "";
+	public String time = "";
 	
 	public ChatMessage(String content, Integer image, String name, String time) {	
 		this.content = content;

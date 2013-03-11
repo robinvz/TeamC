@@ -5,12 +5,14 @@ import net.simonvt.menudrawer.Position;
 
 import android.annotation.SuppressLint;
 import android.app.Activity;
+import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Build;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
 import android.support.v4.app.FragmentActivity;
 import android.support.v4.app.FragmentTransaction;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -30,6 +32,8 @@ import java.util.List;
 import java.util.concurrent.ExecutionException;
 import java.util.concurrent.TimeUnit;
 import java.util.concurrent.TimeoutException;
+
+import com.google.android.gms.internal.ch;
 
 public class ChatActivity extends FragmentActivity {
 
@@ -62,10 +66,15 @@ public class ChatActivity extends FragmentActivity {
 		mMenuDrawer.setContentView(R.layout.chatfragment);
 		Bundle bundle = getIntent().getExtras();
 		tripid = bundle.getString("tripid");
-		if (bundle.containsKey("email")) {
+		if (bundle.containsKey("message")){
+			String message = (String) bundle.get("message");
 			String email = (String) bundle.get("email");
-			switchFragment(email);
+			switchFragment(email, message);	
 		}
+		makeContactsList();
+	}
+
+	private void makeContactsList() {
 		SharedPreferences sp = PreferenceManager
 				.getDefaultSharedPreferences(this);
 		String ip = sp.getString("server_ip", "192.168.2.200");
@@ -85,7 +94,7 @@ public class ChatActivity extends FragmentActivity {
 		}
 		List<Object> items = new ArrayList<Object>();
 		for (Contact c : contacts) {
-			items.add(new Item(c.toString(), R.drawable.chat_icon));
+			items.add(new Item(c.toString(), R.drawable.contacticon));
 		}
 
 		// A custom ListView is needed so the drawer can be notified when it's
@@ -110,11 +119,15 @@ public class ChatActivity extends FragmentActivity {
 		mMenuDrawer.setMenuView(mList);
 	}
 
-	private void switchFragment(String email) {
+	private void switchFragment(String email, String message) {
+		Contact tmp = new Contact("", "", email);
 		ChatListFragment clf = new ChatListFragment();
 		Bundle bundle = new Bundle();
 		bundle.putString("tripid", tripid);
-		bundle.putSerializable("contact", email);
+		bundle.putSerializable("contact", tmp);
+		if (message != null) {
+			bundle.putString("message", message);
+		}
 		clf.setArguments(bundle);
 		FragmentTransaction transaction = getSupportFragmentManager()
 				.beginTransaction();
@@ -141,6 +154,7 @@ public class ChatActivity extends FragmentActivity {
 		}
 	};
 
+
 	@Override
 	protected void onSaveInstanceState(Bundle outState) {
 		super.onSaveInstanceState(outState);
@@ -164,6 +178,7 @@ public class ChatActivity extends FragmentActivity {
 		switch (item.getItemId()) {
 		case MENU_OVERFLOW:
 			mMenuDrawer.toggleMenu();
+			makeContactsList();
 			return true;
 		}
 
