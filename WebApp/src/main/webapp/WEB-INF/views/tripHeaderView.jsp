@@ -1,8 +1,17 @@
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@ taglib prefix="spring" uri="http://www.springframework.org/tags" %>
+<script type="text/javascript" src="${pageContext.request.contextPath}/resources/js/jquery-1.9.0.min.js"></script>
 <!--[if lt IE 9]>
 <script src="${pageContext.request.contextPath}/resources/js/html5shiv.js"></script>
 <![endif]-->
+<script type="text/javascript">
+    $(document).ready(function(){
+        $('#button').on('click', function(){
+
+            $(this).toggleClass('on');
+        });
+    });
+</script>
 
 
 <canvas id="myCanvas" width="960" height="200"></canvas>
@@ -13,7 +22,7 @@
     var x = canvas.width / 2;
     var y = canvas.height / 2;
 
-    context.font = '30pt Calibri';
+    context.font = '40pt Calibri';
     context.textAlign = 'center';
     context.fillStyle = '#FFFFFF';
     context.fillText('${trip.title}', x, y);
@@ -23,7 +32,10 @@
     };
     imageObj.src = '/tripPic/${trip.id}';
 </script>
-
+<section class="attending">
+    <a href="#" id="button" class="btn-attend">Attending</a>
+    <span class="attending-light"></span>
+</section>
 <aside class="above-footer">
     <nav class="trip-nav">
         <h3>Trip</h3>
