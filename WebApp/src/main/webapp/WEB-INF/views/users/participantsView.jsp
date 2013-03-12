@@ -6,7 +6,7 @@
     <link rel="stylesheet" href="${pageContext.request.contextPath}/resources/css/main.css"/>
     <link rel="stylesheet" href="${pageContext.request.contextPath}/resources/css/login.css"/>
     <link rel="stylesheet" href="${pageContext.request.contextPath}/resources/css/trip.css"/>
-
+    <link rel="stylesheet" href="<spring:theme code="css"/>" type="text/css"/>
     <link rel="shortcut icon" href="${pageContext.request.contextPath}/resources/res/favicon.ico">
     <title><spring:message code="TripPage"/></title>
 </head>
