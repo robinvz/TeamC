@@ -13,12 +13,17 @@ import be.kdg.groupcandroid.model.Trip;
 import be.kdg.groupcandroid.tasks.TripByIdTask;
 import be.kdg.groupcandroid.tasks.TripsTask;
 
+import android.annotation.SuppressLint;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.os.Build;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
 import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
@@ -45,10 +50,10 @@ public class BaseTripsFragment extends Fragment {
 		super.onActivityCreated(savedInstanceState);
 
 	}
-
 	public String getType() {
 		return type;
 	}
+	
 
 	public void setType(String type) {
 		this.type = type;
@@ -187,9 +192,8 @@ public class BaseTripsFragment extends Fragment {
 		try {
 			tt.execute(
 					new String[] { ip, port, "search", sm.getEmail(),
-							sm.getPassword(), keyword }).get(3000,
-					TimeUnit.MILLISECONDS);
-			return tt.get();
+							sm.getPassword(), keyword });
+			return tt.get(3, TimeUnit.SECONDS);
 		} catch (Exception e) {
 			Toast.makeText(getActivity(), "Could not connect to server",
 					Toast.LENGTH_LONG).show();
