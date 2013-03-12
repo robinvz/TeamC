@@ -97,7 +97,7 @@ public class EnrollmentBLImpl implements EnrollmentBL
         Invitation invitation = null;
         if(isUnexistingInvitation(user, trip))
         {
-            if (tripBL.isOrganizer(trip, organizer) && !trip.isActive() && trip.getPrivacy()==TripPrivacy.PRIVATE)
+            if (userBL.isExistingUser(user.getEmail()) && userBL.isExistingUser(organizer.getEmail()) && tripBL.isOrganizer(trip, organizer) && !trip.isActive() && trip.getPrivacy()==TripPrivacy.PRIVATE)
             {
                 invitation = new Invitation(trip, user);
                 enrollmentDao.saveOrUpdateInvitation(invitation);
@@ -106,13 +106,12 @@ public class EnrollmentBLImpl implements EnrollmentBL
             }
             else
             {
-                throw new TripsException("Trip is either not published, already active, not private or organizer doesn't exist");
+                throw new TripsException("Trip is already active, not private, organizer/user doesn't exist or organizer doesn't match with the trip's organizer");
             }
         }
         return invitation;
     }
 
-    @Transactional
     @Override
     public Invitation selfInvite(Trip trip, User organizer) {
         Invitation invitation = new Invitation(trip, organizer);
@@ -127,14 +126,14 @@ public class EnrollmentBLImpl implements EnrollmentBL
         {
             if(isExistingInvitation(user, trip))
             {
-                if (tripBL.isOrganizer(trip, organizer)&& isUnexistingEnrollment(user, trip))
+                if (userBL.isExistingUser(user.getEmail()) && userBL.isExistingUser(organizer.getEmail()) && tripBL.isOrganizer(trip, organizer)&& isUnexistingEnrollment(user, trip))
                 {
                     Invitation invitation = enrollmentDao.getInvitationByUserAndTrip(user, trip);
                     enrollmentDao.deleteInvitation(invitation.getId());
                 }
                 else
                 {
-                    throw new TripsException("Trip is either not published, already active, not private or organizer doesn't exist");
+                    throw new TripsException("Organizer/user doesn't exist, organizer doesn't match with the trip's organizer or user already accepted the invitation");
                 }
             }
         }
@@ -200,7 +199,7 @@ public class EnrollmentBLImpl implements EnrollmentBL
 
     @Override
     @Transactional
-    public void addCostToEnrollment(String name, int amount, Trip trip, User user) throws TripsException
+    public void addCostToEnrollment(String name, double amount, Trip trip, User user) throws TripsException
     {
         if(isExistingEnrollment(user, trip))
         {
@@ -212,7 +211,7 @@ public class EnrollmentBLImpl implements EnrollmentBL
 
     @Override
     @Transactional
-    public void removeCostFromEnrollment(String name, int amount, Trip trip, User user) throws TripsException
+    public void removeCostFromEnrollment(String name, double amount, Trip trip, User user) throws TripsException
     {
         if(isExistingEnrollment(user, trip))
         {

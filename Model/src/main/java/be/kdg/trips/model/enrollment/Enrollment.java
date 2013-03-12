@@ -19,7 +19,7 @@ import java.util.*;
  */
 @Entity
 @Table(name = "T_ENROLLMENT")
-public class Enrollment implements EnrollmentInterface, Serializable
+public class Enrollment implements Serializable
 {
     @Id
     @GeneratedValue(strategy= GenerationType.IDENTITY)
@@ -44,7 +44,7 @@ public class Enrollment implements EnrollmentInterface, Serializable
     @ElementCollection(fetch = FetchType.EAGER)
     @CollectionTable(name = "T_ENROLLMENT_COST", joinColumns = @JoinColumn(name = "enrollmentId"))
     @Column(name="costs_VALUE")
-    private Map<String, Integer> costs;
+    private Map<String, Double> costs;
     private Status status;
     @NotNull
     private int score;
@@ -61,6 +61,7 @@ public class Enrollment implements EnrollmentInterface, Serializable
         user.addEnrollment(this);
         this.date = new Date();
         this.requisites = new HashMap<>();
+        this.costs = new HashMap<>();
         this.answeredQuestions = new HashMap<>();
         this.status = Status.READY;
     }
@@ -73,39 +74,21 @@ public class Enrollment implements EnrollmentInterface, Serializable
         return id;
     }
 
-    @Override
     public Trip getTrip()
     {
         return trip;
     }
 
-    @Override
     public User getUser()
     {
         return user;
     }
 
-    @Override
     public Date getDate()
     {
         return new Date(this.date.getTime());
     }
-    /*
-    @Override
-    public void setTrip(Trip trip) {
-        this.trip = trip;
-    }
 
-    @Override
-    public void setUser(User user) {
-        this.user = user;
-    }
-
-    @Override
-    public void setDate(Date date) {
-        this.date = new Date(date.getTime());
-    }
-    */
     public Location getLastLocationVisited() {
         return lastLocationVisited;
     }
@@ -158,7 +141,6 @@ public class Enrollment implements EnrollmentInterface, Serializable
         return requisites;
     }
 
-    @Override
     public void addRequisite(String name, int amount)
     {
         if(amount == 0)
@@ -175,7 +157,6 @@ public class Enrollment implements EnrollmentInterface, Serializable
         }
     }
 
-    @Override
     public void removeRequisite(String name, int amount)
     {
         if(this.requisites.containsKey(name))
@@ -192,12 +173,12 @@ public class Enrollment implements EnrollmentInterface, Serializable
         }
     }
 
-    public Map<String, Integer> getCosts()
+    public Map<String, Double> getCosts()
     {
         return costs;
     }
 
-    public void addCost(String name, int amount)
+    public void addCost(String name, double amount)
     {
         if(this.costs.containsKey(name))
         {
@@ -209,11 +190,11 @@ public class Enrollment implements EnrollmentInterface, Serializable
         }
     }
 
-    public void removeCost(String name, int amount)
+    public void removeCost(String name, double amount)
     {
         if(this.costs.containsKey(name))
         {
-            int value = this.costs.get(name);
+            double value = this.costs.get(name);
             if(amount < value)
             {
                 this.costs.put(name, value - Math.abs(amount));

@@ -81,12 +81,6 @@ public class TripsServiceImpl implements TripsService
     }
 
     @Override
-    public void forgotPassword(String email) throws TripsException, MessagingException
-    {
-        userController.forgotPassword(email);
-    }
-
-    @Override
     public void deleteUser(User user) throws TripsException
     {
         userController.deleteUser(user);
@@ -291,13 +285,13 @@ public class TripsServiceImpl implements TripsService
     }
 
     @Override
-    public void addCostToEnrollment(String name, int amount, Trip trip, User user) throws TripsException
+    public void addCostToEnrollment(String name, double amount, Trip trip, User user) throws TripsException
     {
         enrollmentController.addCostToEnrollment(name, amount, trip, user);
     }
 
     @Override
-    public void removeCostFromEnrollment(String name, int amount, Trip trip, User user) throws TripsException
+    public void removeCostFromEnrollment(String name, double amount, Trip trip, User user) throws TripsException
     {
         enrollmentController.removeCostFromEnrollment(name, amount, trip, user);
     }
@@ -326,5 +320,11 @@ public class TripsServiceImpl implements TripsService
     @Override
     public void sendContactMail(String subject, String text, String sender) throws MessagingException {
         MailSender.sendMail("'" + subject + "' from " +sender, text, "tripsnoreply@gmail.com");
+    }
+
+    @Override
+    public void forgotPassword(String email) throws TripsException, MessagingException
+    {
+        userController.forgotPassword(email);
     }
 }

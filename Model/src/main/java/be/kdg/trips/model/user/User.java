@@ -27,7 +27,7 @@ import java.util.Set;
 @Entity
 @Table(name="T_USER")
 @Component
-public class User implements UserInterface, Serializable {
+public class User implements Serializable {
 
     @Id
     @GeneratedValue(strategy=GenerationType.IDENTITY)
@@ -83,47 +83,38 @@ public class User implements UserInterface, Serializable {
         return id;
     }
 
-    @Override
     public void setPassword(String password) {
         this.password = password;
     }
 
-    @Override
     public String getEmail() {
         return email;
     }
 
-    @Override
     public void setEmail(String email) {
         this.email = email;
     }
 
-    @Override
     public Date getRegisterDate() {
         return new Date(this.registerDate.getTime());
     }
 
-    @Override
     public String getFirstName() {
         return firstName;
     }
 
-    @Override
     public void setFirstName(String firstName) {
         this.firstName = firstName;
     }
 
-    @Override
     public String getLastName() {
         return lastName;
     }
 
-    @Override
     public void setLastName(String lastName) {
         this.lastName = lastName;
     }
 
-    @Override
     public Address getAddress() {
         return address;
     }
@@ -132,18 +123,15 @@ public class User implements UserInterface, Serializable {
         return password;
     }
 
-    @Override
     public void setAddress(Address address) {
         this.address = address;
     }
 
-    @Override
     public void addEnrollment(Enrollment enrollment)
     {
         enrollments.add(enrollment);
     }
 
-    @Override
     public void removeEnrollment(Enrollment enrollment)
     {
         enrollments.remove(enrollment);

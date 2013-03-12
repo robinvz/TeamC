@@ -24,48 +24,70 @@
             <span class="errorblock">${error}</span>
         </c:if>
         <c:if test="${success != null}">
-           <span class="successblock">${success}</span>
+            <span class="successblock">${success}</span>
         </c:if>
 
         <p>
-        <c:if test="${not empty user && user == trip.organizer}">
-            <table>
-                <form action="/requirements/${trip.id}" method="POST">
-                    <tr>
-                        <td><spring:message code="EnterRequisite"/></td>
-                        <td><input type="text" name="requisite"></td>
-                    </tr>
-                    <tr>
-                        <td><spring:message code="Amount"/></td>
-                        <td><input type="text" name="amount"></td>
-                    </tr>
-                    <tr>
-                        <td><input id="btn-save" type="submit" value="<spring:message code="Save" />" class="btn-blue"></td>
-                    </tr>
-                </form>
-            </table>
-        </c:if>
+            <c:if test="${not empty user && user == trip.organizer}">
+                <h3><spring:message code="AddRequisiteToTrip"/></h3>
+                <table>
+                    <form action="/requirements/${trip.id}" method="POST">
+                        <tr>
+                            <td><spring:message code="EnterRequisite"/></td>
+                            <td><input type="text" name="requisite"></td>
+                        </tr>
+                        <tr>
+                            <td><spring:message code="Amount"/></td>
+                            <td><input type="text" name="amount"></td>
+                        </tr>
+                        <tr>
+                            <td><input id="btn-save" type="submit" value="<spring:message code="Save" />" class="btn-blue"></td>
+                        </tr>
+                    </form>
+                </table>
+            </c:if>
         </p>
 
         <p>
-        <c:choose>
-            <c:when test="${not empty trip.requisites}">
+            <c:if test="${not empty userString}">
+                <h3><spring:message code="AddRequisiteToEnrollment"/></h3>
                 <table>
-                    <thead>
-                        <th><spring:message code="Requisites"/></th>
-                        <th><spring:message code="Amount"/></th>
-                    </thead>
-                    <c:forEach items="${trip.requisites}" var="requisite">
+                    <form action="/addRequirementToEnrollment/${trip.id}/${userString}" method="POST">
                         <tr>
-                            <td>${requisite.key}</td>
-                            <td>${requisite.value}</td>
+                            <td><spring:message code="User"/> ${userString}</td>
+                            <td><input type="text" name="requisite"></td>
                         </tr>
-                    </c:forEach>
+                        <tr>
+                            <td><spring:message code="Amount"/></td>
+                            <td><input type="text" name="amount"></td>
+                        </tr>
+                        <tr>
+                            <td><input id="btn-save2" type="submit" value="<spring:message code="Save" />" class="btn-blue"></td>
+                        </tr>
+                    </form>
                 </table>
-            </c:when>
-            <c:otherwise>
-                <h3><spring:message code="NoRequisites"/></h3>
-            </c:otherwise>
+            </c:if>
+        </p>
+
+        <p>
+            <c:choose>
+            <c:when test="${not empty trip.requisites}">
+        <table>
+            <thead>
+            <th><spring:message code="Requisites"/></th>
+            <th><spring:message code="Amount"/></th>
+            </thead>
+            <c:forEach items="${trip.requisites}" var="requisite">
+                <tr>
+                    <td>${requisite.key}</td>
+                    <td>${requisite.value}</td>
+                </tr>
+            </c:forEach>
+        </table>
+        </c:when>
+        <c:otherwise>
+            <h3><spring:message code="NoRequisites"/></h3>
+        </c:otherwise>
         </c:choose>
         </p>
     </div>

@@ -13,7 +13,7 @@ import java.io.Serializable;
  */
 @Entity
 @Table(name = "T_ADDRESS")
-public class Address implements AddressInterface, Serializable
+public class Address implements Serializable
 {
     @Transient
     private final String noDigitsRegEx = "^\\D*$";
@@ -46,53 +46,42 @@ public class Address implements AddressInterface, Serializable
     public Address() {
     }
 
-
-    @Override
     public String getStreet() {
         return street;
     }
 
-    @Override
     public void setStreet(String street) {
         this.street = street;
     }
 
-    @Override
     public String getHouseNr() {
         return houseNr;
     }
 
-    @Override
     public void setHouseNr(String houseNr) {
         this.houseNr = houseNr;
     }
 
-    @Override
     public String getCity() {
         return city;
     }
 
-    @Override
     public void setCity(String city) {
         this.city = city;
     }
 
-    @Override
     public String getPostalCode() {
         return postalCode;
     }
 
-    @Override
     public void setPostalCode(String postalCode) {
         this.postalCode = postalCode;
     }
 
-    @Override
     public String getCountry() {
         return country;
     }
 
-    @Override
     public void setCountry(String country) {
         this.country = country;
     }
