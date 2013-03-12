@@ -199,4 +199,16 @@ public class User implements Serializable {
     public int hashCode() {
         return email != null ? email.hashCode() : 0;
     }
+
+    @Override
+    public String toString() {
+        if(this.firstName==null || this.lastName==null)
+        {
+            return this.email;
+        }
+        else
+        {
+            return this.firstName + " " + this.lastName;
+        }
+    }
 }
