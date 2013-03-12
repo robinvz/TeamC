@@ -67,10 +67,10 @@
                                         <c:when test="${invitation.answer == 'DECLINED'}">
                                             <spring:message code="Declined"/>
                                         </c:when>
-                                        <c:otherwise>
+                                        <c:when test="${invitation.answer == 'UNANSWERED'}">
                                             <input class="uninvite-input" type="submit"
                                                    value="<spring:message code="Uninvite"/>"/>
-                                        </c:otherwise>
+                                        </c:when>
                                     </c:choose>
                                 </c:if>
                             </td>
