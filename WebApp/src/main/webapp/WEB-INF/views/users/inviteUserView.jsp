@@ -58,8 +58,14 @@
                             <td>
                                 <c:if test="${not empty user && trip.organizer == user}">
                                     <c:choose>
-                                        <c:when test="${invitation.getUser() == trip.organizer}">
+                                        <c:when test="${invitation.user == trip.organizer}">
                                             <spring:message code="Organizer"/>
+                                        </c:when>
+                                        <c:when test="${invitation.answer == 'ACCEPTED'}">
+                                            <spring:message code="Accepted"/>
+                                        </c:when>
+                                        <c:when test="${invitation.answer == 'DECLINED'}">
+                                            <spring:message code="Declined"/>
                                         </c:when>
                                         <c:otherwise>
                                             <input class="uninvite-input" type="submit"
