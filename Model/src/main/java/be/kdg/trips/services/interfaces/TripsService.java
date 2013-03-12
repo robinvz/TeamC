@@ -32,6 +32,7 @@ public interface TripsService
     public void deleteUser(User user) throws TripsException;
     public boolean checkLogin(String email, String password) throws TripsException;
     public void changePassword(User user, String oldPassword, String newPassword) throws TripsException;
+    public void forgotPassword(String email) throws TripsException, MessagingException;
     public void setUsersCurrentPosition(User user, double latitude, double longitude) throws TripsException;
 
     //Trip Service
@@ -91,5 +92,4 @@ public interface TripsService
     public boolean isUserEnrolled(User user, Trip trip);
     //MailContact service
     public void sendContactMail(String subject, String text, String sender) throws MessagingException;
-    public void forgotPassword(String email) throws TripsException, MessagingException;
 }

@@ -26,6 +26,151 @@ public class UserBLImpl implements UserBL
     @Autowired
     private UserDao userDao;
 
+    @Transactional
+    @Override
+    public User createUser(User user) throws TripsException {
+        if(isUnexistingUser(user.getEmail()))
+        {
+            user.setEmail(user.getEmail().toLowerCase());
+            userDao.saveOrUpdateUser(user);
+        }
+        return user;
+    }
+
+    @Override
+    public User findUser(String email) throws TripsException {
+        return userDao.getUser(email);
+    }
+
+    @Override
+    public List<User> findUsersByKeyword(String keyword, User user) throws TripsException {
+        List<User> users = new ArrayList<>();
+        if(isExistingUser(user.getEmail()))
+        {
+            users = userDao.getUsersByKeyword(keyword, user);
+        }
+        return users;
+    }
+
+    @Transactional
+    @Override
+    public void updateUser(User user, String firstName, String lastName, String street, String houseNr, String city, String postalCode, String country, byte[] profilePicture) throws TripsException {
+        if(isExistingUser(user.getEmail()))
+        {
+            if(!firstName.equals(""))
+            {
+                user.setFirstName(firstName);
+            }
+            if(!lastName.equals(""))
+            {
+                user.setLastName(lastName);
+            }
+            if(!street.equals(""))
+            {
+                user.getAddress().setStreet(street);
+            }
+            if(!houseNr.equals(""))
+            {
+                user.getAddress().setHouseNr(houseNr);
+            }
+            if(!city.equals(""))
+            {
+                user.getAddress().setCity(city);
+            }
+            if(!postalCode.equals(""))
+            {
+                user.getAddress().setPostalCode(postalCode);
+            }
+            if(!country.equals(""))
+            {
+                user.getAddress().setCountry(country);
+            }
+            if(profilePicture!=null)
+            {
+                if(ImageChecker.isValidImage(profilePicture))
+                {
+                    user.setProfilePicture(profilePicture);
+                }
+            }
+            userDao.saveOrUpdateUser(user);
+        }
+    }
+
+    @Transactional
+    @Override
+    public void deleteUser(User user) throws TripsException {
+        if(isExistingUser(user.getEmail()))
+        {
+            userDao.deleteUser(user.getId());
+        }
+    }
+
+    @Override
+    public boolean checkLogin(String email, String password) throws TripsException {
+        try
+        {
+            User user = userDao.getUser(email);
+            if(user.checkPassword(password))
+            {
+                return true;
+            }
+        }
+        catch (TripsException ex)
+        {
+
+        }
+        return false;
+    }
+
+    @Transactional
+    @Override
+    public void changePassword(User user, String oldPassword, String newPassword) throws TripsException {
+        if (isExistingUser(user.getEmail()))
+        {
+            if(newPassword!=null){
+                if(user.checkPassword(oldPassword))
+                {
+                    user.setPassword(newPassword);
+                    userDao.saveOrUpdateUser(user);
+                }
+                else
+                {
+                    throw new TripsException("Passwords didn't match");
+                }
+            }
+        }
+    }
+
+    @Override
+    public void forgotPassword(String email) throws TripsException, MessagingException {
+        if(isExistingUser(email))
+        {
+            User user = userDao.getUser(email);
+            MailSender.sendMail("password retrieved", "Your password is '" + user.getPassword() + "'", user.getEmail());
+        }
+    }
+
+    @Transactional
+    @Override
+    public void setUsersCurrentPosition(User user, double latitude, double longitude) throws TripsException {
+        if(isExistingUser(user.getEmail())){
+            user.setLatitude(latitude);
+            user.setLongitude(longitude);
+            userDao.saveOrUpdateUser(user);
+        }
+    }
+
+    @Override
+    public boolean isExistingUser(String email) throws TripsException {
+        return userDao.isExistingUser(email);
+    }
+
+    @Override
+    public boolean isUnexistingUser(String email) throws TripsException {
+        return userDao.isUnexistingUser(email);
+    }
+}
+    /*
     @Override
     @Transactional
     public User createUser(User user) throws TripsException {
@@ -174,6 +319,5 @@ public class UserBLImpl implements UserBL
     {
         return userDao.isUnexistingUser(email);
     }
-
-
 }
+*/
