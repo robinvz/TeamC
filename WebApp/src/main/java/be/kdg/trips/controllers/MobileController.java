@@ -20,6 +20,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import javax.servlet.http.HttpSession;
+import java.util.Map;
 
 /**
  * Subversion ${Id}
@@ -241,6 +242,12 @@ public class MobileController {
                 User user = tripsService.findUser(username);
                 Trip trip = tripsService.findTripById(id, user);
                 JSONArray jsonArray = new JSONArray();
+                Map<Question, Boolean> answeredQuestions = null;
+                for (Enrollment e : tripsService.findEnrollmentsByUser(user)){
+                    if (e.getTrip().getId() == trip.getId()){
+                        answeredQuestions = e.getAnsweredQuestions();
+                    }
+                }
                 for (Location loc : trip.getLocations()) {
                     JSONObject loco = new JSONObject();
                     loco.accumulate("id", loc.getId());
@@ -254,6 +261,14 @@ public class MobileController {
                         JSONArray answers = new JSONArray();
                         answers.addAll(loc.getQuestion().getPossibleAnswers());
                         loco.accumulate("possibleAnswers", answers);
+                        if (answeredQuestions != null && answeredQuestions.size() > 0){
+                            boolean isAnswered = false;
+                            isAnswered = answeredQuestions.containsKey(q) ;
+                            loco.accumulate("answered", isAnswered);
+                            if (isAnswered){
+                                loco.accumulate("correct", answeredQuestions.get(q));
+                            }
+                        }
                     } else {
                         loco.accumulate("question", null);
                     }
