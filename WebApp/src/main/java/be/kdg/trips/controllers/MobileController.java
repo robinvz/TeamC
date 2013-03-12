@@ -13,6 +13,7 @@ import net.sf.json.JSONArray;
 import net.sf.json.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.MessageSource;
+import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -26,6 +27,8 @@ import javax.servlet.http.HttpSession;
  * Karel de Grote-Hogeschool
  * 2012-2013
  */
+
+@Controller
 public class MobileController {
     @Autowired
     private HttpSession session;
@@ -129,14 +132,14 @@ public class MobileController {
             js.accumulate("title", trip.getTitle());
             js.accumulate("description", trip.getDescription());
             js.accumulate("enrollments", trip.getEnrollments().size());
-            js.accumulate("organizer", trip.getOrganizer().getEmail()) ;
+            js.accumulate("organizer", trip.getOrganizer().getEmail());
             js.accumulate("privacy", trip.getPrivacy());
             boolean isEnrolled = false;
             boolean isStarted = false;
-            for (Enrollment enr : tripsService.findEnrollmentsByUser(user)){
-                if (enr.getTrip().getId() == trip.getId()){
+            for (Enrollment enr : tripsService.findEnrollmentsByUser(user)) {
+                if (enr.getTrip().getId() == trip.getId()) {
                     isEnrolled = true;
-                    if (enr.getStatus() == Status.BUSY){
+                    if (enr.getStatus() == Status.BUSY) {
                         isStarted = true;
                     }
                 }
@@ -144,7 +147,7 @@ public class MobileController {
             js.accumulate("isenrolled", isEnrolled);
             js.accumulate("isstarted", isStarted);
             js.accumulate("isactive", trip.isActive());
-            js.accumulate("istimeless", (trip instanceof TimelessTrip) ?  true : false);
+            js.accumulate("istimeless", (trip instanceof TimelessTrip) ? true : false);
         }
         return js.toString();
     }
@@ -167,7 +170,6 @@ public class MobileController {
             return js.toString();
         }
     }
-
 
 
     @RequestMapping(value = "/service/start", method = RequestMethod.POST)
@@ -279,7 +281,7 @@ public class MobileController {
                 Trip trip = tripsService.findTripById(id, user);
                 JSONArray jsonArray = new JSONArray();
                 for (Enrollment enr : tripsService.findEnrollmentsByTrip(trip)) {
-                    if (enr.getStatus() == Status.BUSY  && enr.getUser().getId() != user.getId()){
+                    if (enr.getStatus() == Status.BUSY && enr.getUser().getId() != user.getId()) {
                         JSONObject loco = new JSONObject();
                         String firstname = enr.getUser().getFirstName() == null ? enr.getUser().getEmail() : enr.getUser().getFirstName();
                         String lastname = enr.getUser().getFirstName() == null ? " " : enr.getUser().getLastName();
@@ -295,6 +297,46 @@ public class MobileController {
                 js.accumulate("contacts", jsonArray);
             }
         } catch (TripsException t) {
+            js.put("valid", false);
+        } finally {
+            return js.toString();
+        }
+    }
+
+    @RequestMapping(value = "/service/answerQuestion", method = RequestMethod.POST)
+    public
+    @ResponseBody
+    String questionService(@RequestParam String username, @RequestParam String password, @RequestParam int answerIndex, @RequestParam int locationId) {
+        JSONObject js = new JSONObject();
+        try {
+            js.accumulate("valid", tripsService.checkLogin(username, password));
+            if (tripsService.checkLogin(username, password)) {
+                User user = tripsService.findUser(username);
+                Location location = tripsService.findLocationById(locationId);
+                Question question = location.getQuestion();
+                Trip trip = location.getTrip();
+                tripsService.setLastLocationVisited(trip, user, location);
+                js.accumulate("correct", tripsService.checkAnswerFromQuestion(question, answerIndex, user));
+            }
+        } catch (Exception t) {
+            js.put("valid", false);
+        } finally {
+            return js.toString();
+        }
+    }
+
+    @RequestMapping(value = "/service/updateLocation", method = RequestMethod.POST)
+    public
+    @ResponseBody
+    String updateLocation(@RequestParam String username, @RequestParam String password, @RequestParam double latitude, @RequestParam double longitude) {
+        JSONObject js = new JSONObject();
+        try {
+            js.accumulate("valid", tripsService.checkLogin(username, password));
+            if (tripsService.checkLogin(username, password)) {
+                User user = tripsService.findUser(username);
+               tripsService.setUsersCurrentPosition(user, latitude, longitude);
+            }
+        } catch (Exception t) {
             js.put("valid", false);
         } finally {
             return js.toString();

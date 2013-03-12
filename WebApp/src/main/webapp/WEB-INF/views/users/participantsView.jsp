@@ -31,7 +31,7 @@
                             <td>${enrollment.user.email}</td>
                             <c:if test="${user == trip.organizer}">
                                 <td>
-                                    <form action="/addRequirementToEnrollmentView/${trip.id}/${enrollment.user.email}" method="POST">
+                                    <form action="/addRequirementToEnrollmentView/${enrollment.user.email}/${trip.id}" method="GET">
                                         <input type="submit" value="<spring:message code="AddRequisite"/>"/>
                                     </form>
                                 </td>
