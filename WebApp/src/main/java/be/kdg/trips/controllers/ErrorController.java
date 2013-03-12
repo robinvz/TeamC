@@ -18,4 +18,9 @@ public class ErrorController {
         return "errors/loginErrorView";
     }
 
+    @RequestMapping(value="/errors/404View.jsp")
+    public String handle404() {
+        return "404View";
+    }
+
 }
