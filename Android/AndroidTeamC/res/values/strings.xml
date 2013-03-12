@@ -26,6 +26,7 @@
     <string name="answered">You answered the question</string>
     <string name="all">All</string>
     <string name="subscribed">Subscribed</string>
+    <string name="search">Search</string>
     <string name="created">Created</string>
     <string name="ok">OK</string>
     <string name="cancel">Cancel</string>
@@ -33,5 +34,11 @@
     <string name="send">Send</string>
     <string name="broadcastsent">Broadcast verzonden!</string>
     <string name="selectcontact">Select a contact by pressing the top right icon</string>
+    <string name="installGoogleMaps">You need to install Google Maps to use this function</string>
+    <string name="install">Install</string>
+    <string name="androidtolow">We cannot show the map on you device :( Consider an update!</string>
+    <string name="currentlocation">Current Location</string>
+    <string name="currentlocationsnippet">You are currently here and need to get to the other marker!</string>
+    <string name="notcloseenough">You are not close enough to answer the question!</string>
 
 </resources>

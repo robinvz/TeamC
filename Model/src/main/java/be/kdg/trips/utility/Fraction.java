@@ -13,12 +13,8 @@ import javax.validation.constraints.NotNull;
  */
 public class Fraction {
     @NotNull
-    @DecimalMin(value = "0")
-    @DecimalMax(value = "100")
     private int denominator;
     @NotNull
-    @DecimalMin(value = "0")
-    @DecimalMax(value = "100")
     private int divisor;
 
     public Fraction() {
@@ -35,20 +31,12 @@ public class Fraction {
         return denominator;
     }
 
-    public void setDenominator(int denominator) {
-        this.denominator = denominator;
-    }
-
     public int getDivisor() {
         return divisor;
     }
 
-    public void setDivisor(int divisor) {
-        this.divisor = divisor;
-    }
-
-    public double getDecimal()
+    public double getPercentage()
     {
-        return denominator/divisor;
+        return (((double)this.denominator)/this.divisor)*100;
     }
 }

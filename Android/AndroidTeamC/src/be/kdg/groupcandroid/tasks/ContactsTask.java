@@ -104,4 +104,11 @@ public class ContactsTask extends AsyncTask<String, Void, ArrayList<Contact>>{
 			dialog.dismiss();
 		}
 	}
+	
+	@Override
+	protected void onCancelled() {
+		if (dialog.isShowing()) {
+			dialog.dismiss();
+		}
+	}
 }

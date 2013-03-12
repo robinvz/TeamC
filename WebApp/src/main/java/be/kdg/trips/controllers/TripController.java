@@ -177,6 +177,8 @@ public class TripController {
         }
     }
 
+
+
     @RequestMapping(value = "/service/start", method = RequestMethod.POST)
     public
     @ResponseBody
@@ -286,7 +288,7 @@ public class TripController {
                 Trip trip = tripsService.findTripById(id, user);
                 JSONArray jsonArray = new JSONArray();
                 for (Enrollment enr : tripsService.findEnrollmentsByTrip(trip)) {
-                    if (enr.getStatus() == Status.BUSY ){   //&& enr.getUser().getId() != user.getId()
+                    if (enr.getStatus() == Status.BUSY  && enr.getUser().getId() != user.getId()){
                         JSONObject loco = new JSONObject();
                         String firstname = enr.getUser().getFirstName() == null ? enr.getUser().getEmail() : enr.getUser().getFirstName();
                         String lastname = enr.getUser().getFirstName() == null ? " " : enr.getUser().getLastName();
@@ -427,6 +429,13 @@ public class TripController {
         } else {
             return new ModelAndView("loginView", "loginBean", new LoginBean());
         }
+    }
+
+    @RequestMapping(value = "/isEnrolled", method = RequestMethod.GET)
+    public boolean  isEnrolled(@RequestParam int tripId){
+        User user = (User) session.getAttribute("user");
+        //TODO Check if user is enrolled in trip
+        return true;
     }
 
     @RequestMapping(value = "/subscribe", method = RequestMethod.GET)

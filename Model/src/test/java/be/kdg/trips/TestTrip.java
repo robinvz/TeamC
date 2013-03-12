@@ -32,6 +32,7 @@ import static org.junit.Assert.*;
  */
 public class TestTrip {
     private final int FIRST_ELEMENT = 0;
+    private final int SECOND_ELEMENT = 1;
 
     private static TripsService tripsService;
     private static DateFormat df;
@@ -162,6 +163,12 @@ public class TestTrip {
     public void failedCreateTimeBoundTripInvalidDatesEndDateAfterStartDate() throws TripsException, ParseException
     {
         tripsService.createTimeBoundTrip("Langlauf", "Langlaufen in de Ardennen", TripPrivacy.PUBLIC, organizer, df.parse("14/05/2014"), df.parse("15/04/2014"), null, null);
+    }
+
+    @Test(expected = TransactionSystemException.class)
+    public void failedCreateTimeBoundTripInvalidDatesStartDateNotInFuture() throws TripsException, ParseException
+    {
+        tripsService.createTimeBoundTrip("Langlauf", "Langlaufen in de Ardennen", TripPrivacy.PUBLIC, organizer, df.parse("14/05/2011"), df.parse("15/04/2014"), null, null);
     }
 
     @Test(expected = ParseException.class)
@@ -589,18 +596,6 @@ public class TestTrip {
         tripsService.addQuestionToLocation(organizer, location, "failed question", possibleAnswers, 5, null);
     }
 
-    @Test(expected = TripsException.class)
-    public void te() throws TripsException
-    {
-        Trip trip = tripsService.createTimelessTrip("Trip with added questions", "Trip with added questions", TripPrivacy.PROTECTED, organizer);
-        List<String> possibleAnswers = new ArrayList<>();
-        possibleAnswers.add("Gijs");
-        possibleAnswers.add("Keke");
-        Location location = tripsService.addLocationToTrip(organizer, trip, 10.12131, 10.12131, "Nationalestraat", null, "Antwerp", "2000", "Belgium", "Titel", "Lange straat met tramspoor");
-        tripsService.addQuestionToLocation(organizer, location, "Wie is hier den baas?", possibleAnswers, 0, null);
-        tripsService.addQuestionToLocation(organizer, location, "failed question", new ArrayList<String>(), 0, null);
-    }
-
     @Test
     public void successfulRemoveQuestionFromLocation() throws TripsException
     {
@@ -862,26 +857,69 @@ public class TestTrip {
         List<String> possibleAnswers = new ArrayList<>();
         possibleAnswers.add("Gijs");
         possibleAnswers.add("Keke");
-        tripsService.addLocationToTrip(organizer, createdTrip, 10.12131, 10.12131, "Nationalestraat", null, "Antwerp", "2000", "Belgium", "Titel", "Lange straat met tramspoor", "Who am I?", possibleAnswers, FIRST_ELEMENT, null);
-        Location location = tripsService.findTripById(createdTrip.getId(), organizer).getLocations().get(FIRST_ELEMENT);
+        tripsService.addLocationToTrip(organizer, createdTrip, 10.131, 10.12131, "Nationalestraat", null, "Antwerp", "2000", "Belgium", "Titel", "Lange straat met tramspoor", "Who am I?", possibleAnswers, FIRST_ELEMENT, null);
+        Location location1 = tripsService.findTripById(createdTrip.getId(), organizer).getLocations().get(FIRST_ELEMENT);
+        tripsService.addLocationToTrip(organizer, createdTrip, 10.1231, 10.131, "Nationalearrstraat", null, "Antwerp", "2000", "Belgium", "Titel", "Lange straat met tramspoor", "Who am I now?", possibleAnswers, FIRST_ELEMENT, null);
+        Location location2 = tripsService.findTripById(createdTrip.getId(), organizer).getLocations().get(SECOND_ELEMENT);
+        Question question1 = location1.getQuestion();
+        Question question2 = location2.getQuestion();
+
+        //organizer
         tripsService.startTrip(createdTrip, organizer);
+        tripsService.setLastLocationVisited(createdTrip, organizer, location1);
+        tripsService.checkAnswerFromQuestion(question1,FIRST_ELEMENT,organizer);
 
-        tripsService.setLastLocationVisited(createdTrip, organizer, location);
-        Question question = location.getQuestion();
-        tripsService.checkAnswerFromQuestion(question,FIRST_ELEMENT,organizer);
-
+        //subscriber
         User user = tripsService.createUser(new User("capgem@hotmail.com","XDo)a"));
         tripsService.subscribe(createdTrip, user);
         tripsService.startTrip(createdTrip, user);
-        tripsService.setLastLocationVisited(createdTrip, user, location);
-        tripsService.checkAnswerFromQuestion(question,1,user);
+        tripsService.setLastLocationVisited(createdTrip, user, location1);
+        tripsService.checkAnswerFromQuestion(question1,SECOND_ELEMENT,user);
+        tripsService.setLastLocationVisited(createdTrip, user, location2);
+        tripsService.checkAnswerFromQuestion(question2,FIRST_ELEMENT,user);
 
         Map<Question, Fraction> questions = tripsService.getQuestionsWithAnswerPercentage(createdTrip, organizer);
         Iterator it = questions.entrySet().iterator();
+        boolean correct = true;
+        int i = 0;
         while(it.hasNext())
         {
-            assertEquals(0.5,((Fraction)it.next()).getDecimal());
+
+            switch(i)
+            {
+                case 0:if(((Fraction)it.next()).getPercentage() != 50) correct = false;break;
+                case 1:if(((Fraction)it.next()).getPercentage() != 100) correct = false;break;
+            }
         }
+        assertTrue(correct);
+    }
+
+    @Test
+    public void successfulGetDenominator()
+    {
+        Fraction fraction = new Fraction(2, 3);
+        assertEquals(2, fraction.getDenominator());
+    }
+
+    @Test
+    public void successfulGetDivisor()
+    {
+        Fraction fraction = new Fraction(2, 3);
+        assertEquals(3, fraction.getDivisor());
+    }
+
+    @Test
+    public void successfulGetDecimalFractionValue1()
+    {
+        Fraction fraction = new Fraction();
+        assertEquals(100, fraction.getPercentage(), 0);
+    }
+
+    @Test
+    public void successfulGetDecimalFractionValue2()
+    {
+        Fraction fraction = new Fraction(2, 3);
+        assertEquals(66.66, fraction.getPercentage(), 2);
     }
 }
 

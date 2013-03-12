@@ -3,6 +3,7 @@ package be.kdg.trips.model.trip;
 import be.kdg.trips.model.user.User;
 
 import javax.persistence.*;
+import javax.validation.constraints.Future;
 import javax.validation.constraints.NotNull;
 import java.io.Serializable;
 import java.util.Date;
@@ -17,8 +18,10 @@ import java.util.Map;
  */
 @Entity
 public class TimeBoundTrip extends Trip implements Serializable {
+    @Future(message = "Start date must be in the future")
     @NotNull
     private Date startDate;
+    @Future(message = "End date must be in the future")
     @NotNull
     private Date endDate;
 

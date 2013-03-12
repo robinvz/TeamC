@@ -128,9 +128,15 @@ public class TestUser {
     }
 
     @Test(expected = ConstraintViolationException.class)
-    public void failedRegisterInvalidEmail() throws TripsException
+    public void failedRegisterInvalidEmail1() throws TripsException
     {
-       tripsService.createUser(new User("jos", "password"));
+        tripsService.createUser(new User("jos", "password"));
+    }
+
+    @Test(expected = ConstraintViolationException.class)
+    public void failedRegisterInvalidEmail2() throws TripsException
+    {
+        tripsService.createUser(new User("jos@hotmail", "password"));
     }
 
     @Test(expected = ConstraintViolationException.class)
@@ -389,7 +395,7 @@ public class TestUser {
 
     @Test
     public void successfulPasswordChange() throws TripsException {
-        User user = tripsService.createUser(new User("rené@student.kdg.be","goethals"));
+        User user = tripsService.createUser(new User("rene@student.kdg.be","goethals"));
         tripsService.changePassword(user,"goethals","newpw");
         assertTrue(tripsService.findUser("rené@student.kdg.be").checkPassword("newpw"));
     }

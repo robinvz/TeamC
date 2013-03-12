@@ -346,7 +346,8 @@ public class EnrollmentBLImpl implements EnrollmentBL
                     {
                         if(location.getQuestion().equals(question))
                         {
-                            if(enrollment.getLastLocationVisited().equals(location))
+                            Location lastLocationVisited = enrollment.getLastLocationVisited();
+                            if(lastLocationVisited != null && lastLocationVisited.equals(location) && lastLocationVisited.getSequence() == location.getSequence())
                             {
                                 if(question.checkAnswer(answerIndex))
                                 {

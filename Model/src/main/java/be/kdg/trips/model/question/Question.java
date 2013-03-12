@@ -1,15 +1,14 @@
 package be.kdg.trips.model.question;
 
-import be.kdg.trips.exception.TripsException;
-import org.hibernate.validator.constraints.Range;
+import be.kdg.trips.model.location.Location;
+import org.hibernate.annotations.GenericGenerator;
+import org.hibernate.annotations.Parameter;
+
 
 import javax.persistence.*;
-import javax.validation.ConstraintViolationException;
-import javax.validation.constraints.Max;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 import java.io.Serializable;
-import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -24,7 +23,7 @@ import java.util.List;
 public class Question implements QuestionInterface, Serializable
 {
     @Id
-    @GeneratedValue(strategy= GenerationType.IDENTITY)
+    @GeneratedValue
     private int id;
     @Size(max = 100, message = "Question has a maximum amount of 100 characters")
     @NotNull
@@ -47,18 +46,18 @@ public class Question implements QuestionInterface, Serializable
 
     public Question() {
     }
-
+    /*
     @Override
     public String toString() {
         return this.question;
     }
-
+    */
     public String getQuestion() {
         return question;
     }
 
     public int getId() {
-        return id;
+        return this.id;
     }
 
     public List<String> getPossibleAnswers() {

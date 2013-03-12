@@ -74,6 +74,8 @@ public class TripActionsTask extends AsyncTask<String, Void, Boolean> {
 			return false;
 		}
 	}
+	
+	
 
 	protected void onPreExecute() {
 		this.dialog.setMessage("Performing action");
@@ -82,6 +84,13 @@ public class TripActionsTask extends AsyncTask<String, Void, Boolean> {
 
 	@Override
 	protected void onPostExecute(final Boolean success) {
+		if (dialog.isShowing()) {
+			dialog.dismiss();
+		}
+	}
+	
+	@Override
+	protected void onCancelled() {
 		if (dialog.isShowing()) {
 			dialog.dismiss();
 		}
