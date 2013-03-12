@@ -488,6 +488,14 @@ public class TestTrip {
     }
 
     @Test
+    public void successfulLocationGetTrip() throws TripsException
+    {
+        Trip trip = tripsService.createTimelessTrip("test tripje","tripje om te testen", TripPrivacy.PROTECTED, organizer);
+        Location location = tripsService.addLocationToTrip(organizer, trip, 10.0, 4.1, "Straat","2","Brugge","121","Belgium","title","description");
+        assertEquals(trip, location.getTrip());
+    }
+
+    @Test
     public void successfulAddDateToTimeBoundTrip() throws ParseException, TripsException
     {
         User organizer = tripsService.createUser(new User("GeoffreyWesle@toko.com", "Jean"));
