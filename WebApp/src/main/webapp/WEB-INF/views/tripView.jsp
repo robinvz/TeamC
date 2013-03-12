@@ -143,7 +143,7 @@
                         <c:set value="true" var="validPrivateTrip"/>
                         <c:if test="${not empty trip.invitations}">
                             <c:forEach items="${trip.invitations}" var="invitation">
-                                <c:if test="${invitation.user == user && invitation.user != trip.organizer}">
+                                <c:if test="${invitation.user == user && invitation.user != trip.organizer && invitation.answer == 'UNANSWERED'}">
                                     <c:forEach items="${trip.enrollments}" var="enrollment">
                                         <c:if test="${enrollment.user == user}">
                                             <c:set value="true" var="enrolled"/>

@@ -4,7 +4,6 @@ import be.kdg.trips.controllers.TripController;
 import be.kdg.trips.exception.TripsException;
 import be.kdg.trips.model.address.Address;
 import be.kdg.trips.model.enrollment.Enrollment;
-import be.kdg.trips.model.invitation.Invitation;
 import be.kdg.trips.model.location.Location;
 import be.kdg.trips.model.question.Question;
 import be.kdg.trips.model.trip.*;
@@ -882,7 +881,7 @@ public class TripTest {
         mockHttpSession.setAttribute("user", testUser);
         User invitee = new User("email@email.com", "password");
         Trip t = new TimelessTrip(title, description, privacy, testUser);
-        RequestBuilder requestBuilder = MockMvcRequestBuilders.post("/inviteUser/" + t.getId() + "/sendInvite/").param("userByKeywordEmail","testEmail");
+        RequestBuilder requestBuilder = MockMvcRequestBuilders.post("/inviteUser/" + t.getId() + "/sendInvite/").param("userByKeywordEmail", "testEmail");
         when(tripsService.findTripById(anyInt(), any(User.class))).thenReturn(t);
         when(tripsService.findUser(anyString())).thenReturn(invitee);
         mockMvc.perform(requestBuilder).andExpect(view().name("redirect:/inviteUser/" + t.getId()));
@@ -1011,7 +1010,7 @@ public class TripTest {
         Trip t = new TimelessTrip(title, description, privacy, testUser);
         RequestBuilder requestBuilder = MockMvcRequestBuilders.get("/acceptInvitation?tripId=" + t.getId());
         when(tripsService.findTripById(t.getId(), testUser)).thenReturn(t);
-        mockMvc.perform(requestBuilder).andExpect(view().name("tripView")).andExpect(model().attribute("trip", t));
+        mockMvc.perform(requestBuilder).andExpect(view().name("redirect:/trip/" + t.getId())).andExpect(model().attribute("trip", t));
     }
 
     @Test
@@ -1020,6 +1019,6 @@ public class TripTest {
         Trip t = new TimelessTrip(title, description, privacy, testUser);
         RequestBuilder requestBuilder = MockMvcRequestBuilders.get("/declineInvitation?tripId=" + t.getId());
         when(tripsService.findTripById(t.getId(), testUser)).thenReturn(t);
-        mockMvc.perform(requestBuilder).andExpect(view().name("tripView")).andExpect(model().attribute("trip", t));
+        mockMvc.perform(requestBuilder).andExpect(view().name("redirect:/trip/" + t.getId())).andExpect(model().attribute("trip", t));
     }
 }
