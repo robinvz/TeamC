@@ -46,12 +46,12 @@ public class Question implements QuestionInterface, Serializable
 
     public Question() {
     }
-
+    /*
     @Override
     public String toString() {
         return this.question;
     }
-
+    */
     public String getQuestion() {
         return question;
     }
@@ -66,6 +66,10 @@ public class Question implements QuestionInterface, Serializable
 
     public void setCorrectAnswerIndex(int correctAnswerIndex) {
         this.correctAnswerIndex = correctAnswerIndex;
+    }
+
+    public int getCorrectAnswerIndex() {
+        return correctAnswerIndex;
     }
 
     public void setPossibleAnswers(List<String> possibleAnswers) {

@@ -1,3 +1,7 @@
+div #foundUsers{
+    display: none;
+}
+
 .dataTable{
     display: inline-table;
     margin-top: 20px;
