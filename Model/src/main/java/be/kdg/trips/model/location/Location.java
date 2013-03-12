@@ -139,6 +139,10 @@ public class Location implements Serializable
         return trip;
     }
 
+    public void setTrip(Trip trip) {
+        this.trip = trip;
+    }
+
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
