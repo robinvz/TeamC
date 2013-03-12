@@ -49,7 +49,7 @@
         </p>
 
         <p>
-            <c:if test="${not empty userString}">
+            <c:if test="${not empty userString and trip.organizer == user}">
                 <h3><spring:message code="AddRequisiteToEnrollment"/></h3>
                 <table>
                     <form action="/addRequirementToEnrollment/${userString}/${trip.id}" method="POST">
