@@ -431,7 +431,7 @@ public class TestUser {
 
     @Test
     public void successfulToStringNoName() throws TripsException {
-        User user = tripsService.createUser(new User("eli@hotmail.cam","password"));
+        User user = tripsService.createUser(new User("eli@hotmaaail.cam","password"));
         assertEquals(user.getEmail(),user.toString());
     }
 }
