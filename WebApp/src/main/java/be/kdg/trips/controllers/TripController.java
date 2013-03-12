@@ -138,14 +138,14 @@ public class TripController {
             js.accumulate("title", trip.getTitle());
             js.accumulate("description", trip.getDescription());
             js.accumulate("enrollments", trip.getEnrollments().size());
-            js.accumulate("organizer", trip.getOrganizer().getEmail()) ;
+            js.accumulate("organizer", trip.getOrganizer().getEmail());
             js.accumulate("privacy", trip.getPrivacy());
             boolean isEnrolled = false;
             boolean isStarted = false;
-            for (Enrollment enr : tripsService.findEnrollmentsByUser(user)){
-                if (enr.getTrip().getId() == trip.getId()){
+            for (Enrollment enr : tripsService.findEnrollmentsByUser(user)) {
+                if (enr.getTrip().getId() == trip.getId()) {
                     isEnrolled = true;
-                    if (enr.getStatus() == Status.BUSY){
+                    if (enr.getStatus() == Status.BUSY) {
                         isStarted = true;
                     }
                 }
@@ -153,7 +153,7 @@ public class TripController {
             js.accumulate("isenrolled", isEnrolled);
             js.accumulate("isstarted", isStarted);
             js.accumulate("isactive", trip.isActive());
-            js.accumulate("istimeless", (trip instanceof TimelessTrip) ?  true : false);
+            js.accumulate("istimeless", (trip instanceof TimelessTrip) ? true : false);
         }
         return js.toString();
     }
@@ -176,7 +176,6 @@ public class TripController {
             return js.toString();
         }
     }
-
 
 
     @RequestMapping(value = "/service/start", method = RequestMethod.POST)
@@ -288,7 +287,7 @@ public class TripController {
                 Trip trip = tripsService.findTripById(id, user);
                 JSONArray jsonArray = new JSONArray();
                 for (Enrollment enr : tripsService.findEnrollmentsByTrip(trip)) {
-                    if (enr.getStatus() == Status.BUSY  && enr.getUser().getId() != user.getId()){
+                    if (enr.getStatus() == Status.BUSY && enr.getUser().getId() != user.getId()) {
                         JSONObject loco = new JSONObject();
                         String firstname = enr.getUser().getFirstName() == null ? enr.getUser().getEmail() : enr.getUser().getFirstName();
                         String lastname = enr.getUser().getFirstName() == null ? " " : enr.getUser().getLastName();
@@ -360,12 +359,12 @@ public class TripController {
         User user = (User) session.getAttribute("user");
         if (isLoggedIn()) {
             try {
-                startDate =  startDate.replace("T", " ");
+                startDate = startDate.replace("T", " ");
                 endDate = endDate.replace("T", " ");
                 SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm");
                 Repeatable rp = null;
                 Integer limitInt = null;
-                if (!repeat.contentEquals("ONCE")){
+                if (!repeat.contentEquals("ONCE")) {
                     rp = Repeatable.valueOf(repeat);
                     limitInt = Integer.parseInt(limit);
                 }
@@ -379,7 +378,7 @@ public class TripController {
                 }
             } catch (ParseException e) {
                 return new ModelAndView("/users/createTripView", "error", messageSource.getMessage("ParseError", null, locale));
-            } catch (NumberFormatException n){
+            } catch (NumberFormatException n) {
                 return new ModelAndView("/users/createTripView", "error", messageSource.getMessage("NotANumberError", null, locale));
             }
         } else {
@@ -432,7 +431,7 @@ public class TripController {
     }
 
     @RequestMapping(value = "/isEnrolled", method = RequestMethod.GET)
-    public boolean  isEnrolled(@RequestParam int tripId){
+    public boolean isEnrolled(@RequestParam int tripId) {
         User user = (User) session.getAttribute("user");
         //TODO Check if user is enrolled in trip
         return true;
@@ -938,7 +937,7 @@ public class TripController {
 
     @RequestMapping(value = "/editTripPic/{tripId}", method = RequestMethod.GET)
     public ModelAndView showEditTripPic(@PathVariable int tripId) {
-        User user = (User)  session.getAttribute("user");
+        User user = (User) session.getAttribute("user");
         Trip trip = null;
         try {
             trip = tripsService.findTripById(tripId, user);
@@ -950,7 +949,9 @@ public class TripController {
     }
 
     @RequestMapping(value = "/tripPic/{tripId}", method = RequestMethod.GET, produces = "image/jpg")
-    public @ResponseBody byte[] showProfilePic(@PathVariable int tripId){
+    public
+    @ResponseBody
+    byte[] showProfilePic(@PathVariable int tripId) {
         User user = (User) session.getAttribute("user");
         byte[] imageData = null;
         try {
@@ -963,8 +964,7 @@ public class TripController {
     }
 
     @RequestMapping(value = "/editTripPic/{tripId}", method = RequestMethod.POST)
-    public ModelAndView editProfilePic(@PathVariable int tripId,@RequestParam("file") MultipartFile file)
-    {
+    public ModelAndView editProfilePic(@PathVariable int tripId, @RequestParam("file") MultipartFile file) {
         try {
             byte[] bFile = file.getBytes();
             User user = (User) session.getAttribute("user");
@@ -1001,7 +1001,7 @@ public class TripController {
             Map map = new HashMap();
             try {
                 trip = tripsService.findTripById(tripId, user);
-                startDate =  startDate.replace("T", " ");
+                startDate = startDate.replace("T", " ");
                 endDate = endDate.replace("T", " ");
                 SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm");
                 tripsService.addDateToTimeBoundTrip(sdf.parse(startDate), sdf.parse(endDate), trip, user);
@@ -1009,7 +1009,7 @@ public class TripController {
                 map.put("success", "Dates have been added");
                 return new ModelAndView("/users/addDateView", map);
             } catch (TripsException e) {
-                if(e.getMessage().contains("Trip with id")) {
+                if (e.getMessage().contains("Trip with id")) {
                     return new ModelAndView("tripsView", "error", messageSource.getMessage("FindTripError", null, locale));
                 } else if (e.getMessage().contains("future")) {
                     map.put("trip", trip);
@@ -1031,12 +1031,12 @@ public class TripController {
     }
 
     @RequestMapping(value = "/editTripTheme/{tripId}", method = RequestMethod.POST)
-    public ModelAndView editTripTheme(@PathVariable int tripId, @RequestParam String theme){
+    public ModelAndView editTripTheme(@PathVariable int tripId, @RequestParam String theme) {
         try {
             User user = (User) session.getAttribute("user");
-            Trip trip = tripsService.findTripById(tripId,user);
+            Trip trip = tripsService.findTripById(tripId, user);
             tripsService.changeThemeOfTrip(trip, theme);
-            return new ModelAndView("redirect:editTripPicView/"+tripId, "trip", trip);
+            return new ModelAndView("redirect:editTripPicView/" + tripId, "trip", trip);
         } catch (TripsException e) {
             e.printStackTrace();  //To change body of catch statement use File | Settings | File Templates.
         }
@@ -1052,7 +1052,7 @@ public class TripController {
             try {
                 trip = tripsService.findTripById(tripId, user);
                 Map<String, Integer> totalTripCosts = new HashMap<>();
-                for(Enrollment enrollment: trip.getEnrollments()) {
+                for (Enrollment enrollment : trip.getEnrollments()) {
                     totalTripCosts.putAll(enrollment.getCosts());
                 }
                 map.put("trip", trip);
@@ -1066,4 +1066,53 @@ public class TripController {
         }
     }
 
+    @RequestMapping(value = "/acceptInvitation", method = RequestMethod.GET)
+    public ModelAndView acceptInvitation(@RequestParam int tripId, Locale locale) {
+        User user = (User) session.getAttribute("user");
+        if (isLoggedIn()) {
+            Map map = new HashMap();
+            Trip trip;
+            try {
+                trip = tripsService.findTripById(tripId, user);
+                tripsService.acceptInvitation(trip, user);
+                map.put("trip", trip);
+                map.put("success", "You have accepted the invitation");
+                return new ModelAndView("tripView", map);
+            } catch (TripsException e) {
+                if (e.getMessage().contains("Trip with id")) {
+                    return new ModelAndView("tripsView", "error", messageSource.getMessage("FindTripError", null, locale));
+                } else {
+                    // nog andere exceptions, welke message?
+                    return new ModelAndView("tripView", map);
+                }
+            }
+        } else {
+            return new ModelAndView("loginView", "loginBean", new LoginBean());
+        }
+    }
+
+    @RequestMapping(value = "/declineInvitation", method = RequestMethod.GET)
+    public ModelAndView declineInvitation(@RequestParam int tripId, Locale locale) {
+        User user = (User) session.getAttribute("user");
+        if (isLoggedIn()) {
+            Map map = new HashMap();
+            Trip trip;
+            try {
+                trip = tripsService.findTripById(tripId, user);
+                tripsService.declineInvitation(trip, user);
+                map.put("trip", trip);
+                map.put("success", "You have declined the invitation");
+                return new ModelAndView("tripView", map);
+            } catch (TripsException e) {
+                if (e.getMessage().contains("Trip with id")) {
+                    return new ModelAndView("tripsView", "error", messageSource.getMessage("FindTripError", null, locale));
+                } else {
+                    // nog andere exceptions, welke message?
+                    return new ModelAndView("tripView", map);
+                }
+            }
+        } else {
+            return new ModelAndView("loginView", "loginBean", new LoginBean());
+        }
+    }
 }

@@ -1005,4 +1005,21 @@ public class TripTest {
         mockMvc.perform(requestBuilder).andExpect(view().name("tripsView"));
     }
 
+    @Test
+    public void acceptInvitation() throws Exception {
+        mockHttpSession.setAttribute("user", testUser);
+        Trip t = new TimelessTrip(title, description, privacy, testUser);
+        RequestBuilder requestBuilder = MockMvcRequestBuilders.get("/acceptInvitation?tripId=" + t.getId());
+        when(tripsService.findTripById(t.getId(), testUser)).thenReturn(t);
+        mockMvc.perform(requestBuilder).andExpect(view().name("tripView")).andExpect(model().attribute("trip", t));
+    }
+
+    @Test
+    public void declineInvitation() throws Exception {
+        mockHttpSession.setAttribute("user", testUser);
+        Trip t = new TimelessTrip(title, description, privacy, testUser);
+        RequestBuilder requestBuilder = MockMvcRequestBuilders.get("/declineInvitation?tripId=" + t.getId());
+        when(tripsService.findTripById(t.getId(), testUser)).thenReturn(t);
+        mockMvc.perform(requestBuilder).andExpect(view().name("tripView")).andExpect(model().attribute("trip", t));
+    }
 }

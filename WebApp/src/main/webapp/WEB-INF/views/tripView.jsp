@@ -134,17 +134,49 @@
                         </c:choose>
                     </c:if>
                 </div>
+
+                <div id="invitation-buttons">
+                    <c:set value="false" var="validPrivateTrip"/>
+                    <c:set value="false" var="invited"/>
+                    <c:set value="false" var="enrolled"/>
+                    <c:if test="${not empty user  && trip.published==true && trip.privacy == 'PRIVATE'}">
+                        <c:set value="true" var="validPrivateTrip"/>
+                        <c:if test="${not empty trip.invitations}">
+                            <c:forEach items="${trip.invitations}" var="invitation">
+                                <c:if test="${invitation.user == user && invitation.user != trip.organizer}">
+                                    <c:forEach items="${trip.enrollments}" var="enrollment">
+                                        <c:if test="${enrollment.user == user}">
+                                            <c:set value="true" var="enrolled"/>
+                                        </c:if>
+                                    </c:forEach>
+                                    <c:if test="${enrolled == false}">
+                                        <c:set value="true" var="invited"/>
+                                    </c:if>
+                                </c:if>
+                            </c:forEach>
+                        </c:if>
+                    </c:if>
+                    <c:if test="${validPrivateTrip == true && invited == true}">
+                        <a href="/acceptInvitation?tripId=${trip.id}">
+                            <img id="acceptInvitationButton"
+                                 src="${pageContext.request.contextPath}/resources/res/img/subscribe.jpg">
+                        </a>
+                        <a href="/declineInvitation?tripId=${trip.id}">
+                            <img id="declineInvitationButton"
+                                 src="${pageContext.request.contextPath}/resources/res/img/unsubscribe.jpg">
+                        </a>
+                    </c:if>
+                </div>
             </article>
         </section>
     </div>
-
 </div>
 <script src="${pageContext.request.contextPath}/resources/js/jquery-1.9.0.min.js"></script>
-         <script>
-             if(!window.location.hash) {
-                 window.location = '?theme=${trip.theme}#loaded';
-             }
+<script>
+    if (!window.location.hash) {
+        window.location = '?theme=${trip.theme}#loaded';
+    }
 
-         </script>
+</script>
 </body>
 </html>
