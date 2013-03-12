@@ -788,9 +788,9 @@ public class TripController {
             Map map = new HashMap();
             try {
                 trip = tripsService.findTripById(tripId, user);
-                Map<String, Double> totalTripCosts = new HashMap<>();
+                Map<String, Map> totalTripCosts = new HashMap<>();
                 for (Enrollment enrollment : trip.getEnrollments()) {
-                    totalTripCosts.putAll(enrollment.getCosts());
+                    totalTripCosts.put(enrollment.getUser().toString(), enrollment.getCosts());
                 }
                 map.put("trip", trip);
                 map.put("totalTripCosts", totalTripCosts);
@@ -802,6 +802,20 @@ public class TripController {
             return new ModelAndView("loginView", "loginBean", new LoginBean());
         }
     }
+
+    @RequestMapping(value = "/costs/{tripId}/createCost", method = RequestMethod.POST)
+    public ModelAndView createCost(@PathVariable int tripId, @RequestParam String name, @RequestParam double amount,  Locale locale)  {
+        User user = (User) session.getAttribute(("user"));
+        Trip trip = null;
+        try {
+            trip = tripsService.findTripById(tripId, user);
+            tripsService.addCostToEnrollment(name, amount, trip, user);
+        } catch (TripsException e) {
+            return new ModelAndView("tripsView", "error", messageSource.getMessage("FindTripError", null, locale));
+        }
+        return new ModelAndView("redirect:/costs/" + trip.getId());
+    }
+
 
     @RequestMapping(value = "/acceptInvitation", method = RequestMethod.GET)
     public ModelAndView acceptInvitation(@RequestParam int tripId, Locale locale) {
@@ -851,18 +865,6 @@ public class TripController {
         } else {
             return new ModelAndView("loginView", "loginBean", new LoginBean());
         }
-    }
-    @RequestMapping(value = "/costs/{tripId}/createCost", method = RequestMethod.POST)
-    public ModelAndView createCost(@PathVariable int tripId, @RequestParam String name, @RequestParam int amount,  Locale locale)  {
-        User user = (User) session.getAttribute(("user"));
-        Trip trip = null;
-        try {
-            trip = tripsService.findTripById(tripId, user);
-            tripsService.addCostToEnrollment(name, amount, trip, user);
-        } catch (TripsException e) {
-            return new ModelAndView("tripsView", "error", messageSource.getMessage("FindTripError", null, locale));
-        }
-        return new ModelAndView("redirect:/costs/" + trip.getId());
     }
 
 }
