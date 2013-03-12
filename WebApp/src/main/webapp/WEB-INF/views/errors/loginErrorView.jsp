@@ -11,7 +11,7 @@
     <jsp:include page="../baseView.jsp"/>
 
     <div id="content">
-        <h3><spring:message code="ErrorMsg"/></h3>
+        <h3><spring:message code="LoginError"/></h3>
     </div>
 
 </div>
