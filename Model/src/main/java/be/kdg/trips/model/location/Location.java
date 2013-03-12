@@ -20,7 +20,7 @@ import java.util.List;
  */
 @Entity
 @Table(name = "T_LOCATION")
-public class Location implements LocationInterface, Serializable
+public class Location implements Serializable
 {
     @Id
     @GeneratedValue(strategy= GenerationType.IDENTITY)
@@ -75,22 +75,18 @@ public class Location implements LocationInterface, Serializable
     public Location() {
     }
 
-    @Override
     public double getLatitude() {
         return latitude;
     }
 
-    @Override
     public void setLatitude(double latitude) {
         this.latitude = latitude;
     }
 
-    @Override
     public double getLongitude() {
         return longitude;
     }
 
-    @Override
     public void setLongitude(double longitude) {
         this.longitude = longitude;
     }
@@ -103,32 +99,26 @@ public class Location implements LocationInterface, Serializable
         this.title = title;
     }
 
-    @Override
     public String getDescription() {
         return description;
     }
 
-    @Override
     public void setDescription(String description) {
         this.description = description;
     }
 
-    @Override
     public Address getAddress() {
         return address;
     }
 
-    @Override
     public void setAddress(Address address) {
         this.address = address;
     }
 
-    @Override
     public Question getQuestion() {
         return question;
     }
 
-    @Override
     public void setQuestion(Question question) {
         this.question = question;
     }
@@ -147,6 +137,10 @@ public class Location implements LocationInterface, Serializable
 
     public Trip getTrip() {
         return trip;
+    }
+
+    public void setTrip(Trip trip) {
+        this.trip = trip;
     }
 
     @Override

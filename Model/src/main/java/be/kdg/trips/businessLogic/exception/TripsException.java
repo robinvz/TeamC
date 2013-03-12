@@ -1,4 +1,4 @@
-package be.kdg.trips.exception;
+package be.kdg.trips.businessLogic.exception;
 
 /**
  * Subversion Id

@@ -1,12 +1,10 @@
 package be.kdg.trips.businessLogic.interfaces;
 
-import be.kdg.trips.exception.TripsException;
+import be.kdg.trips.businessLogic.exception.TripsException;
 import be.kdg.trips.model.user.User;
 
 import javax.mail.MessagingException;
-import javax.mail.internet.AddressException;
 import java.util.List;
-import java.util.Set;
 
 /**
  * Subversion id

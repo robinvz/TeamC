@@ -3,14 +3,13 @@ package be.kdg.trips.businessLogic.impl;
 import be.kdg.trips.businessLogic.interfaces.EnrollmentBL;
 import be.kdg.trips.businessLogic.interfaces.TripBL;
 import be.kdg.trips.businessLogic.interfaces.UserBL;
-import be.kdg.trips.exception.TripsException;
+import be.kdg.trips.businessLogic.exception.TripsException;
 import be.kdg.trips.model.enrollment.Enrollment;
 import be.kdg.trips.model.enrollment.Status;
 import be.kdg.trips.model.invitation.Answer;
 import be.kdg.trips.model.invitation.Invitation;
 import be.kdg.trips.model.location.Location;
 import be.kdg.trips.model.question.Question;
-import be.kdg.trips.model.trip.TimelessTrip;
 import be.kdg.trips.model.trip.Trip;
 import be.kdg.trips.model.trip.TripPrivacy;
 import be.kdg.trips.model.user.User;
@@ -21,9 +20,6 @@ import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
 
 import javax.mail.MessagingException;
-import javax.mail.internet.AddressException;
-import javax.mail.internet.InternetAddress;
-import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -97,7 +93,7 @@ public class EnrollmentBLImpl implements EnrollmentBL
         Invitation invitation = null;
         if(isUnexistingInvitation(user, trip))
         {
-            if (tripBL.isOrganizer(trip, organizer) && !trip.isActive() && trip.getPrivacy()==TripPrivacy.PRIVATE)
+            if (userBL.isExistingUser(user.getEmail()) && userBL.isExistingUser(organizer.getEmail()) && tripBL.isOrganizer(trip, organizer) && !trip.isActive() && trip.getPrivacy()==TripPrivacy.PRIVATE)
             {
                 invitation = new Invitation(trip, user);
                 enrollmentDao.saveOrUpdateInvitation(invitation);
@@ -106,13 +102,12 @@ public class EnrollmentBLImpl implements EnrollmentBL
             }
             else
             {
-                throw new TripsException("Trip is either not published, already active, not private or organizer doesn't exist");
+                throw new TripsException("Trip is already active, not private, organizer/user doesn't exist or organizer doesn't match with the trip's organizer");
             }
         }
         return invitation;
     }
 
-    @Transactional
     @Override
     public Invitation selfInvite(Trip trip, User organizer) {
         Invitation invitation = new Invitation(trip, organizer);
@@ -127,14 +122,14 @@ public class EnrollmentBLImpl implements EnrollmentBL
         {
             if(isExistingInvitation(user, trip))
             {
-                if (tripBL.isOrganizer(trip, organizer)&& isUnexistingEnrollment(user, trip))
+                if (userBL.isExistingUser(user.getEmail()) && userBL.isExistingUser(organizer.getEmail()) && tripBL.isOrganizer(trip, organizer)&& isUnexistingEnrollment(user, trip))
                 {
                     Invitation invitation = enrollmentDao.getInvitationByUserAndTrip(user, trip);
                     enrollmentDao.deleteInvitation(invitation.getId());
                 }
                 else
                 {
-                    throw new TripsException("Trip is either not published, already active, not private or organizer doesn't exist");
+                    throw new TripsException("Organizer/user doesn't exist, organizer doesn't match with the trip's organizer or user already accepted the invitation");
                 }
             }
         }
@@ -248,6 +243,15 @@ public class EnrollmentBLImpl implements EnrollmentBL
         }
         return false;
     }
+
+/*    @Override
+    public boolean isUserEnrolled(User user, Trip trip) {
+        try {
+            return enrollmentDao.isExistingEnrollment(user, trip);
+        } catch (TripsException e) {
+            return false;
+        }
+    }*/
 
     @Override
     public boolean isUnexistingInvitation(User user, Trip trip) throws TripsException {

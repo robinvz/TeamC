@@ -1,12 +1,11 @@
 package be.kdg.trips.persistence.dao.interfaces;
 
-import be.kdg.trips.exception.TripsException;
+import be.kdg.trips.businessLogic.exception.TripsException;
 import be.kdg.trips.model.location.Location;
 import be.kdg.trips.model.question.Question;
 import be.kdg.trips.model.trip.Trip;
 import be.kdg.trips.model.user.User;
 
-import java.util.Collection;
 import java.util.List;
 
 /**

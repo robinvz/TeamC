@@ -1,6 +1,6 @@
 package be.kdg.trips.businessLogic.interfaces;
 
-import be.kdg.trips.exception.TripsException;
+import be.kdg.trips.businessLogic.exception.TripsException;
 import be.kdg.trips.model.location.Location;
 import be.kdg.trips.model.question.Question;
 import be.kdg.trips.model.trip.Repeatable;

@@ -57,9 +57,10 @@
 
                 <li class="jump-in"><a href="/trip/${trip.id}/locations"><spring:message code="Locations"/></a></li>
                 <li class="jump-in"><a href="/requirements/${trip.id}"><spring:message code="Requisites"/></a></li>
-                <li class="jump-in"><a href="/costs/${trip.id}"><spring:message code="Costs"/></a></li>
+
 
                 <c:if test="${trip.privacy != 'PUBLIC' && trip.published == true}">
+                    <li class="jump-in"><a href="/costs/${trip.id}"><spring:message code="Costs"/></a></li>
                     <li class="jump-in"><a href="/trip/${trip.id}/participants"><spring:message code="Participants"/></a></li>
                     <c:forEach items="${trip.enrollments}" var="enrollment">
                         <c:if test="${enrollment.user == user && enrollment.status == 'READY' || 'FINISHED'}">

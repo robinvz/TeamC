@@ -1,6 +1,5 @@
 package be.kdg.trips.model.trip;
 
-import be.kdg.trips.exception.TripsException;
 import be.kdg.trips.model.enrollment.Enrollment;
 import be.kdg.trips.model.invitation.Invitation;
 import be.kdg.trips.model.location.Location;
@@ -25,7 +24,7 @@ import java.util.*;
 @Entity
 @Table(name = "T_TRIP")
 @Inheritance(strategy= InheritanceType.SINGLE_TABLE)
-public abstract class Trip implements Serializable, TripInterface {
+public abstract class Trip implements Serializable {
     @Id
     private int id;
     @NotNull
@@ -94,7 +93,6 @@ public abstract class Trip implements Serializable, TripInterface {
         this.image = image;
     }
 
-    @Override
     public int getId() {
         return id;
     }
@@ -102,100 +100,71 @@ public abstract class Trip implements Serializable, TripInterface {
     public Trip() {
     }
 
-    @Override
     public String getTitle() {
         return title;
     }
 
-    @Override
     public void setTitle(String title) {
         this.title = title;
     }
 
-    @Override
     public String getDescription() {
         return description;
     }
 
-    @Override
     public void setDescription(String description) {
         this.description = description;
     }
 
-    @Override
     public Set<String> getLabels() {
         return labels;
     }
-    /*
-    @Override
-    public void setLabels(Set<String> labels) {
-        this.labels = labels;
-    }
-    */
-    @Override
+
     public TripPrivacy getPrivacy() {
         return privacy;
     }
-    /*
-    @Override
-    public void setPrivacy(TripPrivacy privacy) {
-        this.privacy = privacy;
-    }
-    */
-    @Override
+
     public void addLabel(String newLabel){
         this.labels.add(newLabel);
     }
 
-    @Override
     public User getOrganizer() {
         return organizer;
     }
-    /*
-    @Override
-    public void setOrganizer(User organizer) {
-        this.organizer = organizer;
-    }
-    */
+
     public Map<String, Integer> getRequisites()
     {
         return requisites;
     }
 
-    @Override
     public boolean isPublished() {
         return published;
     }
 
-    @Override
     public void setPublished(boolean published) {
         this.published = published;
     }
 
-    @Override
     public boolean isActive(){
         return false;
     }
 
-    @Override
     public boolean isTimeBoundTrip()
     {
         return false;
     }
 
-    @Override
     public void addLocation(Location location)
     {
         locations.add(location);
+        location.setTrip(this);
     }
 
-    @Override
     public void removeLocation(Location location)
     {
         locations.remove(location);
     }
 
-    @Override
     public List<Location> getLocations() {
         Collections.sort(locations, new Comparator<Location>() {
             @Override
@@ -206,18 +175,15 @@ public abstract class Trip implements Serializable, TripInterface {
         return locations;
     }
 
-    @Override
     public Set<Enrollment> getEnrollments() {
         return enrollments;
     }
 
-    @Override
     public void addEnrollment(Enrollment enrollment)
     {
         enrollments.add(enrollment);
     }
 
-    @Override
     public void removeEnrollment(Enrollment enrollment)
     {
         enrollments.remove(enrollment);
@@ -231,7 +197,6 @@ public abstract class Trip implements Serializable, TripInterface {
         this.enrollments = enrollments;
     }
 
-    @Override
     public void addRequisite(String name, int amount)
     {
         if(this.requisites.containsKey(name))
@@ -244,7 +209,6 @@ public abstract class Trip implements Serializable, TripInterface {
         }
     }
 
-    @Override
     public void removeRequisite(String name, int amount)
     {
         if(this.requisites.containsKey(name))

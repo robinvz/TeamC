@@ -19,7 +19,7 @@ import java.util.*;
  */
 @Entity
 @Table(name = "T_ENROLLMENT")
-public class Enrollment implements EnrollmentInterface, Serializable
+public class Enrollment implements Serializable
 {
     @Id
     @GeneratedValue(strategy= GenerationType.IDENTITY)
@@ -74,39 +74,21 @@ public class Enrollment implements EnrollmentInterface, Serializable
         return id;
     }
 
-    @Override
     public Trip getTrip()
     {
         return trip;
     }
 
-    @Override
     public User getUser()
     {
         return user;
     }
 
-    @Override
     public Date getDate()
     {
         return new Date(this.date.getTime());
     }
-    /*
-    @Override
-    public void setTrip(Trip trip) {
-        this.trip = trip;
-    }
 
-    @Override
-    public void setUser(User user) {
-        this.user = user;
-    }
-
-    @Override
-    public void setDate(Date date) {
-        this.date = new Date(date.getTime());
-    }
-    */
     public Location getLastLocationVisited() {
         return lastLocationVisited;
     }
@@ -159,7 +141,6 @@ public class Enrollment implements EnrollmentInterface, Serializable
         return requisites;
     }
 
-    @Override
     public void addRequisite(String name, int amount)
     {
         if(amount == 0)
@@ -176,7 +157,6 @@ public class Enrollment implements EnrollmentInterface, Serializable
         }
     }
 
-    @Override
     public void removeRequisite(String name, int amount)
     {
         if(this.requisites.containsKey(name))

@@ -20,18 +20,35 @@
 
     <div class="inner-content">
         <h3><spring:message code="Costs"/></h3>
-         <c:choose>
+
+        <c:choose>
             <c:when test="${not empty totalTripCosts}">
                 <table>
                     <thead>
-                        <th><spring:message code="Cost"/></th>
-                        <th><spring:message code="Price"/></th>
+                    <th><spring:message code="User"/></th>
+                    <th><spring:message code="Cost"/></th>
+                    <th><spring:message code="Price"/></th>
                     </thead>
                     <c:forEach items="${totalTripCosts}" var="cost">
                         <tr>
                             <td>${cost.key}</td>
-                            <td>${cost.value}</td>
+                            <td>
+                            </td>
+                            <td>
+                            </td>
                         </tr>
+
+                            <c:forEach items="${cost.value}" var="costLine">
+                                <tr>
+                                <td>
+                                    ${costLine.key}
+                                </td>
+                                <td>
+                                    ${costLine.value}
+                                </td>
+                                </tr>
+                            </c:forEach>
+
                     </c:forEach>
                 </table>
             </c:when>
@@ -39,6 +56,22 @@
                 <h3><spring:message code="NoCosts"/></h3>
             </c:otherwise>
         </c:choose>
+        <c:if test="${not empty user}">
+            <form id="form-createCost" action="/costs/${trip.id}/createCost" method="POST">
+                <table>
+                    <tr>
+                        <td><label><spring:message code="Name"/></label></td>
+                        <td><input type="text" name="name" required="true"></td>
+                    </tr>
+                    <tr>
+                        <td><label><spring:message code="Amount"/></label></td>
+                        <td><input type="number" name="amount" required="true"></td>
+                    </tr>
+                </table>
+                <button id="btn-addcost" type="submit" class="btn-blue"><spring:message code="addCost"/></button>
+
+            </form>
+        </c:if>
     </div>
 </div>
 

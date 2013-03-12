@@ -1,7 +1,7 @@
 package be.kdg.trips.controllers;
 
 import be.kdg.trips.beans.LoginBean;
-import be.kdg.trips.exception.TripsException;
+import be.kdg.trips.businessLogic.exception.TripsException;
 import be.kdg.trips.model.enrollment.Enrollment;
 import be.kdg.trips.model.location.Location;
 import be.kdg.trips.model.trip.*;
@@ -727,7 +727,7 @@ public class TripController {
 
     @RequestMapping(value = "/editTripPic/{tripId}", method = RequestMethod.GET)
     public ModelAndView showEditTripPic(@PathVariable int tripId) {
-        User user = (User) session.getAttribute("user");
+        User user = (User)  session.getAttribute("user");
         Trip trip = null;
         try {
             trip = tripsService.findTripById(tripId, user);
@@ -739,9 +739,7 @@ public class TripController {
     }
 
     @RequestMapping(value = "/tripPic/{tripId}", method = RequestMethod.GET, produces = "image/jpg")
-    public
-    @ResponseBody
-    byte[] showProfilePic(@PathVariable int tripId) {
+    public @ResponseBody byte[] showProfilePic(@PathVariable int tripId){
         User user = (User) session.getAttribute("user");
         byte[] imageData = null;
         try {
@@ -754,7 +752,8 @@ public class TripController {
     }
 
     @RequestMapping(value = "/editTripPic/{tripId}", method = RequestMethod.POST)
-    public ModelAndView editProfilePic(@PathVariable int tripId, @RequestParam("file") MultipartFile file) {
+    public ModelAndView editProfilePic(@PathVariable int tripId,@RequestParam("file") MultipartFile file)
+    {
         try {
             byte[] bFile = file.getBytes();
             User user = (User) session.getAttribute("user");
@@ -841,9 +840,9 @@ public class TripController {
             Map map = new HashMap();
             try {
                 trip = tripsService.findTripById(tripId, user);
-                Map<String, Double> totalTripCosts = new HashMap<>();
+                Map<String, Integer> totalTripCosts = new HashMap<>();
                 for (Enrollment enrollment : trip.getEnrollments()) {
-                    totalTripCosts.putAll(enrollment.getCosts());
+                    totalTripCosts.put(enrollment.getUser().toString(), enrollment.getCosts());
                 }
                 map.put("trip", trip);
                 map.put("totalTripCosts", totalTripCosts);
@@ -855,6 +854,20 @@ public class TripController {
             return new ModelAndView("loginView", "loginBean", new LoginBean());
         }
     }
+
+    @RequestMapping(value = "/costs/{tripId}/createCost", method = RequestMethod.POST)
+    public ModelAndView createCost(@PathVariable int tripId, @RequestParam String name, @RequestParam double amount,  Locale locale)  {
+        User user = (User) session.getAttribute(("user"));
+        Trip trip = null;
+        try {
+            trip = tripsService.findTripById(tripId, user);
+            tripsService.addCostToEnrollment(name, amount, trip, user);
+        } catch (TripsException e) {
+            return new ModelAndView("tripsView", "error", messageSource.getMessage("FindTripError", null, locale));
+        }
+        return new ModelAndView("redirect:/costs/" + trip.getId());
+    }
+
 
     @RequestMapping(value = "/acceptInvitation", method = RequestMethod.GET)
     public ModelAndView acceptInvitation(@RequestParam int tripId, Locale locale) {
@@ -905,4 +918,5 @@ public class TripController {
             return new ModelAndView("loginView", "loginBean", new LoginBean());
         }
     }
+
 }

@@ -20,7 +20,7 @@ import java.util.List;
 
 @Entity
 @Table(name = "T_QUESTION")
-public class Question implements QuestionInterface, Serializable
+public class Question implements Serializable
 {
     @Id
     @GeneratedValue
@@ -80,7 +80,6 @@ public class Question implements QuestionInterface, Serializable
         this.question = question;
     }
 
-    @Override
     public boolean checkAnswer(int answerIndex){
         if(answerIndex == this.correctAnswerIndex){
             return true;

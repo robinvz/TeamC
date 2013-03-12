@@ -1,8 +1,8 @@
 package be.kdg.trips;
 
+import be.kdg.trips.businessLogic.exception.TripsException;
 import be.kdg.trips.controllers.MobileController;
 import be.kdg.trips.controllers.TripController;
-import be.kdg.trips.exception.TripsException;
 import be.kdg.trips.model.enrollment.Enrollment;
 import be.kdg.trips.model.location.Location;
 import be.kdg.trips.model.question.Question;

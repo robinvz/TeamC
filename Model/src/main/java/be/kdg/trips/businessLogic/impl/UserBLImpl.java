@@ -1,24 +1,18 @@
 package be.kdg.trips.businessLogic.impl;
 
 import be.kdg.trips.businessLogic.interfaces.UserBL;
-import be.kdg.trips.exception.TripsException;
-import be.kdg.trips.model.address.Address;
+import be.kdg.trips.businessLogic.exception.TripsException;
 import be.kdg.trips.model.user.User;
 import be.kdg.trips.persistence.dao.interfaces.UserDao;
 import be.kdg.trips.utility.ImageChecker;
 import be.kdg.trips.utility.MailSender;
-import org.apache.tika.Tika;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
 
 import javax.mail.MessagingException;
-import javax.mail.internet.AddressException;
-import javax.mail.internet.InternetAddress;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Random;
-import java.util.Set;
 
 /**
  * Subversion id
