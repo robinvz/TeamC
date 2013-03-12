@@ -421,4 +421,17 @@ public class TestUser {
         if(foundUser.getLatitude()==10.03 && foundUser.getLongitude()==153.8) correct = true;
         assertTrue(correct);
     }
+
+    @Test
+    public void successfulToString() throws TripsException {
+        User user = tripsService.createUser(new User("eli@hotmail.cam","password"));
+        tripsService.updateUser(user,"Eli","Beerts","","","","","",null);
+        assertEquals(user.getFirstName()+" "+user.getLastName(),user.toString());
+    }
+
+    @Test
+    public void successfulToStringNoName() throws TripsException {
+        User user = tripsService.createUser(new User("eli@hotmail.cam","password"));
+        assertEquals(user.getEmail(),user.toString());
+    }
 }
