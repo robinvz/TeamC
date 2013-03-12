@@ -1,6 +1,6 @@
 package be.kdg.trips.beans;
 
-import be.kdg.trips.exception.TripsException;
+import be.kdg.trips.businessLogic.exception.TripsException;
 import be.kdg.trips.model.user.User;
 import be.kdg.trips.services.interfaces.TripsService;
 import org.springframework.beans.factory.annotation.Autowired;
