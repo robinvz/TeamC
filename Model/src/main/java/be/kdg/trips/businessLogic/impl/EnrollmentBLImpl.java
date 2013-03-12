@@ -200,7 +200,7 @@ public class EnrollmentBLImpl implements EnrollmentBL
 
     @Override
     @Transactional
-    public void addCostToEnrollment(String name, int amount, Trip trip, User user) throws TripsException
+    public void addCostToEnrollment(String name, double amount, Trip trip, User user) throws TripsException
     {
         if(isExistingEnrollment(user, trip))
         {
@@ -212,7 +212,7 @@ public class EnrollmentBLImpl implements EnrollmentBL
 
     @Override
     @Transactional
-    public void removeCostFromEnrollment(String name, int amount, Trip trip, User user) throws TripsException
+    public void removeCostFromEnrollment(String name, double amount, Trip trip, User user) throws TripsException
     {
         if(isExistingEnrollment(user, trip))
         {
