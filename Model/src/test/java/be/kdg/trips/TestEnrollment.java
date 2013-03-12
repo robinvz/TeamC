@@ -86,21 +86,21 @@ public class TestEnrollment
         tripsService.subscribe(trip, subscriber);
     }
 
-    @Test(expected = TransactionSystemException.class)
+    @Test(expected = TripsException.class)
     public void failedSubscribeInvalidPrivacyPublic() throws TripsException
     {
         User user = new User("jeremy@msn.be","zwaard");
         User subscriber = tripsService.createUser(user);
-        Trip trip = tripsService.createTimelessTrip("tijdloze trip", "aa", TripPrivacy.PUBLIC, organizer);
+        Trip trip = tripsService.createTimelessTrip("tijdloze trip", "tripp", TripPrivacy.PUBLIC, organizer);
         tripsService.publishTrip(trip, organizer);
         tripsService.subscribe(trip,subscriber);
     }
 
-    @Test(expected = ConstraintViolationException.class)
+    @Test(expected = TripsException.class)
     public void failedSubscribeInvalidPrivacyPrivate() throws TripsException
     {
         User subscriber = tripsService.createUser(new User("jereaamy@msn.be","zwaard"));
-        Trip trip = tripsService.createTimelessTrip("tijdloze trip", "aa", TripPrivacy.PRIVATE, organizer);
+        Trip trip = tripsService.createTimelessTrip("tijdloze trip", "tripp", TripPrivacy.PRIVATE, organizer);
         tripsService.subscribe(trip, subscriber);
     }
 
@@ -112,7 +112,7 @@ public class TestEnrollment
         tripsService.publishTrip(trip, organizer);
         tripsService.subscribe(trip, subscriber);
         tripsService.disenroll(trip, subscriber);
-       // assertTrue(tripsService.findEnrollmentsByUser(subscriber).isEmpty());
+        assertTrue(tripsService.findEnrollmentsByUser(subscriber).isEmpty());
     }
 
     @Test
@@ -230,6 +230,20 @@ public class TestEnrollment
         Trip trip = tripsService.createTimelessTrip("Spartacus run", "Lopen door de modder!", TripPrivacy.PRIVATE, organizer);
         Invitation invitation = tripsService.invite(trip, organizer, invitee);
         tripsService.acceptInvitation(trip, invitee);
+        tripsService.acceptInvitation(trip, invitee);
+    }
+
+    @Test(expected = TripsException.class)
+    public void failedAcceptInvitationPublicPrivacy() throws TripsException {
+        User invitee = tripsService.createUser(new User("unexisting292@hotmail.com","pass"));
+        Trip trip = tripsService.createTimelessTrip("Spartacus run", "Lopen door de modder!", TripPrivacy.PUBLIC, organizer);
+        tripsService.acceptInvitation(trip, invitee);
+    }
+
+    @Test(expected = TripsException.class)
+    public void failedAcceptInvitationProtectedPrivacy() throws TripsException {
+        User invitee = tripsService.createUser(new User("unexisting2992@hotmail.com","pass"));
+        Trip trip = tripsService.createTimelessTrip("Spartacus run", "Lopen door de modder!", TripPrivacy.PROTECTED, organizer);
         tripsService.acceptInvitation(trip, invitee);
     }
 

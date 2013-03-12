@@ -643,7 +643,7 @@ public class TestTrip {
         tripsService.addQuestionToLocation(organizer, location, "Wie is hier den baas?", possibleAnswers, 0, null);
         location = tripsService.findTripById(trip.getId(),organizer).getLocations().get(FIRST_ELEMENT);
         Question question = tripsService.findLocationById(location.getId()).getQuestion();
-        tripsService.editTripQuestionDetails(organizer, location, question, "Keke is den baas!", possibleAnswers, 0);
+        tripsService.editTripQuestionDetails(organizer, location, question, "Keke is den baas!", possibleAnswers, 0, null);
         String questionTitle = question.getQuestion();
         assertEquals("Keke is den baas!", questionTitle);
     }
@@ -659,7 +659,7 @@ public class TestTrip {
         tripsService.addQuestionToLocation(organizer, location, "Wie is hier den baas?", possibleAnswers, 0, null);
         location = tripsService.findTripById(trip.getId(),organizer).getLocations().get(FIRST_ELEMENT);
         Question question = tripsService.findLocationById(location.getId()).getQuestion();
-        tripsService.editTripQuestionDetails(organizer, location, question, "Wie is hier den baas?", possibleAnswers, 1);
+        tripsService.editTripQuestionDetails(organizer, location, question, "Wie is hier den baas?", possibleAnswers, 1, null);
         assertEquals(true, question.checkAnswer(1));
     }
 

@@ -40,8 +40,7 @@ public class EnrollmentBLImpl implements EnrollmentBL
     @Autowired
     private TripBL tripBL;
 
-    @Override
-    public Enrollment enroll(Trip trip, User user) throws TripsException
+    private Enrollment enroll(Trip trip, User user) throws TripsException
     {
         Enrollment enrollment = null;
         if(isUnexistingEnrollment(user, trip))
