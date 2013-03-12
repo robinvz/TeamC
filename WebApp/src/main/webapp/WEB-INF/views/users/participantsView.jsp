@@ -29,6 +29,13 @@
                     <c:forEach items="${trip.enrollments}" var="enrollment">
                         <tr>
                             <td>${enrollment.user.email}</td>
+                            <c:if test="${user == trip.organizer}">
+                                <td>
+                                    <form action="/addRequirementToEnrollmentView/${trip.id}/${enrollment.user.email}" method="POST">
+                                        <input type="submit" value="<spring:message code="AddRequisite"/>"/>
+                                    </form>
+                                </td>
+                            </c:if>
                         </tr>
                     </c:forEach>
                 </table>

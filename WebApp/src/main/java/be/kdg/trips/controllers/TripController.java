@@ -610,6 +610,50 @@ public class TripController {
         }
     }
 
+    @RequestMapping(value = "/addRequirementToEnrollmentView/{tripId}/{userString}", method = RequestMethod.POST)
+    public ModelAndView addRequirementToEnrollmentView(@PathVariable int tripId, @PathVariable String userString, Locale locale) {
+        User user = (User) session.getAttribute("user");
+        if (isLoggedIn()) {
+            Map map = new HashMap();
+            try {
+                Trip trip = tripsService.findTripById(tripId, user);
+                map.put("userString", userString);
+                map.put("trip", trip);
+                return new ModelAndView("requirementsView", map);
+            } catch (TripsException e) {
+                return new ModelAndView("tripsView", "error", e.getMessage());   //TODO:catch errors
+            }
+        } else {
+            return new ModelAndView("loginView", "loginBean", new LoginBean());
+        }
+    }
+
+    @RequestMapping(value = "/addRequirementToEnrollment/{tripId}/{userString}", method = RequestMethod.POST)
+    public ModelAndView addRequirementToEnrollment(@PathVariable int tripId, @PathVariable String userString, @RequestParam String requisite,
+                                                   @RequestParam String amount, Locale locale) {
+        User user = (User) session.getAttribute("user");
+        if (isLoggedIn()) {
+            Map map = new HashMap();
+            try {
+                Trip trip = tripsService.findTripById(tripId, user);
+                List results = tripsService.findUsersByKeyword(userString, user);
+                if(results.size()>0) {
+                    tripsService.addRequisiteToEnrollment(requisite, Integer.parseInt(amount), trip, (User) results.get(0), user);
+                    //map.put("userString", userString);
+                    map.put("trip", trip);
+                    map.put("success", messageSource.getMessage("RequisiteAdded", null, locale));
+                    return new ModelAndView("requirementsView", map);
+                } else {
+                    return new ModelAndView("tripsView", "error", messageSource.getMessage("NoUsersFound", null, locale));
+                }
+            } catch (TripsException e) {
+                return new ModelAndView("tripsView", "error", e.getMessage());
+            }
+        } else {
+            return new ModelAndView("loginView", "loginBean", new LoginBean());
+        }
+    }
+
     @RequestMapping(value = "/startTrip/{tripId}", method = RequestMethod.GET)
     public ModelAndView startTrip(@PathVariable int tripId, Locale locale) {
         User user = (User) session.getAttribute("user");
