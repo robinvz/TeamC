@@ -39,6 +39,7 @@ public interface EnrollmentBL
     public void addCostToEnrollment(String name, double amount, Trip trip, User user) throws TripsException;
     public void removeCostFromEnrollment(String name, double amount, Trip trip, User user) throws TripsException;
 
+    public boolean isUserEnrolled(User user, Trip trip);
     public boolean isExistingEnrollment(User user, Trip trip) throws TripsException;
     public boolean isExistingInvitation(User user, Trip trip) throws TripsException;
     public boolean isUnexistingEnrollment(User user, Trip trip) throws TripsException;

@@ -462,4 +462,17 @@ public class TestEnrollment
         tripsService.publishTrip(createdTrip, organizer);
         tripsService.stopTrip(createdTrip, organizer);
     }
+
+    @Test
+    public void successfulIsUserEnrolledTrue() throws TripsException {
+        User subscriber = tripsService.createUser(new User("xdgebruiker@kdg.be","twéè"));
+        Enrollment enrollment = tripsService.subscribe(trip, subscriber);
+        assertTrue(tripsService.isUserEnrolled(subscriber, trip));
+    }
+
+    @Test
+    public void successfulIsUserEnrolledFalse() throws TripsException {
+        User subscriber = tripsService.createUser(new User("yologebruier@kdg.be","twéè"));
+        assertFalse(tripsService.isUserEnrolled(subscriber, trip));
+    }
 }

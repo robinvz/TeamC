@@ -244,14 +244,14 @@ public class EnrollmentBLImpl implements EnrollmentBL
         return false;
     }
 
-/*    @Override
+    @Override
     public boolean isUserEnrolled(User user, Trip trip) {
         try {
             return enrollmentDao.isExistingEnrollment(user, trip);
         } catch (TripsException e) {
             return false;
         }
-    }*/
+    }
 
     @Override
     public boolean isUnexistingInvitation(User user, Trip trip) throws TripsException {
