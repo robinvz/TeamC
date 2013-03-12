@@ -78,7 +78,7 @@ public class TripsServiceImpl implements TripsService
 
     @Override
     public void setUsersCurrentPosition(User user, double latitude, double longitude) throws TripsException {
-        userBL.setUserPosition(user, latitude, longitude);
+        userBL.setUsersCurrentPosition(user, latitude, longitude);
     }
 
     //Trip Service
