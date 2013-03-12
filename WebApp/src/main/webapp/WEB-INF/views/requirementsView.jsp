@@ -52,7 +52,7 @@
             <c:if test="${not empty userString}">
                 <h3><spring:message code="AddRequisiteToEnrollment"/></h3>
                 <table>
-                    <form action="/addRequirementToEnrollment/${trip.id}/${userString}" method="POST">
+                    <form action="/addRequirementToEnrollment/${userString}/${trip.id}" method="POST">
                         <tr>
                             <td><spring:message code="User"/> ${userString}</td>
                             <td><input type="text" name="requisite"></td>
