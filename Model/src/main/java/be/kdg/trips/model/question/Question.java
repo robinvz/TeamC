@@ -46,12 +46,12 @@ public class Question implements QuestionInterface, Serializable
 
     public Question() {
     }
-
+    /*
     @Override
     public String toString() {
         return this.question;
     }
-
+    */
     public String getQuestion() {
         return question;
     }

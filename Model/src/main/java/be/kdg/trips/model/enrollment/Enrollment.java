@@ -90,7 +90,7 @@ public class Enrollment implements EnrollmentInterface, Serializable
     {
         return new Date(this.date.getTime());
     }
-
+    /*
     @Override
     public void setTrip(Trip trip) {
         this.trip = trip;
@@ -105,7 +105,7 @@ public class Enrollment implements EnrollmentInterface, Serializable
     public void setDate(Date date) {
         this.date = new Date(date.getTime());
     }
-
+    */
     public Location getLastLocationVisited() {
         return lastLocationVisited;
     }

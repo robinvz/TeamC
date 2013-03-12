@@ -234,10 +234,6 @@ public abstract class Trip implements Serializable, TripInterface {
     @Override
     public void addRequisite(String name, int amount)
     {
-        if(amount == 0)
-        {
-            amount = 1;
-        }
         if(this.requisites.containsKey(name))
         {
             this.requisites.put(name, this.requisites.get(name) + Math.abs(amount));
@@ -268,11 +264,11 @@ public abstract class Trip implements Serializable, TripInterface {
     public Set<Invitation> getInvitations() {
         return invitations;
     }
-
+    /*
     public void setInvitations(Set<Invitation> invitations) {
         this.invitations = invitations;
     }
-
+    */
     public void addInvitation(Invitation invitation)
     {
         this.invitations.add(invitation);
