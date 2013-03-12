@@ -1,7 +1,7 @@
 package be.kdg.trips.controllers;
 
 import be.kdg.trips.beans.LoginBean;
-import be.kdg.trips.exception.TripsException;
+import be.kdg.trips.businessLogic.exception.TripsException;
 import be.kdg.trips.model.enrollment.Enrollment;
 import be.kdg.trips.model.enrollment.Status;
 import be.kdg.trips.model.invitation.Invitation;
@@ -833,7 +833,7 @@ public class TripController {
             Map map = new HashMap();
             try {
                 trip = tripsService.findTripById(tripId, user);
-                Map<String, Integer> totalTripCosts = new HashMap<>();
+                Map<String, Double> totalTripCosts = new HashMap<>();
                 for (Enrollment enrollment : trip.getEnrollments()) {
                     totalTripCosts.putAll(enrollment.getCosts());
                 }

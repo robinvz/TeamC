@@ -921,5 +921,23 @@ public class TestTrip {
         Fraction fraction = new Fraction(2, 3);
         assertEquals(66.66, fraction.getPercentage(), 2);
     }
+
+    @Test
+    public void successfulGetLocations() throws TripsException
+    {
+        Trip trip = tripsService.createTimelessTrip("Trip with locations", "trip with locations", TripPrivacy.PUBLIC, user);
+        tripsService.addLocationToTrip(user, trip, 12.00, 13.00, null, null, null, null, null, "Location1", "Aangename location1");
+        tripsService.addLocationToTrip(user, trip, 11.00, 13.00, null, null, null, null, null, "Location2", "Aangename location2");
+        tripsService.addLocationToTrip(user, trip, 14.00, 13.00, null, null, null, null, null, "Location3", "Aangename location3");
+        Trip tripWithLocations = tripsService.findTripById(trip.getId(), user);
+        List<Location> locations = tripWithLocations.getLocations();
+        locations = tripWithLocations.getLocations();
+        locations = tripWithLocations.getLocations();
+        locations = tripWithLocations.getLocations();
+        locations = tripWithLocations.getLocations();
+        locations = tripWithLocations.getLocations();
+
+        assertEquals(3, locations.size());
+    }
 }
 
