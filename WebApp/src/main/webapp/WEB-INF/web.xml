@@ -67,4 +67,9 @@
         <filter-name>LogFilter</filter-name>
         <url-pattern>/users/*</url-pattern>
     </filter-mapping>
+
+    <error-page>
+        <error-code>404</error-code>
+        <location>/WEB-INF/views/errors/404View.jsp</location>
+    </error-page>
 </web-app>

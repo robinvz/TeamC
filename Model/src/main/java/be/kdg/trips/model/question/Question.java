@@ -68,6 +68,10 @@ public class Question implements QuestionInterface, Serializable
         this.correctAnswerIndex = correctAnswerIndex;
     }
 
+    public int getCorrectAnswerIndex() {
+        return correctAnswerIndex;
+    }
+
     public void setPossibleAnswers(List<String> possibleAnswers) {
         this.possibleAnswers = possibleAnswers;
     }
