@@ -298,6 +298,11 @@ public class TripsServiceImpl implements TripsService
         return enrollmentBL.checkAnswerFromQuestion(question, answerIndex, user);
     }
 
+    @Override
+    public boolean isUserEnrolled(User user, Trip trip) {
+        return enrollmentBL.isUserEnrolled(user, trip);
+    }
+
     //Mail Service
     @Override
     public void sendContactMail(String subject, String text, String sender) throws MessagingException {

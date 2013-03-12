@@ -30,25 +30,19 @@
                     <th><spring:message code="Price"/></th>
                     </thead>
                     <c:forEach items="${totalTripCosts}" var="cost">
-                        <tr>
-                            <td>${cost.key}</td>
-                            <td>
-                            </td>
-                            <td>
-                            </td>
-                        </tr>
-
                             <c:forEach items="${cost.value}" var="costLine">
                                 <tr>
-                                <td>
-                                    ${costLine.key}
-                                </td>
-                                <td>
-                                    ${costLine.value}
-                                </td>
+                                    <td>
+                                        ${cost.key}
+                                    </td>
+                                    <td>
+                                        ${costLine.key}
+                                    </td>
+                                    <td>
+                                        ${costLine.value}
+                                    </td>
                                 </tr>
                             </c:forEach>
-
                     </c:forEach>
                 </table>
             </c:when>

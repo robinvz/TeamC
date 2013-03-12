@@ -88,6 +88,7 @@ public interface TripsService
     public void setLastLocationVisited(Trip trip, User user, Location location) throws TripsException;
     public boolean checkAnswerFromQuestion(Question question, int answerIndex, User user) throws TripsException;
 
+    public boolean isUserEnrolled(User user, Trip trip);
     //MailContact service
     public void sendContactMail(String subject, String text, String sender) throws MessagingException;
     public void forgotPassword(String email) throws TripsException, MessagingException;
