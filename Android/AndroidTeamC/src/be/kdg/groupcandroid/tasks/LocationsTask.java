@@ -88,14 +88,23 @@ public class LocationsTask extends AsyncTask<String, Void, ArrayList<Location>> 
 						Location location = new Location(id, title,
 								description, latitude, longitude);
 						location.addQuestion(question);
-						try{
+						if (array.getJSONObject(i).has("answered")) {
+							boolean isAnswered = array.getJSONObject(i)
+									.getBoolean("answered");
+
+							location.setAnswered(isAnswered);
+							if (isAnswered) {
+								boolean correct = array.getJSONObject(i)
+										.getBoolean("correct");
+								location.setCorrect(correct);
+							}
+						}
+						if (array.getJSONObject(i).has("possibleAnswers")) {
 							JSONArray answers = array.getJSONObject(i)
 									.getJSONArray("possibleAnswers");
 							for (int j = 0; j < answers.length(); j++) {
 								location.addAnswer(answers.getString(j));
 							}
-						}catch (Exception e){
-							//NO question so no answer
 						}
 						locations.add(location);
 					}
@@ -125,7 +134,7 @@ public class LocationsTask extends AsyncTask<String, Void, ArrayList<Location>> 
 			dialog.dismiss();
 		}
 	}
-	
+
 	@Override
 	protected void onCancelled() {
 		if (dialog.isShowing()) {

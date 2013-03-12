@@ -48,4 +48,5 @@
     <string name="chat">Chat</string>
     <string name="broadcast">Broadcast</string>
     <string name="locations">Locaties</string>
+    <string name="answerpreviousfirst">Je moet eerst de vorige vraag beantwoorden</string>
 </resources>

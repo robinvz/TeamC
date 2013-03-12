@@ -40,14 +40,14 @@ public class UserMapActivity extends FragmentActivity implements
 		LocationListener {
 
 	private GoogleMap mMap;
-	private int tripId;
+	private String tripId;
 	private List<Marker> locationMarkers;
 	private Marker current;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
-		tripId = getIntent().getIntExtra("tripid", 0);
+		tripId = getIntent().getStringExtra("tripid");
 		if (isGoogleMapsInstalled()) {
 			setContentView(R.layout.usermap);
 			int status = GooglePlayServicesUtil
@@ -157,7 +157,7 @@ public class UserMapActivity extends FragmentActivity implements
 		String email = sm.getEmail();
 		String pass = sm.getPassword();
 
-		ct.execute(new String[] { ip, port, tripId + "", email, pass });
+		ct.execute(new String[] { ip, port, tripId, email, pass });
 		List<Contact> contacts;
 		try {
 			contacts = ct.get();

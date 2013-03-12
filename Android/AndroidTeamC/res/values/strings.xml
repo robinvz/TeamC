@@ -48,5 +48,6 @@
     <string name="communication">Communication</string>
     <string name="chat">Chat</string>
     <string name="broadcast">Broadcast</string>
+    <string name="answerpreviousfirst">You need to answer the previous question first</string>
 
 </resources>

@@ -58,9 +58,13 @@ public class Maptivity extends FragmentActivity implements LocationListener {
 	private Marker endlocation;
 	private int sequence;
 	private Polyline line;
+	boolean previouslyAnswered = false;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
+		loc = (Location) getIntent().getSerializableExtra("location");
+		previouslyAnswered = getIntent().getBooleanExtra("previousanswered",
+				false);
 		super.onCreate(savedInstanceState);
 		sequence = getIntent().getIntExtra("sequence", 0);
 		if (isGoogleMapsInstalled()) {
@@ -173,14 +177,14 @@ public class Maptivity extends FragmentActivity implements LocationListener {
 		String email = sm.getEmail();
 		String pass = sm.getPassword();
 		QuestionTask qt = new QuestionTask(this);
-		qt.execute(new String[] { ip, port, email, pass,
-				item.getOrder() + "", loc.getId() + "" });
+		qt.execute(new String[] { ip, port, email, pass, item.getOrder() + "",
+				loc.getId() + "" });
 		try {
 			switch (qt.get(3, TimeUnit.SECONDS)) {
-			case 0:	//incorrect
+			case 0: // incorrect
 				finishQuestion(false);
 				break;
-			case 1: //correct
+			case 1: // correct
 				finishQuestion(true);
 				break;
 			case -1:
@@ -216,7 +220,6 @@ public class Maptivity extends FragmentActivity implements LocationListener {
 
 	@Override
 	public void onLocationChanged(android.location.Location location) {
-		loc = (Location) getIntent().getSerializableExtra("location");
 		addMarker(loc.getLatitude(), loc.getLongitude(), loc.getTitle(),
 				loc.getDescription());
 		addCircle(new LatLng(loc.getLatitude(), loc.getLongitude()), RADIUS); // RADIUS
@@ -237,25 +240,27 @@ public class Maptivity extends FragmentActivity implements LocationListener {
 		loco.setLatitude(loc.getLatitude());
 		loco.setLongitude(loc.getLongitude());
 		TextView tv = (TextView) findViewById(R.id.tvVraag);
-		if (location.distanceTo(loco) <= RADIUS) {
-			if (!loc.isAnswered() && !loc.getQuestion().contentEquals("null")
-					&& !loc.getQuestion().isEmpty()) {
-				tv.setText(loc.getQuestion());
-				registerForContextMenu(tv);
-				tv.setOnClickListener(new View.OnClickListener() {
-					@Override
-					public void onClick(View v) {
-						openContextMenu(v);
-					}
-				});
-			} else if (loc.getQuestion().contentEquals("null")) {
-				tv.setText(getResources().getString(R.string.noquestion));
-			} else {
-				tv.setText(getResources().getString(R.string.alreadyanswered));
-			}
-		} else {
+		if (loc.getQuestion().contentEquals("null")){
+			tv.setText(getResources().getString(R.string.noquestion));
+		}
+		else if (!previouslyAnswered) {
+			tv.setText(getResources().getString(R.string.answerpreviousfirst));
+		} else if (location.distanceTo(loco) > RADIUS) {
 			tv.setText(getResources().getString(R.string.notcloseenough));
 			tv.setOnClickListener(null);
+		} else if (!loc.isAnswered()
+				&& !loc.getQuestion().contentEquals("null")
+				&& !loc.getQuestion().isEmpty()) {
+			tv.setText(loc.getQuestion());
+			registerForContextMenu(tv);
+			tv.setOnClickListener(new View.OnClickListener() {
+				@Override
+				public void onClick(View v) {
+					openContextMenu(v);
+				}
+			});
+		} else {
+			tv.setText(getResources().getString(R.string.alreadyanswered));
 		}
 	}
 

@@ -49,13 +49,15 @@ public class LocationsFragment extends ListFragment {
 			@Override
 			public void onItemClick(AdapterView<?> arg0, View arg1, int position,
 					long arg3) {
-				Bundle bundle = new Bundle();
 				Intent inten = new Intent(getActivity(), Maptivity.class);
-				Location tmp = (Location) arg0.getItemAtPosition(position);
 				inten.putExtra("location", ((Location) arg0.getItemAtPosition(position)));
 				inten.putExtra("sequence", position);
+				boolean previousAnswered = true;
+				if (position != 0){
+					previousAnswered = ((Location) arg0.getItemAtPosition(position - 1)).isAnswered();
+				}
+				inten.putExtra("previousanswered", previousAnswered);
 				startActivityForResult(inten, 1);
-				Toast.makeText(getActivity(), position + "", Toast.LENGTH_LONG).show();
 			}		
 		});
 	}
