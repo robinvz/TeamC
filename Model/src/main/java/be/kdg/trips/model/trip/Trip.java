@@ -1,6 +1,5 @@
 package be.kdg.trips.model.trip;
 
-import be.kdg.trips.exception.TripsException;
 import be.kdg.trips.model.enrollment.Enrollment;
 import be.kdg.trips.model.invitation.Invitation;
 import be.kdg.trips.model.location.Location;

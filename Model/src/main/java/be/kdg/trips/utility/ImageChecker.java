@@ -1,6 +1,6 @@
 package be.kdg.trips.utility;
 
-import be.kdg.trips.exception.TripsException;
+import be.kdg.trips.businessLogic.exception.TripsException;
 import org.apache.tika.Tika;
 
 /**
