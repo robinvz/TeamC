@@ -1,34 +1,35 @@
 var tripId;
-var prob;
+
 function getTripId(id) {
     tripId = id;
     initDataTable();
-    inviteUser();
-    uninviteUser();
+    btnListeners();
 }
 
 function initDataTable() {
-    prob = $('.dataTable').dataTable({
-        /*bProcessing: true,
-         bServerSide: true,
-         sAjaxSource: "/inviteUser/" + tripId + "/sendInvite"*/
-    });
+    $('.dataTable').dataTable();
 }
 
-function inviteUser() {
+function btnListeners() {
+    $('#btn-SearchUsers').click(function () {
+        $('#foundUsers').show();
+    });
+
     $('.invite-input').click(function () {
-        var data = [
+        var invitedUser = [
             {'name': 'userByKeywordEmail', 'value': $(this).closest('tr').find('input').val()}
         ];
-        $.post('/inviteUser/' + tripId + '/sendInvite', data);
+        $.post('/inviteUser/' + tripId + '/sendInvite', invitedUser, function () {
+            location.reload();
+        });
     });
-}
 
-function uninviteUser() {
     $('.uninvite-input').click(function () {
-        var data = [
+        var uninvitedUser = [
             {'name': 'uninviteEmail', 'value': $(this).closest('tr').find('input').val()}
         ];
-        $.post('/inviteUser/' + tripId + '/uninvite/', data);
+        $.post('/inviteUser/' + tripId + '/uninvite/', uninvitedUser, function () {
+            location.reload();
+        });
     });
 }

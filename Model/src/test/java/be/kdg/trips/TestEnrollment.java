@@ -316,11 +316,11 @@ public class TestEnrollment
         User user = tripsService.createUser(new User("kuku@hotmail.com", "pass"));
         tripsService.publishTrip(trip, organizer);
         tripsService.subscribe(trip, user);
-        tripsService.addCostToEnrollment("bier", 10, trip, user);
-        tripsService.addCostToEnrollment("bier", 5, trip, user);
-        tripsService.addCostToEnrollment("meisjes van plezier", 50, trip, user);
+        tripsService.addCostToEnrollment("bier", 10.0, trip, user);
+        tripsService.addCostToEnrollment("bier", 5.0, trip, user);
+        tripsService.addCostToEnrollment("meisjes van plezier", 50.0, trip, user);
         Enrollment enrollment = tripsService.findEnrollmentsByUser(user).get(FIRST_ELEMENT);
-        assertTrue(enrollment.getCosts().containsValue(15));
+        assertTrue(enrollment.getCosts().containsValue(15.0));
     }
 
     @Test
@@ -330,11 +330,11 @@ public class TestEnrollment
         User user = tripsService.createUser(new User("kk@hotmail.com", "pass"));
         tripsService.publishTrip(trip, organizer);
         tripsService.subscribe(trip, user);
-        tripsService.addCostToEnrollment("bier", 10, trip, user);
-        tripsService.addCostToEnrollment("bier", 5, trip, user);
-        tripsService.addCostToEnrollment("meisjes van plezier", 50, trip, user);
-        tripsService.removeCostFromEnrollment("bier", 12, trip, user);
-        tripsService.removeCostFromEnrollment("meisjes van plezier", 50, trip, user);
+        tripsService.addCostToEnrollment("bier", 10.0, trip, user);
+        tripsService.addCostToEnrollment("bier", 5.0, trip, user);
+        tripsService.addCostToEnrollment("meisjes van plezier", 50.0, trip, user);
+        tripsService.removeCostFromEnrollment("bier", 12.0, trip, user);
+        tripsService.removeCostFromEnrollment("meisjes van plezier", 50.0, trip, user);
         Enrollment enrollment = tripsService.findEnrollmentsByUser(user).get(FIRST_ELEMENT);
         assertEquals(1, enrollment.getCosts().size());
     }
