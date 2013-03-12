@@ -76,6 +76,10 @@ public class ContactsTask extends AsyncTask<String, Void, ArrayList<Contact>>{
 						String lastName = array.getJSONObject(i).getString(
 								"lastName");
 						Contact c = new Contact(firstName, lastName, email);
+						c.setLatitude(array.getJSONObject(i).getDouble(
+								"latitude"));
+						c.setLongitude(array.getJSONObject(i).getDouble(
+								"longitude"));
 						contacts.add(c);
 					}
 					return contacts;

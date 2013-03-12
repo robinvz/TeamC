@@ -33,7 +33,7 @@ import android.util.Log;
 
 public class TripsTask extends AsyncTask<String, Void, ArrayList<Item>>{
 	
-	private ProgressDialog dialog;
+	public ProgressDialog dialog;
 
 	public TripsTask(Activity activity) {
 		dialog = new ProgressDialog(activity);
@@ -94,7 +94,7 @@ public class TripsTask extends AsyncTask<String, Void, ArrayList<Item>>{
 			e.printStackTrace();
 			Log.d("error", message);
 			return trips;
-		}
+		} 
 	}
 	
 	protected void onPreExecute() {

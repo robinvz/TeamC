@@ -40,5 +40,13 @@
     <string name="currentlocation">Current Location</string>
     <string name="currentlocationsnippet">You are currently here and need to get to the other marker!</string>
     <string name="notcloseenough">You are not close enough to answer the question!</string>
+    <string name="noconnect">We could not connect with the server</string>
+    <string name="refresh">Refresh</string>
+    <string name="userlocations">User Locations</string>
+    <string name="navigation">Navigation</string>
+    <string name="locations">Locations</string>
+    <string name="communication">Communication</string>
+    <string name="chat">Chat</string>
+    <string name="broadcast">Broadcast</string>
 
 </resources>

@@ -25,7 +25,7 @@ import android.widget.ListView;
 import android.widget.Toast;
 
 public class LocationsFragment extends ListFragment {
-	
+	LocationListAdapter lla ;
 
 	public LocationsFragment() {
 		super();
@@ -42,7 +42,7 @@ public class LocationsFragment extends ListFragment {
 	@Override
 	public void onActivityCreated(Bundle savedInstanceState) {
 		super.onActivityCreated(savedInstanceState);
-		LocationListAdapter lla = new LocationListAdapter(getActivity(), getLocations(), R.layout.listitemrow);
+		lla = new LocationListAdapter(getActivity(), getLocations(), R.layout.listitemrow);
 		setListAdapter(lla);
 		final ListView lv = getListView();
 		lv.setOnItemClickListener(new OnItemClickListener() {
@@ -53,7 +53,8 @@ public class LocationsFragment extends ListFragment {
 				Intent inten = new Intent(getActivity(), Maptivity.class);
 				Location tmp = (Location) arg0.getItemAtPosition(position);
 				inten.putExtra("location", ((Location) arg0.getItemAtPosition(position)));
-				startActivity(inten);
+				inten.putExtra("sequence", position);
+				startActivityForResult(inten, 1);
 				Toast.makeText(getActivity(), position + "", Toast.LENGTH_LONG).show();
 			}		
 		});
@@ -82,7 +83,13 @@ public class LocationsFragment extends ListFragment {
 	{
 	if(requestCode == 1 && resultCode == Activity.RESULT_OK)
 	    {
-	        Log.d("ja", "ja");          
+	        boolean answer_correct = data.getBooleanExtra("correct", false);
+	        int position = data.getIntExtra("position", 0);
+        	lla.getItem(position).setAnswered(true);
+	        if (answer_correct){
+	        	lla.getItem(position).setCorrect(true);
+	        }
+        	lla.notifyDataSetChanged();	        
 	    }
 	}
 }

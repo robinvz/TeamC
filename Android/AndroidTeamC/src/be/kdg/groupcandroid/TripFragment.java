@@ -158,6 +158,7 @@ public class TripFragment extends Fragment {
 		TripActivity detail = (TripActivity) getActivity();
 		if (!trip.getPrivacy().contentEquals("public") && detail.items.size() < 4 ){
 			menuItems = new ArrayList<Object>();
+			detail.items.add(new Item(getResources().getString(R.string.userlocations), R.drawable.chat_icon, 3));
 			addCommunicationCategory();
 			menuItems.add(new Item("Chat",
 					R.drawable.chat_icon, 2));
@@ -170,7 +171,7 @@ public class TripFragment extends Fragment {
 	private void addOrganizerMenu(){
 		TripActivity detail = (TripActivity) getActivity();
 		if (trip.getOrganizer().contentEquals(sm.getEmail())){
-			detail.items.add(new Item("Broadcast", R.drawable.broadcast, 1)); 
+			detail.items.add(new Item(getResources().getString(R.string.broadcast), R.drawable.broadcast, 1)); 
 		}
 		detail.mAdapter.notifyDataSetChanged();
 	}
@@ -178,7 +179,7 @@ public class TripFragment extends Fragment {
 	private void addCommunicationCategory(){
 		TripActivity detail = (TripActivity) getActivity();
 		if (!(detail.items.get(2) instanceof Category)){
-			detail.items.add(new Category("Communicatie"));
+			detail.items.add(new Category(getResources().getString(R.string.communication)));
 		}
 	}
 	

@@ -5,10 +5,15 @@ import android.app.AlertDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.location.Criteria;
+import android.location.Location;
+import android.location.LocationListener;
+import android.location.LocationManager;
 import android.opengl.Visibility;
 import android.os.Build;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
+import android.provider.Settings;
 import android.support.v4.app.FragmentActivity;
 import android.support.v4.app.FragmentTransaction;
 import android.view.Menu;
@@ -27,6 +32,7 @@ import android.widget.Toast;
 import be.kdg.groupcandroid.model.Category;
 import be.kdg.groupcandroid.model.Item;
 import be.kdg.groupcandroid.model.Trip;
+import be.kdg.groupcandroid.tasks.CurrentLocationTask;
 import be.kdg.groupcandroid.tasks.TripActionsTask;
 import net.simonvt.menudrawer.*;
 
@@ -36,10 +42,12 @@ import java.util.concurrent.ExecutionException;
 import java.util.concurrent.TimeUnit;
 import java.util.concurrent.TimeoutException;
 
+import com.google.android.gms.maps.CameraUpdateFactory;
+import com.google.android.gms.maps.model.LatLng;
 import com.parse.ParsePush;
 
 @SuppressLint("NewApi")
-public class TripActivity extends FragmentActivity {
+public class TripActivity extends FragmentActivity implements LocationListener {
 
 	private static final String STATE_ACTIVE_POSITION = "net.simonvt.menudrawer.samples.ContentSample.activePosition";
 	private static final String STATE_CONTENT_TEXT = "net.simonvt.menudrawer.samples.ContentSample.contentText";
@@ -57,6 +65,7 @@ public class TripActivity extends FragmentActivity {
 	protected void onCreate(Bundle inState) {
 		super.onCreate(inState);
 		Intent myIntent = getIntent();
+		getCurrentLocation();
 		trip = (Trip) myIntent.getSerializableExtra("trip");
 		if (inState != null) {
 			mActivePosition = inState.getInt(STATE_ACTIVE_POSITION);
@@ -65,8 +74,9 @@ public class TripActivity extends FragmentActivity {
 		mMenuDrawer = MenuDrawer.attach(this, MenuDrawer.MENU_DRAG_CONTENT);
 		mMenuDrawer.setContentView(R.layout.activity_contentsample);
 		items.add(new Item(trip.getTitle(), R.drawable.ic_launcher, 0));
-		items.add(new Category("Navigatie"));
-		items.add(new Item("Locaties", R.drawable.positie, 3));
+		items.add(new Category(getResources().getString(R.string.navigation)));
+		items.add(new Item(getResources().getString(R.string.locations),
+				R.drawable.positie, 3));
 		mList = new ListView(this);
 		mAdapter = new MenuAdapter(items);
 		mList.setAdapter(mAdapter);
@@ -98,6 +108,30 @@ public class TripActivity extends FragmentActivity {
 
 	}
 
+	private void getCurrentLocation() {
+		// Getting LocationManager object from System Service
+		// LOCATION_SERVICE
+		LocationManager locationManager = (LocationManager) getSystemService(LOCATION_SERVICE);
+		// Creating a criteria object to retrieve provider
+		Criteria criteria = new Criteria();
+
+		// Getting the name of the best provider
+		String provider = locationManager.getBestProvider(criteria, true);
+
+		// Getting Current Location
+		android.location.Location location = locationManager
+				.getLastKnownLocation(provider);
+
+		if (location != null) {
+			onLocationChanged(location);
+		} else {
+			Intent settingsIntent = new Intent(
+					Settings.ACTION_LOCATION_SOURCE_SETTINGS);
+			startActivity(settingsIntent);
+		}
+		locationManager.requestLocationUpdates(provider, 20000, 0, this);
+	}
+
 	private AdapterView.OnItemClickListener mItemClickListener = new AdapterView.OnItemClickListener() {
 		@Override
 		public void onItemClick(AdapterView<?> parent, View view, int position,
@@ -109,84 +143,42 @@ public class TripActivity extends FragmentActivity {
 			Object clickedObject = parent.getAdapter().getItem(position);
 			if (clickedObject instanceof Item) {
 				Item clickItem = (Item) clickedObject;
-				if (clickItem.title.toLowerCase().contains("chat")) {
-					/*
-					 * ChatListFragment listfr = new ChatListFragment();
-					 * transaction.replace(R.id.fragment1, listfr);
-					 */
+				if (clickItem.title.contentEquals(getResources().getString(
+						R.string.chat))) {
 					Intent intent = new Intent(TripActivity.this,
 							ChatActivity.class);
 					Bundle bundle = new Bundle();
 					bundle.putString("tripid", trip.getId());
 					intent.putExtras(bundle);
 					startActivity(intent);
-				} else if (clickItem.id == 0) { // TripTitle is selected so
-					TripFragment tp = new TripFragment();
-					Bundle bundle = new Bundle();
-					bundle.putSerializable("trip", trip);
-					tp.setArguments(bundle);
-					transaction.replace(R.id.fragment1, tp);
-				} else if (clickItem.title.toLowerCase().contains("loc")) { // TripTitle
-																			// is
-																			// selected
-																			// so
+				} else if (clickItem.title.contentEquals(getResources()
+						.getString(R.string.locations))) {
 					LocationsFragment locFr = new LocationsFragment();
 					Bundle bundle = new Bundle();
 					bundle.putInt("tripId", Integer.parseInt(trip.getId()));
 					locFr.setArguments(bundle);
 					transaction.replace(R.id.fragment1, locFr);
-				} else if (clickItem.title.toLowerCase().contentEquals(
-						"broadcast")) {
-					AlertDialog.Builder alert = new AlertDialog.Builder(
-							TripActivity.this);
-					alert.setMessage(getResources().getString(
-							R.string.typebroadcast));
-					alert.setTitle("Broadcast");
-					final EditText input = new EditText(TripActivity.this);
-					alert.setView(input);
-
-					alert.setPositiveButton(
-							getResources().getString(R.string.send),
-							new DialogInterface.OnClickListener() {
-								public void onClick(DialogInterface dialog,
-										int whichButton) {
-									String value = input.getText().toString();
-									ParsePush push = new ParsePush();
-									push.setChannel(trip.getTitle().replace(
-											" ", "")
-											+ trip.getId());
-									push.setMessage(trip.getTitle() + ": "
-											+ value);
-									push.sendInBackground();
-									Toast.makeText(
-											TripActivity.this,
-											getResources().getString(
-													R.string.broadcastsent),
-											Toast.LENGTH_LONG).show();
-								}
-							});
-
-					alert.setNegativeButton(
-							getResources().getString(R.string.cancel),
-							new DialogInterface.OnClickListener() {
-								public void onClick(DialogInterface dialog,
-										int whichButton) {
-								}
-							});
-
-					alert.show();
-				}
-
-				else { // TripTitle is selected so title view
-					TemplateFragment tempFragment = TemplateFragment
-							.newInstance(position, trip);
-					transaction.replace(R.id.fragment1, tempFragment);
+				} else if (clickItem.title.contentEquals(getResources()
+						.getString(R.string.broadcast))) {
+					makeBroadcast();
+				} else if (clickItem.title.contentEquals(getResources()
+						.getString(R.string.userlocations))) {
+					Intent intent = new Intent(TripActivity.this,
+							UserMapActivity.class);
+					Bundle bundle = new Bundle();
+					bundle.putString("tripid", trip.getId());
+					intent.putExtras(bundle);
+					startActivity(intent);
+				} else { // Weird view selected
+					TripFragment tp = new TripFragment();
+					Bundle bundle = new Bundle();
+					bundle.putSerializable("trip", trip);
+					tp.setArguments(bundle);
+					transaction.replace(R.id.fragment1, tp);
 				}
 				transaction.commit();
 
 			}
-			// transaction.addToBackStack(null);
-
 			mMenuDrawer.closeMenu();
 		}
 	};
@@ -196,6 +188,38 @@ public class TripActivity extends FragmentActivity {
 		super.onSaveInstanceState(outState);
 		outState.putInt(STATE_ACTIVE_POSITION, mActivePosition);
 		outState.putString(STATE_CONTENT_TEXT, mContentText);
+	}
+
+	protected void makeBroadcast() {
+		AlertDialog.Builder alert = new AlertDialog.Builder(TripActivity.this);
+		alert.setMessage(getResources().getString(R.string.typebroadcast));
+		alert.setTitle("Broadcast");
+		final EditText input = new EditText(TripActivity.this);
+		alert.setView(input);
+		alert.setPositiveButton(getResources().getString(R.string.send),
+				new DialogInterface.OnClickListener() {
+					public void onClick(DialogInterface dialog, int whichButton) {
+						String value = input.getText().toString();
+						ParsePush push = new ParsePush();
+						push.setChannel("trip" + trip.getId() + "-"
+								+ trip.getTitle().hashCode());
+						push.setMessage(trip.getTitle() + ": " + value);
+						push.sendInBackground();
+						Toast.makeText(
+								TripActivity.this,
+								getResources()
+										.getString(R.string.broadcastsent),
+								Toast.LENGTH_LONG).show();
+					}
+				});
+
+		alert.setNegativeButton(getResources().getString(R.string.cancel),
+				new DialogInterface.OnClickListener() {
+					public void onClick(DialogInterface dialog, int whichButton) {
+					}
+				});
+
+		alert.show();
 	}
 
 	@Override
@@ -218,8 +242,7 @@ public class TripActivity extends FragmentActivity {
 			if (drawerState == MenuDrawer.STATE_OPEN
 					|| drawerState == MenuDrawer.STATE_OPENING) {
 				mMenuDrawer.closeMenu();
-			}
-			else{
+			} else {
 				mMenuDrawer.openMenu(true);
 			}
 			return true;
@@ -320,6 +343,38 @@ public class TripActivity extends FragmentActivity {
 		// Inflate the menu; this adds items to the action bar if it is present.
 		getMenuInflater().inflate(R.menu.activity_main, menu);
 		return true;
+	}
+
+	@Override
+	public void onLocationChanged(Location location) {
+		CurrentLocationTask clt = new CurrentLocationTask();
+		SharedPreferences sp = PreferenceManager
+				.getDefaultSharedPreferences(this);
+		String ip = sp.getString("server_ip", "192.168.2.200");
+		String port = sp.getString("server_port", "8080");
+		SessionManager sm = new SessionManager(this);
+		String email = sm.getEmail();
+		String pass = sm.getPassword();
+		clt.execute(new String[] { ip, port, location.getLatitude() + "",
+				location.getLongitude() + "", email, pass });
+	}
+
+	@Override
+	public void onProviderDisabled(String provider) {
+		// TODO Auto-generated method stub
+
+	}
+
+	@Override
+	public void onProviderEnabled(String provider) {
+		// TODO Auto-generated method stub
+
+	}
+
+	@Override
+	public void onStatusChanged(String provider, int status, Bundle extras) {
+		// TODO Auto-generated method stub
+
 	}
 
 }

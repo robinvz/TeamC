@@ -39,6 +39,7 @@ public class LocationListAdapter extends ArrayAdapter<Location> {
 		if (location != null){
 			TextView title = (TextView) v.findViewById(R.id.txtLocationTitle);
 			TextView seqnr = (TextView) v.findViewById(R.id.txtSequence);
+			ImageView img = (ImageView) v.findViewById(R.id.imageView1);
 			if (title != null){
 				title.setText(location.getTitle());
 				seqnr.setText(position + "");
@@ -46,6 +47,11 @@ public class LocationListAdapter extends ArrayAdapter<Location> {
 					title.setBackgroundColor(colorListItemB);
 				}else{
 					title.setBackgroundColor(colorListItemA);
+				}
+				if (location.isAnswered() && location.isCorrect()){
+					img.setImageResource(R.drawable.correct);
+				} else if (location.isAnswered() && !location.isCorrect()){
+					img.setImageResource(R.drawable.wrong);
 				}
 			}
 		}

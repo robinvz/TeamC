@@ -89,10 +89,10 @@ public class BaseTripsFragment extends Fragment {
 				String pass = sm.getPassword();
 				TripByIdTask tt = new TripByIdTask();
 				try {
-					Trip trip = tt.execute(
+					tt.execute(
 							new String[] { ip, port,
-									tripsList.get(arg2).id + "", email, pass })
-							.get(3, TimeUnit.SECONDS);
+									tripsList.get(arg2).id + "", email, pass });
+					Trip trip = tt.get(3, TimeUnit.SECONDS);
 					Intent intent = new Intent(view.getContext(),
 							TripActivity.class);
 					if (EnrolledTripsFragment.class.isInstance(this)) {
@@ -150,7 +150,7 @@ public class BaseTripsFragment extends Fragment {
 	
 	private void subscribeToChannel(){
 		for (Item item : tripsList){
-			PushService.subscribe(getActivity(), item.getTitle().replace(" ", "") + item.id, TripsOverview.class);	}
+			PushService.subscribe(getActivity(), "trip" + item.id + "-" + item.getTitle().hashCode(), TripsOverview.class);	}
 		}
 
 	private ArrayList<Item> getTrips() {
@@ -170,6 +170,7 @@ public class BaseTripsFragment extends Fragment {
 		} catch (Exception e) {
 			Toast.makeText(getActivity(), "Could not connect to server",
 					Toast.LENGTH_LONG).show();
+			tt.dialog.dismiss();
 		}
 		return new ArrayList<Item>();
 	}
@@ -184,10 +185,11 @@ public class BaseTripsFragment extends Fragment {
 		SessionManager sm = new SessionManager(getActivity());
 
 		try {
-			return tt.execute(
+			tt.execute(
 					new String[] { ip, port, "search", sm.getEmail(),
 							sm.getPassword(), keyword }).get(3000,
 					TimeUnit.MILLISECONDS);
+			return tt.get();
 		} catch (Exception e) {
 			Toast.makeText(getActivity(), "Could not connect to server",
 					Toast.LENGTH_LONG).show();
