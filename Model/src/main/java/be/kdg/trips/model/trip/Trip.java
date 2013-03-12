@@ -157,7 +157,6 @@ public abstract class Trip implements Serializable {
     public void addLocation(Location location)
     {
         locations.add(location);
-        location.setTrip(this);
     }
 
     public void removeLocation(Location location)

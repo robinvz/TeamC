@@ -315,7 +315,8 @@ public class EnrollmentBLImpl implements EnrollmentBL
         if(isExistingEnrollment(user, trip))
         {
             boolean locationExists=false;
-            for(Location tripLocations: trip.getLocations())
+            Trip foundTrip = tripBL.findTripById(trip.getId(), user);
+            for(Location tripLocations: foundTrip.getLocations())
             {
                 if(tripLocations.equals(location))
                 {

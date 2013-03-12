@@ -538,7 +538,6 @@ public class TripController {
     @RequestMapping(value = "/trip/switchLocation", method = RequestMethod.POST)
     public ModelAndView switchLocation(@RequestParam String id, @RequestParam int fromPosition,
                                        @RequestParam int toPosition, @RequestParam String direction) {
-        System.out.println();
         User user = (User) session.getAttribute("user");
         String[] ids = id.split("-");
         int tripId = Integer.parseInt(ids[0]);
@@ -566,12 +565,15 @@ public class TripController {
     public ModelAndView participants(@PathVariable int tripId) {
 
         try {
-            Trip trip = tripsService.findTripById(tripId, (User) session.getAttribute("user"));
-            List<Enrollment> enr = tripsService.findEnrollmentsByTrip(trip);
-            Map map = new HashMap();
-            map.put("trip", trip);
-            map.put("enrollments", enr);
-            return new ModelAndView("users/participantsView", map);
+            if (isLoggedIn()){
+                Trip trip = tripsService.findTripById(tripId, (User) session.getAttribute("user"));
+                List<Enrollment> enr = tripsService.findEnrollmentsByTrip(trip);
+                Map map = new HashMap();
+                map.put("trip", trip);
+                map.put("enrollments", enr);
+                return new ModelAndView("users/participantsView", map);
+            }
+            return new ModelAndView("errors/loginErrorView");
         } catch (TripsException e) {
             return new ModelAndView("tripsView");
         }
@@ -840,7 +842,7 @@ public class TripController {
             Map map = new HashMap();
             try {
                 trip = tripsService.findTripById(tripId, user);
-                Map<String, Integer> totalTripCosts = new HashMap<>();
+                Map<String, Map<String, Double>> totalTripCosts = new HashMap<>();
                 for (Enrollment enrollment : trip.getEnrollments()) {
                     totalTripCosts.put(enrollment.getUser().toString(), enrollment.getCosts());
                 }

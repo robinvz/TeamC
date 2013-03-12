@@ -25,12 +25,4 @@ public interface UserBL
     public void setUsersCurrentPosition(User user, double latitude, double longitude) throws TripsException;
     public boolean isExistingUser(String email) throws TripsException;
     public boolean isUnexistingUser(String email) throws TripsException;
-
-
-
-
-
-
-
-
 }
