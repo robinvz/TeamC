@@ -42,8 +42,6 @@ public class TripController {
     @Autowired
     private MessageSource messageSource;
 
-
-
     @RequestMapping(value = "/trips", method = RequestMethod.GET)
     public ModelAndView showTrips() {
         List<Trip> allNonPrivateTrips = null;
@@ -76,6 +74,17 @@ public class TripController {
         User user = (User) session.getAttribute("user");
         try {
             Trip trip = tripsService.findTripById(tripId, user);
+            if (isLoggedIn()) {
+                Set <Enrollment> enrollmentSet = user.getEnrollments();
+                for (Enrollment enrollment : enrollmentSet) {
+                    if(enrollment.getTrip()==trip) {
+                        Map map = new HashMap();
+                        map.put("trip", trip);
+                        map.put("enrollmentRequisites", enrollment.getRequisites());
+                        return new ModelAndView("tripView", map);
+                    }
+                }
+            }
             return new ModelAndView("tripView", "trip", trip);
         } catch (TripsException e) {
             return new ModelAndView("tripsView");
