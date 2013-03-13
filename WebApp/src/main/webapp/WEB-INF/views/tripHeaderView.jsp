@@ -6,20 +6,39 @@
 <![endif]-->
 <script type="text/javascript">
     $(document).ready(function(){
-       /* function setEnrolledState(){
-
-        }   */
-
-
+        var enrolled = null;
+        $.ajax({
+            type: "GET",
+            url: "/isEnrolled/${trip.id}",
+            success:function(data){
+                enrolled = data;
+                enrolled ?  $('#button').addClass('on') :  $('#button').removeClass('on');
+            }
+        });
         $('#button').on('click', function(){
+            if(enrolled != null){
+                if(enrolled){
+                    $.ajax({
+                        type: "POST",
+                        url: "/unSubscribe",
+                        data: {tripId : ${trip.id}}
+                    }).done(function(){
+                                window.location = '?';
+                            });
+                    enrolled = false;
+                }else{
+                    $.ajax({
+                        type: "POST",
+                        url: "/subscribe",
+                        data: {tripId : ${trip.id}}
+                    }).done(function(){
+                                window.location = '?';
+                            });
+                    enrolled = true;
+                }
 
-         /*   $.ajax({
-                type: "GET",
-                url: "/subscribe",
-                data: { id : ${trip.id}}
-            }).done(function(){
-                    });    */
-            $(this).toggleClass('on');
+                $(this).toggleClass('on');
+            }
         });
     });
 </script>
@@ -43,10 +62,20 @@
     };
     imageObj.src = '/tripPic/${trip.id}';
 </script>
-<section class="attending">
-    <a href="#" id="button" class="btn-attend">Attending</a>
-    <span class="attending-light"></span>
-</section>
+<c:set value="false" var="validTrip"/>
+<c:set value="false" var="subscribed"/>
+<c:if test="${not empty user  && trip.published==true && trip.organizer != user && trip.privacy == 'PROTECTED'}">
+    <c:set value="true" var="validTrip"/>
+
+</c:if>
+
+<c:if test="${validTrip == true}">
+    <section class="attending">
+        <a href="#" id="button" class="btn-attend">Attending</a>
+        <span class="attending-light"></span>
+    </section>
+</c:if>
+
 <aside class="above-footer">
     <nav class="trip-nav">
         <h3>Trip</h3>

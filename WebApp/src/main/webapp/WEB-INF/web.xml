@@ -95,7 +95,7 @@
     <!--DataAccessException wrapped to runtime?-->
     <error-page>
            <exception-type>java.lang.RuntimeException</exception-type>
-           <location>/WEB-INF/views/errors/numberFormatView.jsp</location>
+           <location>/WEB-INF/views/errors/DbError.jsp</location>
        </error-page>
 
 </web-app>

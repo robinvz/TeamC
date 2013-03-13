@@ -46,7 +46,7 @@ $(document).ready(function(){
 
 
     $("table tr").not(':first').on('click', function(){
-      var  ref = '/trip/'+$(this).attr('id').substr(4);
+      var  ref = '/trip/'+$(this).attr('id').substr(4) + '#loadtheme';
       window.location = ref;
     });
 

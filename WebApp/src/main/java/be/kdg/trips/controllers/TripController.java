@@ -42,8 +42,6 @@ public class TripController {
     @Autowired
     private MessageSource messageSource;
 
-
-
     @RequestMapping(value = "/trips", method = RequestMethod.GET)
     public ModelAndView showTrips() {
         List<Trip> allNonPrivateTrips = null;
@@ -76,6 +74,17 @@ public class TripController {
         User user = (User) session.getAttribute("user");
         try {
             Trip trip = tripsService.findTripById(tripId, user);
+            if (isLoggedIn()) {
+                Set <Enrollment> enrollmentSet = user.getEnrollments();
+                for (Enrollment enrollment : enrollmentSet) {
+                    if(enrollment.getTrip()==trip) {
+                        Map map = new HashMap();
+                        map.put("trip", trip);
+                        map.put("enrollmentRequisites", enrollment.getRequisites());
+                        return new ModelAndView("tripView", map);
+                    }
+                }
+            }
             return new ModelAndView("tripView", "trip", trip);
         } catch (TripsException e) {
             return new ModelAndView("tripsView");
@@ -165,14 +174,20 @@ public class TripController {
         }
     }
 
-    @RequestMapping(value = "/isEnrolled", method = RequestMethod.GET)
-    public boolean isEnrolled(@RequestParam int tripId) {
+    @RequestMapping(value = "/isEnrolled/{tripId}", method = RequestMethod.GET)
+    public     @ResponseBody    Boolean isEnrolled(@PathVariable int tripId) {
         User user = (User) session.getAttribute("user");
-        //TODO Check if user is enrolled in trip
-        return true;
+        Trip trip = null;
+        try {
+            trip = tripsService.findTripById(tripId, user);
+        } catch (TripsException e) {
+        }
+        boolean isEnrolled = tripsService.isUserEnrolled(user, trip);
+        if (isEnrolled) return true;
+        return false;
     }
 
-    @RequestMapping(value = "/subscribe", method = RequestMethod.GET)
+    @RequestMapping(value = "/subscribe", method = RequestMethod.POST)
     public ModelAndView subscribe(@RequestParam int tripId, Locale locale) {
         User user = (User) session.getAttribute("user");
         if (isLoggedIn()) {
@@ -202,7 +217,7 @@ public class TripController {
         }
     }
 
-    @RequestMapping(value = "/unSubscribe", method = RequestMethod.GET)
+    @RequestMapping(value = "/unSubscribe", method = RequestMethod.POST)
     public ModelAndView unSubscribe(@RequestParam int tripId, Locale locale) {
         User user = (User) session.getAttribute("user");
         if (isLoggedIn()) {
@@ -216,7 +231,7 @@ public class TripController {
                 return new ModelAndView("tripView", map);
             } catch (TripsException e) {
                 if (e.getMessage().contains("Trip with id")) {
-                    return new ModelAndView("tripsView", "error", messageSource.getMessage("FindTripError", null, locale));//map.put("error", );
+                    return new ModelAndView("tripsView", "error", messageSource.getMessage("FindTripError", null, locale));
                 } else {
                     map.put("trip", trip);
                     map.put("error", messageSource.getMessage("UnSubscribeError", null, locale));
@@ -557,25 +572,25 @@ public class TripController {
                 System.out.println("error2");
             }
         }
-
         return new ModelAndView("locationsView", "trip", trip);
     }
 
     @RequestMapping(value = "/trip/{tripId}/participants", method = RequestMethod.GET)
-    public ModelAndView participants(@PathVariable int tripId) {
-
-        try {
-            if (isLoggedIn()){
-                Trip trip = tripsService.findTripById(tripId, (User) session.getAttribute("user"));
+    public ModelAndView participants(@PathVariable int tripId, Locale locale) {
+        if (isLoggedIn()){
+            Map map = new HashMap();
+            Trip trip = null;
+            try {
+                trip = tripsService.findTripById(tripId, (User) session.getAttribute("user"));
                 List<Enrollment> enr = tripsService.findEnrollmentsByTrip(trip);
-                Map map = new HashMap();
                 map.put("trip", trip);
                 map.put("enrollments", enr);
-                return new ModelAndView("users/participantsView", map);
+            } catch (TripsException e) {
+                return new ModelAndView("users/participantsView", "error", messageSource.getMessage("FindTripError", null, locale));
             }
-            return new ModelAndView("errors/loginErrorView");
-        } catch (TripsException e) {
-            return new ModelAndView("tripsView");
+            return new ModelAndView("users/participantsView", map);
+        } else {
+            return new ModelAndView("loginView", "loginBean", new LoginBean());
         }
     }
 
@@ -869,6 +884,20 @@ public class TripController {
         }
         return new ModelAndView("redirect:/costs/" + trip.getId());
     }
+
+    @RequestMapping(value = "/costs/{tripId}/deleteCost/{name}/{amount}", method = RequestMethod.GET)
+    public ModelAndView deleteCost(@PathVariable int tripId, @PathVariable String name, @PathVariable double amount, Locale locale){
+            User user = (User) session.getAttribute("user");
+        Trip trip = null;
+        try{
+            trip = tripsService.findTripById(tripId, user);
+            tripsService.removeCostFromEnrollment(name, amount, trip, user);
+        }catch (TripsException e) {
+            return new ModelAndView("tripsView", "error", messageSource.getMessage("FindTripError", null, locale));
+        }
+        return new ModelAndView("redirect:/costs/" + trip.getId());
+    }
+
 
 
     @RequestMapping(value = "/acceptInvitation", method = RequestMethod.GET)
