@@ -88,10 +88,10 @@
                                 <c:forEach items="${trip.enrollments}" var="enrollment">
                                     <c:choose>
                                         <c:when test="${enrollment.status == 'BUSY'}">
-                                            <spring:message code="EnrollmentStarted"/>
+                                            <spring:message code="TripStarted"/>
                                         </c:when>
                                         <c:when test="${enrollment.status == 'FINISHED'}">
-                                            <spring:message code="EnrollmentStopped"/>
+                                            <spring:message code="TripStopped"/>
                                         </c:when>
                                     </c:choose>
                                 </c:forEach>
@@ -108,8 +108,6 @@
                             </c:choose>
                         </tr>
                     </table>
-
-
 
                 </div>
 
