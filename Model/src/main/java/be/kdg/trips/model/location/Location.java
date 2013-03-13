@@ -120,9 +120,13 @@ public class Location implements Serializable
         return question;
     }
 
-    public void setQuestion(Question question) {
+    public void addQuestion(Question question) {
         question.setLocation(this);
         this.question = question;
+    }
+
+    public void removeQuestion() {
+        this.question = null;
     }
 
     public int getSequence() {
