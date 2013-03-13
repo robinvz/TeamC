@@ -229,6 +229,15 @@ public class TestTrip {
     }
 
     @Test
+    public void successfulFindTripByKeywordInTitleByGuest() throws TripsException
+    {
+        Trip createdTrip = tripsService.createTimelessTrip("stripclub", "party time", TripPrivacy.PROTECTED, organizer);
+        tripsService.publishTrip(createdTrip, organizer);
+        Trip foundTrip = tripsService.findNonPrivateTripsByKeyword("stripclub", null).get(FIRST_ELEMENT);
+        assertEquals(createdTrip, foundTrip);
+    }
+
+    @Test
     public void successfulFindTripByKeywordInDescription() throws TripsException
     {
         Trip createdTrip = tripsService.createTimelessTrip("GrasvlakteWandeling", "Wandeling in grasvlakte", TripPrivacy.PROTECTED, organizer);

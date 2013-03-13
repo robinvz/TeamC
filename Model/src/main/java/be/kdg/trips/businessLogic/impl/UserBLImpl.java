@@ -6,6 +6,7 @@ import be.kdg.trips.model.user.User;
 import be.kdg.trips.persistence.dao.interfaces.UserDao;
 import be.kdg.trips.utility.ImageChecker;
 import be.kdg.trips.utility.MailSender;
+import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
@@ -23,6 +24,8 @@ import java.util.List;
 @Component
 public class UserBLImpl implements UserBL
 {
+    private static final Logger logger = Logger.getLogger(UserBLImpl.class);
+
     @Autowired
     private UserDao userDao;
 
@@ -135,6 +138,7 @@ public class UserBLImpl implements UserBL
                 }
                 else
                 {
+                    logger.warn("User " + user.getEmail() + " tried to change passwords, but entered the wrong old password.");
                     throw new TripsException("Passwords didn't match");
                 }
             }
@@ -146,6 +150,7 @@ public class UserBLImpl implements UserBL
         if(isExistingUser(email))
         {
             User user = userDao.getUser(email);
+            logger.warn("User " + user.getEmail() + " asked to retrieve his/her password by mail.");
             MailSender.sendMail("password retrieved", "Your password is '" + user.getPassword() + "'", user.getEmail());
         }
     }

@@ -15,6 +15,7 @@ import be.kdg.trips.persistence.dao.interfaces.TripDao;
 import be.kdg.trips.utility.Fraction;
 import be.kdg.trips.utility.ImageChecker;
 import be.kdg.trips.utility.MailSender;
+import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
@@ -31,6 +32,8 @@ import java.util.*;
 @Component
 public class TripBLImpl implements TripBL
 {
+    private static final Logger logger = Logger.getLogger(TripBLImpl.class);
+
     @Autowired
     private TripDao tripDao;
 
@@ -615,6 +618,7 @@ public class TripBLImpl implements TripBL
         {
             return true;
         }
+        logger.warn("User " + organizer.getEmail() + " tried to execute an organizer only action, but is not organizer for Trip " + trip.getTitle());
         throw new TripsException("User with email '"+organizer.getEmail()+"' is not the organizer of the selected trip");
     }
 
