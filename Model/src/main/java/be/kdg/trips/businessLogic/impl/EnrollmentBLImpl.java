@@ -40,27 +40,48 @@ public class EnrollmentBLImpl implements EnrollmentBL
     @Autowired
     private TripBL tripBL;
 
-    private Enrollment enroll(Trip trip, User user) throws TripsException
+    @Transactional
+    @Override
+    public Enrollment subscribe(Trip trip, User user) throws TripsException
     {
         Enrollment enrollment = null;
-        if(isUnexistingEnrollment(user, trip))
+        if(trip.getPrivacy() == TripPrivacy.PROTECTED)
         {
-            if(trip.isPublished() && !trip.isActive())
-            {
-                enrollment = new Enrollment(trip, user);
-                enrollmentDao.saveOrUpdateEnrollment(enrollment);
-            }
-            else
-            {
-                throw new TripsException("Trip is either not published, already active");
-            }
+            enrollment = enroll(trip, user);
+        }
+        else
+        {
+            throw new TripsException("You can't subscribe for a public or private trip");
         }
         return enrollment;
     }
 
     @Override
+    public List<Enrollment> findEnrollmentsByUser(User user) throws TripsException
+    {
+        List<Enrollment> enrollments = null;
+        if(userBL.isExistingUser(user.getEmail()))
+        {
+            enrollments = enrollmentDao.getEnrollmentsByUser(user);
+        }
+        return enrollments;
+    }
+
+    @Override
+    public List<Enrollment> findEnrollmentsByTrip(Trip trip) throws TripsException
+    {
+        List<Enrollment> enrollments = null;
+        if(tripBL.isExistingTrip(trip.getId()))
+        {
+            enrollments = enrollmentDao.getEnrollmentsByTrip(trip);
+        }
+        return enrollments;
+    }
+
     @Transactional
-    public void disenroll(Trip trip, User user) throws TripsException {
+    @Override
+    public void disenroll(Trip trip, User user) throws TripsException
+    {
         if(!trip.getOrganizer().equals(user))
         {
             if(isExistingEnrollment(user, trip) && !trip.isActive())
@@ -86,9 +107,58 @@ public class EnrollmentBLImpl implements EnrollmentBL
         }
     }
 
-    @Override
     @Transactional
-    public Invitation invite(Trip trip, User organizer, User user) throws TripsException, MessagingException {
+    @Override
+    public void addRequisiteToEnrollment(String name, int amount, Trip trip, User user, User organizer) throws TripsException
+    {
+        if(isExistingEnrollment(user, trip) &&userBL.isExistingUser(organizer.getEmail()) && tripBL.isOrganizer(trip, organizer))
+    {
+        Enrollment enrollment = enrollmentDao.getEnrollmentByUserAndTrip(user, trip);
+        enrollment.addRequisite(name, amount);
+        enrollmentDao.saveOrUpdateEnrollment(enrollment);
+    }
+    }
+
+    @Transactional
+    @Override
+    public void removeRequisiteFromEnrollment(String name, int amount, Trip trip, User user, User organizer) throws TripsException
+    {
+        if(isExistingEnrollment(user, trip) &&userBL.isExistingUser(organizer.getEmail()) && tripBL.isOrganizer(trip, organizer))
+        {
+            Enrollment enrollment = enrollmentDao.getEnrollmentByUserAndTrip(user, trip);
+            enrollment.removeRequisite(name, amount);
+            enrollmentDao.saveOrUpdateEnrollment(enrollment);
+        }
+    }
+
+    @Transactional
+    @Override
+    public void addCostToEnrollment(String name, double amount, Trip trip, User user) throws TripsException
+    {
+        if(isExistingEnrollment(user, trip))
+        {
+            Enrollment enrollment = enrollmentDao.getEnrollmentByUserAndTrip(user, trip);
+            enrollment.addCost(name, amount);
+            enrollmentDao.saveOrUpdateEnrollment(enrollment);
+        }
+    }
+
+    @Transactional
+    @Override
+    public void removeCostFromEnrollment(String name, double amount, Trip trip, User user) throws TripsException
+    {
+        if(isExistingEnrollment(user, trip))
+        {
+            Enrollment enrollment = enrollmentDao.getEnrollmentByUserAndTrip(user, trip);
+            enrollment.removeCost(name, amount);
+            enrollmentDao.saveOrUpdateEnrollment(enrollment);
+        }
+    }
+
+    @Transactional
+    @Override
+    public Invitation invite(Trip trip, User organizer, User user) throws TripsException, MessagingException
+    {
         Invitation invitation = null;
         if(isUnexistingInvitation(user, trip))
         {
@@ -108,15 +178,62 @@ public class EnrollmentBLImpl implements EnrollmentBL
     }
 
     @Override
-    public Invitation selfInvite(Trip trip, User organizer) {
+    public Invitation selfInvite(Trip trip, User organizer)
+    {
         Invitation invitation = new Invitation(trip, organizer);
         enrollmentDao.saveOrUpdateInvitation(invitation);
         return invitation;
     }
 
     @Override
+    public List<Invitation> findInvitationsByUser(User user) throws TripsException
+    {
+        List<Invitation> invitations = null;
+        if(userBL.isExistingUser(user.getEmail()))
+        {
+            invitations = enrollmentDao.getInvitationsByUser(user);
+        }
+        return invitations;
+    }
+
     @Transactional
-    public void uninvite(Trip trip, User organizer, User user) throws TripsException {
+    @Override
+    public Enrollment acceptInvitation(Trip trip, User user) throws TripsException
+    {
+        Enrollment enrollment = null;
+        if(isExistingInvitation(user, trip) && !trip.isActive())
+        {
+            enrollment = enroll(trip, user);
+            Invitation invitation = enrollmentDao.getInvitationByUserAndTrip(user, trip);
+            invitation.setAnswer(Answer.ACCEPTED);
+            enrollmentDao.saveOrUpdateInvitation(invitation);
+        }
+        return enrollment;
+    }
+
+    @Transactional
+    @Override
+    public void declineInvitation(Trip trip, User user) throws TripsException
+    {
+        if(isExistingInvitation(user, trip) && isUnexistingEnrollment(user, trip))
+        {
+            Invitation invitation = enrollmentDao.getInvitationByUserAndTrip(user, trip);
+            if(invitation.getAnswer()!=Answer.DECLINED)
+            {
+                invitation.setAnswer(Answer.DECLINED);
+                enrollmentDao.saveOrUpdateInvitation(invitation);
+            }
+            else
+            {
+                throw new TripsException("Invitation is already declined");
+            }
+        }
+    }
+
+    @Transactional
+    @Override
+    public void uninvite(Trip trip, User organizer, User user) throws TripsException
+    {
         if(!organizer.equals(user))
         {
             if(isExistingInvitation(user, trip))
@@ -138,179 +255,61 @@ public class EnrollmentBLImpl implements EnrollmentBL
         }
     }
 
-    @Override
-    public List<Enrollment> getEnrollmentsByUser(User user) throws TripsException {
-        List<Enrollment> enrollments = null;
-        if(userBL.isExistingUser(user.getEmail()))
-        {
-            enrollments = enrollmentDao.getEnrollmentsByUser(user);
-        }
-        return enrollments;
-    }
-
-    @Override
-    public List<Enrollment> getEnrollmentsByTrip(Trip trip) throws TripsException {
-        List<Enrollment> enrollments = null;
-        if(tripBL.isExistingTrip(trip.getId()))
-        {
-            enrollments = enrollmentDao.getEnrollmentsByTrip(trip);
-        }
-        return enrollments;
-    }
-
-    @Override
-    public List<Invitation> getInvitationsByUser(User user) throws TripsException {
-        List<Invitation> invitations = null;
-        if(userBL.isExistingUser(user.getEmail()))
-        {
-            invitations = enrollmentDao.getInvitationsByUser(user);
-        }
-        return invitations;
-    }
-
-    @Override
     @Transactional
-    public void addRequisiteToEnrollment(String name, int amount, Trip trip, User user, User organizer) throws TripsException
-    {
-        if(isExistingEnrollment(user, trip) &&userBL.isExistingUser(organizer.getEmail()) && tripBL.isOrganizer(trip, organizer))
-        {
-            Enrollment enrollment = enrollmentDao.getEnrollmentByUserAndTrip(user, trip);
-            enrollment.addRequisite(name, amount);
-            enrollmentDao.saveOrUpdateEnrollment(enrollment);
-        }
-    }
-
     @Override
-    @Transactional
-    public void removeRequisiteFromEnrollment(String name, int amount, Trip trip, User user, User organizer) throws TripsException
-    {
-        if(isExistingEnrollment(user, trip) &&userBL.isExistingUser(organizer.getEmail()) && tripBL.isOrganizer(trip, organizer))
-        {
-            Enrollment enrollment = enrollmentDao.getEnrollmentByUserAndTrip(user, trip);
-            enrollment.removeRequisite(name, amount);
-            enrollmentDao.saveOrUpdateEnrollment(enrollment);
-        }
-    }
-
-    @Override
-    @Transactional
-    public void addCostToEnrollment(String name, double amount, Trip trip, User user) throws TripsException
+    public void startTrip(Trip trip, User user) throws TripsException
     {
         if(isExistingEnrollment(user, trip))
         {
-            Enrollment enrollment = enrollmentDao.getEnrollmentByUserAndTrip(user, trip);
-            enrollment.addCost(name, amount);
-            enrollmentDao.saveOrUpdateEnrollment(enrollment);
-        }
-    }
-
-    @Override
-    @Transactional
-    public void removeCostFromEnrollment(String name, double amount, Trip trip, User user) throws TripsException
-    {
-        if(isExistingEnrollment(user, trip))
-        {
-            Enrollment enrollment = enrollmentDao.getEnrollmentByUserAndTrip(user, trip);
-            enrollment.removeCost(name, amount);
-            enrollmentDao.saveOrUpdateEnrollment(enrollment);
-        }
-    }
-
-    @Override
-    public boolean isExistingEnrollment(User user, Trip trip) throws TripsException {
-        if(userBL.isExistingUser(user.getEmail()) && tripBL.isExistingTrip(trip.getId()))
-        {
-            return enrollmentDao.isExistingEnrollment(user, trip);
-        }
-        return false;
-    }
-
-    @Override
-    public boolean isUnexistingEnrollment(User user, Trip trip) throws TripsException {
-        if(userBL.isExistingUser(user.getEmail()) && tripBL.isExistingTrip(trip.getId()))
-        {
-            return enrollmentDao.isUnexistingEnrollment(user, trip);
-        }
-        return false;
-    }
-
-    @Override
-    public boolean isExistingInvitation(User user, Trip trip) throws TripsException {
-        if(userBL.isExistingUser(user.getEmail()) && tripBL.isExistingTrip(trip.getId()))
-        {
-            return enrollmentDao.isExistingInvitation(user, trip);
-        }
-        return false;
-    }
-
-    @Override
-    public boolean isUserEnrolled(User user, Trip trip) {
-        try {
-            return enrollmentDao.isExistingEnrollment(user, trip);
-        } catch (TripsException e) {
-            return false;
-        }
-    }
-
-    @Override
-    public boolean isUnexistingInvitation(User user, Trip trip) throws TripsException {
-        if(userBL.isExistingUser(user.getEmail()) && tripBL.isExistingTrip(trip.getId()))
-        {
-            return enrollmentDao.isUnexistingInvitation(user, trip);
-        }
-        return false;
-    }
-
-    @Override
-    @Transactional
-    public Enrollment acceptInvitation(Trip trip, User user) throws TripsException {
-        Enrollment enrollment = null;
-        if(isExistingInvitation(user, trip) && !trip.isActive())
-        {
-            enrollment = enroll(trip, user);
-            Invitation invitation = enrollmentDao.getInvitationByUserAndTrip(user, trip);
-            invitation.setAnswer(Answer.ACCEPTED);
-            enrollmentDao.saveOrUpdateInvitation(invitation);
-        }
-        return enrollment;
-    }
-
-    @Override
-    @Transactional
-    public void declineInvitation(Trip trip, User user) throws TripsException {
-        if(isExistingInvitation(user, trip) && isUnexistingEnrollment(user, trip))
-        {
-            Invitation invitation = enrollmentDao.getInvitationByUserAndTrip(user, trip);
-            if(invitation.getAnswer()!=Answer.DECLINED)
+            if(trip.isActive() || !trip.isTimeBoundTrip())
             {
-                invitation.setAnswer(Answer.DECLINED);
-                enrollmentDao.saveOrUpdateInvitation(invitation);
+                Enrollment enrollment = enrollmentDao.getEnrollmentByUserAndTrip(user, trip);
+                if(enrollment.getStatus()!=Status.BUSY)
+                {
+                    enrollment.setStatus(Status.BUSY);
+                    enrollmentDao.saveOrUpdateEnrollment(enrollment);
+                }
+                else
+                {
+                    throw new TripsException("Enrollment is already started");
+                }
             }
             else
             {
-                throw new TripsException("Invitation is already declined");
+                throw new TripsException("Trip is not active yet");
             }
         }
     }
 
-    @Override
     @Transactional
-    public Enrollment subscribe(Trip trip, User user) throws TripsException {
-        Enrollment enrollment = null;
-        if(trip.getPrivacy() == TripPrivacy.PROTECTED)
+    @Override
+    public String stopTrip(Trip trip, User user) throws TripsException
+    {
+        if(isExistingEnrollment(user, trip))
         {
-            enrollment = enroll(trip, user);
+            Enrollment enrollment = enrollmentDao.getEnrollmentByUserAndTrip(user, trip);
+            if(enrollment.getStatus()==Status.BUSY)
+            {
+                String fullScore = enrollment.getFullScore();
+                enrollment.setScore(0);
+                enrollment.setStatus(Status.FINISHED);
+                enrollment.setLastLocationVisited(null);
+                enrollment.setAnsweredQuestions(null);
+                enrollmentDao.saveOrUpdateEnrollment(enrollment);
+                return fullScore;
+            }
+            else
+            {
+                throw new TripsException("You can't finish a trip which you haven't begun yet");
+            }
         }
-        else
-        {
-            throw new TripsException("You can't subscribe for a public or private trip");
-        }
-        return enrollment;
+        return "";
     }
 
-    @Override
     @Transactional
-    public void setLastLocationVisited(Trip trip, User user, Location location) throws TripsException {
+    @Override
+    public void setLastLocationVisited(Trip trip, User user, Location location) throws TripsException
+    {
         if(isExistingEnrollment(user, trip))
         {
             boolean locationExists=false;
@@ -334,9 +333,10 @@ public class EnrollmentBLImpl implements EnrollmentBL
         }
     }
 
-    @Override
     @Transactional
-    public boolean checkAnswerFromQuestion(Question question, int answerIndex, User user) throws TripsException {
+    @Override
+    public boolean checkAnswerFromQuestion(Question question, int answerIndex, User user) throws TripsException
+    {
         Trip trip = tripBL.findTripByQuestion(question);
         boolean correct = false;
         if(isExistingEnrollment(user, trip))
@@ -383,51 +383,206 @@ public class EnrollmentBLImpl implements EnrollmentBL
     }
 
     @Override
-    @Transactional
-    public void startTrip(Trip trip, User user) throws TripsException {
-        if(isExistingEnrollment(user, trip))
+    public boolean isExistingEnrollment(User user, Trip trip) throws TripsException
+    {
+        if(userBL.isExistingUser(user.getEmail()) && tripBL.isExistingTrip(trip.getId()))
         {
-            if(trip.isActive() || !trip.isTimeBoundTrip())
+            return enrollmentDao.isExistingEnrollment(user, trip);
+        }
+        return false;
+    }
+
+    @Override
+    public boolean isUnexistingEnrollment(User user, Trip trip) throws TripsException
+    {
+        if(userBL.isExistingUser(user.getEmail()) && tripBL.isExistingTrip(trip.getId()))
+        {
+            return enrollmentDao.isUnexistingEnrollment(user, trip);
+        }
+        return false;
+    }
+
+    @Override
+    public boolean isUserEnrolled(User user, Trip trip)
+    {
+        try {
+            return enrollmentDao.isExistingEnrollment(user, trip);
+        } catch (TripsException e) {
+            return false;
+        }
+    }
+
+    @Override
+    public boolean isExistingInvitation(User user, Trip trip) throws TripsException
+    {
+        if(userBL.isExistingUser(user.getEmail()) && tripBL.isExistingTrip(trip.getId()))
+        {
+            return enrollmentDao.isExistingInvitation(user, trip);
+        }
+        return false;
+    }
+
+    @Override
+    public boolean isUnexistingInvitation(User user, Trip trip) throws TripsException
+    {
+        if(userBL.isExistingUser(user.getEmail()) && tripBL.isExistingTrip(trip.getId()))
+        {
+            return enrollmentDao.isUnexistingInvitation(user, trip);
+        }
+        return false;
+    }
+
+    private Enrollment enroll(Trip trip, User user) throws TripsException
+    {
+        Enrollment enrollment = null;
+        if(isUnexistingEnrollment(user, trip))
+        {
+            if(trip.isPublished() && !trip.isActive())
             {
-                Enrollment enrollment = enrollmentDao.getEnrollmentByUserAndTrip(user, trip);
-                if(enrollment.getStatus()!=Status.BUSY)
-                {
-                    enrollment.setStatus(Status.BUSY);
-                    enrollmentDao.saveOrUpdateEnrollment(enrollment);
-                }
-                else
-                {
-                    throw new TripsException("Enrollment is already started");
-                }
+                enrollment = new Enrollment(trip, user);
+                enrollmentDao.saveOrUpdateEnrollment(enrollment);
             }
             else
             {
-                throw new TripsException("Trip is not active yet");
+                throw new TripsException("Trip is either not published, already active");
             }
         }
+        return enrollment;
+    }
+    /*
+
+
+    @Override
+    @Transactional
+    public void disenroll(Trip trip, User user) throws TripsException {
+
+    }
+
+    @Override
+    @Transactional
+    public Invitation invite(Trip trip, User organizer, User user) throws TripsException, MessagingException {
+
+    }
+
+    @Override
+    public Invitation selfInvite(Trip trip, User organizer) {
+
+    }
+
+    @Override
+    @Transactional
+    public void uninvite(Trip trip, User organizer, User user) throws TripsException {
+
+    }
+
+    @Override
+    public List<Enrollment> getEnrollmentsByUser(User user) throws TripsException {
+
+    }
+
+    @Override
+    public List<Enrollment> getEnrollmentsByTrip(Trip trip) throws TripsException {
+
+    }
+
+    @Override
+    public List<Invitation> getInvitationsByUser(User user) throws TripsException {
+
+    }
+
+    @Override
+    @Transactional
+    public void addRequisiteToEnrollment(String name, int amount, Trip trip, User user, User organizer) throws TripsException
+    {
+
+    }
+
+    @Override
+    @Transactional
+    public void removeRequisiteFromEnrollment(String name, int amount, Trip trip, User user, User organizer) throws TripsException
+    {
+
+    }
+
+    @Override
+    @Transactional
+    public void addCostToEnrollment(String name, double amount, Trip trip, User user) throws TripsException
+    {
+
+    }
+
+    @Override
+    @Transactional
+    public void removeCostFromEnrollment(String name, double amount, Trip trip, User user) throws TripsException
+    {
+
+    }
+
+    @Override
+    public boolean isExistingEnrollment(User user, Trip trip) throws TripsException {
+
+    }
+
+    @Override
+    public boolean isUnexistingEnrollment(User user, Trip trip) throws TripsException {
+
+    }
+
+    @Override
+    public boolean isExistingInvitation(User user, Trip trip) throws TripsException {
+
+    }
+
+    @Override
+    public boolean isUserEnrolled(User user, Trip trip) {
+
+    }
+
+    @Override
+    public boolean isUnexistingInvitation(User user, Trip trip) throws TripsException {
+
+    }
+
+    @Override
+    @Transactional
+    public Enrollment acceptInvitation(Trip trip, User user) throws TripsException {
+
+    }
+
+    @Override
+    @Transactional
+    public void declineInvitation(Trip trip, User user) throws TripsException {
+
+    }
+
+    @Override
+    @Transactional
+    public Enrollment subscribe(Trip trip, User user) throws TripsException {
+
+    }
+
+    @Override
+    @Transactional
+    public void setLastLocationVisited(Trip trip, User user, Location location) throws TripsException {
+
+    }
+
+    @Override
+    @Transactional
+    public boolean checkAnswerFromQuestion(Question question, int answerIndex, User user) throws TripsException {
+
+    }
+
+    @Override
+    @Transactional
+    public void startTrip(Trip trip, User user) throws TripsException {
+
     }
 
     @Override
     @Transactional
     public String stopTrip(Trip trip, User user) throws TripsException {
-        if(isExistingEnrollment(user, trip))
-        {
-            Enrollment enrollment = enrollmentDao.getEnrollmentByUserAndTrip(user, trip);
-            if(enrollment.getStatus()==Status.BUSY)
-            {
-                String fullScore = enrollment.getFullScore();
-                enrollment.setScore(0);
-                enrollment.setStatus(Status.FINISHED);
-                enrollment.setLastLocationVisited(null);
-                enrollment.setAnsweredQuestions(null);
-                enrollmentDao.saveOrUpdateEnrollment(enrollment);
-                return fullScore;
-            }
-            else
-            {
-                throw new TripsException("You can't finish a trip which you haven't begun yet");
-            }
-        }
-        return "";
+
     }
+    */
 }

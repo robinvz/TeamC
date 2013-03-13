@@ -66,17 +66,7 @@ public class TestEnrollment
         User user = new User("lol@kdg.be", "lolapsch");
         tripsService.subscribe(trip, user);
     }
-    /*
-    @Test(expected = TripsException.class)
-    public void failedTripSubscribe() throws TripsException, ParseException
-    {
-        User organizer = tripsService.createUser("lepel","lapal");
-        User user = tripsService.createUser("lopol", "lopol");
-        Trip trip = new TimeBoundTrip("Spartacus run", "Lopen door de modder!", TripPrivacy.PROTECTED, organizer, df.parse("14/12/2014"), df.parse("15/12/2014"));
-        tripsService.publishTrip(trip, organizer);
-        tripsService.enroll(trip, user);
-    }
-    */
+
     @Test(expected = TripsException.class)
     public void failedSubscribeTwice() throws TripsException, ParseException
     {
@@ -273,7 +263,7 @@ public class TestEnrollment
     }
 
     @Test(expected = TripsException.class)
-    public void rfailedDeclineInvitationAlreadDeclined() throws TripsException, MessagingException {
+    public void failedDeclineInvitationAlreadDeclined() throws TripsException, MessagingException {
         User invitee = tripsService.createUser(new User("unexisting201@hotmail.com","pass"));
         Trip trip = tripsService.createTimelessTrip("Spartacus run", "Lopen door de modder!", TripPrivacy.PRIVATE, organizer);
         Invitation invitation = tripsService.invite(trip, organizer, invitee);
