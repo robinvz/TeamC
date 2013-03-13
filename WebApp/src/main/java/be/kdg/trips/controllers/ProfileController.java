@@ -1,17 +1,14 @@
 package be.kdg.trips.controllers;
 
 import be.kdg.trips.beans.LoginBean;
-import be.kdg.trips.businessLogic.exception.TripsException;
+import be.kdg.trips.exception.TripsException;
 import be.kdg.trips.model.user.User;
 import be.kdg.trips.services.interfaces.TripsService;
-import com.mysql.jdbc.Blob;
-import org.hibernate.Hibernate;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.MessageSource;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
-import org.springframework.web.multipart.support.ByteArrayMultipartFileEditor;
 import org.springframework.web.servlet.ModelAndView;
 
 import javax.servlet.http.HttpServletRequest;
