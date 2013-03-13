@@ -92,7 +92,7 @@ public class TripDaoImpl implements TripDao{
 
     @Override
     public Trip getTripByQuestion(Question question) throws TripsException {
-        Query query = entityManager.createQuery("SELECT DISTINCT t FROM Trip t LEFT JOIN FETCH t.locations location WHERE location = (SELECT l FROM Location l WHERE l.question = :question)");
+        Query query = entityManager.createQuery("SELECT DISTINCT t FROM Trip t LEFT JOIN FETCH t.locations location WHERE location.question = :question");
         query.setParameter("question", question);
         try
         {

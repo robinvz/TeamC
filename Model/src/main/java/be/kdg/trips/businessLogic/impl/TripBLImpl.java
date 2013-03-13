@@ -503,7 +503,7 @@ public class TripBLImpl implements TripBL
 
     @Override
     public Map<Question, Fraction> getQuestionsWithAnswerPercentage(Trip trip, User organizer) throws TripsException {
-        Map<Question, Fraction> questions = new HashMap<>();
+        Map<Question, Fraction> questions = new TreeMap<>();
         if(isExistingTrip(trip.getId()) && userBL.isExistingUser(organizer.getEmail()) && isOrganizer(trip, organizer))
         {
             for(Enrollment enrollment: trip.getEnrollments())
@@ -525,17 +525,16 @@ public class TripBLImpl implements TripBL
                         {
                             questions.put(answeredQuestion, new Fraction(denominator, divisor+1));
                         }
-                        enrollment.getAnsweredQuestions();
                     }
                     else
                     {
                         if(answeredQuestions.get(answeredQuestion))
                         {
-                            questions.put(answeredQuestion, new Fraction());
+                            questions.put(answeredQuestion, new Fraction(1,1));
                         }
                         else
                         {
-                            questions.put(answeredQuestion, new Fraction());
+                            questions.put(answeredQuestion, new Fraction(0,1));
                         }
                     }
                 }

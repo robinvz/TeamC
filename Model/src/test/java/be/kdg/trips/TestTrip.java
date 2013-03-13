@@ -33,6 +33,7 @@ import static org.junit.Assert.*;
 public class TestTrip {
     private final int FIRST_ELEMENT = 0;
     private final int SECOND_ELEMENT = 1;
+    private final int THIRD_ELEMENT = 2;
 
     private static TripsService tripsService;
     private static DateFormat df;
@@ -876,8 +877,11 @@ public class TestTrip {
         Location location1 = tripsService.findTripById(createdTrip.getId(), organizer).getLocations().get(FIRST_ELEMENT);
         tripsService.addLocationToTrip(organizer, createdTrip, 10.1231, 10.131, "Nationalearrstraat", null, "Antwerp", "2000", "Belgium", "Titel", "Lange straat met tramspoor", "Who am I now?", possibleAnswers, FIRST_ELEMENT, null);
         Location location2 = tripsService.findTripById(createdTrip.getId(), organizer).getLocations().get(SECOND_ELEMENT);
+        tripsService.addLocationToTrip(organizer, createdTrip, 13, 10.131, "Nationaleaarrstraat", null, "Antwerp", "2000", "Belgium", "Titel", "Lange straat met tramspoor", "Who will I be??", possibleAnswers, FIRST_ELEMENT, null);
+        Location location3 = tripsService.findTripById(createdTrip.getId(), organizer).getLocations().get(THIRD_ELEMENT);
         Question question1 = location1.getQuestion();
         Question question2 = location2.getQuestion();
+        Question question3 = location3.getQuestion();
 
         //organizer
         tripsService.startTrip(createdTrip, organizer);
@@ -892,19 +896,24 @@ public class TestTrip {
         tripsService.checkAnswerFromQuestion(question1,SECOND_ELEMENT,user);
         tripsService.setLastLocationVisited(createdTrip, user, location2);
         tripsService.checkAnswerFromQuestion(question2,FIRST_ELEMENT,user);
+        tripsService.setLastLocationVisited(createdTrip, user, location3);
+        tripsService.checkAnswerFromQuestion(question3,SECOND_ELEMENT,user);
 
-        Map<Question, Fraction> questions = tripsService.getQuestionsWithAnswerPercentage(createdTrip, organizer);
-        Iterator it = questions.entrySet().iterator();
+        Trip foundTrip = tripsService.findTripById(createdTrip.getId(), organizer);
+
+        Map<Question, Fraction> questions = tripsService.getQuestionsWithAnswerPercentage(foundTrip, organizer);
+        Iterator it = questions.values().iterator();
         boolean correct = true;
         int i = 0;
         while(it.hasNext())
         {
-
             switch(i)
             {
                 case 0:if(((Fraction)it.next()).getPercentage() != 50) correct = false;break;
                 case 1:if(((Fraction)it.next()).getPercentage() != 100) correct = false;break;
+                case 2:if(((Fraction)it.next()).getPercentage() != 0) correct = false;
             }
+            i++;
         }
         assertTrue(correct);
     }
@@ -926,7 +935,7 @@ public class TestTrip {
     @Test
     public void successfulGetDecimalFractionValue1()
     {
-        Fraction fraction = new Fraction();
+        Fraction fraction = new Fraction(1, 1);
         assertEquals(100, fraction.getPercentage(), 0);
     }
 
