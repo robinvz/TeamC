@@ -29,7 +29,7 @@ public interface TripDao {
     public void saveTrip(Trip trip);
     public void updateTrip(Trip trip);
     public void saveOrUpdateLocation(Location location);
-
+    public void updateQuestion(Question question);
 
     public void deleteTrip(int id);
     public void deleteLocation(int id);

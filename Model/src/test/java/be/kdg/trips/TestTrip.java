@@ -945,5 +945,26 @@ public class TestTrip {
         Fraction fraction = new Fraction(2, 3);
         assertEquals(66.66, fraction.getPercentage(), 2);
     }
+
+    @Test
+    public void successfulRemoveTripImage() throws TripsException {
+        Trip trip = tripsService.createTimelessTrip("Trippie","Trippie", TripPrivacy.PUBLIC, organizer);
+        File file = new File("src/test/resources/testimage.jpg");
+        byte[] bFile = new byte[(int) file.length()];
+        try {
+            FileInputStream fileInputStream = new FileInputStream(file);
+            fileInputStream.read(bFile);
+            fileInputStream.close();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        List<String> possibleAnswers = new ArrayList<>();
+        possibleAnswers.add("ik");
+        possibleAnswers.add("jij");
+        tripsService.addLocationToTrip(organizer, trip, 10.9, 12.1, "straat", "12", "antwerpen", "2180", "Belgica", "straattitle", "straatdescription", "wie ben ik?",possibleAnswers, FIRST_ELEMENT, bFile);
+        Question question = tripsService.findTripById(trip.getId(), organizer).getLocations().get(FIRST_ELEMENT).getQuestion();
+        tripsService.removeImageFromQuestion(organizer, question);
+        assertNull(tripsService.findTripById(trip.getId(), organizer).getLocations().get(FIRST_ELEMENT).getQuestion().getImage());
+    }
 }
 

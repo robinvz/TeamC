@@ -568,8 +568,7 @@ public class TripBLImpl implements TripBL
             {
                 question.setImage(image);
             }
-            location.addQuestion(question);
-            tripDao.saveOrUpdateLocation(location);
+            tripDao.updateQuestion(question);
         }
         else
         {
@@ -590,6 +589,17 @@ public class TripBLImpl implements TripBL
         else
         {
             throw new TripsException("Location doesn't have a question to remove");
+        }
+    }
+
+    @Transactional
+    @Override
+    public void removeImageFromQuestion(User organizer, Question question) throws TripsException {
+        Location location = question.getLocation();
+        if(isExistingLocation(location.getId()) && userBL.isExistingUser(organizer.getEmail()) && isOrganizer(location.getTrip(), organizer) && question.getImage()!=null)
+        {
+            question.setImage(null);
+            tripDao.updateQuestion(question);
         }
     }
 

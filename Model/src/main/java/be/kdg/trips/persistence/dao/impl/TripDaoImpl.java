@@ -131,6 +131,11 @@ public class TripDaoImpl implements TripDao{
     }
 
     @Override
+    public void updateQuestion(Question question) {
+        entityManager.merge(question);
+    }
+
+    @Override
     public void deleteTrip(int id) {
         entityManager.remove(entityManager.find(Trip.class, id));
     }

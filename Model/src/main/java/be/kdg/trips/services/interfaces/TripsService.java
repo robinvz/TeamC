@@ -65,6 +65,7 @@ public interface TripsService
     public Map<Question, Fraction> getQuestionsWithAnswerPercentage(Trip trip, User organizer) throws TripsException;
     public void editTripQuestionDetails(User organizer, Location location, String questionTitle, List<String> possibleAnswers, Integer correctAnswerIndex, byte[] image) throws TripsException;
     public void removeQuestionFromLocation(User organizer, Location location) throws TripsException;
+    public void removeImageFromQuestion(User organizer, Question question) throws TripsException;
 
     //Enrollment Service
     public Enrollment subscribe(Trip trip, User user) throws TripsException;
