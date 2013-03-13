@@ -231,7 +231,7 @@ public class TripController {
                 return new ModelAndView("tripView", map);
             } catch (TripsException e) {
                 if (e.getMessage().contains("Trip with id")) {
-                    return new ModelAndView("tripsView", "error", messageSource.getMessage("FindTripError", null, locale));//map.put("error", );
+                    return new ModelAndView("tripsView", "error", messageSource.getMessage("FindTripError", null, locale));
                 } else {
                     map.put("trip", trip);
                     map.put("error", messageSource.getMessage("UnSubscribeError", null, locale));
@@ -572,25 +572,25 @@ public class TripController {
                 System.out.println("error2");
             }
         }
-
         return new ModelAndView("locationsView", "trip", trip);
     }
 
     @RequestMapping(value = "/trip/{tripId}/participants", method = RequestMethod.GET)
-    public ModelAndView participants(@PathVariable int tripId) {
-
-        try {
-            if (isLoggedIn()){
-                Trip trip = tripsService.findTripById(tripId, (User) session.getAttribute("user"));
+    public ModelAndView participants(@PathVariable int tripId, Locale locale) {
+        if (isLoggedIn()){
+            Map map = new HashMap();
+            Trip trip = null;
+            try {
+                trip = tripsService.findTripById(tripId, (User) session.getAttribute("user"));
                 List<Enrollment> enr = tripsService.findEnrollmentsByTrip(trip);
-                Map map = new HashMap();
                 map.put("trip", trip);
                 map.put("enrollments", enr);
-                return new ModelAndView("users/participantsView", map);
+            } catch (TripsException e) {
+                return new ModelAndView("users/participantsView", "error", messageSource.getMessage("FindTripError", null, locale));
             }
-            return new ModelAndView("errors/loginErrorView");
-        } catch (TripsException e) {
-            return new ModelAndView("tripsView");
+            return new ModelAndView("users/participantsView", map);
+        } else {
+            return new ModelAndView("loginView", "loginBean", new LoginBean());
         }
     }
 
