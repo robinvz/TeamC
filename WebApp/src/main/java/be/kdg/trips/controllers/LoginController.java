@@ -3,13 +3,11 @@ package be.kdg.trips.controllers;
 import be.kdg.trips.beans.LoginBean;
 import be.kdg.trips.beans.LoginValidator;
 import be.kdg.trips.businessLogic.exception.TripsException;
-import be.kdg.trips.model.address.Address;
 import be.kdg.trips.model.user.User;
 import be.kdg.trips.services.interfaces.TripsService;
 import net.sf.json.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.propertyeditors.StringTrimmerEditor;
-import org.springframework.scheduling.support.SimpleTriggerContext;
 import org.springframework.stereotype.Controller;
 import org.springframework.validation.BindingResult;
 import org.springframework.validation.ObjectError;
@@ -30,24 +28,19 @@ import javax.validation.Valid;
  * 2012-2013
  */
 @Controller
-//LoginController
 public class LoginController {
-
     @Autowired
     LoginValidator loginValidator;
 
     @InitBinder
-    protected void initBinder(HttpServletRequest request,
-                              ServletRequestDataBinder binder) throws Exception {
+    protected void initBinder(HttpServletRequest request, ServletRequestDataBinder binder) throws Exception {
         binder.registerCustomEditor(String.class, new StringTrimmerEditor(true));
-
     }
 
     @InitBinder()
     protected void loginBinder(WebDataBinder binder) throws Exception {
         if (binder.getTarget() instanceof LoginBean) {
             binder.setValidator(loginValidator);
-
         }
     }
 
@@ -103,8 +96,7 @@ public class LoginController {
         String password = request.getParameter("password");
         try {
             if (tripsService.checkLogin(email, password)) {  //wrong password, redirect to index
-                User user = tripsService.findUser(email);
-                session.setAttribute("user", user);
+                session.setAttribute("user", tripsService.findUser(email));
             } else {
                 ObjectError error = new ObjectError("login", "Invalid login credentials.");
                 result.addError(error);
@@ -130,7 +122,6 @@ public class LoginController {
 
     @RequestMapping(value = "/register", method = RequestMethod.POST)
     public String register(@Valid User validUser, BindingResult result, HttpServletRequest request) {
-        String pass = request.getParameter("password");
         if (result.hasErrors()) {
             return "registerView";
         }
@@ -150,6 +141,5 @@ public class LoginController {
             return "registerView";
         }
     }
-
 
 }

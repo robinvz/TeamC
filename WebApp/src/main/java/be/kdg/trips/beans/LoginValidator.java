@@ -1,7 +1,6 @@
 package be.kdg.trips.beans;
 
 import be.kdg.trips.businessLogic.exception.TripsException;
-import be.kdg.trips.model.user.User;
 import be.kdg.trips.services.interfaces.TripsService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
@@ -42,7 +41,6 @@ public class LoginValidator implements Validator {
                 errors.rejectValue("email", "UserIncorrect.user");
             }
         }
-
     }
 
 }
