@@ -17,11 +17,6 @@ public class Fraction {
     @NotNull
     private int divisor;
 
-    public Fraction() {
-        this.denominator = 1;
-        this.divisor = 1;
-    }
-
     public Fraction(int denominator, int divisor) {
         this.denominator = denominator;
         this.divisor = divisor;

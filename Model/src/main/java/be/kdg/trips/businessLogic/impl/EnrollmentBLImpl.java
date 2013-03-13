@@ -87,14 +87,21 @@ public class EnrollmentBLImpl implements EnrollmentBL
             if(isExistingEnrollment(user, trip) && !trip.isActive())
             {
                 Enrollment enrollment = enrollmentDao.getEnrollmentByUserAndTrip(user, trip);
-                if(trip.getPrivacy()==TripPrivacy.PRIVATE)
+                if(enrollment.getStatus()!=Status.BUSY)
                 {
-                    Invitation invitation = enrollmentDao.getInvitationByUserAndTrip(user, trip);
-                    invitation.setAnswer(Answer.DECLINED);
-                    enrollmentDao.saveOrUpdateInvitation(invitation);
+                    if(trip.getPrivacy()==TripPrivacy.PRIVATE)
+                    {
+                        Invitation invitation = enrollmentDao.getInvitationByUserAndTrip(user, trip);
+                        invitation.setAnswer(Answer.DECLINED);
+                        enrollmentDao.saveOrUpdateInvitation(invitation);
+                    }
+                    trip.removeEnrollment(enrollment);
+                    enrollmentDao.deleteEnrollment(enrollment.getId());
                 }
-                trip.removeEnrollment(enrollment);
-                enrollmentDao.deleteEnrollment(enrollment.getId());
+                else
+                {
+                    throw new TripsException("You can't disenroll from a trip which you are currently doing");
+                }
             }
             else
             {
@@ -112,11 +119,11 @@ public class EnrollmentBLImpl implements EnrollmentBL
     public void addRequisiteToEnrollment(String name, int amount, Trip trip, User user, User organizer) throws TripsException
     {
         if(isExistingEnrollment(user, trip) &&userBL.isExistingUser(organizer.getEmail()) && tripBL.isOrganizer(trip, organizer))
-    {
-        Enrollment enrollment = enrollmentDao.getEnrollmentByUserAndTrip(user, trip);
-        enrollment.addRequisite(name, amount);
-        enrollmentDao.saveOrUpdateEnrollment(enrollment);
-    }
+        {
+            Enrollment enrollment = enrollmentDao.getEnrollmentByUserAndTrip(user, trip);
+            enrollment.addRequisite(name, amount);
+            enrollmentDao.saveOrUpdateEnrollment(enrollment);
+        }
     }
 
     @Transactional
@@ -166,8 +173,7 @@ public class EnrollmentBLImpl implements EnrollmentBL
             {
                 invitation = new Invitation(trip, user);
                 enrollmentDao.saveOrUpdateInvitation(invitation);
-                //give link to invitation!
-                MailSender.sendMail("Trip invitation", "You have been invited by " + organizer.getFirstName() + " " + organizer.getLastName() + " for his trip named: '" + trip.getTitle() + "' (" + trip.getDescription() + ").\nClick here xxx if you're interested in joining.", user.getEmail());
+                MailSender.sendMail("Trip invitation", "You have been invited by " + organizer.getFirstName() + " " + organizer.getLastName() + " for his trip named: '" + trip.getTitle() + "' (" + trip.getDescription() + ").\nGo to http://localhost:8080/login#"+trip.getId()+" if you're interested in joining.", user.getEmail());
             }
             else
             {
@@ -449,140 +455,4 @@ public class EnrollmentBLImpl implements EnrollmentBL
         }
         return enrollment;
     }
-    /*
-
-
-    @Override
-    @Transactional
-    public void disenroll(Trip trip, User user) throws TripsException {
-
-    }
-
-    @Override
-    @Transactional
-    public Invitation invite(Trip trip, User organizer, User user) throws TripsException, MessagingException {
-
-    }
-
-    @Override
-    public Invitation selfInvite(Trip trip, User organizer) {
-
-    }
-
-    @Override
-    @Transactional
-    public void uninvite(Trip trip, User organizer, User user) throws TripsException {
-
-    }
-
-    @Override
-    public List<Enrollment> getEnrollmentsByUser(User user) throws TripsException {
-
-    }
-
-    @Override
-    public List<Enrollment> getEnrollmentsByTrip(Trip trip) throws TripsException {
-
-    }
-
-    @Override
-    public List<Invitation> getInvitationsByUser(User user) throws TripsException {
-
-    }
-
-    @Override
-    @Transactional
-    public void addRequisiteToEnrollment(String name, int amount, Trip trip, User user, User organizer) throws TripsException
-    {
-
-    }
-
-    @Override
-    @Transactional
-    public void removeRequisiteFromEnrollment(String name, int amount, Trip trip, User user, User organizer) throws TripsException
-    {
-
-    }
-
-    @Override
-    @Transactional
-    public void addCostToEnrollment(String name, double amount, Trip trip, User user) throws TripsException
-    {
-
-    }
-
-    @Override
-    @Transactional
-    public void removeCostFromEnrollment(String name, double amount, Trip trip, User user) throws TripsException
-    {
-
-    }
-
-    @Override
-    public boolean isExistingEnrollment(User user, Trip trip) throws TripsException {
-
-    }
-
-    @Override
-    public boolean isUnexistingEnrollment(User user, Trip trip) throws TripsException {
-
-    }
-
-    @Override
-    public boolean isExistingInvitation(User user, Trip trip) throws TripsException {
-
-    }
-
-    @Override
-    public boolean isUserEnrolled(User user, Trip trip) {
-
-    }
-
-    @Override
-    public boolean isUnexistingInvitation(User user, Trip trip) throws TripsException {
-
-    }
-
-    @Override
-    @Transactional
-    public Enrollment acceptInvitation(Trip trip, User user) throws TripsException {
-
-    }
-
-    @Override
-    @Transactional
-    public void declineInvitation(Trip trip, User user) throws TripsException {
-
-    }
-
-    @Override
-    @Transactional
-    public Enrollment subscribe(Trip trip, User user) throws TripsException {
-
-    }
-
-    @Override
-    @Transactional
-    public void setLastLocationVisited(Trip trip, User user, Location location) throws TripsException {
-
-    }
-
-    @Override
-    @Transactional
-    public boolean checkAnswerFromQuestion(Question question, int answerIndex, User user) throws TripsException {
-
-    }
-
-    @Override
-    @Transactional
-    public void startTrip(Trip trip, User user) throws TripsException {
-
-    }
-
-    @Override
-    @Transactional
-    public String stopTrip(Trip trip, User user) throws TripsException {
-
-    }
-    */
 }

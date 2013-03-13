@@ -68,7 +68,7 @@ public class TripBLImpl implements TripBL
             if(areDatesValid(startDate, endDate))
             {
                 trip = new TimeBoundTrip(title, description, privacy, organizer, startDate, endDate);
-                if(repeatable!=null & amount!=null)
+                if(repeatable!=null && amount!=null)
                 {
                     if(amount>0 && amount<16)
                     {
@@ -485,7 +485,7 @@ public class TripBLImpl implements TripBL
                     {
                         newImage = image;
                     }
-                    location.setQuestion(new Question(question, possibleAnswers, correctAnswerIndex, newImage));
+                    location.addQuestion(new Question(question, possibleAnswers, correctAnswerIndex, newImage));
                     tripDao.saveOrUpdateLocation(location);
                 }
                 else
@@ -506,7 +506,7 @@ public class TripBLImpl implements TripBL
 
     @Override
     public Map<Question, Fraction> getQuestionsWithAnswerPercentage(Trip trip, User organizer) throws TripsException {
-        Map<Question, Fraction> questions = new HashMap<>();
+        Map<Question, Fraction> questions = new TreeMap<>();
         if(isExistingTrip(trip.getId()) && userBL.isExistingUser(organizer.getEmail()) && isOrganizer(trip, organizer))
         {
             for(Enrollment enrollment: trip.getEnrollments())
@@ -528,17 +528,16 @@ public class TripBLImpl implements TripBL
                         {
                             questions.put(answeredQuestion, new Fraction(denominator, divisor+1));
                         }
-                        enrollment.getAnsweredQuestions();
                     }
                     else
                     {
                         if(answeredQuestions.get(answeredQuestion))
                         {
-                            questions.put(answeredQuestion, new Fraction());
+                            questions.put(answeredQuestion, new Fraction(1,1));
                         }
                         else
                         {
-                            questions.put(answeredQuestion, new Fraction());
+                            questions.put(answeredQuestion, new Fraction(0,1));
                         }
                     }
                 }
@@ -572,8 +571,7 @@ public class TripBLImpl implements TripBL
             {
                 question.setImage(image);
             }
-            location.setQuestion(question);
-            tripDao.saveOrUpdateLocation(location);
+            tripDao.updateQuestion(question);
         }
         else
         {
@@ -587,13 +585,24 @@ public class TripBLImpl implements TripBL
         if(isExistingLocation(location.getId()) && location.getQuestion() != null && userBL.isExistingUser(organizer.getEmail()) && isOrganizer(location.getTrip(), organizer))
         {
             Question question = location.getQuestion();
-            tripDao.deleteQuestion(question.getId());
-            location.setQuestion(null);
+            location.removeQuestion();
             tripDao.saveOrUpdateLocation(location);
+            tripDao.deleteQuestion(question.getId());
         }
         else
         {
             throw new TripsException("Location doesn't have a question to remove");
+        }
+    }
+
+    @Transactional
+    @Override
+    public void removeImageFromQuestion(User organizer, Question question) throws TripsException {
+        Location location = question.getLocation();
+        if(isExistingLocation(location.getId()) && userBL.isExistingUser(organizer.getEmail()) && isOrganizer(location.getTrip(), organizer) && question.getImage()!=null)
+        {
+            question.setImage(null);
+            tripDao.updateQuestion(question);
         }
     }
 

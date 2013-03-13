@@ -28,6 +28,7 @@
                     <th><spring:message code="User"/></th>
                     <th><spring:message code="Cost"/></th>
                     <th><spring:message code="Price"/></th>
+                    <th></th>
                     </thead>
                     <c:forEach items="${totalTripCosts}" var="cost">
                             <c:forEach items="${cost.value}" var="costLine">
@@ -40,6 +41,11 @@
                                     </td>
                                     <td>
                                         ${costLine.value}
+                                    </td>
+                                    <td>
+                                       <form action="/costs/${trip.id}/deleteCost/${costLine.key}/${costLine.value}">
+                                           <button id="btn-removeCost" type="submit" class="btn-blue"><spring:message code="removeCost"/></button>
+                                       </form>
                                     </td>
                                 </tr>
                             </c:forEach>
