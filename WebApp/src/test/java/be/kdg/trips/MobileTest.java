@@ -213,11 +213,11 @@ public class MobileTest {
         antwoorden.add("Groep B");
         antwoorden.add("Groep C");
         antwoorden.add("Groep D");
-        l1.setQuestion(new Question("Welke groep is de beste?", antwoorden, 2, null));
-        l2.setQuestion(new Question("Welke groep is de beste?", antwoorden, 2, null));
-        l3.setQuestion(new Question("Welke groep is de beste?", antwoorden, 2, null));
-        l4.setQuestion(new Question("Welke groep is de beste?", antwoorden, 2, null));
-        l5.setQuestion(new Question("Welke groep is de beste?", antwoorden, 2, null));
+        l1.addQuestion(new Question("Welke groep is de beste?", antwoorden, 2, null));
+        l2.addQuestion(new Question("Welke groep is de beste?", antwoorden, 2, null));
+        l3.addQuestion(new Question("Welke groep is de beste?", antwoorden, 2, null));
+        l4.addQuestion(new Question("Welke groep is de beste?", antwoorden, 2, null));
+        l5.addQuestion(new Question("Welke groep is de beste?", antwoorden, 2, null));
         t.addLocation(l1);
         t.addLocation(l2);
         t.addLocation(l3);
