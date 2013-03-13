@@ -32,6 +32,13 @@
                 </c:if>
 
                 <div class="trip-info">
+                                            <c:if test="${not empty enrollmentRequisites}">
+                                                <h3>Requisites only for you!</h3>
+                                                    <c:forEach items="${enrollmentRequisites}" var="enrollmentRequisite">
+                                                        ${enrollmentRequisite.value}
+                                                        ${enrollmentRequisite.key}
+                                                    </c:forEach>
+                                            </c:if>
                     <table>
                         <tr>
                             <td><spring:message code="Description"/></td>
@@ -101,6 +108,9 @@
                             </c:choose>
                         </tr>
                     </table>
+
+
+
                 </div>
 
                 <div id="subscribe-buttons">

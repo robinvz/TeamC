@@ -71,24 +71,24 @@
 
         <p>
             <c:choose>
-            <c:when test="${not empty trip.requisites}">
-        <table>
-            <thead>
-            <th><spring:message code="Requisites"/></th>
-            <th><spring:message code="Amount"/></th>
-            </thead>
-            <c:forEach items="${trip.requisites}" var="requisite">
-                <tr>
-                    <td>${requisite.key}</td>
-                    <td>${requisite.value}</td>
-                </tr>
-            </c:forEach>
-        </table>
-        </c:when>
-        <c:otherwise>
-            <h3><spring:message code="NoRequisites"/></h3>
-        </c:otherwise>
-        </c:choose>
+                <c:when test="${not empty trip.requisites}">
+                    <table>
+                        <thead>
+                            <th><spring:message code="Requisites"/></th>
+                            <th><spring:message code="Amount"/></th>
+                        </thead>
+                        <c:forEach items="${trip.requisites}" var="requisite">
+                            <tr>
+                                <td>${requisite.key}</td>
+                                <td>${requisite.value}</td>
+                            </tr>
+                        </c:forEach>
+                    </table>
+                </c:when>
+                <c:otherwise>
+                    <h3><spring:message code="NoRequisites"/></h3>
+                </c:otherwise>
+            </c:choose>
         </p>
     </div>
 
