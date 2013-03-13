@@ -165,14 +165,20 @@ public class TripController {
         }
     }
 
-    @RequestMapping(value = "/isEnrolled", method = RequestMethod.GET)
-    public boolean isEnrolled(@RequestParam int tripId) {
+    @RequestMapping(value = "/isEnrolled/{tripId}", method = RequestMethod.GET)
+    public     @ResponseBody    Boolean isEnrolled(@PathVariable int tripId) {
         User user = (User) session.getAttribute("user");
-        //TODO Check if user is enrolled in trip
-        return true;
+        Trip trip = null;
+        try {
+            trip = tripsService.findTripById(tripId, user);
+        } catch (TripsException e) {
+        }
+        boolean isEnrolled = tripsService.isUserEnrolled(user, trip);
+        if (isEnrolled) return true;
+        return false;
     }
 
-    @RequestMapping(value = "/subscribe", method = RequestMethod.GET)
+    @RequestMapping(value = "/subscribe", method = RequestMethod.POST)
     public ModelAndView subscribe(@RequestParam int tripId, Locale locale) {
         User user = (User) session.getAttribute("user");
         if (isLoggedIn()) {
@@ -202,7 +208,7 @@ public class TripController {
         }
     }
 
-    @RequestMapping(value = "/unSubscribe", method = RequestMethod.GET)
+    @RequestMapping(value = "/unSubscribe", method = RequestMethod.POST)
     public ModelAndView unSubscribe(@RequestParam int tripId, Locale locale) {
         User user = (User) session.getAttribute("user");
         if (isLoggedIn()) {
@@ -869,6 +875,20 @@ public class TripController {
         }
         return new ModelAndView("redirect:/costs/" + trip.getId());
     }
+
+    @RequestMapping(value = "/costs/{tripId}/deleteCost/{name}/{amount}", method = RequestMethod.GET)
+    public ModelAndView deleteCost(@PathVariable int tripId, @PathVariable String name, @PathVariable double amount, Locale locale){
+            User user = (User) session.getAttribute("user");
+        Trip trip = null;
+        try{
+            trip = tripsService.findTripById(tripId, user);
+            tripsService.removeCostFromEnrollment(name, amount, trip, user);
+        }catch (TripsException e) {
+            return new ModelAndView("tripsView", "error", messageSource.getMessage("FindTripError", null, locale));
+        }
+        return new ModelAndView("redirect:/costs/" + trip.getId());
+    }
+
 
 
     @RequestMapping(value = "/acceptInvitation", method = RequestMethod.GET)
