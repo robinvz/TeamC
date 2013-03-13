@@ -155,6 +155,13 @@ public class UserBLImpl implements UserBL
         }
     }
 
+    /**
+     * Puts the user's current position on Google Maps in the database
+     *
+     * @param user the user who's position is to be set in the database
+     * @param latitude google maps latitude
+     * @param longitude google maps longitude
+     */
     @Transactional
     @Override
     public void setUsersCurrentPosition(User user, double latitude, double longitude) throws TripsException {

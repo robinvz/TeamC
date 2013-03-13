@@ -16,7 +16,7 @@ public class ImageChecker
      * and also checks if the image size is no larger than 3 MB
      *
      * @param image
-     * @return boolean
+     * @return true if image is valid, or throws an exception when image isn't valid
      */
     public static boolean isValidImage(byte[] image) throws TripsException {
         String contentType = new Tika().detect(image);
