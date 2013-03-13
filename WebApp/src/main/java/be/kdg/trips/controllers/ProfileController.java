@@ -84,10 +84,10 @@ public class ProfileController {
             try {
                 tripsService.updateUser(user, firstName, lastName, street, houseNr, city, postalCode, country, null);
                 session.setAttribute("user", tripsService.findUser(((User) session.getAttribute("user")).getEmail()));
+                return new ModelAndView("/users/profileView");
             } catch (TripsException e) {
                 return new ModelAndView("/users/profileView");
             }
-            return new ModelAndView("/users/profileView");
         } else {
             return new ModelAndView("loginView", "loginBean", new LoginBean());
         }
