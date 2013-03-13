@@ -6,7 +6,6 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
-
 import javax.mail.MessagingException;
 
 /**
@@ -28,8 +27,7 @@ public class ContactController {
     }
 
     @RequestMapping(value = "/sendContactMail", method = RequestMethod.POST)
-    public String sendContactMail(@RequestParam String email, @RequestParam String type, @RequestParam String message)
-    {
+    public String sendContactMail(@RequestParam String email, @RequestParam String type, @RequestParam String message) {
         try {
             tripsService.sendContactMail(type, message, email);
         } catch (MessagingException e) {
@@ -37,4 +35,5 @@ public class ContactController {
         }
         return "indexView";
     }
+
 }

@@ -846,14 +846,17 @@ public class TripController {
     @RequestMapping(value = "/costs/{tripId}/createCost", method = RequestMethod.POST)
     public ModelAndView createCost(@PathVariable int tripId, @RequestParam String name, @RequestParam double amount,  Locale locale)  {
         User user = (User) session.getAttribute(("user"));
-        Trip trip = null;
-        try {
-            trip = tripsService.findTripById(tripId, user);
-            tripsService.addCostToEnrollment(name, amount, trip, user);
-        } catch (TripsException e) {
-            return new ModelAndView("tripsView", "error", messageSource.getMessage("FindTripError", null, locale));
+        if (isLoggedIn()) {
+            try {
+                Trip trip = tripsService.findTripById(tripId, user);
+                tripsService.addCostToEnrollment(name, amount, trip, user);
+                return new ModelAndView("redirect:/costs/" + trip.getId());
+            } catch (TripsException e) {
+                return new ModelAndView("tripsView", "error", messageSource.getMessage("FindTripError", null, locale));
+            }
+        } else {
+            return new ModelAndView("loginView", "loginBean", new LoginBean());
         }
-        return new ModelAndView("redirect:/costs/" + trip.getId());
     }
 
     @RequestMapping(value = "/costs/{tripId}/deleteCost/{name}/{amount}", method = RequestMethod.GET)
@@ -865,7 +868,7 @@ public class TripController {
             try{
                 trip = tripsService.findTripById(tripId, user);
                 tripsService.removeCostFromEnrollment(name, amount, trip, user);
-                map = putInMap(map, trip, "success", "Cost added");
+                map = putInMap(map, trip, "success", messageSource.getMessage("CostAdded", null, locale));
                 return new ModelAndView("redirect:/costs/" + trip.getId(), map);
             }catch (TripsException e) {
                 return new ModelAndView("tripsView", "error", messageSource.getMessage("FindTripError", null, locale));
@@ -880,7 +883,7 @@ public class TripController {
         User user = (User) session.getAttribute("user");
         if (isLoggedIn()) {
             Map map = new HashMap();
-            Trip trip;
+            Trip trip = null;
             try {
                 trip = tripsService.findTripById(tripId, user);
                 tripsService.acceptInvitation(trip, user);
@@ -889,8 +892,11 @@ public class TripController {
             } catch (TripsException e) {
                 if (e.getMessage().contains("Trip with id")) {
                     return new ModelAndView("tripsView", "error", messageSource.getMessage("FindTripError", null, locale));
+                } else if (e.getMessage().contains("Invitation for user")){
+                    map = putInMap(map, trip, "error", messageSource.getMessage("InvitationUnExisting", null, locale));
+                    return new ModelAndView("tripView", map);
                 } else {
-                    //TODO:nog andere exceptions, welke message?
+                    map = putInMap(map, trip, "error", messageSource.getMessage("AlreadyActiveError", null, locale));
                     return new ModelAndView("tripView", map);
                 }
             }
@@ -904,7 +910,7 @@ public class TripController {
         User user = (User) session.getAttribute("user");
         if (isLoggedIn()) {
             Map map = new HashMap();
-            Trip trip;
+            Trip trip = null;
             try {
                 trip = tripsService.findTripById(tripId, user);
                 tripsService.declineInvitation(trip, user);
@@ -914,7 +920,7 @@ public class TripController {
                 if (e.getMessage().contains("Trip with id")) {
                     return new ModelAndView("tripsView", "error", messageSource.getMessage("FindTripError", null, locale));
                 } else {
-                    //TODO:nog andere exceptions, welke message?
+                    map = putInMap(map, trip, "error", e.getMessage());
                     return new ModelAndView("tripView", map);
                 }
             }
