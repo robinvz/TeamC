@@ -166,8 +166,7 @@ public class EnrollmentBLImpl implements EnrollmentBL
             {
                 invitation = new Invitation(trip, user);
                 enrollmentDao.saveOrUpdateInvitation(invitation);
-                //give link to invitation!
-                MailSender.sendMail("Trip invitation", "You have been invited by " + organizer.getFirstName() + " " + organizer.getLastName() + " for his trip named: '" + trip.getTitle() + "' (" + trip.getDescription() + ").\nClick here xxx if you're interested in joining.", user.getEmail());
+                MailSender.sendMail("Trip invitation", "You have been invited by " + organizer.getFirstName() + " " + organizer.getLastName() + " for his trip named: '" + trip.getTitle() + "' (" + trip.getDescription() + ").\nClick here <a:href='http://localhost:8080/login#"+trip.getId()+"'>here</a> if you're interested in joining.", user.getEmail());
             }
             else
             {

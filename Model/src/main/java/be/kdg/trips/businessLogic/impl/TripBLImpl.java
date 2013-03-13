@@ -65,7 +65,7 @@ public class TripBLImpl implements TripBL
             if(areDatesValid(startDate, endDate))
             {
                 trip = new TimeBoundTrip(title, description, privacy, organizer, startDate, endDate);
-                if(repeatable!=null & amount!=null)
+                if(repeatable!=null && amount!=null)
                 {
                     if(amount>0 && amount<16)
                     {
@@ -482,7 +482,7 @@ public class TripBLImpl implements TripBL
                     {
                         newImage = image;
                     }
-                    location.setQuestion(new Question(question, possibleAnswers, correctAnswerIndex, newImage));
+                    location.addQuestion(new Question(question, possibleAnswers, correctAnswerIndex, newImage));
                     tripDao.saveOrUpdateLocation(location);
                 }
                 else
@@ -568,7 +568,7 @@ public class TripBLImpl implements TripBL
             {
                 question.setImage(image);
             }
-            location.setQuestion(question);
+            location.addQuestion(question);
             tripDao.saveOrUpdateLocation(location);
         }
         else
@@ -583,9 +583,9 @@ public class TripBLImpl implements TripBL
         if(isExistingLocation(location.getId()) && location.getQuestion() != null && userBL.isExistingUser(organizer.getEmail()) && isOrganizer(location.getTrip(), organizer))
         {
             Question question = location.getQuestion();
-            tripDao.deleteQuestion(question.getId());
-            location.setQuestion(null);
+            location.removeQuestion();
             tripDao.saveOrUpdateLocation(location);
+            tripDao.deleteQuestion(question.getId());
         }
         else
         {

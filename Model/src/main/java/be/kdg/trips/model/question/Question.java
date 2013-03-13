@@ -36,6 +36,7 @@ public class Question implements Serializable, Comparable
     private int correctAnswerIndex;
     @Lob
     private byte[] image;
+   // @NotNull
     @OneToOne(mappedBy = "question")
     private Location location;
 
