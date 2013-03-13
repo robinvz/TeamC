@@ -113,38 +113,6 @@
 
                 </div>
 
-                <div id="subscribe-buttons">
-                    <c:set value="false" var="validTrip"/>
-                    <c:set value="false" var="subscribed"/>
-                    <c:if test="${not empty user  && trip.published==true && trip.privacy == 'PROTECTED'}">
-                        <c:set value="true" var="validTrip"/>
-                        <c:if test="${not empty trip.enrollments}">
-                            <c:forEach items="${trip.enrollments}" var="enrollment">
-                                <c:if test="${enrollment.user == user}">
-                                    <c:set value="true" var="subscribed"/>
-                                </c:if>
-                            </c:forEach>
-                        </c:if>
-                    </c:if>
-
-                    <c:if test="${validTrip == true}">
-                        <c:choose>
-                            <c:when test="${subscribed}">
-                                <a href="/unSubscribe?tripId=${trip.id}">
-                                    <img id="unSubscribeButton"
-                                         src="${pageContext.request.contextPath}/resources/res/img/unsubscribe.jpg">
-                                </a>
-                            </c:when>
-                            <c:otherwise>
-                                <a href="/subscribe?tripId=${trip.id}">
-                                    <img id="subscribeButton"
-                                         src="${pageContext.request.contextPath}/resources/res/img/subscribe.jpg">
-                                </a>
-                            </c:otherwise>
-                        </c:choose>
-                    </c:if>
-                </div>
-
                 <div id="invitation-buttons">
                     <c:set value="false" var="validPrivateTrip"/>
                     <c:set value="false" var="invited"/>
@@ -183,10 +151,9 @@
 </div>
 <script src="${pageContext.request.contextPath}/resources/js/jquery-1.9.0.min.js"></script>
 <script>
-    if (!window.location.hash) {
-        window.location = '?theme=${trip.theme}#loaded';
+    if (window.location.hash) {
+        window.location = '?theme=${trip.theme}';
     }
-
 </script>
 </body>
 </html>
