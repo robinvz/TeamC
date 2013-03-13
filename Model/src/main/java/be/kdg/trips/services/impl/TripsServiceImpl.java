@@ -203,8 +203,8 @@ public class TripsServiceImpl implements TripsService
     }
 
     @Override
-    public void editTripQuestionDetails(User organizer, Location location, Question question, String questionTitle, List<String> possibleAnswers, int correctAnswerIndex, byte[] image) throws TripsException {
-        tripBL.editTripQuestionDetails(organizer, location, question, questionTitle, possibleAnswers, correctAnswerIndex, image);
+    public void editTripQuestionDetails(User organizer, Location location, String questionTitle, List<String> possibleAnswers, Integer correctAnswerIndex, byte[] image) throws TripsException {
+        tripBL.editTripQuestionDetails(organizer, location, questionTitle, possibleAnswers, correctAnswerIndex, image);
     }
 
     @Override

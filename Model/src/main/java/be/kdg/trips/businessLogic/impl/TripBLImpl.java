@@ -546,18 +546,22 @@ public class TripBLImpl implements TripBL
 
     @Transactional
     @Override
-    public void editTripQuestionDetails(User organizer, Location location, Question question, String questionTitle, List<String> possibleAnswers, int correctAnswerIndex, byte[] image) throws TripsException {
+    public void editTripQuestionDetails(User organizer, Location location, String questionTitle, List<String> possibleAnswers, Integer correctAnswerIndex, byte[] image) throws TripsException {
         if(isExistingLocation(location.getId()) && location.getQuestion() != null && userBL.isExistingUser(organizer.getEmail()) && isOrganizer(location.getTrip(), organizer))
         {
+            Question question = location.getQuestion();
             if(!questionTitle.equals(""))
             {
                 question.setQuestion(questionTitle);
             }
-            if(!possibleAnswers.isEmpty())
+            if(possibleAnswers!=null)
             {
-                question.setPossibleAnswers(possibleAnswers);
+                if(!possibleAnswers.isEmpty())
+                {
+                    question.setPossibleAnswers(possibleAnswers);
+                }
             }
-            if(correctAnswerIndex < question.getPossibleAnswers().size())
+            if(correctAnswerIndex!=null && correctAnswerIndex < question.getPossibleAnswers().size())
             {
                 question.setCorrectAnswerIndex(correctAnswerIndex);
             }

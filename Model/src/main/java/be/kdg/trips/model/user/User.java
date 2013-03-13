@@ -183,6 +183,10 @@ public class User implements Serializable {
         this.longitude = longitude;
     }
 
+    public Set<Enrollment> getEnrollments() {
+        return enrollments;
+    }
+
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
