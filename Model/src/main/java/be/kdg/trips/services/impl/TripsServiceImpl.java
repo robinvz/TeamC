@@ -203,8 +203,8 @@ public class TripsServiceImpl implements TripsService
     }
 
     @Override
-    public void editTripQuestionDetails(User organizer, Location location, Question question, String questionTitle, List<String> possibleAnswers, int correctAnswerIndex) throws TripsException {
-        tripBL.editTripQuestionDetails(organizer, location, question, questionTitle, possibleAnswers, correctAnswerIndex);
+    public void editTripQuestionDetails(User organizer, Location location, String questionTitle, List<String> possibleAnswers, Integer correctAnswerIndex, byte[] image) throws TripsException {
+        tripBL.editTripQuestionDetails(organizer, location, questionTitle, possibleAnswers, correctAnswerIndex, image);
     }
 
     @Override
@@ -220,12 +220,12 @@ public class TripsServiceImpl implements TripsService
 
     @Override
     public List<Enrollment> findEnrollmentsByUser(User user) throws TripsException {
-        return enrollmentBL.getEnrollmentsByUser(user);
+        return enrollmentBL.findEnrollmentsByUser(user);
     }
 
     @Override
     public List<Enrollment> findEnrollmentsByTrip(Trip trip) throws TripsException {
-        return enrollmentBL.getEnrollmentsByTrip(trip);
+        return enrollmentBL.findEnrollmentsByTrip(trip);
     }
 
     @Override
@@ -260,7 +260,7 @@ public class TripsServiceImpl implements TripsService
 
     @Override
     public List<Invitation> findInvitationsByUser(User user) throws TripsException {
-        return enrollmentBL.getInvitationsByUser(user);
+        return enrollmentBL.findInvitationsByUser(user);
     }
 
     @Override

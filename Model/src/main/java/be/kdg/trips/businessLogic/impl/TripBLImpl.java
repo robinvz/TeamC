@@ -225,7 +225,7 @@ public class TripBLImpl implements TripBL
                 trip.setPublished(true);
                 if(trip.getPrivacy()!=TripPrivacy.PUBLIC)
                 {
-                    enrollmentBL.enroll(trip, organizer);
+                    enrollmentBL.subscribe(trip, organizer);
                 }
                 tripDao.updateTrip(trip);
             }
@@ -303,11 +303,13 @@ public class TripBLImpl implements TripBL
     public void addImageToTrip(Trip trip, User organizer, byte[] image) throws TripsException {
         if(isExistingTrip(trip.getId()) && userBL.isExistingUser(organizer.getEmail()) && isOrganizer(trip, organizer))
         {
-            if(ImageChecker.isValidImage(image))
+            byte[] newImage = null;
+            if(image != null && ImageChecker.isValidImage(image))
             {
-                trip.setImage(image);
-                tripDao.updateTrip(trip);
+                newImage = image;
             }
+            trip.setImage(newImage);
+            tripDao.updateTrip(trip);
         }
     }
 
@@ -344,7 +346,12 @@ public class TripBLImpl implements TripBL
             {
                 if(correctAnswerIndex<possibleAnswers.size() && correctAnswerIndex>=0)
                 {
-                    location =  new Location(trip, latitude, longitude, new Address(street, houseNr, city, postalCode, country), title, description,trip.getLocations().size(), new Question(question, possibleAnswers, correctAnswerIndex, image));
+                    byte[] newImage = null;
+                    if(image != null && ImageChecker.isValidImage(image))
+                    {
+                        newImage = image;
+                    }
+                    location =  new Location(trip, latitude, longitude, new Address(street, houseNr, city, postalCode, country), title, description,trip.getLocations().size(), new Question(question, possibleAnswers, correctAnswerIndex, newImage));
                     trip.addLocation(location);
                     tripDao.saveOrUpdateLocation(location);
                 }
@@ -470,7 +477,12 @@ public class TripBLImpl implements TripBL
             {
                 if(correctAnswerIndex<possibleAnswers.size() && correctAnswerIndex>=0)
                 {
-                    location.setQuestion(new Question(question, possibleAnswers, correctAnswerIndex, image));
+                    byte[] newImage = null;
+                    if(image != null && ImageChecker.isValidImage(image))
+                    {
+                        newImage = image;
+                    }
+                    location.setQuestion(new Question(question, possibleAnswers, correctAnswerIndex, newImage));
                     tripDao.saveOrUpdateLocation(location);
                 }
                 else
@@ -534,20 +546,28 @@ public class TripBLImpl implements TripBL
 
     @Transactional
     @Override
-    public void editTripQuestionDetails(User organizer, Location location, Question question, String questionTitle, List<String> possibleAnswers, int correctAnswerIndex) throws TripsException {
+    public void editTripQuestionDetails(User organizer, Location location, String questionTitle, List<String> possibleAnswers, Integer correctAnswerIndex, byte[] image) throws TripsException {
         if(isExistingLocation(location.getId()) && location.getQuestion() != null && userBL.isExistingUser(organizer.getEmail()) && isOrganizer(location.getTrip(), organizer))
         {
+            Question question = location.getQuestion();
             if(!questionTitle.equals(""))
             {
                 question.setQuestion(questionTitle);
             }
-            if(!possibleAnswers.isEmpty())
+            if(possibleAnswers!=null)
             {
-                question.setPossibleAnswers(possibleAnswers);
+                if(!possibleAnswers.isEmpty())
+                {
+                    question.setPossibleAnswers(possibleAnswers);
+                }
             }
-            if(correctAnswerIndex < question.getPossibleAnswers().size())
+            if(correctAnswerIndex!=null && correctAnswerIndex < question.getPossibleAnswers().size())
             {
                 question.setCorrectAnswerIndex(correctAnswerIndex);
+            }
+            if(image!=null && ImageChecker.isValidImage(image))
+            {
+                question.setImage(image);
             }
             location.setQuestion(question);
             tripDao.saveOrUpdateLocation(location);

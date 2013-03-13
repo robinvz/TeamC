@@ -66,17 +66,7 @@ public class TestEnrollment
         User user = new User("lol@kdg.be", "lolapsch");
         tripsService.subscribe(trip, user);
     }
-    /*
-    @Test(expected = TripsException.class)
-    public void failedTripSubscribe() throws TripsException, ParseException
-    {
-        User organizer = tripsService.createUser("lepel","lapal");
-        User user = tripsService.createUser("lopol", "lopol");
-        Trip trip = new TimeBoundTrip("Spartacus run", "Lopen door de modder!", TripPrivacy.PROTECTED, organizer, df.parse("14/12/2014"), df.parse("15/12/2014"));
-        tripsService.publishTrip(trip, organizer);
-        tripsService.enroll(trip, user);
-    }
-    */
+
     @Test(expected = TripsException.class)
     public void failedSubscribeTwice() throws TripsException, ParseException
     {
@@ -86,21 +76,21 @@ public class TestEnrollment
         tripsService.subscribe(trip, subscriber);
     }
 
-    @Test(expected = TransactionSystemException.class)
+    @Test(expected = TripsException.class)
     public void failedSubscribeInvalidPrivacyPublic() throws TripsException
     {
         User user = new User("jeremy@msn.be","zwaard");
         User subscriber = tripsService.createUser(user);
-        Trip trip = tripsService.createTimelessTrip("tijdloze trip", "aa", TripPrivacy.PUBLIC, organizer);
+        Trip trip = tripsService.createTimelessTrip("tijdloze trip", "tripp", TripPrivacy.PUBLIC, organizer);
         tripsService.publishTrip(trip, organizer);
         tripsService.subscribe(trip,subscriber);
     }
 
-    @Test(expected = ConstraintViolationException.class)
+    @Test(expected = TripsException.class)
     public void failedSubscribeInvalidPrivacyPrivate() throws TripsException
     {
         User subscriber = tripsService.createUser(new User("jereaamy@msn.be","zwaard"));
-        Trip trip = tripsService.createTimelessTrip("tijdloze trip", "aa", TripPrivacy.PRIVATE, organizer);
+        Trip trip = tripsService.createTimelessTrip("tijdloze trip", "tripp", TripPrivacy.PRIVATE, organizer);
         tripsService.subscribe(trip, subscriber);
     }
 
@@ -112,7 +102,7 @@ public class TestEnrollment
         tripsService.publishTrip(trip, organizer);
         tripsService.subscribe(trip, subscriber);
         tripsService.disenroll(trip, subscriber);
-       // assertTrue(tripsService.findEnrollmentsByUser(subscriber).isEmpty());
+        assertTrue(tripsService.findEnrollmentsByUser(subscriber).isEmpty());
     }
 
     @Test
@@ -233,6 +223,20 @@ public class TestEnrollment
         tripsService.acceptInvitation(trip, invitee);
     }
 
+    @Test(expected = TripsException.class)
+    public void failedAcceptInvitationPublicPrivacy() throws TripsException {
+        User invitee = tripsService.createUser(new User("unexisting292@hotmail.com","pass"));
+        Trip trip = tripsService.createTimelessTrip("Spartacus run", "Lopen door de modder!", TripPrivacy.PUBLIC, organizer);
+        tripsService.acceptInvitation(trip, invitee);
+    }
+
+    @Test(expected = TripsException.class)
+    public void failedAcceptInvitationProtectedPrivacy() throws TripsException {
+        User invitee = tripsService.createUser(new User("unexisting2992@hotmail.com","pass"));
+        Trip trip = tripsService.createTimelessTrip("Spartacus run", "Lopen door de modder!", TripPrivacy.PROTECTED, organizer);
+        tripsService.acceptInvitation(trip, invitee);
+    }
+
     @Test
     public void successfulDeclineInvitation() throws TripsException, MessagingException {
         User invitee = tripsService.createUser(new User("unexisting99@hotmail.com","pass"));
@@ -259,7 +263,7 @@ public class TestEnrollment
     }
 
     @Test(expected = TripsException.class)
-    public void rfailedDeclineInvitationAlreadDeclined() throws TripsException, MessagingException {
+    public void failedDeclineInvitationAlreadDeclined() throws TripsException, MessagingException {
         User invitee = tripsService.createUser(new User("unexisting201@hotmail.com","pass"));
         Trip trip = tripsService.createTimelessTrip("Spartacus run", "Lopen door de modder!", TripPrivacy.PRIVATE, organizer);
         Invitation invitation = tripsService.invite(trip, organizer, invitee);
