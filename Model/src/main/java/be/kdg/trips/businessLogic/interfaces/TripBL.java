@@ -49,7 +49,7 @@ public interface TripBL
 
     public void addQuestionToLocation(User organizer, Location location, String question, List<String> possibleAnswers, int correctAnswerIndex, byte[] image) throws TripsException;
     public Map<Question, Fraction> getQuestionsWithAnswerPercentage(Trip trip, User organizer) throws TripsException;
-    public void editTripQuestionDetails(User organizer, Location location, Question question, String questionTitle, List<String> possibleAnswers, int correctAnswerIndex, byte[] image) throws TripsException;
+    public void editTripQuestionDetails(User organizer, Location location, String questionTitle, List<String> possibleAnswers, Integer correctAnswerIndex, byte[] image) throws TripsException;
     public void removeQuestionFromLocation(User organizer, Location location) throws TripsException;
 
     public Trip findTripByQuestion(Question question) throws TripsException;

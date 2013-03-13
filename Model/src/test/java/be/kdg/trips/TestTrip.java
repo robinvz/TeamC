@@ -639,13 +639,16 @@ public class TestTrip {
         List<String> possibleAnswers = new ArrayList<>();
         possibleAnswers.add("Gijs");
         possibleAnswers.add("Keke");
-        Location location = tripsService.addLocationToTrip(organizer, trip, 10.12131, 10.12131, "Nationalestraat", null, "Antwerp", "2000", "Belgium", "Titel", "Lange straat met tramspoor");
-        tripsService.addQuestionToLocation(organizer, location, "Wie is hier den baas?", possibleAnswers, 0, null);
-        location = tripsService.findTripById(trip.getId(),organizer).getLocations().get(FIRST_ELEMENT);
+        tripsService.addLocationToTrip(organizer, trip, 10.12131, 10.12131, "Nationalestraat", null, "Antwerp", "2000", "Belgium", "Titel", "Lange straat met tramspoor", "Wie is hier den baas?", possibleAnswers, 0, null);
+        Location location = tripsService.findTripById(trip.getId(),organizer).getLocations().get(FIRST_ELEMENT);
+        tripsService.editTripQuestionDetails(organizer, location, "Keke is den baas!", null, null, null);
         Question question = tripsService.findLocationById(location.getId()).getQuestion();
-        tripsService.editTripQuestionDetails(organizer, location, question, "Keke is den baas!", possibleAnswers, 0, null);
-        String questionTitle = question.getQuestion();
-        assertEquals("Keke is den baas!", questionTitle);
+        boolean correct = true;
+        if(question.getPossibleAnswers().size()!=possibleAnswers.size()) correct = false;
+        if(!question.getQuestion().equals("Keke is den baas!")) correct = false;
+        if(question.getCorrectAnswerIndex()!=0) correct = false;
+        if(!question.checkAnswer(0))  correct = false;
+        assertTrue(correct);
     }
 
     @Test
@@ -655,12 +658,16 @@ public class TestTrip {
         List<String> possibleAnswers = new ArrayList<>();
         possibleAnswers.add("Gijs");
         possibleAnswers.add("Keke");
-        Location location = tripsService.addLocationToTrip(organizer, trip, 10.12131, 10.12131, "Nationalestraat", null, "Antwerp", "2000", "Belgium", "Titel", "Lange straat met tramspoor");
-        tripsService.addQuestionToLocation(organizer, location, "Wie is hier den baas?", possibleAnswers, 0, null);
-        location = tripsService.findTripById(trip.getId(),organizer).getLocations().get(FIRST_ELEMENT);
-        Question question = tripsService.findLocationById(location.getId()).getQuestion();
-        tripsService.editTripQuestionDetails(organizer, location, question, "Wie is hier den baas?", possibleAnswers, 1, null);
-        assertEquals(true, question.checkAnswer(1));
+        tripsService.addLocationToTrip(organizer, trip, 10.12131, 10.12131, "Nationalestraat", null, "Antwerp", "2000", "Belgium", "Titel", "Lange straat met tramspoor", "Wie is hier den baas?", possibleAnswers, 0, null);
+        Location location = tripsService.findTripById(trip.getId(),organizer).getLocations().get(FIRST_ELEMENT);
+        tripsService.editTripQuestionDetails(organizer, location, "", null, SECOND_ELEMENT, null);
+        Question question = tripsService.findTripById(trip.getId(), organizer).getLocations().get(FIRST_ELEMENT).getQuestion();
+        boolean correct = true;
+        if(!question.getQuestion().equals("Wie is hier den baas?")) correct = false;
+        if(question.getPossibleAnswers().size()!=possibleAnswers.size()) correct = false;
+        if(!question.checkAnswer(SECOND_ELEMENT)) correct = false;
+        if(question.getCorrectAnswerIndex()!=SECOND_ELEMENT) correct = false;
+        assertTrue(correct);
     }
 
     @Test
