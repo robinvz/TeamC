@@ -75,9 +75,9 @@ public class TripController {
         try {
             Trip trip = tripsService.findTripById(tripId, user);
             if (isLoggedIn()) {
-                Set <Enrollment> enrollmentSet = user.getEnrollments();
+                Set<Enrollment> enrollmentSet = user.getEnrollments();
                 for (Enrollment enrollment : enrollmentSet) {
-                    if(enrollment.getTrip()==trip) {
+                    if (enrollment.getTrip() == trip) {
                         Map map = new HashMap();
                         map.put("trip", trip);
                         map.put("enrollmentRequisites", enrollment.getRequisites());
@@ -173,7 +173,9 @@ public class TripController {
     }
 
     @RequestMapping(value = "/isEnrolled/{tripId}", method = RequestMethod.GET)
-    public @ResponseBody Boolean isEnrolled(@PathVariable int tripId) {
+    public
+    @ResponseBody
+    Boolean isEnrolled(@PathVariable int tripId) {
         User user = (User) session.getAttribute("user");
         Trip trip = null;
         try {
@@ -478,9 +480,10 @@ public class TripController {
                                        @RequestParam String houseNr, @RequestParam String city, @RequestParam String postalCode,
                                        @RequestParam String country, @RequestParam String title, @RequestParam("file") MultipartFile file,
                                        @RequestParam String description, @RequestParam String question,
-                                       @RequestParam String correctAnswer, HttpServletRequest request) {
+                                       @RequestParam String correctAnswer, @RequestParam List possibleAnswers) {
         User user = (User) session.getAttribute("user");
         Trip trip = null;
+        byte[] bFile = null;
         if (isLoggedIn()) {
             try {
                 trip = tripsService.findTripById(tripId, user);
@@ -488,10 +491,11 @@ public class TripController {
                     tripsService.addLocationToTrip(user, trip, latitude, longitude, street, houseNr.split("-")[0], city, postalCode,
                             country, title, description);
                 } else {
-                    List answers = new ArrayList(Arrays.asList(request.getParameter("possibleAnswers")));
-                    byte[] bFile = file.getBytes();
+                    if (!file.getOriginalFilename().isEmpty()) {
+                        bFile = file.getBytes();
+                    }
                     tripsService.addLocationToTrip(user, trip, latitude, longitude, street, houseNr.split("-")[0], city, postalCode,
-                            country, title, description, question, answers, answers.indexOf(correctAnswer), bFile);
+                            country, title, description, question, possibleAnswers, possibleAnswers.indexOf(correctAnswer), bFile);
                 }
             } catch (TripsException e) {
                 //failed to add location to trip
@@ -552,7 +556,7 @@ public class TripController {
 
     @RequestMapping(value = "/trip/{tripId}/participants", method = RequestMethod.GET)
     public ModelAndView participants(@PathVariable int tripId, Locale locale) {
-        if (isLoggedIn()){
+        if (isLoggedIn()) {
             Map map = new HashMap();
             Trip trip = null;
             try {
@@ -596,28 +600,20 @@ public class TripController {
         }
     }
 
-    @RequestMapping(value = "/trip/{tripId}/locations/editLocation", method = RequestMethod.POST)
-    public ModelAndView editLocation(@PathVariable int tripId, @RequestParam String value, @RequestParam String id, @RequestParam String rowId,
-                                     @RequestParam String columnPosition, @RequestParam String columnId, @RequestParam String columnName) {
+    @RequestMapping(value = "/trip/{tripId}/locations/{locationId}/editLocation", method = RequestMethod.POST)
+    public ModelAndView editLocation(@PathVariable int tripId, @PathVariable int locationId, @RequestParam String title, @RequestParam String description) {
+        Map parameters = new HashMap();
         User user = (User) session.getAttribute("user");
         Trip trip = null;
+        Location location = null;
         if (isLoggedIn()) {
             try {
                 trip = tripsService.findTripById(tripId, user);
-                int locationId = Integer.parseInt(id.split("-")[1]);
                 try {
-                    Location location = tripsService.findLocationById(locationId);
-                    String newValue;
-                    switch (Integer.parseInt(columnId)) {
-                        case 1:
-                            newValue = value.trim().substring(location.getTitle().length());
-                            tripsService.editTripLocationDetails(user, trip, location, "", "", "", "", "", newValue, "");
-                            break;
-                        case 2:
-                            newValue = value.trim().substring(location.getDescription().length());
-                            tripsService.editTripLocationDetails(user, trip, location, "", "", "", "", "", "", newValue);
-                            break;
-                    }
+                    location = tripsService.findLocationById(locationId);
+                    tripsService.editTripLocationDetails(user, trip, location, "", "", "", "", "", title, description);
+                    parameters.put("trip", trip);
+                    parameters.put("location", location);
                 } catch (TripsException e) {
                     // location not found
                     return new ModelAndView("locationsView");
@@ -628,7 +624,7 @@ public class TripController {
         } else {
             return new ModelAndView("loginView", "loginBean", new LoginBean());
         }
-        return new ModelAndView("redirect:/trip/" + trip.getId() + "/locations");
+        return new ModelAndView("redirect:/trip/" + trip.getId() + "/locations/" + location.getId(), parameters);
     }
 
     @RequestMapping(value = "/inviteUser/{tripId}", method = RequestMethod.GET)
@@ -719,7 +715,7 @@ public class TripController {
 
     @RequestMapping(value = "/editTripPic/{tripId}", method = RequestMethod.GET)
     public ModelAndView showEditTripPic(@PathVariable int tripId) {
-        User user = (User)  session.getAttribute("user");
+        User user = (User) session.getAttribute("user");
         Trip trip = null;
         try {
             trip = tripsService.findTripById(tripId, user);
@@ -731,7 +727,9 @@ public class TripController {
     }
 
     @RequestMapping(value = "/tripPic/{tripId}", method = RequestMethod.GET, produces = "image/jpg")
-    public @ResponseBody byte[] showProfilePic(@PathVariable int tripId){
+    public
+    @ResponseBody
+    byte[] showProfilePic(@PathVariable int tripId) {
         User user = (User) session.getAttribute("user");
         byte[] imageData = null;
         try {
@@ -744,8 +742,7 @@ public class TripController {
     }
 
     @RequestMapping(value = "/editTripPic/{tripId}", method = RequestMethod.POST)
-    public ModelAndView editProfilePic(@PathVariable int tripId,@RequestParam("file") MultipartFile file)
-    {
+    public ModelAndView editProfilePic(@PathVariable int tripId, @RequestParam("file") MultipartFile file) {
         try {
             byte[] bFile = file.getBytes();
             User user = (User) session.getAttribute("user");
@@ -844,7 +841,7 @@ public class TripController {
     }
 
     @RequestMapping(value = "/costs/{tripId}/createCost", method = RequestMethod.POST)
-    public ModelAndView createCost(@PathVariable int tripId, @RequestParam String name, @RequestParam double amount,  Locale locale)  {
+    public ModelAndView createCost(@PathVariable int tripId, @RequestParam String name, @RequestParam double amount, Locale locale) {
         User user = (User) session.getAttribute(("user"));
         if (isLoggedIn()) {
             try {
@@ -860,17 +857,17 @@ public class TripController {
     }
 
     @RequestMapping(value = "/costs/{tripId}/deleteCost/{name}/{amount}", method = RequestMethod.GET)
-    public ModelAndView deleteCost(@PathVariable int tripId, @PathVariable String name, @PathVariable double amount, Locale locale){
+    public ModelAndView deleteCost(@PathVariable int tripId, @PathVariable String name, @PathVariable double amount, Locale locale) {
         User user = (User) session.getAttribute("user");
-        if(isLoggedIn()) {
+        if (isLoggedIn()) {
             Trip trip = null;
             Map map = new HashMap();
-            try{
+            try {
                 trip = tripsService.findTripById(tripId, user);
                 tripsService.removeCostFromEnrollment(name, amount, trip, user);
                 map = putInMap(map, trip, "success", messageSource.getMessage("CostAdded", null, locale));
                 return new ModelAndView("redirect:/costs/" + trip.getId(), map);
-            }catch (TripsException e) {
+            } catch (TripsException e) {
                 return new ModelAndView("tripsView", "error", messageSource.getMessage("FindTripError", null, locale));
             }
         } else {
@@ -892,7 +889,7 @@ public class TripController {
             } catch (TripsException e) {
                 if (e.getMessage().contains("Trip with id")) {
                     return new ModelAndView("tripsView", "error", messageSource.getMessage("FindTripError", null, locale));
-                } else if (e.getMessage().contains("Invitation for user")){
+                } else if (e.getMessage().contains("Invitation for user")) {
                     map = putInMap(map, trip, "error", messageSource.getMessage("InvitationUnExisting", null, locale));
                     return new ModelAndView("tripView", map);
                 } else {
@@ -935,4 +932,152 @@ public class TripController {
         return map;
     }
 
+    @RequestMapping(value = "/trip/{tripId}/locations/{locationId}/addQuestion", method = RequestMethod.POST)
+    public ModelAndView addQuestion(@PathVariable int tripId, @PathVariable int locationId, @RequestParam String question, @RequestParam("file") MultipartFile file,
+                                    @RequestParam List<String> possibleAnswers, @RequestParam String correctAnswer) {
+        Map parameters = new HashMap();
+        User user = (User) session.getAttribute("user");
+        Trip trip = null;
+        Location location = null;
+        byte[] bFile = null;
+        if (isLoggedIn()) {
+            try {
+                trip = tripsService.findTripById(tripId, user);
+                location = tripsService.findLocationById(locationId);
+                parameters.put("trip", trip);
+                parameters.put("location", location);
+                if (!file.isEmpty()) {
+                    bFile = file.getBytes();
+                }
+                tripsService.addQuestionToLocation(user, location, question, possibleAnswers, possibleAnswers.indexOf(correctAnswer), bFile);
+            } catch (TripsException e) {
+                //failed to add location to trip
+            } catch (IOException e) {
+                //TODO: bfile is foute type (niet jpeg, gif of png)
+            }
+        } else {
+            return new ModelAndView("loginView", "loginBean", new LoginBean());
+        }
+        return new ModelAndView("redirect:/trip/" + trip.getId() + "/locations/" + location.getId(), parameters);
+    }
+
+    @RequestMapping(value = "/trip/{tripId}/locations/{locationId}/editQuestion", method = RequestMethod.POST)
+    public ModelAndView editQuestion(@PathVariable int tripId, @PathVariable int locationId, @RequestParam String question,
+                                     @RequestParam List<String> possibleAnswers, @RequestParam String correctAnswer) {
+        Map parameters = new HashMap();
+        User user = (User) session.getAttribute("user");
+        Trip trip = null;
+        Location location = null;
+        if (isLoggedIn()) {
+            try {
+                trip = tripsService.findTripById(tripId, user);
+                location = tripsService.findLocationById(locationId);
+                parameters.put("trip", trip);
+                parameters.put("location", location);
+                tripsService.editTripQuestionDetails(user, location, question, possibleAnswers, possibleAnswers.indexOf(correctAnswer), null);
+            } catch (TripsException e) {
+                //failed to add location to trip
+            }
+        } else {
+            return new ModelAndView("loginView", "loginBean", new LoginBean());
+        }
+        return new ModelAndView("redirect:/trip/" + trip.getId() + "/locations/" + location.getId(), parameters);
+    }
+
+    @RequestMapping(value = "/trip/{tripId}/locations/{locationId}/deleteQuestion", method = RequestMethod.GET)
+    public ModelAndView deleteQuestion(@PathVariable int tripId, @PathVariable int locationId) {
+        Map parameters = new HashMap();
+        User user = (User) session.getAttribute("user");
+        Trip trip = null;
+        Location location = null;
+        if (isLoggedIn()) {
+            try {
+                trip = tripsService.findTripById(tripId, user);
+                location = tripsService.findLocationById(locationId);
+                parameters.put("trip", trip);
+                parameters.put("location", location);
+                tripsService.removeQuestionFromLocation(user, location);
+            } catch (TripsException e) {
+                // errors nog fixen
+            }
+        } else {
+            return new ModelAndView("loginView", "loginBean", new LoginBean());
+        }
+        return new ModelAndView("redirect:/trip/" + trip.getId() + "/locations/" + location.getId(), parameters);
+    }
+
+    @RequestMapping(value = "/trip/{tripId}/locations/{locationId}/deleteQuestionImage", method = RequestMethod.GET)
+    public ModelAndView deleteQuestionImage(@PathVariable int tripId, @PathVariable int locationId) {
+        Map parameters = new HashMap();
+        User user = (User) session.getAttribute("user");
+        Trip trip = null;
+        Location location = null;
+        if (isLoggedIn()) {
+            try {
+                trip = tripsService.findTripById(tripId, user);
+                location = tripsService.findLocationById(locationId);
+                parameters.put("trip", trip);
+                parameters.put("location", location);
+                tripsService.removeImageFromQuestion(user, location.getQuestion());
+            } catch (TripsException e) {
+                // errors nog fixen
+            }
+        } else {
+            return new ModelAndView("loginView", "loginBean", new LoginBean());
+        }
+        return new ModelAndView("redirect:/trip/" + trip.getId() + "/locations/" + location.getId(), parameters);
+    }
+
+    @RequestMapping(value = "/trip/{tripId}/locations/{locationId}/questionPic", method = RequestMethod.GET, produces = "image/jpg")
+    public
+    @ResponseBody
+    byte[] showQuestionPic(@PathVariable int tripId, @PathVariable int locationId) {
+        try {
+            Location location = tripsService.findLocationById(locationId);
+            return location.getQuestion().getImage();
+        } catch (TripsException e) {
+            //location not found
+            return null;
+        }
+    }
+
+    @RequestMapping(value = "/trip/{tripId}/locations/{locationId}", method = RequestMethod.GET)
+    public ModelAndView getLocation(@PathVariable int tripId, @PathVariable int locationId) {
+        User user = (User) session.getAttribute("user");
+        if (isLoggedIn()) {
+            Map parameters = new HashMap();
+            try {
+                parameters.put("trip", tripsService.findTripById(tripId, user));
+                parameters.put("location", tripsService.findLocationById(locationId));
+                return new ModelAndView("/users/locationView", parameters);
+            } catch (TripsException e) {
+                return new ModelAndView("tripsView");
+            }
+        } else {
+            return new ModelAndView("loginView", "loginBean", new LoginBean());
+        }
+    }
+
+    @RequestMapping(value = "/trip/{tripId}/locations/{locationId}/editLocationPic", method = RequestMethod.POST)
+    public ModelAndView editLocationPic(@PathVariable int tripId, @PathVariable int locationId, @RequestParam("file") MultipartFile file) {
+        Map parameters = new HashMap();
+        User user = (User) session.getAttribute("user");
+        Trip trip = null;
+        Location location = null;
+        if (isLoggedIn()) {
+            try {
+                trip = tripsService.findTripById(tripId, user);
+                location = tripsService.findLocationById(locationId);
+                parameters.put("trip", trip);
+                parameters.put("location", location);
+                byte[] bFile = file.getBytes();
+                tripsService.editTripQuestionDetails(user, location, "", new ArrayList<String>(), 0, bFile);
+            } catch (IOException | TripsException e) {
+                //TODO: tripsexception kan zijn: user bestaat niet of bfile is foute type (niet jpeg, gif of png)
+            }
+        } else {
+            return new ModelAndView("loginView", "loginBean", new LoginBean());
+        }
+        return new ModelAndView("redirect:/trip/" + trip.getId() + "/locations/" + location.getId(), parameters);
+    }
 }

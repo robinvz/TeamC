@@ -13,6 +13,7 @@
             success:function(data){
                 enrolled = data;
                 enrolled ?  $('#button').addClass('on') :  $('#button').removeClass('on');
+                enrolled ?  $('#button2').addClass('on') :  $('#button2').removeClass('on');
             }
         });
         $('#button').on('click', function(){
@@ -30,6 +31,31 @@
                     $.ajax({
                         type: "POST",
                         url: "/subscribe",
+                        data: {tripId : ${trip.id}}
+                    }).done(function(){
+                                window.location = '?';
+                            });
+                    enrolled = true;
+                }
+
+                $(this).toggleClass('on');
+            }
+        });
+        $('#button2').on('click', function(){
+            if(enrolled != null){
+                if(enrolled){
+                    $.ajax({
+                        type: "POST",
+                        url: "/declineInvitation",
+                        data: {tripId : ${trip.id}}
+                    }).done(function(){
+                                window.location = '?';
+                            });
+                    enrolled = false;
+                }else{
+                    $.ajax({
+                        type: "POST",
+                        url: "/acceptInvitation",
                         data: {tripId : ${trip.id}}
                     }).done(function(){
                                 window.location = '?';
@@ -63,15 +89,23 @@
     imageObj.src = '/tripPic/${trip.id}';
 </script>
 <c:set value="false" var="validTrip"/>
-<c:set value="false" var="subscribed"/>
 <c:if test="${not empty user  && trip.published==true && trip.organizer != user && trip.privacy == 'PROTECTED'}">
     <c:set value="true" var="validTrip"/>
-
+</c:if>
+<c:set value="false" var="validPrivateTrip"/>
+<c:if test="${not empty user  && trip.published==true && trip.privacy == 'PRIVATE'}">
+    <c:set value="true" var="validPrivateTrip"/>
 </c:if>
 
 <c:if test="${validTrip == true}">
     <section class="attending">
-        <a href="#" id="button" class="btn-attend">Attending</a>
+        <a href="#" id="button" class="btn-attend"><spring:message code="Attending"></spring:message></a>
+        <span class="attending-light"></span>
+    </section>
+</c:if>
+<c:if test="${validPrivateTrip == true}">
+    <section class="attending">
+        <a href="#" id="button2" class="btn-attend"><spring:message code="Attending"></spring:message></a>
         <span class="attending-light"></span>
     </section>
 </c:if>
@@ -82,17 +116,18 @@
         <ul class="trip-nav">
             <li><strong>Trip info</strong></li>
             <li class="jump-in"><a href="/trip/${trip.id}"><spring:message code="General"/></a></li>
-            <c:if test="${not empty user}">
-
+            <c:if test="${trip.privacy == 'PUBLIC' && empty user}">
                 <li class="jump-in"><a href="/trip/${trip.id}/locations"><spring:message code="Locations"/></a></li>
                 <li class="jump-in"><a href="/requirements/${trip.id}"><spring:message code="Requisites"/></a></li>
-
-
+            </c:if>
+            <c:if test="${not empty user}">
+                   <li class="jump-in"><a href="/trip/${trip.id}/locations"><spring:message code="Locations"/></a></li>
+                    <li class="jump-in"><a href="/requirements/${trip.id}"><spring:message code="Requisites"/></a></li>
                 <c:if test="${trip.privacy != 'PUBLIC' && trip.published == true}">
-                    <li class="jump-in"><a href="/costs/${trip.id}"><spring:message code="Costs"/></a></li>
                     <li class="jump-in"><a href="/trip/${trip.id}/participants"><spring:message code="Participants"/></a></li>
                     <c:forEach items="${trip.enrollments}" var="enrollment">
                         <c:if test="${enrollment.user == user && enrollment.status == 'READY' || 'FINISHED'}">
+                            <li class="jump-in"><a href="/costs/${trip.id}"><spring:message code="Costs"/></a></li>
                             <li class="jump-in"><a href="/startTrip/${tripId}">Start trip</a></li>
                         </c:if>
                         <c:if test="${enrollment.user == user && enrollment.status == 'BUSY'}">
