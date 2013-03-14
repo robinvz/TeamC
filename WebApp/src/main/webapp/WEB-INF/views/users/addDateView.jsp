@@ -24,9 +24,9 @@
             <span class="successblock">${success}</span>
         </c:if>
 
-        <c:if test="${not empty user && user == trip.organizer}">
+        <c:if test="${user == trip.organizer}">
             <table>
-                <form action="/addDate/${trip.id}" method="POST">
+                <form action="/users/addDate/${trip.id}" method="POST">
                     <tr>
                         <td><label><spring:message code="StartDate"/></label></td>
                         <td><input type="datetime-local" class="picker" name="startDate"></td>

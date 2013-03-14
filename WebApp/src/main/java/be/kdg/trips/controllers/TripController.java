@@ -144,30 +144,26 @@ public class TripController {
         }
     }
 
-    @RequestMapping(value = "/deleteTrip/{tripId}", method = RequestMethod.GET)
+    @RequestMapping(value = "/users/deleteTrip/{tripId}", method = RequestMethod.GET)
     public ModelAndView deleteTrip(@PathVariable int tripId, Locale locale) {
         User user = (User) session.getAttribute("user");
-        if (isLoggedIn()) {
-            Trip trip = null;
-            Map map = new HashMap();
-            try {
-                trip = tripsService.findTripById(tripId, user);
-                tripsService.deleteTrip(trip, user);
-                map.put("success", messageSource.getMessage("TripDeleted", null, locale));
-                return new ModelAndView("tripsView");
-            } catch (TripsException e) {
-                if (e.getMessage().contains("Trip with id")) {
-                    return new ModelAndView("tripsView", "error", messageSource.getMessage("FindTripError", null, locale));
-                } else {
-                    map = putInMap(map, trip, "error", messageSource.getMessage("NotOrganizerError", null, locale));
-                    return new ModelAndView("tripView", map);
-                }
-            } catch (MessagingException e) {
-                map = putInMap(map, trip, "error", e.getMessage());
+        Trip trip = null;
+        Map map = new HashMap();
+        try {
+            trip = tripsService.findTripById(tripId, user);
+            tripsService.deleteTrip(trip, user);
+            map.put("success", messageSource.getMessage("TripDeleted", null, locale));
+            return new ModelAndView("tripsView");
+        } catch (TripsException e) {
+            if (e.getMessage().contains("Trip with id")) {
+                return new ModelAndView("tripsView", "error", messageSource.getMessage("FindTripError", null, locale));
+            } else {
+                map = putInMap(map, trip, "error", messageSource.getMessage("NotOrganizerError", null, locale));
                 return new ModelAndView("tripView", map);
             }
-        } else {
-            return new ModelAndView("loginView", "loginBean", new LoginBean());
+        } catch (MessagingException e) {
+            map = putInMap(map, trip, "error", e.getMessage());
+            return new ModelAndView("tripView", map);
         }
     }
 
@@ -726,51 +722,43 @@ public class TripController {
         }
     }
 
-    @RequestMapping(value = "/addDate/{tripId}", method = RequestMethod.GET)
+    @RequestMapping(value = "/users/addDate/{tripId}", method = RequestMethod.GET)
     public ModelAndView addDate(@PathVariable int tripId, Locale locale) {
         User user = (User) session.getAttribute("user");
-        if (isLoggedIn()) {
-            try {
-                Trip trip = tripsService.findTripById(tripId, user);
-                return new ModelAndView("/users/addDateView", "trip", trip);
-            } catch (TripsException e) {
-                return new ModelAndView("tripsView", "error", messageSource.getMessage("FindTripError", null, locale));
-            }
-        } else {
-            return new ModelAndView("loginView", "loginBean", new LoginBean());
+        try {
+            Trip trip = tripsService.findTripById(tripId, user);
+            return new ModelAndView("/users/addDateView", "trip", trip);
+        } catch (TripsException e) {
+            return new ModelAndView("tripsView", "error", messageSource.getMessage("FindTripError", null, locale));
         }
     }
 
-    @RequestMapping(value = "/addDate/{tripId}", method = RequestMethod.POST)
+    @RequestMapping(value = "/users/addDate/{tripId}", method = RequestMethod.POST)
     public ModelAndView addDate(@PathVariable int tripId, @RequestParam String startDate, @RequestParam String endDate, Locale locale) {
         User user = (User) session.getAttribute("user");
-        if (isLoggedIn()) {
-            Trip trip = null;
-            Map map = new HashMap();
-            try {
-                trip = tripsService.findTripById(tripId, user);
-                startDate = startDate.replace("T", " ");
-                endDate = endDate.replace("T", " ");
-                SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm");
-                tripsService.addDateToTimeBoundTrip(sdf.parse(startDate), sdf.parse(endDate), trip, user);
-                map = putInMap(map, trip, "success", messageSource.getMessage("DatesAdded", null, locale));
+        Trip trip = null;
+        Map map = new HashMap();
+        try {
+            trip = tripsService.findTripById(tripId, user);
+            startDate = startDate.replace("T", " ");
+            endDate = endDate.replace("T", " ");
+            SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm");
+            tripsService.addDateToTimeBoundTrip(sdf.parse(startDate), sdf.parse(endDate), trip, user);
+            map = putInMap(map, trip, "success", messageSource.getMessage("DatesAdded", null, locale));
+            return new ModelAndView("/users/addDateView", map);
+        } catch (TripsException e) {
+            if (e.getMessage().contains("Trip with id")) {
+                return new ModelAndView("tripsView", "error", messageSource.getMessage("FindTripError", null, locale));
+            } else if (e.getMessage().contains("future")) {
+                map = putInMap(map, trip, "error", messageSource.getMessage("StartDateFuture", null, locale));
                 return new ModelAndView("/users/addDateView", map);
-            } catch (TripsException e) {
-                if (e.getMessage().contains("Trip with id")) {
-                    return new ModelAndView("tripsView", "error", messageSource.getMessage("FindTripError", null, locale));
-                } else if (e.getMessage().contains("future")) {
-                    map = putInMap(map, trip, "error", messageSource.getMessage("StartDateFuture", null, locale));
-                    return new ModelAndView("/users/addDateView", map);
-                } else {
-                    map = putInMap(map, trip, "error", messageSource.getMessage("StartDateBefore", null, locale));
-                    return new ModelAndView("/users/addDateView", map);
-                }
-            } catch (ParseException e) {
-                map = putInMap(map, trip, "error", messageSource.getMessage("ParseError", null, locale));
+            } else {
+                map = putInMap(map, trip, "error", messageSource.getMessage("StartDateBefore", null, locale));
                 return new ModelAndView("/users/addDateView", map);
             }
-        } else {
-            return new ModelAndView("loginView", "loginBean", new LoginBean());
+        } catch (ParseException e) {
+            map = putInMap(map, trip, "error", messageSource.getMessage("ParseError", null, locale));
+            return new ModelAndView("/users/addDateView", map);
         }
     }
 
