@@ -5,7 +5,7 @@ var locations = [];
 function getTripId(id) {
     tripId = id;
     initDataTable();
-    btnListeners();
+    listeners();
     initializeMap();
 }
 
@@ -38,7 +38,7 @@ function zoomFit() {
     }
 }
 
-function btnListeners() {
+function listeners() {
     $('#btn-toggleLocations').on('click', function () {
         if ($('#mapcanvas').is(":hidden")) {
             getLatLng();
@@ -50,6 +50,11 @@ function btnListeners() {
             $('#mapcanvas').hide();
             $('#example').show();
         }
+    });
+
+    $("table tr").not(':first').on('click', function () {
+        var ref = '/trip/' + tripId + '/locations/' + $(this).attr('id').substr(9);
+        window.location = ref;
     });
 }
 
@@ -64,8 +69,5 @@ function getLatLng() {
 }
 
 function initDataTable() {
-    $('#example').dataTable({ 'bFilter': false, "bLengthChange": false, "bPaginate": false, "bInfo": false, "bAutoWidth": false })
-        .rowReordering({ sURL: "/trip/switchLocation" })
-        .makeEditable({sUpdateURL: "/trip/" + tripId + "/locations/editLocation",
-            sReadOnlyCellClass: "read_only"});
+    $('#locations-table').dataTable({ "bPaginate": false, "bInfo": false, "bAutoWidth": false });
 }

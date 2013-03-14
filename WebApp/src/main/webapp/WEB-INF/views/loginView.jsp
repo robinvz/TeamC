@@ -16,10 +16,11 @@
     <h2><spring:message code="PleaseLogIn"/></h2>
     <div id="content">
 
-        <div id="fb-root"></div>
+
 
         <form:form action="/login" commandName="loginBean" method="post" id="loginform" name="loginform" dir="loginform">
             <form:errors path="*" cssClass="errorblock" element="div"/>
+            <div id="fb-root"></div>
             <div id="login-buttons">
                 <fb:login-button autologoutlink='true'
                                  perms='email,user_birthday,status_update,publish_stream'></fb:login-button>
@@ -47,6 +48,19 @@
                 </tr>
             </table>
         </form:form>
+
+            <script>
+                if (window.location.hash) {
+                    var pathArray = window.location.pathname.split('/');
+                    var tripId = window.location.hash.substring(1);//pathArray[pathArray.length -1];
+                    if ('${user}' != ''){
+                        window.location = '/trip/' + tripId;
+                    } else {
+                        $('#loginform').attr('action', '/login/' + tripId);
+                    }
+                }
+            </script>
+
     </div>
 
 </div>

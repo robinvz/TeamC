@@ -380,7 +380,7 @@ public class TripTest {
         RequestBuilder requestBuilder = MockMvcRequestBuilders.post("/trip/" + t.getId() + "/locations/createLocation").param("user", "testUser").param("trip", "t")
                 .param("latitude", "1.00").param("longitude", "1.00").param("street", "testStreet").param("houseNr", "1").param("city", "testCity")
                 .param("postalCode", "2000").param("country", "testCountry").param("title", "testTitle").param("file","picture").param("description", "testDescription")
-                .param("question", "testQuestion").param("correctAnswer", "testCorrectAnswer").param("request", "testRequest");
+                .param("question", "testQuestion").param("correctAnswer", "testCorrectAnswer").param("possibleAnswers","testList");
         when(tripsService.findTripById(anyInt(), any(User.class))).thenReturn(t);
         mockMvc.perform(requestBuilder).andExpect(view().name("redirect:/trip/" + t.getId() + "/locations"));
         assertEquals(1, t.getLocations().size());
@@ -1021,6 +1021,28 @@ public class TripTest {
         mockMvc.perform(requestBuilder).andExpect(view().name("tripView"));
     }
 
+
+    @Test
+    public void getLocation() throws Exception {
+        mockHttpSession.setAttribute("user", testUser);
+        Trip t = new TimelessTrip(title, description, privacy, testUser);
+        Location l = any(Location.class);
+        RequestBuilder requestBuilder = MockMvcRequestBuilders.get("/trip/" + t.getId() + "/locations/" + anyInt());
+        when(tripsService.findTripById(t.getId(), testUser)).thenReturn(t);
+        mockMvc.perform(requestBuilder).andExpect(view().name("/users/locationView")).andExpect(model().attribute("trip", t)).andExpect(model().attribute("location", l));
+    }
+
+    /*@Test
+    public void deleteQuestion() throws Exception {
+        mockHttpSession.setAttribute("user", testUser);
+        Trip t = new TimelessTrip(title, description, privacy, testUser);
+        Location l = new Location(t, 1.00, 1.00, new Address("", "", "", "", ""), "", "", 0);
+        t.addLocation(l);
+        when(tripsService.findTripById(t.getId(), testUser)).thenReturn(t);
+        when(tripsService.findLocationById(anyInt())).thenReturn(l);
+        RequestBuilder requestBuilder = MockMvcRequestBuilders.get("/trip/" + t.getId() + "/locations/" + t.getLocations().get(0).getId() + "/deleteQuestion");
+        mockMvc.perform(requestBuilder).andExpect(view().name("redirect:/trip/" + t.getId() + "/locations/" + 0)).andExpect(model().attribute("trip", t)).andExpect(model().attribute("location", l));
+    } */
     @Test
     public void editTripTheme() throws Exception {
         mockHttpSession.setAttribute("user", testUser);

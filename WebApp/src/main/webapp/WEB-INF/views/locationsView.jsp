@@ -18,7 +18,7 @@
     <jsp:include page="tripHeaderView.jsp"/>
     <div id="content">
         <h3><spring:message code="LocationsOverview"/></h3>
-        <table id="example">
+        <table id="locations-table">
             <thead>
             <tr>
                 <th></th>
@@ -29,7 +29,9 @@
                 <th><spring:message code="City"/></th>
                 <th><spring:message code="PostalCode"/></th>
                 <th><spring:message code="Country"/></th>
+                <c:if test="${not empty user && trip.organizer == user}">
                 <th></th>
+                </c:if>
             </tr>
             </thead>
             <tbody>
@@ -40,8 +42,8 @@
                 <c:otherwise>
                     <c:set var="count" value="0" scope="page"/>
                     <c:forEach items="${locations}" var="location">
-                        <tr id="${trip.id}-${location.id}">
-                            <td class="read_only">
+                        <tr id="location-${location.id}">
+                            <td>
                                 <c:set var="count" value="${count + 1}" scope="page"/>
                                 <c:out value="${count}"></c:out>
                             </td>
@@ -51,27 +53,29 @@
                             <td>
                                     ${location.description}
                             </td>
-                            <td class="read_only">
+                            <td>
                                     ${location.getAddress().street}
                             </td>
-                            <td class="read_only">
+                            <td>
                                     ${location.getAddress().houseNr}
                             </td>
-                            <td class="read_only">
+                            <td>
                                     ${location.getAddress().city}
                             </td>
-                            <td class="read_only">
+                            <td>
                                     ${location.getAddress().postalCode}
                             </td>
-                            <td class="read_only">
+                            <td>
                                     ${location.getAddress().country}
                             </td>
-                            <td class="read_only">
+                            <c:if test="${not empty user && trip.organizer == user}">
+                            <td>
                                 <a href="/trip/${trip.id}/locations/${location.id}/deleteLocation">
                                     <button type="button" id="btn-deleteLocation"><spring:message code="Delete"/>
                                     </button>
                                 </a>
                             </td>
+                            </c:if>
                         </tr>
                     </c:forEach>
                 </c:otherwise>
@@ -90,12 +94,8 @@
         <div id="mapcanvas" class="map-canvas"></div>
     </div>
 </div>
-<script src="http://code.jquery.com/jquery-1.8.3.min.js"></script>
+<script src="${pageContext.request.contextPath}/resources/js/jquery-1.9.0.min.js"></script>
 <script src="${pageContext.request.contextPath}/resources/js/jquery.dataTables.js"></script>
-<script src="${pageContext.request.contextPath}/resources/js/jquery.jeditable.js"></script>
-<script src="//ajax.googleapis.com/ajax/libs/jqueryui/1.8.24/jquery-ui.min.js"></script>
-<script src="${pageContext.request.contextPath}/resources/js/jquery.dataTables.rowReordering.js"></script>
-<script src="${pageContext.request.contextPath}/resources/js/jquery.dataTables.editable.js"></script>
 <script src="http://maps.googleapis.com/maps/api/js?sensor=false"></script>
 <script src="${pageContext.request.contextPath}/resources/js/locations.js"></script>
 <script>
