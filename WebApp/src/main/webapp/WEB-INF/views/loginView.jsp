@@ -7,7 +7,6 @@
     <link rel="stylesheet" href="${pageContext.request.contextPath}/resources/css/main.css"/>
     <link rel="stylesheet" href="${pageContext.request.contextPath}/resources/css/login.css"/>
     <link rel="shortcut icon" href="${pageContext.request.contextPath}/resources/res/favicon.ico">
-    <script src="${pageContext.request.contextPath}/resources/js/jquery-1.9.0.min.js"></script>
     <title><spring:message code="LoginPage"/></title>
 </head>
 <body>
@@ -65,7 +64,7 @@
     </div>
 
 </div>
-
+<script src="${pageContext.request.contextPath}/resources/js/jquery-1.9.0.min.js"></script>
 <script src="${pageContext.request.contextPath}/resources/js/login.js"></script>
 <script src="${pageContext.request.contextPath}/resources/js/facebooklogin.js"></script>
 </body>
