@@ -70,6 +70,13 @@
                                     <button class="onImage" type="button" id="btn-deletePicture">Delete image
                                     </button>
                                 </a>
+
+                                <form action="/trip/${trip.id}/locations/${location.id}/editLocationPic"
+                                      method="POST" enctype="multipart/form-data">
+                                    <input class="onImage" type="file" name="file"
+                                           value="<spring:message code="LocationPicture"/>"/>
+                                    <input type="submit" value="<spring:message code="UploadButton" />">
+                                </form>
                             </c:otherwise>
                         </c:choose>
                         <label type="text">${location.getQuestion().question}</label>
