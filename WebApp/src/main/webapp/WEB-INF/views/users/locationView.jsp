@@ -26,7 +26,7 @@
             <p>${location.description}</p>
         </div>
         <div id="editLocation">
-            <form action="/trip/${trip.id}/locations/${location.id}/editLocation" method="POST">
+            <form action="/users/trip/${trip.id}/locations/${location.id}/editLocation" method="POST">
                 <input id="title" name="title" type="text" value="${location.title}"/>
 
                 <h3><spring:message code="Description"/></h3>

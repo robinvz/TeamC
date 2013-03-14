@@ -6,12 +6,12 @@
     <link rel="stylesheet" href="${pageContext.request.contextPath}/resources/css/trip.css"/>
     <link rel="shortcut icon" href="${pageContext.request.contextPath}/resources/res/favicon.ico">
     <link rel="stylesheet" href="<spring:theme code="css"/>" type="text/css"/>
-    <title>Profile page</title>
+    <title><spring:message code="TripPage"/></title>
 </head>
 <body>
 <div id="page">
-    <jsp:include page="baseView.jsp"/>
-    <jsp:include page="tripHeaderView.jsp"/>
+    <jsp:include page="../baseView.jsp"/>
+    <jsp:include page="../tripHeaderView.jsp"/>
 
     <div class="inner-content">
         <section>
@@ -20,8 +20,7 @@
 
                 <div class="trip-general">
 
-
-                    <form id="profile-form" action="/editTripPic/${trip.id}" method="POST" enctype="multipart/form-data">
+                    <form id="profile-form" action="/users/editTripPic/${trip.id}" method="POST" enctype="multipart/form-data">
                         <spring:message code="UploadFile" /><input type="file" name="file" />
                         <input type="submit" value="<spring:message code="UploadButton" />"  >
                     </form>
@@ -41,7 +40,6 @@
                         </tr>
                     </table>
                 </div>
-
 
             </article>
         </section>
