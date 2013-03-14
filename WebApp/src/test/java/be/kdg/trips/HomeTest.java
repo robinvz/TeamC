@@ -21,12 +21,8 @@ import static org.junit.Assert.assertEquals;
  * 2012-2013
  */
 public class HomeTest {
-
-
     private MockMvc mockMvc;
-
     HomeController hc;
-
 
     @Before
     public void init() {
@@ -39,4 +35,5 @@ public class HomeTest {
     public void homeView() throws Exception {
         assertEquals(hc.index(), "indexView");
     }
+
 }

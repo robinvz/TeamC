@@ -20,7 +20,7 @@ import java.util.List;
 
 @Entity
 @Table(name = "T_QUESTION")
-public class Question implements Serializable
+public class Question implements Serializable, Comparable
 {
     @Id
     @GeneratedValue
@@ -36,6 +36,9 @@ public class Question implements Serializable
     private int correctAnswerIndex;
     @Lob
     private byte[] image;
+   // @NotNull
+    @OneToOne(mappedBy = "question")
+    private Location location;
 
     public Question(String question, List<String> possibleAnswers, int correctAnswerIndex, byte[] image) {
         this.question = question;
@@ -46,12 +49,7 @@ public class Question implements Serializable
 
     public Question() {
     }
-    /*
-    @Override
-    public String toString() {
-        return this.question;
-    }
-    */
+
     public String getQuestion() {
         return question;
     }
@@ -95,6 +93,14 @@ public class Question implements Serializable
         this.image = image;
     }
 
+    public Location getLocation() {
+        return location;
+    }
+
+    public void setLocation(Location location) {
+        this.location = location;
+    }
+
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
@@ -113,5 +119,10 @@ public class Question implements Serializable
         int result = question.hashCode();
         result = 31 * result + correctAnswerIndex;
         return result;
+    }
+
+    @Override
+    public int compareTo(Object o) {
+        return this.location.getSequence()-((Question)o).getLocation().getSequence();
     }
 }

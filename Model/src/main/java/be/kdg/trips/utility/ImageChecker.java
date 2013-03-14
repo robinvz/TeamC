@@ -11,6 +11,13 @@ import org.apache.tika.Tika;
  */
 public class ImageChecker
 {
+    /**
+     * Checks if an image is valid by calling the Tika library to check the image type,
+     * and also checks if the image size is no larger than 3 MB
+     *
+     * @param image
+     * @return true if image is valid, or throws an exception when image isn't valid
+     */
     public static boolean isValidImage(byte[] image) throws TripsException {
         String contentType = new Tika().detect(image);
         if (contentType.equals("image/gif") || contentType.equals("image/jpeg") || contentType.equals("image/png"))

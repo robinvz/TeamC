@@ -57,6 +57,7 @@ public class Location implements Serializable
         this.title = title;
         this.description = description;
         this.address = address;
+        question.setLocation(this);
         this.question = question;
         this.trip = trip;
         this.sequence = sequence;
@@ -119,8 +120,13 @@ public class Location implements Serializable
         return question;
     }
 
-    public void setQuestion(Question question) {
+    public void addQuestion(Question question) {
+        question.setLocation(this);
         this.question = question;
+    }
+
+    public void removeQuestion() {
+        this.question = null;
     }
 
     public int getSequence() {
