@@ -25,13 +25,15 @@ import org.json.JSONObject;
 import be.kdg.groupcandroid.R;
 import be.kdg.groupcandroid.R.drawable;
 import be.kdg.groupcandroid.model.Item;
+import be.kdg.groupcandroid.model.Trip;
 
 import android.app.Activity;
 import android.app.ProgressDialog;
+import android.graphics.drawable.Drawable;
 import android.os.AsyncTask;
 import android.util.Log;
 
-public class TripsTask extends AsyncTask<String, Void, ArrayList<Item>>{
+public class TripsTask extends AsyncTask<String, Void, ArrayList<Trip>>{
 	
 	public ProgressDialog dialog;
 
@@ -42,7 +44,7 @@ public class TripsTask extends AsyncTask<String, Void, ArrayList<Item>>{
 
 
 	@Override
-	protected ArrayList<Item> doInBackground(String... params) {
+	protected ArrayList<Trip> doInBackground(String... params) {
 		
 		String ip = params[0];
 		String port = params[1];
@@ -53,7 +55,7 @@ public class TripsTask extends AsyncTask<String, Void, ArrayList<Item>>{
 		StringBuilder builder = new StringBuilder();
 		HttpClient client = new DefaultHttpClient();
 		HttpPost httpPost;
-		ArrayList<Item> trips = new ArrayList<Item>();
+		ArrayList<Trip> trips = new ArrayList<Trip>();
 		try {
 			httpPost = new HttpPost(new URI("http://" + ip + ":" + port
 					+ "/service/"+ action + "trips"));
@@ -80,7 +82,7 @@ public class TripsTask extends AsyncTask<String, Void, ArrayList<Item>>{
 				if (jsonObject.getBoolean("valid")) {
 					JSONArray array = jsonObject.getJSONArray("trips");
 						for (int i = 0; i < array.length(); i++){
-							trips.add(new Item(array.getJSONObject(i).getString("title"), R.drawable.img_antwerpen, array.getJSONObject(i).getInt("id")));
+							trips.add(new Trip(array.getJSONObject(i).getInt("id"), array.getJSONObject(i).getString("title")));
 						}
 					return trips;
 				} else {
@@ -105,7 +107,7 @@ public class TripsTask extends AsyncTask<String, Void, ArrayList<Item>>{
 	
 	
 	@Override
-	protected void onPostExecute(ArrayList<Item> items) {
+	protected void onPostExecute(ArrayList<Trip> items) {
 		if (dialog.isShowing()) {
 			dialog.dismiss();
 		}

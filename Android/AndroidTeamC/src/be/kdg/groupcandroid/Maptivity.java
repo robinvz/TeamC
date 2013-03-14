@@ -4,6 +4,7 @@ import java.util.concurrent.ExecutionException;
 import java.util.concurrent.TimeUnit;
 
 import be.kdg.groupcandroid.model.Location;
+import be.kdg.groupcandroid.tasks.MoveTask;
 import be.kdg.groupcandroid.tasks.QuestionTask;
 
 import com.google.android.gms.common.ConnectionResult;
@@ -58,12 +59,14 @@ public class Maptivity extends FragmentActivity implements LocationListener {
 	private Marker endlocation;
 	private int sequence;
 	private Polyline line;
-	boolean previouslyAnswered = false;
+	private Location previousLocation;;
+	boolean started = false;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		loc = (Location) getIntent().getSerializableExtra("location");
-		previouslyAnswered = getIntent().getBooleanExtra("previousanswered",
+		previousLocation = (Location) getIntent().getSerializableExtra("previousLocation");
+		started = getIntent().getBooleanExtra("started",
 				false);
 		super.onCreate(savedInstanceState);
 		sequence = getIntent().getIntExtra("sequence", 0);
@@ -240,10 +243,28 @@ public class Maptivity extends FragmentActivity implements LocationListener {
 		loco.setLatitude(loc.getLatitude());
 		loco.setLongitude(loc.getLongitude());
 		TextView tv = (TextView) findViewById(R.id.tvVraag);
-		if (loc.getQuestion().contentEquals("null")){
-			tv.setText(getResources().getString(R.string.noquestion));
+		if(!started){
+			tv.setText(getResources().getString(R.string.notstarted));	
 		}
-		else if (!previouslyAnswered) {
+		else if (loc.getQuestion().contentEquals("null")){
+			tv.setText(getResources().getString(R.string.noquestion));
+			if (location.distanceTo(loco) <= RADIUS && !loc.isVisited()){
+				SharedPreferences sp = PreferenceManager
+						.getDefaultSharedPreferences(this);
+				String ip = sp.getString("server_ip", "192.168.2.200");
+				String port = sp.getString("server_port", "8080");
+				SessionManager sm = new SessionManager(this);
+				String email = sm.getEmail();
+				String pass = sm.getPassword();
+				Intent data = new Intent();
+				data.putExtra("position", sequence);
+				// Set the data to pass back
+				MoveTask mv = new MoveTask(this);
+				mv.execute(new String[]{ip, port, loc.getId()+"", email, pass});
+				setResult(RESULT_OK, data);	
+			}
+		}
+		else if (previousLocation != null && !previousLocation.isAnswered()) {
 			tv.setText(getResources().getString(R.string.answerpreviousfirst));
 		} else if (location.distanceTo(loco) > RADIUS) {
 			tv.setText(getResources().getString(R.string.notcloseenough));

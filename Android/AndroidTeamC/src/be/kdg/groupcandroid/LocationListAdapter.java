@@ -48,10 +48,12 @@ public class LocationListAdapter extends ArrayAdapter<Location> {
 				}else{
 					title.setBackgroundColor(colorListItemA);
 				}
-				if (location.isAnswered() && location.isCorrect()){
+				if (location.isAnswered() && location.isCorrect() && location.getQuestion() != null){
 					img.setImageResource(R.drawable.correct);
-				} else if (location.isAnswered() && !location.isCorrect()){
+				} else if (location.isAnswered() && !location.isCorrect() && location.getQuestion() != null){
 					img.setImageResource(R.drawable.wrong);
+				} else if (location.getQuestion().contentEquals("null")){
+					img.setVisibility(View.INVISIBLE);
 				}
 			}
 		}

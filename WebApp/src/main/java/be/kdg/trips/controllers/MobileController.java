@@ -243,8 +243,8 @@ public class MobileController {
                 Trip trip = tripsService.findTripById(id, user);
                 JSONArray jsonArray = new JSONArray();
                 Map<Question, Boolean> answeredQuestions = null;
-                for (Enrollment e : tripsService.findEnrollmentsByUser(user)){
-                    if (e.getTrip().getId() == trip.getId()){
+                for (Enrollment e : tripsService.findEnrollmentsByUser(user)) {
+                    if (e.getTrip().getId() == trip.getId()) {
                         answeredQuestions = e.getAnsweredQuestions();
                     }
                 }
@@ -261,11 +261,11 @@ public class MobileController {
                         JSONArray answers = new JSONArray();
                         answers.addAll(loc.getQuestion().getPossibleAnswers());
                         loco.accumulate("possibleAnswers", answers);
-                        if (answeredQuestions != null && answeredQuestions.size() > 0){
+                        if (answeredQuestions != null && answeredQuestions.size() > 0) {
                             boolean isAnswered = false;
-                            isAnswered = answeredQuestions.containsKey(q) ;
+                            isAnswered = answeredQuestions.containsKey(q);
                             loco.accumulate("answered", isAnswered);
-                            if (isAnswered){
+                            if (isAnswered) {
                                 loco.accumulate("correct", answeredQuestions.get(q));
                             }
                         }
@@ -340,6 +340,26 @@ public class MobileController {
         }
     }
 
+    @RequestMapping(value = "/service/move", method = RequestMethod.POST)
+    public
+    @ResponseBody
+    String moveService(@RequestParam String username, @RequestParam String password, @RequestParam int locationId) {
+        JSONObject js = new JSONObject();
+        try {
+            js.accumulate("valid", tripsService.checkLogin(username, password));
+            if (tripsService.checkLogin(username, password)) {
+                User user = tripsService.findUser(username);
+                Location location = tripsService.findLocationById(locationId);
+                Trip trip = location.getTrip();
+                tripsService.setLastLocationVisited(trip, user, location);
+            }
+        } catch (Exception t) {
+            js.put("valid", false);
+        } finally {
+            return js.toString();
+        }
+    }
+
     @RequestMapping(value = "/service/updateLocation", method = RequestMethod.POST)
     public
     @ResponseBody
@@ -349,7 +369,7 @@ public class MobileController {
             js.accumulate("valid", tripsService.checkLogin(username, password));
             if (tripsService.checkLogin(username, password)) {
                 User user = tripsService.findUser(username);
-               tripsService.setUsersCurrentPosition(user, latitude, longitude);
+                tripsService.setUsersCurrentPosition(user, latitude, longitude);
             }
         } catch (Exception t) {
             js.put("valid", false);

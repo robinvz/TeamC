@@ -39,7 +39,7 @@ public class SimpleListAdapter extends ArrayAdapter<Item> {
 			TextView title = (TextView) v.findViewById(R.id.txtTitle);
 			ImageView icon = (ImageView) v.findViewById(R.id.imgIcon);
 			if(icon != null){
-				icon.setBackgroundResource(tripListItem.image);
+				icon.setImageDrawable(tripListItem.imageDrawable);
 			}
 			if (title != null){
 				title.setText(tripListItem.title);

@@ -12,6 +12,7 @@ public class Location implements Serializable {
 	private double longitude;
 	private String question;
 	private boolean answered;
+	private boolean visited;
 	private boolean correct;
 	private ArrayList<String> answers = new ArrayList<String>();
 	
@@ -104,6 +105,15 @@ public class Location implements Serializable {
 	public void setCorrect(boolean correct) {
 		this.correct = correct;
 	}
+
+	public boolean isVisited() {
+		return visited;
+	}
+
+	public void setVisited(boolean visited) {
+		this.visited = visited;
+	}
+	
 	
 	
 	

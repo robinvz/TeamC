@@ -47,6 +47,7 @@ public class TripsOverview extends FragmentActivity {
 	}
 
 	 class MyAdapter extends FragmentPagerAdapter {
+		 
 		public MyAdapter(FragmentManager fm) {
 			super(fm);
 		}

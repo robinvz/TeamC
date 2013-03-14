@@ -155,7 +155,8 @@ public class TripActivity extends FragmentActivity implements LocationListener {
 						.getString(R.string.locations))) {
 					LocationsFragment locFr = new LocationsFragment();
 					Bundle bundle = new Bundle();
-					bundle.putInt("tripId", Integer.parseInt(trip.getId()));
+					bundle.putSerializable("trip", trip);
+					bundle.putBoolean("started", trip.isStarted());
 					locFr.setArguments(bundle);
 					transaction.replace(R.id.fragment1, locFr);
 				} else if (clickItem.title.contentEquals(getResources()

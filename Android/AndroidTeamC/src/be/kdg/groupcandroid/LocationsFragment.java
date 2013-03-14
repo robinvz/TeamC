@@ -6,6 +6,7 @@ import java.util.concurrent.TimeUnit;
 import java.util.concurrent.TimeoutException;
 
 import be.kdg.groupcandroid.model.Location;
+import be.kdg.groupcandroid.model.Trip;
 import be.kdg.groupcandroid.tasks.LocationsTask;
 
 import android.app.Activity;
@@ -26,6 +27,7 @@ import android.widget.Toast;
 
 public class LocationsFragment extends ListFragment {
 	LocationListAdapter lla ;
+	Trip trip ;
 
 	public LocationsFragment() {
 		super();
@@ -42,6 +44,7 @@ public class LocationsFragment extends ListFragment {
 	@Override
 	public void onActivityCreated(Bundle savedInstanceState) {
 		super.onActivityCreated(savedInstanceState);
+		trip = (Trip) getArguments().getSerializable("trip");
 		lla = new LocationListAdapter(getActivity(), getLocations(), R.layout.listitemrow);
 		setListAdapter(lla);
 		final ListView lv = getListView();
@@ -52,11 +55,10 @@ public class LocationsFragment extends ListFragment {
 				Intent inten = new Intent(getActivity(), Maptivity.class);
 				inten.putExtra("location", ((Location) arg0.getItemAtPosition(position)));
 				inten.putExtra("sequence", position);
-				boolean previousAnswered = true;
+				inten.putExtra("started", getArguments().getBoolean("started"));
 				if (position != 0){
-					previousAnswered = ((Location) arg0.getItemAtPosition(position - 1)).isAnswered();
+					inten.putExtra("previousLocation",lla.getItem(position - 1));
 				}
-				inten.putExtra("previousanswered", previousAnswered);
 				startActivityForResult(inten, 1);
 			}		
 		});
@@ -71,9 +73,8 @@ public class LocationsFragment extends ListFragment {
 		SessionManager sm = new SessionManager(getActivity());
 		String email = sm.getEmail();
 		String pass = sm.getPassword();
-		int tripId = getArguments().getInt("tripId");
 		try {
-			ArrayList<Location> locations = lt.execute(new String[]{ip, port, tripId + "", email, pass}).get(3, TimeUnit.SECONDS);
+			ArrayList<Location> locations = lt.execute(new String[]{ip, port, trip.getId() + "", email, pass}).get(3, TimeUnit.SECONDS);
 			return locations;
 		} catch (Exception e) {
 			e.printStackTrace();
@@ -88,6 +89,7 @@ public class LocationsFragment extends ListFragment {
 	        boolean answer_correct = data.getBooleanExtra("correct", false);
 	        int position = data.getIntExtra("position", 0);
         	lla.getItem(position).setAnswered(true);
+        	lla.getItem(position).setVisited(true);
 	        if (answer_correct){
 	        	lla.getItem(position).setCorrect(true);
 	        }
