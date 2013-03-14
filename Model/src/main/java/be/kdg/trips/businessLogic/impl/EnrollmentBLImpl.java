@@ -87,14 +87,21 @@ public class EnrollmentBLImpl implements EnrollmentBL
             if(isExistingEnrollment(user, trip) && !trip.isActive())
             {
                 Enrollment enrollment = enrollmentDao.getEnrollmentByUserAndTrip(user, trip);
-                if(trip.getPrivacy()==TripPrivacy.PRIVATE)
+                if(enrollment.getStatus()!=Status.BUSY)
                 {
-                    Invitation invitation = enrollmentDao.getInvitationByUserAndTrip(user, trip);
-                    invitation.setAnswer(Answer.DECLINED);
-                    enrollmentDao.saveOrUpdateInvitation(invitation);
+                    if(trip.getPrivacy()==TripPrivacy.PRIVATE)
+                    {
+                        Invitation invitation = enrollmentDao.getInvitationByUserAndTrip(user, trip);
+                        invitation.setAnswer(Answer.DECLINED);
+                        enrollmentDao.saveOrUpdateInvitation(invitation);
+                    }
+                    trip.removeEnrollment(enrollment);
+                    enrollmentDao.deleteEnrollment(enrollment.getId());
                 }
-                trip.removeEnrollment(enrollment);
-                enrollmentDao.deleteEnrollment(enrollment.getId());
+                else
+                {
+                    throw new TripsException("You can't disenroll from a trip which you are currently doing");
+                }
             }
             else
             {
@@ -112,11 +119,11 @@ public class EnrollmentBLImpl implements EnrollmentBL
     public void addRequisiteToEnrollment(String name, int amount, Trip trip, User user, User organizer) throws TripsException
     {
         if(isExistingEnrollment(user, trip) &&userBL.isExistingUser(organizer.getEmail()) && tripBL.isOrganizer(trip, organizer))
-    {
-        Enrollment enrollment = enrollmentDao.getEnrollmentByUserAndTrip(user, trip);
-        enrollment.addRequisite(name, amount);
-        enrollmentDao.saveOrUpdateEnrollment(enrollment);
-    }
+        {
+            Enrollment enrollment = enrollmentDao.getEnrollmentByUserAndTrip(user, trip);
+            enrollment.addRequisite(name, amount);
+            enrollmentDao.saveOrUpdateEnrollment(enrollment);
+        }
     }
 
     @Transactional
@@ -166,7 +173,7 @@ public class EnrollmentBLImpl implements EnrollmentBL
             {
                 invitation = new Invitation(trip, user);
                 enrollmentDao.saveOrUpdateInvitation(invitation);
-                MailSender.sendMail("Trip invitation", "You have been invited by " + organizer.getFirstName() + " " + organizer.getLastName() + " for his trip named: '" + trip.getTitle() + "' (" + trip.getDescription() + ").\nClick here <a:href='http://localhost:8080/login#"+trip.getId()+"'>here</a> if you're interested in joining.", user.getEmail());
+                MailSender.sendMail("Trip invitation", "You have been invited by " + organizer.getFirstName() + " " + organizer.getLastName() + " for his trip named: '" + trip.getTitle() + "' (" + trip.getDescription() + ").\nGo to http://localhost:8080/login#"+trip.getId()+" if you're interested in joining.", user.getEmail());
             }
             else
             {

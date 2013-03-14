@@ -212,6 +212,11 @@ public class TripsServiceImpl implements TripsService
         tripBL.removeQuestionFromLocation(organizer, location);
     }
 
+    @Override
+    public void removeImageFromQuestion(User organizer, Question question) throws TripsException {
+        tripBL.removeImageFromQuestion(organizer, question);
+    }
+
     //Enrollment Service
     @Override
     public Enrollment subscribe(Trip trip, User user) throws TripsException {

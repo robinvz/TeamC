@@ -1,5 +1,7 @@
 package be.kdg.trips.utility;
 
+import org.apache.log4j.Logger;
+
 import javax.mail.*;
 import javax.mail.internet.InternetAddress;
 import javax.mail.internet.MimeMessage;
@@ -15,6 +17,8 @@ import java.util.Properties;
  */
 public class MailSender
 {
+    private static final Logger logger = Logger.getLogger(MailSender.class);
+
     public static void sendMail(String subject, String text, String receiverEmail) throws MessagingException
     {
         List<InternetAddress[]> recipients = new ArrayList<>();
@@ -60,6 +64,14 @@ public class MailSender
         }
         catch(MessagingException msgex)
         {
+            StringBuilder message = new StringBuilder();
+            message.append("Failed to send email to ");
+            for(InternetAddress[] recipient : recipients)
+            {
+                message.append(InternetAddress.toString(recipient));
+                message.append(";");
+            }
+            logger.error(message);
             throw new MessagingException("Failed to send email");
         }
     }
