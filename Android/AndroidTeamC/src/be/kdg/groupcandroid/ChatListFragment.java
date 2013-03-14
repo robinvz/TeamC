@@ -78,8 +78,8 @@ public class ChatListFragment extends ListFragment {
 				ParsePush push = new ParsePush();
 				SessionManager sm = new SessionManager(getActivity());
 
-				//push.setChannel("user" + contact.getEmail().hashCode());
-				push.setChannel("user" + sm.getEmail().hashCode());
+				push.setChannel("user" + contact.getEmail().hashCode());
+				//push.setChannel("user" + sm.getEmail().hashCode());
 
 				JSONObject jso = new JSONObject();
 				String email = sm.getEmail();

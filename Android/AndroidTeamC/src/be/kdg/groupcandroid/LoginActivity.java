@@ -4,6 +4,20 @@ import java.util.concurrent.ExecutionException;
 import java.util.concurrent.TimeUnit;
 import java.util.concurrent.TimeoutException;
 
+import android.app.Activity;
+import android.app.AlertDialog;
+import android.content.DialogInterface;
+import android.content.Intent;
+import android.content.SharedPreferences;
+import android.os.Bundle;
+import android.preference.PreferenceManager;
+import android.util.Log;
+import android.view.Menu;
+import android.view.MenuItem;
+import android.view.View;
+import android.widget.Button;
+import android.widget.TextView;
+import android.widget.Toast;
 import be.kdg.groupcandroid.tasks.LoginTask;
 
 import com.facebook.Request;
@@ -12,23 +26,7 @@ import com.facebook.Session;
 import com.facebook.SessionState;
 import com.facebook.model.GraphUser;
 import com.parse.Parse;
-import com.parse.ParseObject;
 import com.parse.PushService;
-
-import android.os.Bundle;
-import android.preference.PreferenceManager;
-import android.app.Activity;
-import android.app.AlertDialog;
-import android.content.DialogInterface;
-import android.content.Intent;
-import android.content.SharedPreferences;
-import android.support.v4.app.FragmentActivity;
-import android.view.Menu;
-import android.view.MenuItem;
-import android.view.View;
-import android.widget.Button;
-import android.widget.TextView;
-import android.widget.Toast;
 
 public class LoginActivity extends Activity {
 
@@ -136,8 +134,9 @@ public class LoginActivity extends Activity {
 
 	public void doLogin(String ip, String port, String url, String username,
 			String pass) {
+		LoginTask lt = new LoginTask(this);
 		try {
-			Integer response = new LoginTask(this).execute(
+			Integer response = lt.execute(
 					new String[] { ip, port, url, username, pass }).get(3,
 					TimeUnit.SECONDS);
 			if (response == 1) {
@@ -179,6 +178,7 @@ public class LoginActivity extends Activity {
 		} catch (TimeoutException e) {
 			Toast.makeText(LoginActivity.this, "Connection Timed Out.",
 					Toast.LENGTH_SHORT).show();
+			lt.dialog.dismiss();
 		}
 
 	}

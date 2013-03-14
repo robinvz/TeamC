@@ -6,8 +6,9 @@ public class Contact implements Serializable {
 	String firstName;
 	String lastName;	
 	String email;
+	double latitude;
+	double longitude;
 //	byte[] profilePicture;
-//	String city;
 	
 	
 	public Contact(String firstName, String lastName, String email) {
@@ -52,6 +53,27 @@ public class Contact implements Serializable {
 	public void setEmail(String email) {
 		this.email = email;
 	}
+
+
+	public double getLatitude() {
+		return latitude;
+	}
+
+
+	public void setLatitude(double latitude) {
+		this.latitude = latitude;
+	}
+
+
+	public double getLongitude() {
+		return longitude;
+	}
+
+
+	public void setLongitude(double longitude) {
+		this.longitude = longitude;
+	}
+
 
 	
 	

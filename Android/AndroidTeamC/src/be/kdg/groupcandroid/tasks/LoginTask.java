@@ -28,7 +28,7 @@ import android.os.AsyncTask;
 
 public class LoginTask extends AsyncTask<String, Void, Integer> {
 
-	private ProgressDialog dialog;
+	public ProgressDialog dialog;
 
 	public LoginTask(Activity activity) {
 		dialog = new ProgressDialog(activity);

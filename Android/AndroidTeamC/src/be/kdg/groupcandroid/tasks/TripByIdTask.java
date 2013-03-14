@@ -1,10 +1,14 @@
 package be.kdg.groupcandroid.tasks;
 
+import java.io.BufferedInputStream;
+import java.io.BufferedOutputStream;
 import java.io.BufferedReader;
+import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.net.URI;
+import java.net.URL;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -23,10 +27,15 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import be.kdg.groupcandroid.model.Trip;
+import be.kdg.groupcandroid.model.Utilities;
 
 import android.content.SharedPreferences;
+import android.graphics.Bitmap;
+import android.graphics.drawable.Drawable;
 import android.os.AsyncTask;
 import android.preference.PreferenceManager;
+import android.util.Base64;
+import android.util.Log;
 import android.widget.TextView;
 
 public class TripByIdTask extends AsyncTask<String, Void, Trip> {
@@ -64,15 +73,16 @@ public class TripByIdTask extends AsyncTask<String, Void, Trip> {
 				}
 				JSONObject jsonObject = new JSONObject(builder.toString());
 				if (jsonObject.getBoolean("valid")) {
-					Trip trip = new Trip(jsonObject.getString("id"), jsonObject.getString("title"),
+					Trip trip = new Trip(jsonObject.getString("id"),
+							jsonObject.getString("title"),
 							jsonObject.getString("description"),
 							jsonObject.getInt("enrollments"),
 							jsonObject.getString("privacy"));
-					trip.setEnrolled(jsonObject.getBoolean("isenrolled"));	
+					trip.setEnrolled(jsonObject.getBoolean("isenrolled"));
 					trip.setStarted(jsonObject.getBoolean("isstarted"));
 					trip.setOrganizer(jsonObject.getString("organizer"));
-					trip.setActive(jsonObject.getBoolean("isactive"));			
-					trip.setTimeless(jsonObject.getBoolean("istimeless"));			
+					trip.setActive(jsonObject.getBoolean("isactive"));
+					trip.setTimeless(jsonObject.getBoolean("istimeless"));
 					return trip;
 				} else {
 					return null;
@@ -81,6 +91,8 @@ public class TripByIdTask extends AsyncTask<String, Void, Trip> {
 				return null;
 			}
 		} catch (Exception e) {
+			e.printStackTrace();
+			Log.d("Error", e.getMessage());
 			return null;
 		}
 	}

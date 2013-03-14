@@ -2,6 +2,13 @@ package be.kdg.groupcandroid.model;
 
 import java.io.Serializable;
 
+import android.graphics.Bitmap;
+import android.graphics.drawable.Drawable;
+
+/**
+ * @author Mathias
+ * 
+ */
 public class Trip implements Serializable {
 	private String title;
 	private String description;
@@ -11,6 +18,7 @@ public class Trip implements Serializable {
 	private String Privacy;
 	private boolean active = false;
 	private boolean started = false;
+	private transient Drawable picture;
 
 	private String id;
 	private boolean timeless = false;
@@ -77,6 +85,11 @@ public class Trip implements Serializable {
 		super();
 	}
 
+	public Trip(int int1, String title) {
+		id = int1 + "";
+		this.title = title;
+	}
+
 	public String getId() {
 		return this.id;
 	}
@@ -104,6 +117,14 @@ public class Trip implements Serializable {
 
 	public String getOrganizer() {
 		return organizer;
+	}
+
+	public Drawable getPicture() {
+		return picture;
+	}
+
+	public void setPicture(Drawable bm) {
+		this.picture = bm;
 	}
 
 }

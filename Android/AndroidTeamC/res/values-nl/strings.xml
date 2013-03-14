@@ -40,5 +40,19 @@
     <string name="currentlocation">Huidige Locatie</string>
     <string name="currentlocationsnippet">Je bent momenteel hier en moet bij de andere marker geraken!</string>
     <string name="notcloseenough">U bent te ver om de vraag te kunnen beantwoorden!</string>
+    <string name="noconnect">We konden niet verbinden met de server</string>
+    <string name="refresh">Vernieuwen</string>
+    <string name="userlocations">Locaties v. Deelnemers</string>
+    <string name="navigation">Navigatie</string>
+    <string name="communication">Communicatie</string>
+    <string name="chat">Chat</string>
+    <string name="broadcast">Broadcast</string>
+    <string name="locations">Locaties</string>
+    <string name="answerpreviousfirst">Je moet eerst de vorige vraag beantwoorden</string>
+    <string name="couldnotstart">We konden jou trip niet starten, probeer opnieuw!</string>
+    <string name="couldnotenroll">Inschrijven mislukt, probeer opnieuw!</string>
+    <string name="unroll">We konden jou niet uitschrijven, probeer opnieuw.</string>
+    <string name="couldnotstop">We konden de trip niet stoppen, probeer opnieuw!</string>  
+        <string name="notstarted">Je moet de trip starten voor de vraag te zien!</string>
     
 </resources>

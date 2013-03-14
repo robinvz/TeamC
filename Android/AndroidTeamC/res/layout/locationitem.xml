@@ -7,32 +7,32 @@
     android:paddingLeft="5dp"
     android:paddingTop="5dp" 
     android:orientation="horizontal">
-    
-      <TextView
-        
+
+    <TextView
         android:id="@+id/txtSequence"
+        android:layout_width="37dp"
+        android:layout_height="100dp"
         android:drawableLeft="@color/highlight"
-        android:layout_width="fill_parent"
-    android:layout_height="100dp"
         android:gravity="center_vertical"
-        android:textSize="18sp"
         android:textColor="#000000"
-        android:layout_weight="0.8"
-		       
-       />
+        android:textSize="18sp" />
     
      <TextView
-        
-        android:id="@+id/txtLocationTitle"
-        android:drawableLeft="@color/highlight"
-        android:layout_width="fill_parent"
-    android:layout_height="100dp"
-        android:gravity="center_vertical"
-        android:textSize="18sp"
-        android:textColor="#000000"
-        android:paddingLeft="20dp"
-               android:layout_weight="0.2"
-       
-       />
+         android:id="@+id/txtLocationTitle"
+         android:layout_width="188dp"
+         android:layout_height="100dp"
+         android:layout_weight="1.23"
+         android:drawableLeft="@color/highlight"
+         android:gravity="center_vertical"
+         android:paddingLeft="20dp"
+         android:textColor="#000000"
+         android:textSize="18sp" />
+
+     <ImageView
+         android:id="@+id/imageView1"
+         android:layout_width="wrap_content"
+         android:layout_height="wrap_content"
+         android:layout_weight="0.8"
+         android:src="@drawable/notanswered" />
         
      </LinearLayout>

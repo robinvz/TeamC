@@ -1,6 +1,11 @@
 package be.kdg.groupcandroid;
 
+import java.util.concurrent.ExecutionException;
+import java.util.concurrent.TimeUnit;
+
 import be.kdg.groupcandroid.model.Location;
+import be.kdg.groupcandroid.tasks.MoveTask;
+import be.kdg.groupcandroid.tasks.QuestionTask;
 
 import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.GooglePlayServicesUtil;
@@ -12,6 +17,7 @@ import com.google.android.gms.maps.UiSettings;
 import com.google.android.gms.maps.model.Circle;
 import com.google.android.gms.maps.model.CircleOptions;
 import com.google.android.gms.maps.model.LatLng;
+import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
 import com.google.android.gms.maps.model.Polyline;
 import com.google.android.gms.maps.model.PolylineOptions;
@@ -21,10 +27,12 @@ import android.app.AlertDialog;
 import android.app.AlertDialog.Builder;
 import android.app.Dialog;
 import android.content.DialogInterface;
+import android.content.SharedPreferences;
 import android.content.DialogInterface.OnClickListener;
 import android.content.Intent;
 import android.content.pm.ApplicationInfo;
 import android.content.pm.PackageManager;
+import android.content.res.Resources.NotFoundException;
 import android.graphics.Color;
 import android.location.Criteria;
 import android.location.LocationListener;
@@ -32,6 +40,7 @@ import android.location.LocationManager;
 import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
+import android.preference.PreferenceManager;
 import android.support.v4.app.FragmentActivity;
 import android.view.ContextMenu;
 import android.view.ContextMenu.ContextMenuInfo;
@@ -43,14 +52,24 @@ import android.widget.Toast;
 
 public class Maptivity extends FragmentActivity implements LocationListener {
 
-	private static final double RADIUS = 50;
+	private static final double RADIUS = 100;
 	private GoogleMap mMap;
 	private Location loc;
+	private Marker current;
+	private Marker endlocation;
+	private int sequence;
 	private Polyline line;
+	private Location previousLocation;;
+	boolean started = false;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
+		loc = (Location) getIntent().getSerializableExtra("location");
+		previousLocation = (Location) getIntent().getSerializableExtra("previousLocation");
+		started = getIntent().getBooleanExtra("started",
+				false);
 		super.onCreate(savedInstanceState);
+		sequence = getIntent().getIntExtra("sequence", 0);
 		if (isGoogleMapsInstalled()) {
 			setContentView(R.layout.mapke);
 			int status = GooglePlayServicesUtil
@@ -65,7 +84,7 @@ public class Maptivity extends FragmentActivity implements LocationListener {
 						this, requestCode);
 				dialog.show();
 			} else {
-			
+
 				mMap = ((SupportMapFragment) getSupportFragmentManager()
 						.findFragmentById(R.id.map)).getMap();
 				// Enabling MyLocation Layer of Google Map
@@ -130,13 +149,14 @@ public class Maptivity extends FragmentActivity implements LocationListener {
 		}
 	}
 
-	public void addMarker(double latitude, double longitude, String title,
+	public Marker addMarker(double latitude, double longitude, String title,
 			String description) {
 		LatLng ll = new LatLng(latitude, longitude);
 
-		mMap.addMarker(new MarkerOptions().position(ll).title(title)
-				.snippet(description));
+		Marker mark = mMap.addMarker(new MarkerOptions().position(ll)
+				.title(title).snippet(description));
 		mMap.animateCamera(CameraUpdateFactory.newLatLngZoom(ll, 15));
+		return mark;
 	}
 
 	@Override
@@ -152,59 +172,116 @@ public class Maptivity extends FragmentActivity implements LocationListener {
 
 	@Override
 	public boolean onContextItemSelected(MenuItem item) {
-		Toast.makeText(this, loc.getAnswers().get(item.getOrder()),
-				Toast.LENGTH_SHORT).show();
+		SharedPreferences sp = PreferenceManager
+				.getDefaultSharedPreferences(this);
+		String ip = sp.getString("server_ip", "192.168.2.200");
+		String port = sp.getString("server_port", "8080");
+		SessionManager sm = new SessionManager(this);
+		String email = sm.getEmail();
+		String pass = sm.getPassword();
+		QuestionTask qt = new QuestionTask(this);
+		qt.execute(new String[] { ip, port, email, pass, item.getOrder() + "",
+				loc.getId() + "" });
+		try {
+			switch (qt.get(3, TimeUnit.SECONDS)) {
+			case 0: // incorrect
+				finishQuestion(false);
+				break;
+			case 1: // correct
+				finishQuestion(true);
+				break;
+			case -1:
+				Toast.makeText(this,
+						getResources().getString(R.string.alreadyanswered),
+						Toast.LENGTH_SHORT).show();
+				break;
+			case -2:
+				Toast.makeText(this,
+						getResources().getString(R.string.noconnect),
+						Toast.LENGTH_SHORT).show();
+				break;
+			}
+		} catch (Exception e) {
+			Toast.makeText(this, getResources().getString(R.string.noconnect),
+					Toast.LENGTH_SHORT).show();
+		}
+		return true;
+
+	}
+
+	private void finishQuestion(boolean correct) {
 		TextView tv = (TextView) findViewById(R.id.tvVraag);
-		// Sent answer to backend
 		tv.setText(getResources().getString(R.string.answered));
 		loc.setAnswered(true);
 		unregisterForContextMenu(tv);
 		Intent data = new Intent();
+		data.putExtra("position", sequence);
+		data.putExtra("correct", correct);
 		// Set the data to pass back
 		setResult(RESULT_OK, data);
-
-		// Close the activity
-		finish();
-		return true;
 	}
 
 	@Override
 	public void onLocationChanged(android.location.Location location) {
-		loc = (Location) getIntent().getSerializableExtra("location");
 		addMarker(loc.getLatitude(), loc.getLongitude(), loc.getTitle(),
 				loc.getDescription());
-		addCircle(new LatLng(loc.getLatitude(), loc.getLongitude()), RADIUS);	//RADIUS OF CIRCLE
-		if (line != null){
+		addCircle(new LatLng(loc.getLatitude(), loc.getLongitude()), RADIUS); // RADIUS
+																				// OF
+																				// CIRCLE
+		if (line != null) {
 			line.remove();
 		}
-		line = drawLine(new LatLng(loc.getLatitude(), loc.getLongitude()), new LatLng(location.getLatitude(), location.getLongitude()));
-		addMarker(location.getLatitude(), location.getLongitude(),
+		if (current != null) {
+			current.remove();
+		}
+		line = drawLine(new LatLng(loc.getLatitude(), loc.getLongitude()),
+				new LatLng(location.getLatitude(), location.getLongitude()));
+		current = addMarker(location.getLatitude(), location.getLongitude(),
 				getResources().getString(R.string.currentlocation),
 				getResources().getString(R.string.currentlocationsnippet));
 		android.location.Location loco = new android.location.Location("");
 		loco.setLatitude(loc.getLatitude());
-		loco.setLongitude(loc.getLongitude());	
+		loco.setLongitude(loc.getLongitude());
 		TextView tv = (TextView) findViewById(R.id.tvVraag);
-		if (location.distanceTo(loco) <= RADIUS){
-			if (!loc.isAnswered()
-					&& !loc.getQuestion().contentEquals("null")
-					&& !loc.getQuestion().isEmpty()) {
-				tv.setText(loc.getQuestion());
-				registerForContextMenu(tv);
-				tv.setOnClickListener(new View.OnClickListener() {
-					@Override
-					public void onClick(View v) {
-						openContextMenu(v);
-					}
-				});
-			} else if (loc.getQuestion().contentEquals("null")) {
-				tv.setText(getResources().getString(R.string.noquestion));
-			} else {
-				tv.setText(getResources().getString(
-						R.string.alreadyanswered));
-			}	
-		}else{
+		if(!started){
+			tv.setText(getResources().getString(R.string.notstarted));	
+		}
+		else if (loc.getQuestion().contentEquals("null")){
+			tv.setText(getResources().getString(R.string.noquestion));
+			if (location.distanceTo(loco) <= RADIUS && !loc.isVisited()){
+				SharedPreferences sp = PreferenceManager
+						.getDefaultSharedPreferences(this);
+				String ip = sp.getString("server_ip", "192.168.2.200");
+				String port = sp.getString("server_port", "8080");
+				SessionManager sm = new SessionManager(this);
+				String email = sm.getEmail();
+				String pass = sm.getPassword();
+				Intent data = new Intent();
+				data.putExtra("position", sequence);
+				// Set the data to pass back
+				MoveTask mv = new MoveTask(this);
+				mv.execute(new String[]{ip, port, loc.getId()+"", email, pass});
+				setResult(RESULT_OK, data);	
+			}
+		}
+		else if (previousLocation != null && !previousLocation.isAnswered()) {
+			tv.setText(getResources().getString(R.string.answerpreviousfirst));
+		} else if (location.distanceTo(loco) > RADIUS) {
 			tv.setText(getResources().getString(R.string.notcloseenough));
+			tv.setOnClickListener(null);
+		} else if (!loc.isAnswered()
+				&& !loc.getQuestion().contentEquals("null")
+				&& !loc.getQuestion().isEmpty()) {
+			tv.setText(loc.getQuestion());
+			registerForContextMenu(tv);
+			tv.setOnClickListener(new View.OnClickListener() {
+				@Override
+				public void onClick(View v) {
+					openContextMenu(v);
+				}
+			});
+		} else {
+			tv.setText(getResources().getString(R.string.alreadyanswered));
 		}
 	}
 
