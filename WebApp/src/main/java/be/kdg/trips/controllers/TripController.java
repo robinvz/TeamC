@@ -17,7 +17,6 @@ import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.ModelAndView;
 
 import javax.mail.MessagingException;
-import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 import java.io.IOException;
 import java.text.ParseException;
@@ -173,7 +172,9 @@ public class TripController {
     }
 
     @RequestMapping(value = "/isEnrolled/{tripId}", method = RequestMethod.GET)
-    public @ResponseBody Boolean isEnrolled(@PathVariable int tripId) {
+    public
+    @ResponseBody
+    Boolean isEnrolled(@PathVariable int tripId) {
         User user = (User) session.getAttribute("user");
         Trip trip = null;
         try {
@@ -237,69 +238,57 @@ public class TripController {
         }
     }
 
-    @RequestMapping(value = "/publishTrip/{tripId}", method = RequestMethod.GET)
+    @RequestMapping(value = "/users/publishTrip/{tripId}", method = RequestMethod.GET)
     public ModelAndView publish(@PathVariable int tripId, Locale locale) {
         User user = (User) session.getAttribute("user");
-        if (isLoggedIn()) {
-            Trip trip = null;
-            Map map = new HashMap();
-            try {
-                trip = tripsService.findTripById(tripId, user);
-                tripsService.publishTrip(trip, user);
-                map = putInMap(map, trip, "success", messageSource.getMessage("IsPublished", null, locale));
+        Trip trip = null;
+        Map map = new HashMap();
+        try {
+            trip = tripsService.findTripById(tripId, user);
+            tripsService.publishTrip(trip, user);
+            map = putInMap(map, trip, "success", messageSource.getMessage("IsPublished", null, locale));
+            return new ModelAndView("tripView", map);
+        } catch (TripsException e) {
+            if (e.getMessage().contains("Trip with id")) {
+                return new ModelAndView("tripsView", "error", messageSource.getMessage("FindTripError", null, locale));
+            } else if (e.getMessage().contains("is not the organizer")) {
+                map = putInMap(map, trip, "error", messageSource.getMessage("NotOrganizerError", null, locale));
                 return new ModelAndView("tripView", map);
-            } catch (TripsException e) {
-                if (e.getMessage().contains("Trip with id")) {
-                    return new ModelAndView("tripsView", "error", messageSource.getMessage("FindTripError", null, locale));
-                } else if (e.getMessage().contains("is not the organizer")) {
-                    map = putInMap(map, trip, "error", messageSource.getMessage("NotOrganizerError", null, locale));
-                    return new ModelAndView("tripView", map);
-                } else {   //e.getMessage().contains("published")
-                    map = putInMap(map, trip, "error", messageSource.getMessage("AlreadyPublishedError", null, locale));
-                    return new ModelAndView("tripView", map);
-                }
+            } else {   //e.getMessage().contains("published")
+                map = putInMap(map, trip, "error", messageSource.getMessage("AlreadyPublishedError", null, locale));
+                return new ModelAndView("tripView", map);
             }
-        } else {
-            return new ModelAndView("loginView", "loginBean", new LoginBean());
         }
     }
 
-    @RequestMapping(value = "/labels/{tripId}", method = RequestMethod.GET)
+    @RequestMapping(value = "/users/labels/{tripId}", method = RequestMethod.GET)
     public ModelAndView addLabel(@PathVariable int tripId, Locale locale) {
         User user = (User) session.getAttribute("user");
-        if (isLoggedIn()) {
-            try {
-                Trip trip = tripsService.findTripById(tripId, user);
-                return new ModelAndView("labelsView", "trip", trip);
-            } catch (TripsException e) {
-                return new ModelAndView("tripsView", "error", messageSource.getMessage("FindTripError", null, locale));
-            }
-        } else {
-            return new ModelAndView("loginView", "loginBean", new LoginBean());
+        try {
+            Trip trip = tripsService.findTripById(tripId, user);
+            return new ModelAndView("/users/labelsView", "trip", trip);
+        } catch (TripsException e) {
+            return new ModelAndView("tripsView", "error", messageSource.getMessage("FindTripError", null, locale));
         }
     }
 
-    @RequestMapping(value = "/labels/{tripId}", method = RequestMethod.POST)
+    @RequestMapping(value = "/users/labels/{tripId}", method = RequestMethod.POST)
     public ModelAndView addLabel(@PathVariable int tripId, @RequestParam String label, Locale locale) {
-        User user = (User) session.getAttribute("user");
-        if (isLoggedIn()) {
-            Trip trip = null;
-            Map map = new HashMap();
-            try {
-                trip = tripsService.findTripById(tripId, user);
-                tripsService.addLabelToTrip(trip, user, label);
-                map = putInMap(map, trip, "success", messageSource.getMessage("LabelAdded", null, locale));
-                return new ModelAndView("labelsView", map);
-            } catch (TripsException e) {
-                if (e.getMessage().contains("Trip with id")) {
-                    return new ModelAndView("tripsView", "error", messageSource.getMessage("FindTripError", null, locale));
-                } else {    //e.getMessage().contains("is not the organizer")
-                    map = putInMap(map, trip, "error", messageSource.getMessage("NotOrganizerError", null, locale));
-                    return new ModelAndView("tripView", map);
-                }
+        Trip trip = null;
+        Map map = new HashMap();
+        try {
+            User user = (User) session.getAttribute("user");
+            trip = tripsService.findTripById(tripId, user);
+            tripsService.addLabelToTrip(trip, user, label);
+            map = putInMap(map, trip, "success", messageSource.getMessage("LabelAdded", null, locale));
+            return new ModelAndView("/users/labelsView", map);
+        } catch (TripsException e) {
+            if (e.getMessage().contains("Trip with id")) {
+                return new ModelAndView("tripsView", "error", messageSource.getMessage("FindTripError", null, locale));
+            } else {    //e.getMessage().contains("is not the organizer")
+                map = putInMap(map, trip, "error", messageSource.getMessage("NotOrganizerError", null, locale));
+                return new ModelAndView("tripView", map);
             }
-        } else {
-            return new ModelAndView("loginView", "loginBean", new LoginBean());
         }
     }
 
