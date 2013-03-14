@@ -16,9 +16,7 @@ import static org.junit.Assert.assertEquals;
  * 2012-2013
  */
 public class ErrorTest {
-
     private MockMvc mockMvc;
-
     ErrorController ec;
 
     @Before

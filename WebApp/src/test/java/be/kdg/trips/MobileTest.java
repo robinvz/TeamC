@@ -115,8 +115,6 @@ public class MobileTest {
         mockMvc.perform(requestBuilder).andExpect(content().string("{\"valid\":true,\"id\":" + t.getId() + ",\"title\":\"" + t.getTitle() + "\",\"description\":\"Beschrijving\",\"enrollments\":0,\"organizer\":\"test@student.kdg.be\",\"privacy\":\"PUBLIC\",\"isenrolled\":false,\"isstarted\":false,\"isactive\":false,\"istimeless\":true}"));
     }
 
-
-
     @Test
     public void subscribeTripServiceSuccess() throws Exception {
         Trip t = new TimelessTrip("Trip 1", "Beschrijving", TripPrivacy.PUBLIC, testUser);
@@ -215,11 +213,11 @@ public class MobileTest {
         antwoorden.add("Groep B");
         antwoorden.add("Groep C");
         antwoorden.add("Groep D");
-        l1.setQuestion(new Question("Welke groep is de beste?", antwoorden, 2, null));
-        l2.setQuestion(new Question("Welke groep is de beste?", antwoorden, 2, null));
-        l3.setQuestion(new Question("Welke groep is de beste?", antwoorden, 2, null));
-        l4.setQuestion(new Question("Welke groep is de beste?", antwoorden, 2, null));
-        l5.setQuestion(new Question("Welke groep is de beste?", antwoorden, 2, null));
+        l1.addQuestion(new Question("Welke groep is de beste?", antwoorden, 2, null));
+        l2.addQuestion(new Question("Welke groep is de beste?", antwoorden, 2, null));
+        l3.addQuestion(new Question("Welke groep is de beste?", antwoorden, 2, null));
+        l4.addQuestion(new Question("Welke groep is de beste?", antwoorden, 2, null));
+        l5.addQuestion(new Question("Welke groep is de beste?", antwoorden, 2, null));
         t.addLocation(l1);
         t.addLocation(l2);
         t.addLocation(l3);
@@ -244,4 +242,5 @@ public class MobileTest {
         when(tripsService.findNonPrivateTripsByKeyword(anyString(), any(User.class))).thenReturn(trips);
         mockMvc.perform(requestBuilder).andExpect(content().string("{\"valid\":true,\"trips\":[{\"title\":\"Trip Een\",\"id\":" + t.getId() + "}]}"));
     }
+
 }

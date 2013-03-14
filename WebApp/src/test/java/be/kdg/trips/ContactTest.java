@@ -1,7 +1,6 @@
 package be.kdg.trips;
 
 import be.kdg.trips.controllers.ContactController;
-import be.kdg.trips.controllers.HomeController;
 import org.junit.Before;
 import org.junit.Test;
 import org.mockito.MockitoAnnotations;
@@ -18,9 +17,7 @@ import static org.junit.Assert.assertEquals;
  */
 public class ContactTest {
     private MockMvc mockMvc;
-
     ContactController cc;
-
 
     @Before
     public void init() {

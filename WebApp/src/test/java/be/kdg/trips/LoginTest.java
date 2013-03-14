@@ -1,6 +1,5 @@
 package be.kdg.trips;
 
-import be.kdg.trips.beans.LoginBean;
 import be.kdg.trips.businessLogic.exception.TripsException;
 import be.kdg.trips.controllers.LoginController;
 import be.kdg.trips.model.user.User;
@@ -11,24 +10,18 @@ import org.junit.runner.RunWith;
 import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
 import org.mockito.runners.MockitoJUnitRunner;
-import org.springframework.http.MediaType;
 import org.springframework.mock.web.MockHttpSession;
 import org.springframework.test.util.ReflectionTestUtils;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.RequestBuilder;
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
-import org.springframework.validation.BeanPropertyBindingResult;
 import org.springframework.validation.BindingResult;
-import org.springframework.validation.ObjectError;
-
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertNull;
 import static org.mockito.Matchers.any;
 import static org.mockito.Matchers.anyString;
-import static org.mockito.Mockito.doCallRealMethod;
-import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.model;
@@ -43,20 +36,13 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 
 @RunWith(MockitoJUnitRunner.class)
 public class LoginTest {
-
     @Mock
     private TripsService tripsService;
-
-    private MockHttpSession mockHttpSession;
-
-    private MockMvc mockMvc;
-
     @Mock
     private BindingResult mockBindingResult;
-
-
+    private MockHttpSession mockHttpSession;
+    private MockMvc mockMvc;
     LoginController lg;
-
 
     @Before
     public void init() {
@@ -168,7 +154,6 @@ public class LoginTest {
         assertNull(mockHttpSession.getAttribute("user"));
     }
 
-
     @Test
     public void loginUserWrong() throws Exception {
         RequestBuilder requestBuilder = MockMvcRequestBuilders.post("/login").param("email", "bob").param("password", "bobette");
@@ -195,7 +180,5 @@ public class LoginTest {
         mockMvc.perform(requestBuilder).andExpect(view().name("loginView"));
         assertNull(mockHttpSession.getAttribute("user"));
     }
-
-
 
 }

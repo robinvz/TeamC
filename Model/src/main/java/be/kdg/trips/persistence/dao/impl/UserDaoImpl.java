@@ -3,6 +3,7 @@ package be.kdg.trips.persistence.dao.impl;
 import be.kdg.trips.businessLogic.exception.TripsException;
 import be.kdg.trips.model.user.User;
 import be.kdg.trips.persistence.dao.interfaces.UserDao;
+import org.apache.log4j.Logger;
 import org.springframework.stereotype.Repository;
 
 import javax.persistence.EntityManager;
@@ -20,6 +21,8 @@ import java.util.List;
 @Repository
 public class UserDaoImpl implements UserDao {
     private EntityManager entityManager;
+    private static final Logger logger = Logger.getLogger(UserDaoImpl.class);
+
 
     @PersistenceContext
     public void setEntityManager(EntityManager entityManager) {
@@ -37,6 +40,7 @@ public class UserDaoImpl implements UserDao {
         }
         catch (NoResultException ex)
         {
+            logger.warn("User with email " + email + " tried to log in, but was not registered in database");
             throw new TripsException("User with email '"+email+"' doesn't exist");
         }
     }

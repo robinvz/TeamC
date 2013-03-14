@@ -15,6 +15,7 @@ import be.kdg.trips.persistence.dao.interfaces.TripDao;
 import be.kdg.trips.utility.Fraction;
 import be.kdg.trips.utility.ImageChecker;
 import be.kdg.trips.utility.MailSender;
+import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
@@ -31,6 +32,8 @@ import java.util.*;
 @Component
 public class TripBLImpl implements TripBL
 {
+    private static final Logger logger = Logger.getLogger(TripBLImpl.class);
+
     @Autowired
     private TripDao tripDao;
 
@@ -65,7 +68,7 @@ public class TripBLImpl implements TripBL
             if(areDatesValid(startDate, endDate))
             {
                 trip = new TimeBoundTrip(title, description, privacy, organizer, startDate, endDate);
-                if(repeatable!=null & amount!=null)
+                if(repeatable!=null && amount!=null)
                 {
                     if(amount>0 && amount<16)
                     {
@@ -137,6 +140,12 @@ public class TripBLImpl implements TripBL
         throw new TripsException("You do not have viewing rights for this trip");
     }
 
+    /**
+     * Queries the database for a list of trips, which exclude the private ones.
+     *
+     * @param user the user who queries the database
+     * @return a list of trips, with certain attributes left out, depending on the user's viewing rights
+     */
     @Override
     public List<Trip> findAllNonPrivateTrips(User user) throws TripsException {
         List trips = new ArrayList<Trip>();
@@ -153,6 +162,12 @@ public class TripBLImpl implements TripBL
         return trips;
     }
 
+    /**
+     * Queries the database for a list of trips filtered by a keyword, which exclude the private ones.
+     *
+     * @param user the user who queries the database
+     * @return a list of trips, with certain attributes left out, depending on the user's viewing rights
+     */
     @Override
     public List<Trip> findNonPrivateTripsByKeyword(String keyword, User user) throws TripsException {
         List<Trip> trips = new ArrayList<Trip>();
@@ -169,6 +184,12 @@ public class TripBLImpl implements TripBL
         return trips;
     }
 
+    /**
+     * Queries the database for a list of private trips to which the user is invited.
+     *
+     * @param user the user who queries the database
+     * @return a list of private trips
+     */
     @Override
     public List<Trip> findPrivateTrips(User user) throws TripsException {
         List<Trip> trips = new ArrayList<>();
@@ -180,6 +201,12 @@ public class TripBLImpl implements TripBL
         return trips;
     }
 
+    /**
+     * Queries the database for a list of trips, of which the user is the organizer.
+     *
+     * @param organizer the user who queries the database
+     * @return a list of tripsof which the user is the organizer
+     */
     @Override
     public List<Trip> findTripsByOrganizer(User organizer) throws TripsException {
         List<Trip> trips = new ArrayList<>();
@@ -482,7 +509,7 @@ public class TripBLImpl implements TripBL
                     {
                         newImage = image;
                     }
-                    location.setQuestion(new Question(question, possibleAnswers, correctAnswerIndex, newImage));
+                    location.addQuestion(new Question(question, possibleAnswers, correctAnswerIndex, newImage));
                     tripDao.saveOrUpdateLocation(location);
                 }
                 else
@@ -501,9 +528,15 @@ public class TripBLImpl implements TripBL
         }
     }
 
+    /**
+     * Queries the database for a list questions, and their answer given by the users, indicated as correct or false.
+     *
+     * @param organizer the organizer who queries the database
+     * @return a map of questions and results
+     */
     @Override
     public Map<Question, Fraction> getQuestionsWithAnswerPercentage(Trip trip, User organizer) throws TripsException {
-        Map<Question, Fraction> questions = new HashMap<>();
+        Map<Question, Fraction> questions = new TreeMap<>();
         if(isExistingTrip(trip.getId()) && userBL.isExistingUser(organizer.getEmail()) && isOrganizer(trip, organizer))
         {
             for(Enrollment enrollment: trip.getEnrollments())
@@ -525,17 +558,16 @@ public class TripBLImpl implements TripBL
                         {
                             questions.put(answeredQuestion, new Fraction(denominator, divisor+1));
                         }
-                        enrollment.getAnsweredQuestions();
                     }
                     else
                     {
                         if(answeredQuestions.get(answeredQuestion))
                         {
-                            questions.put(answeredQuestion, new Fraction());
+                            questions.put(answeredQuestion, new Fraction(1,1));
                         }
                         else
                         {
-                            questions.put(answeredQuestion, new Fraction());
+                            questions.put(answeredQuestion, new Fraction(0,1));
                         }
                     }
                 }
@@ -569,8 +601,7 @@ public class TripBLImpl implements TripBL
             {
                 question.setImage(image);
             }
-            location.setQuestion(question);
-            tripDao.saveOrUpdateLocation(location);
+            tripDao.updateQuestion(question);
         }
         else
         {
@@ -584,13 +615,24 @@ public class TripBLImpl implements TripBL
         if(isExistingLocation(location.getId()) && location.getQuestion() != null && userBL.isExistingUser(organizer.getEmail()) && isOrganizer(location.getTrip(), organizer))
         {
             Question question = location.getQuestion();
-            tripDao.deleteQuestion(question.getId());
-            location.setQuestion(null);
+            location.removeQuestion();
             tripDao.saveOrUpdateLocation(location);
+            tripDao.deleteQuestion(question.getId());
         }
         else
         {
             throw new TripsException("Location doesn't have a question to remove");
+        }
+    }
+
+    @Transactional
+    @Override
+    public void removeImageFromQuestion(User organizer, Question question) throws TripsException {
+        Location location = question.getLocation();
+        if(isExistingLocation(location.getId()) && userBL.isExistingUser(organizer.getEmail()) && isOrganizer(location.getTrip(), organizer) && question.getImage()!=null)
+        {
+            question.setImage(null);
+            tripDao.updateQuestion(question);
         }
     }
 
@@ -615,6 +657,7 @@ public class TripBLImpl implements TripBL
         {
             return true;
         }
+        logger.warn("User " + organizer.getEmail() + " tried to execute an organizer only action, but is not organizer for Trip " + trip.getTitle());
         throw new TripsException("User with email '"+organizer.getEmail()+"' is not the organizer of the selected trip");
     }
 
