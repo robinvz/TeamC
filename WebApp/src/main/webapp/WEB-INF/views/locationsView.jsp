@@ -29,7 +29,9 @@
                 <th><spring:message code="City"/></th>
                 <th><spring:message code="PostalCode"/></th>
                 <th><spring:message code="Country"/></th>
+                <c:if test="${not empty user && trip.organizer == user}">
                 <th></th>
+                </c:if>
             </tr>
             </thead>
             <tbody>
@@ -66,12 +68,14 @@
                             <td class="read_only">
                                     ${location.getAddress().country}
                             </td>
+                            <c:if test="${not empty user && trip.organizer == user}">
                             <td class="read_only">
                                 <a href="/trip/${trip.id}/locations/${location.id}/deleteLocation">
                                     <button type="button" id="btn-deleteLocation"><spring:message code="Delete"/>
                                     </button>
                                 </a>
                             </td>
+                            </c:if>
                         </tr>
                     </c:forEach>
                 </c:otherwise>

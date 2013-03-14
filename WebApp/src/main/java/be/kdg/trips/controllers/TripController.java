@@ -900,7 +900,7 @@ public class TripController {
 
 
 
-    @RequestMapping(value = "/acceptInvitation", method = RequestMethod.GET)
+    @RequestMapping(value = "/acceptInvitation", method = RequestMethod.POST)
     public ModelAndView acceptInvitation(@RequestParam int tripId, Locale locale) {
         User user = (User) session.getAttribute("user");
         if (isLoggedIn()) {
@@ -925,7 +925,7 @@ public class TripController {
         }
     }
 
-    @RequestMapping(value = "/declineInvitation", method = RequestMethod.GET)
+    @RequestMapping(value = "/declineInvitation", method = RequestMethod.POST)
     public ModelAndView declineInvitation(@RequestParam int tripId, Locale locale) {
         User user = (User) session.getAttribute("user");
         if (isLoggedIn()) {

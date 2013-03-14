@@ -116,6 +116,28 @@ public class LoginController {
         return "redirect:/";
     }
 
+    @RequestMapping(value = "/login/{tripId}", method = RequestMethod.POST)
+    public String handleLoginRedirect(@Valid LoginBean loginBean, @PathVariable int tripId, BindingResult result, HttpServletRequest request) {
+        if (result.hasErrors()) {
+            return "loginView";
+        }
+        String email = request.getParameter("email");
+        String password = request.getParameter("password");
+        try {
+            if (tripsService.checkLogin(email, password)) {  //wrong password, redirect to index
+                User user = tripsService.findUser(email);
+                session.setAttribute("user", user);
+            } else {
+                ObjectError error = new ObjectError("login", "Invalid login credentials.");
+                result.addError(error);
+                return "redirect:/login#"+tripId;
+            }
+        } catch (TripsException e) {
+            //will never throw
+        }
+        return "redirect:/trip/"+tripId;
+    }
+
     @RequestMapping(value = "/logout", method = RequestMethod.GET)
     public String logout() {
         session.invalidate();

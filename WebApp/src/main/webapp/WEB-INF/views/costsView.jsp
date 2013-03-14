@@ -30,26 +30,54 @@
                     <th><spring:message code="Price"/></th>
                     <th></th>
                     </thead>
-                    <c:forEach items="${totalTripCosts}" var="cost">
-                            <c:forEach items="${cost.value}" var="costLine">
-                                <tr>
-                                    <td>
+                    <c:if test="${trip.organizer == user}">
+                        <c:forEach items="${totalTripCosts}" var="cost">
+                        <c:forEach items="${cost.value}" var="costLine">
+                            <tr>
+                                <td>
                                         ${cost.key}
-                                    </td>
-                                    <td>
+                                </td>
+                                <td>
                                         ${costLine.key}
-                                    </td>
-                                    <td>
+                                </td>
+                                <td>
                                         ${costLine.value}
-                                    </td>
-                                    <td>
-                                       <form action="/costs/${trip.id}/deleteCost/${costLine.key}/${costLine.value}">
-                                           <button id="btn-removeCost" type="submit" class="btn-blue"><spring:message code="removeCost"/></button>
-                                       </form>
-                                    </td>
-                                </tr>
+                                </td>
+                                <td>
+                                    <form action="/costs/${trip.id}/deleteCost/${costLine.key}/${costLine.value}">
+                                        <button id="btn-removeCost" type="submit" class="btn-blue"><spring:message code="removeCost"/></button>
+                                    </form>
+                                </td>
+                            </tr>
+                        </c:forEach>
+                        </c:forEach>
+                    </c:if>
+                    <c:if test="${trip.organizer != user}">
+                        <c:forEach items="${totalTripCosts}" var="cost">
+                            <c:forEach items="${cost.value}" var="costLine">
+                               <c:if test="${cost.key == user}">
+                                   <tr>
+                                       <td>
+                                               ${cost.key}
+                                       </td>
+                                       <td>
+                                               ${costLine.key}
+                                       </td>
+                                       <td>
+                                               ${costLine.value}
+                                       </td>
+                                       <td>
+                                           <form action="/costs/${trip.id}/deleteCost/${costLine.key}/${costLine.value}">
+                                               <button type="submit" class="btn-blue"><spring:message code="removeCost"/></button>
+                                           </form>
+                                       </td>
+                                   </tr>
+                               </c:if>
                             </c:forEach>
-                    </c:forEach>
+                        </c:forEach>
+                    </c:if>
+
+
                 </table>
             </c:when>
             <c:otherwise>
