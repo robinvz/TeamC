@@ -69,7 +69,7 @@ public class TripController {
     }
 
     @RequestMapping(value = "/trip/{tripId}", method = RequestMethod.GET)
-    public ModelAndView getTrip(@PathVariable int tripId) {
+    public ModelAndView getTrip(@PathVariable int tripId, Locale locale) {
         User user = (User) session.getAttribute("user");
         try {
             Trip trip = tripsService.findTripById(tripId, user);
@@ -86,7 +86,7 @@ public class TripController {
             }
             return new ModelAndView("tripView", "trip", trip);
         } catch (TripsException e) {
-            return new ModelAndView("tripsView");
+            return new ModelAndView("tripsView", "error", messageSource.getMessage("FindTripError", null, locale));
         }
     }
 
@@ -501,8 +501,7 @@ public class TripController {
                 trip = tripsService.findTripById(tripId, user);
                 tripsService.deleteLocation(trip, user, tripsService.findLocationById(locationId));
                 return new ModelAndView("redirect:/trip/" + trip.getId() + "/locations");
-            } catch (TripsException e) {
-                //trip not found or failed to delete/find location
+            } catch (TripsException e) { //trip not found or failed to delete/find location
                 return new ModelAndView("tripsView");
             }
         } else {
@@ -523,8 +522,7 @@ public class TripController {
                 trip = tripsService.findTripById(tripId, user);
                 tripsService.switchLocationSequence(trip, user, fromPosition - 1, toPosition - 1);
                 return new ModelAndView("locationsView", "trip", trip);
-            } catch (TripsException e) {
-                //trip not found or Switch location failed
+            } catch (TripsException e) { //trip not found or Switch location failed
                 return new ModelAndView("locationsView", "trip", trip);
             }
         } else {
@@ -535,10 +533,9 @@ public class TripController {
     @RequestMapping(value = "/trip/{tripId}/participants", method = RequestMethod.GET)
     public ModelAndView participants(@PathVariable int tripId, Locale locale) {
         if (isLoggedIn()) {
-            Map map = new HashMap();
-            Trip trip = null;
             try {
-                trip = tripsService.findTripById(tripId, (User) session.getAttribute("user"));
+                Map map = new HashMap();
+                Trip trip = tripsService.findTripById(tripId, (User) session.getAttribute("user"));
                 List<Enrollment> enr = tripsService.findEnrollmentsByTrip(trip);
                 map.put("trip", trip);
                 map.put("enrollments", enr);
@@ -782,9 +779,9 @@ public class TripController {
     public ModelAndView costs(@PathVariable int tripId, Locale locale) {
         User user = (User) session.getAttribute("user");
         if (isLoggedIn()) {
-            Trip trip = null;
-            Map map = new HashMap();
             try {
+                Trip trip = null;
+                Map map = new HashMap();
                 trip = tripsService.findTripById(tripId, user);
                 Map<String, Map<String, Double>> totalTripCosts = new HashMap<>();
                 for (Enrollment enrollment : trip.getEnrollments()) {
@@ -916,82 +913,65 @@ public class TripController {
         return new ModelAndView("redirect:/trip/" + trip.getId() + "/locations/" + location.getId(), parameters);
     }
 
-    @RequestMapping(value = "/trip/{tripId}/locations/{locationId}/editQuestion", method = RequestMethod.POST)
+    @RequestMapping(value = "/users/trip/{tripId}/locations/{locationId}/editQuestion", method = RequestMethod.POST)
     public ModelAndView editQuestion(@PathVariable int tripId, @PathVariable int locationId, @RequestParam String question,
                                      @RequestParam List<String> possibleAnswers, @RequestParam String correctAnswer) {
-        Map parameters = new HashMap();
-        User user = (User) session.getAttribute("user");
-        Trip trip = null;
-        Location location = null;
-        if (isLoggedIn()) {
-            try {
-                trip = tripsService.findTripById(tripId, user);
-                location = tripsService.findLocationById(locationId);
-                parameters.put("trip", trip);
-                parameters.put("location", location);
-                tripsService.editTripQuestionDetails(user, location, question, possibleAnswers, possibleAnswers.indexOf(correctAnswer), null);
-            } catch (TripsException e) {
-                //trip/loc not found or failed to edit q details
-            }
-        } else {
-            return new ModelAndView("loginView", "loginBean", new LoginBean());
+        try {
+            Map parameters = new HashMap();
+            User user = (User) session.getAttribute("user");
+            Trip trip = tripsService.findTripById(tripId, user);
+            Location location = tripsService.findLocationById(locationId);
+            parameters.put("trip", trip);
+            parameters.put("location", location);
+            tripsService.editTripQuestionDetails(user, location, question, possibleAnswers, possibleAnswers.indexOf(correctAnswer), null);
+            return new ModelAndView("redirect:/trip/" + trip.getId() + "/locations/" + location.getId(), parameters);
+        } catch (TripsException e) { //trip/loc not found or failed to edit q details
+            return new ModelAndView("tripsView", "error", e.getMessage());
         }
-        return new ModelAndView("redirect:/trip/" + trip.getId() + "/locations/" + location.getId(), parameters);
     }
 
-    @RequestMapping(value = "/trip/{tripId}/locations/{locationId}/deleteQuestion", method = RequestMethod.GET)
+    @RequestMapping(value = "/users/trip/{tripId}/locations/{locationId}/deleteQuestion", method = RequestMethod.GET)
     public ModelAndView deleteQuestion(@PathVariable int tripId, @PathVariable int locationId) {
         Map parameters = new HashMap();
         User user = (User) session.getAttribute("user");
         Trip trip = null;
         Location location = null;
-        if (isLoggedIn()) {
-            try {
-                trip = tripsService.findTripById(tripId, user);
-                location = tripsService.findLocationById(locationId);
-                parameters.put("trip", trip);
-                parameters.put("location", location);
-                tripsService.removeQuestionFromLocation(user, location);
-            } catch (TripsException e) {
-                // trip/loc not found or failed to remove q from loc
-            }
-        } else {
-            return new ModelAndView("loginView", "loginBean", new LoginBean());
+        try {
+            trip = tripsService.findTripById(tripId, user);
+            location = tripsService.findLocationById(locationId);
+            parameters.put("trip", trip);
+            parameters.put("location", location);
+            tripsService.removeQuestionFromLocation(user, location);
+            return new ModelAndView("redirect:/trip/" + trip.getId() + "/locations/" + location.getId(), parameters);
+        } catch (TripsException e) { // trip/loc not found or failed to remove q from loc
+            return new ModelAndView("tripsView", "error", e.getMessage());
         }
-        return new ModelAndView("redirect:/trip/" + trip.getId() + "/locations/" + location.getId(), parameters);
     }
 
-    @RequestMapping(value = "/trip/{tripId}/locations/{locationId}/deleteQuestionImage", method = RequestMethod.GET)
+    @RequestMapping(value = "/users/trip/{tripId}/locations/{locationId}/deleteQuestionImage", method = RequestMethod.GET)
     public ModelAndView deleteQuestionImage(@PathVariable int tripId, @PathVariable int locationId) {
         Map parameters = new HashMap();
         User user = (User) session.getAttribute("user");
         Trip trip = null;
         Location location = null;
-        if (isLoggedIn()) {
-            try {
-                trip = tripsService.findTripById(tripId, user);
-                location = tripsService.findLocationById(locationId);
-                parameters.put("trip", trip);
-                parameters.put("location", location);
-                tripsService.removeImageFromQuestion(user, location.getQuestion());
-            } catch (TripsException e) {
-                // errors nog fixen
-            }
-        } else {
-            return new ModelAndView("loginView", "loginBean", new LoginBean());
+        try {
+            trip = tripsService.findTripById(tripId, user);
+            location = tripsService.findLocationById(locationId);
+            parameters.put("trip", trip);
+            parameters.put("location", location);
+            tripsService.removeImageFromQuestion(user, location.getQuestion());
+            return new ModelAndView("redirect:/trip/" + trip.getId() + "/locations/" + location.getId(), parameters);
+        } catch (TripsException e) { //trip/loc not found or failed to remove img from q
+            return new ModelAndView("tripsView", "error", e.getMessage());
         }
-        return new ModelAndView("redirect:/trip/" + trip.getId() + "/locations/" + location.getId(), parameters);
     }
 
     @RequestMapping(value = "/trip/{tripId}/locations/{locationId}/questionPic", method = RequestMethod.GET, produces = "image/jpg")
-    public
-    @ResponseBody
-    byte[] showQuestionPic(@PathVariable int tripId, @PathVariable int locationId) {
+    public @ResponseBody byte[] showQuestionPic(@PathVariable int tripId, @PathVariable int locationId) {
         try {
             Location location = tripsService.findLocationById(locationId);
             return location.getQuestion().getImage();
-        } catch (TripsException e) {
-            //location not found
+        } catch (TripsException e) { //location not found
             return null;
         }
     }
