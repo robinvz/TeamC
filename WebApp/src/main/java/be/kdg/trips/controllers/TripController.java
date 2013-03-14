@@ -173,14 +173,13 @@ public class TripController {
     }
 
     @RequestMapping(value = "/isEnrolled/{tripId}", method = RequestMethod.GET)
-    public
-    @ResponseBody
-    Boolean isEnrolled(@PathVariable int tripId) {
+    public @ResponseBody Boolean isEnrolled(@PathVariable int tripId) {
         User user = (User) session.getAttribute("user");
         Trip trip = null;
         try {
             trip = tripsService.findTripById(tripId, user);
         } catch (TripsException e) {
+            //trip not found
         }
         boolean isEnrolled = tripsService.isUserEnrolled(user, trip);
         if (isEnrolled) return true;
@@ -453,7 +452,7 @@ public class TripController {
 
     @RequestMapping(value = "/trip/{tripId}/locations", method = RequestMethod.GET)
     public ModelAndView getLocations(@PathVariable int tripId) {
-        Map map = new HashMap();                                           //TODO:check if isLoggedIn
+        Map map = new HashMap();          //TODO:check if isLoggedIn
         try {
             Trip trip = tripsService.findTripById(tripId, (User) session.getAttribute("user"));
             map.put("trip", trip);
@@ -498,7 +497,7 @@ public class TripController {
                             country, title, description, question, possibleAnswers, possibleAnswers.indexOf(correctAnswer), bFile);
                 }
             } catch (TripsException e) {
-                //failed to add location to trip
+                //trip not found or failed to add loc to trip
             } catch (IOException e) {
                 //TODO: bfile is foute type (niet jpeg, gif of png)
             }
@@ -559,7 +558,7 @@ public class TripController {
                 map.put("trip", trip);
                 map.put("enrollments", enr);
                 return new ModelAndView("users/participantsView", map);
-            } catch (TripsException e) {
+            } catch (TripsException e) {          //TODO:find enrollments by trip error
                 return new ModelAndView("tripsView", "error", messageSource.getMessage("FindTripError", null, locale));
             }
         } else {
@@ -585,15 +584,6 @@ public class TripController {
         return jsonArray.toString();
     }
 
-    public boolean isLoggedIn() {
-        User user = (User) session.getAttribute("user");
-        if (user != null) {
-            return true;
-        } else {
-            return false;
-        }
-    }
-
     @RequestMapping(value = "/trip/{tripId}/locations/{locationId}/editLocation", method = RequestMethod.POST)
     public ModelAndView editLocation(@PathVariable int tripId, @PathVariable int locationId, @RequestParam String title, @RequestParam String description) {
         Map parameters = new HashMap();
@@ -605,24 +595,16 @@ public class TripController {
                 trip = tripsService.findTripById(tripId, user);
                 location = tripsService.findLocationById(locationId);
                 tripsService.editTripLocationDetails(user, trip, location, "", "", "", "", "", title, description);
-                return new ModelAndView("redirect:/trip/" + trip.getId() + "/locations/" + location.getId());
-                try {
-                    location = tripsService.findLocationById(locationId);
-                    tripsService.editTripLocationDetails(user, trip, location, "", "", "", "", "", title, description);
-                    parameters.put("trip", trip);
-                    parameters.put("location", location);
-                } catch (TripsException e) {
-                    // location not found
-                    return new ModelAndView("locationsView");
-                }
+                parameters.put("trip", trip);
+                parameters.put("location", location);
+                return new ModelAndView("redirect:/trip/" + trip.getId() + "/locations/" + location.getId(), parameters);
             } catch (TripsException e) {
-                // trip not found or location not found or edit locationDetails failed
+                // trip/location not found or edit locationDetails failed
                 return new ModelAndView("locationsView");
             }
         } else {
             return new ModelAndView("loginView", "loginBean", new LoginBean());
         }
-        return new ModelAndView("redirect:/trip/" + trip.getId() + "/locations/" + location.getId(), parameters);
     }
 
     @RequestMapping(value = "/inviteUser/{tripId}", method = RequestMethod.GET)
@@ -676,7 +658,7 @@ public class TripController {
                 parameters.put("usersByKeyword", tripsService.findUsersByKeyword(keyword, user));
                 return new ModelAndView("/users/inviteUserView", parameters);
             } catch (TripsException e) {
-                // keyword not found in users
+                // trip not found or keyword not found in users
                 return new ModelAndView("loginView", "loginBean", new LoginBean());
             }
         } else {
@@ -760,7 +742,7 @@ public class TripController {
         User user = (User) session.getAttribute("user");
         if (isLoggedIn()) {
             try {
-                trip = tripsService.findTripById(tripId, user);
+                Trip trip = tripsService.findTripById(tripId, user);
                 return new ModelAndView("/users/addDateView", "trip", trip);
             } catch (TripsException e) {
                 return new ModelAndView("tripsView", "error", messageSource.getMessage("FindTripError", null, locale));
@@ -928,12 +910,6 @@ public class TripController {
         }
     }
 
-    public Map putInMap(Map map, Trip value1, String key2, String value2) {
-        map.put("trip", value1);
-        map.put(key2, value2);
-        return map;
-    }
-
     @RequestMapping(value = "/trip/{tripId}/locations/{locationId}/addQuestion", method = RequestMethod.POST)
     public ModelAndView addQuestion(@PathVariable int tripId, @PathVariable int locationId, @RequestParam String question, @RequestParam("file") MultipartFile file,
                                     @RequestParam List<String> possibleAnswers, @RequestParam String correctAnswer) {
@@ -953,7 +929,7 @@ public class TripController {
                 }
                 tripsService.addQuestionToLocation(user, location, question, possibleAnswers, possibleAnswers.indexOf(correctAnswer), bFile);
             } catch (TripsException e) {
-                //failed to add location to trip
+                //trip.loc not found or failed to add q to loc
             } catch (IOException e) {
                 //TODO: bfile is foute type (niet jpeg, gif of png)
             }
@@ -978,7 +954,7 @@ public class TripController {
                 parameters.put("location", location);
                 tripsService.editTripQuestionDetails(user, location, question, possibleAnswers, possibleAnswers.indexOf(correctAnswer), null);
             } catch (TripsException e) {
-                //failed to add location to trip
+                //trip/loc not found or failed to edit q details
             }
         } else {
             return new ModelAndView("loginView", "loginBean", new LoginBean());
@@ -1000,7 +976,7 @@ public class TripController {
                 parameters.put("location", location);
                 tripsService.removeQuestionFromLocation(user, location);
             } catch (TripsException e) {
-                // errors nog fixen
+                // trip/loc not found or failed to remove q from loc
             }
         } else {
             return new ModelAndView("loginView", "loginBean", new LoginBean());
@@ -1082,4 +1058,20 @@ public class TripController {
         }
         return new ModelAndView("redirect:/trip/" + trip.getId() + "/locations/" + location.getId(), parameters);
     }
+
+    public Map putInMap(Map map, Trip value1, String key2, String value2) {
+        map.put("trip", value1);
+        map.put(key2, value2);
+        return map;
+    }
+
+    public boolean isLoggedIn() {
+        User user = (User) session.getAttribute("user");
+        if (user != null) {
+            return true;
+        } else {
+            return false;
+        }
+    }
+
 }
