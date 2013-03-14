@@ -149,9 +149,9 @@
                     <li class="jump-in"><a href="/inviteUser/${trip.id}"><spring:message code="InviteUsers"/></a></li>
                 </c:if>
                 <c:if test="${trip.timeBoundTrip==true}">
-                    <li class="jump-in"><a href="/addDate/${trip.id}"><spring:message code="AddDate"/></a></li>
+                    <li class="jump-in"><a href="/users/addDate/${trip.id}"><spring:message code="AddDate"/></a></li>
                 </c:if>
-                <li class="jump-in"><a href="/deleteTrip/${trip.id}"><spring:message code="Delete"/></a></li>
+                <li class="jump-in"><a href="/users/deleteTrip/${trip.id}"><spring:message code="Delete"/></a></li>
             </c:if>
         </ul>
     </nav>
