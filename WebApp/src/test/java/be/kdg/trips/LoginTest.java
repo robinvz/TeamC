@@ -1,15 +1,20 @@
 package be.kdg.trips;
 
+import be.kdg.trips.beans.LoginBean;
 import be.kdg.trips.businessLogic.exception.TripsException;
 import be.kdg.trips.controllers.LoginController;
+import be.kdg.trips.model.trip.TimelessTrip;
+import be.kdg.trips.model.trip.Trip;
 import be.kdg.trips.model.user.User;
 import be.kdg.trips.services.interfaces.TripsService;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.Mock;
+import org.mockito.Mockito;
 import org.mockito.MockitoAnnotations;
 import org.mockito.runners.MockitoJUnitRunner;
+import org.springframework.mock.web.MockHttpServletRequest;
 import org.springframework.mock.web.MockHttpSession;
 import org.springframework.test.util.ReflectionTestUtils;
 import org.springframework.test.web.servlet.MockMvc;
@@ -43,6 +48,7 @@ public class LoginTest {
     private MockHttpSession mockHttpSession;
     private MockMvc mockMvc;
     LoginController lg;
+
 
     @Before
     public void init() {
@@ -162,6 +168,14 @@ public class LoginTest {
         assertNull(mockHttpSession.getAttribute("user"));
     }
 
+    @Test
+    public void loginFail() throws Exception {
+        RequestBuilder requestBuilder = MockMvcRequestBuilders.post("/login/").param("email", "bob").param("password", "bob");
+        when(tripsService.checkLogin("bob", "bob")).thenReturn(true);
+        when(tripsService.findUser("bob")).thenThrow(new TripsException("Failed"));
+        mockMvc.perform(requestBuilder).andExpect(view().name("redirect:/"));
+        assertNull(mockHttpSession.getAttribute("user"));
+    }
 
     @Test
     public void logOutUser() throws Exception {
@@ -180,5 +194,71 @@ public class LoginTest {
         mockMvc.perform(requestBuilder).andExpect(view().name("loginView"));
         assertNull(mockHttpSession.getAttribute("user"));
     }
+
+    @Test
+    public void loginUserCorrectTripRedirect() throws Exception {
+        Trip t = new TimelessTrip();
+        RequestBuilder requestBuilder = MockMvcRequestBuilders.post("/login/" + t.getId()).param("email", "bob").param("password", "bob");
+        when(tripsService.checkLogin("bob", "bob")).thenReturn(true);
+        when(tripsService.findUser("bob")).thenReturn(new User("bob", "bob"));
+        mockMvc.perform(requestBuilder).andExpect(view().name("redirect:/trip/" + t.getId()));
+        assertNotNull(mockHttpSession.getAttribute("user"));
+    }
+
+ @Test
+    public void loginUserRedirectTripFailedLogin() throws Exception {
+        Trip t = new TimelessTrip();
+        RequestBuilder requestBuilder = MockMvcRequestBuilders.post("/login/" + t.getId()).param("email", "bob").param("password", "bob");
+        when(tripsService.checkLogin("bob", "bob")).thenReturn(false);
+        mockMvc.perform(requestBuilder).andExpect(view().name("redirect:/login#" + t.getId()));
+        assertNull(mockHttpSession.getAttribute("user"));
+    }
+
+    @Test
+    public void loginUserRedirectTripException() throws Exception {
+        Trip t = new TimelessTrip();
+        RequestBuilder requestBuilder = MockMvcRequestBuilders.post("/login/" + t.getId()).param("email", "bob").param("password", "bob");
+        when(tripsService.checkLogin("bob", "bob")).thenReturn(true);
+        when(tripsService.findUser("bob")).thenThrow(new TripsException("Failed"));
+        mockMvc.perform(requestBuilder).andExpect(view().name("redirect:/login#" + t.getId()));
+        assertNull(mockHttpSession.getAttribute("user"));
+    }
+
+    @Test
+    public void loginUserNotValid() throws Exception {
+        when(mockBindingResult.hasErrors()).thenReturn(true);
+        LoginBean lb = new LoginBean();
+        lb.setEmail("JOlo");
+        lb.setPassword("JOlo");
+        lg.handleLogin(lb, mockBindingResult, new MockHttpServletRequest());
+        assertNull(mockHttpSession.getAttribute("user"));
+    }
+
+    @Test
+        public void loginRedirectNotValidUser() throws Exception {
+        Trip t = new TimelessTrip();
+        when(mockBindingResult.hasErrors()).thenReturn(true);
+        LoginBean lb = new LoginBean();
+        lb.setEmail("JOlo");
+        lb.setPassword("JOlo");
+        String result =lg.handleLoginRedirect(lb, t.getId(), mockBindingResult, new MockHttpServletRequest());
+        assertNull(mockHttpSession.getAttribute("user"));
+        assertEquals(result, "loginView");
+
+    }
+
+    @Test
+    public void registerNotValidUser() throws Exception {
+        Trip t = new TimelessTrip();
+        when(mockBindingResult.hasErrors()).thenReturn(true);
+        LoginBean lb = new LoginBean();
+        lb.setEmail("JOlo");
+        lb.setPassword("JOlo");
+        String result =  lg.register(new User("bobber", "bobber"), mockBindingResult, new MockHttpServletRequest());
+        assertNull(mockHttpSession.getAttribute("user"));
+        assertEquals(result, "registerView");
+    }
+
+
 
 }

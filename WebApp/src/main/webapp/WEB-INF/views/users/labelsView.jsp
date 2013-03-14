@@ -12,8 +12,8 @@
 </head>
 <body>
 <div id="page">
-    <jsp:include page="baseView.jsp"/>
-    <jsp:include page="tripHeaderView.jsp"/>
+    <jsp:include page="../baseView.jsp"/>
+    <jsp:include page="../tripHeaderView.jsp"/>
 
     <div class="inner-content">
         <h3>Labels</h3>
@@ -24,9 +24,9 @@
             <span class="successblock">${success}</span>
         </c:if>
 
-        <c:if test="${not empty user && user == trip.organizer}">
+        <c:if test="${user == trip.organizer}">
             <table>
-                <form action="/labels/${trip.id}" method="POST">
+                <form action="/users/labels/${trip.id}" method="POST">
                     <tr>
                         <td><spring:message code="EnterLabel" /></td>
                         <td><input type="text" name="label"></td>
