@@ -480,9 +480,10 @@ public class TripController {
                                        @RequestParam String houseNr, @RequestParam String city, @RequestParam String postalCode,
                                        @RequestParam String country, @RequestParam String title, @RequestParam("file") MultipartFile file,
                                        @RequestParam String description, @RequestParam String question,
-                                       @RequestParam String correctAnswer, HttpServletRequest request) {
+                                       @RequestParam String correctAnswer, @RequestParam List possibleAnswers) {
         User user = (User) session.getAttribute("user");
         Trip trip = null;
+        byte[] bFile = null;
         if (isLoggedIn()) {
             try {
                 trip = tripsService.findTripById(tripId, user);
@@ -490,10 +491,11 @@ public class TripController {
                     tripsService.addLocationToTrip(user, trip, latitude, longitude, street, houseNr.split("-")[0], city, postalCode,
                             country, title, description);
                 } else {
-                    List answers = new ArrayList(Arrays.asList(request.getParameter("possibleAnswers")));
-                    byte[] bFile = file.getBytes();
+                    if (!file.getOriginalFilename().isEmpty()) {
+                        bFile = file.getBytes();
+                    }
                     tripsService.addLocationToTrip(user, trip, latitude, longitude, street, houseNr.split("-")[0], city, postalCode,
-                            country, title, description, question, answers, answers.indexOf(correctAnswer), bFile);
+                            country, title, description, question, possibleAnswers, possibleAnswers.indexOf(correctAnswer), bFile);
                 }
             } catch (TripsException e) {
                 //failed to add location to trip
@@ -594,6 +596,7 @@ public class TripController {
 
     @RequestMapping(value = "/trip/{tripId}/locations/{locationId}/editLocation", method = RequestMethod.POST)
     public ModelAndView editLocation(@PathVariable int tripId, @PathVariable int locationId, @RequestParam String title, @RequestParam String description) {
+        Map parameters = new HashMap();
         User user = (User) session.getAttribute("user");
         Trip trip = null;
         Location location = null;
@@ -603,6 +606,15 @@ public class TripController {
                 location = tripsService.findLocationById(locationId);
                 tripsService.editTripLocationDetails(user, trip, location, "", "", "", "", "", title, description);
                 return new ModelAndView("redirect:/trip/" + trip.getId() + "/locations/" + location.getId());
+                try {
+                    location = tripsService.findLocationById(locationId);
+                    tripsService.editTripLocationDetails(user, trip, location, "", "", "", "", "", title, description);
+                    parameters.put("trip", trip);
+                    parameters.put("location", location);
+                } catch (TripsException e) {
+                    // location not found
+                    return new ModelAndView("locationsView");
+                }
             } catch (TripsException e) {
                 // trip not found or location not found or edit locationDetails failed
                 return new ModelAndView("locationsView");
@@ -610,6 +622,7 @@ public class TripController {
         } else {
             return new ModelAndView("loginView", "loginBean", new LoginBean());
         }
+        return new ModelAndView("redirect:/trip/" + trip.getId() + "/locations/" + location.getId(), parameters);
     }
 
     @RequestMapping(value = "/inviteUser/{tripId}", method = RequestMethod.GET)
@@ -747,7 +760,7 @@ public class TripController {
         User user = (User) session.getAttribute("user");
         if (isLoggedIn()) {
             try {
-                Trip trip = tripsService.findTripById(tripId, user);
+                trip = tripsService.findTripById(tripId, user);
                 return new ModelAndView("/users/addDateView", "trip", trip);
             } catch (TripsException e) {
                 return new ModelAndView("tripsView", "error", messageSource.getMessage("FindTripError", null, locale));
