@@ -140,10 +140,10 @@
             </c:if>
             <c:if test="${not empty user && trip.organizer == user}">
                 <li><strong>Admin Tools</strong></li>
-                <li class="jump-in"><a href="/labels/${trip.id}">Labels</a></li>
+                <li class="jump-in"><a href="/users/labels/${trip.id}">Labels</a></li>
                 <li class="jump-in"><a href="/editTripPic/${trip.id}"><spring:message code="EditTripHeader"/></a></li>
                 <c:if test="${trip.published == false}">
-                    <li class="jump-in"><a href="/publishTrip/${trip.id}"><spring:message code="Publish"/></a></li>
+                    <li class="jump-in"><a href="/users/publishTrip/${trip.id}"><spring:message code="Publish"/></a></li>
                 </c:if>
                 <c:if test="${trip.privacy == 'PRIVATE'}">
                     <li class="jump-in"><a href="/inviteUser/${trip.id}"><spring:message code="InviteUsers"/></a></li>

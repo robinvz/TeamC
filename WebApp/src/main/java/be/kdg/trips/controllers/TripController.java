@@ -17,7 +17,6 @@ import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.ModelAndView;
 
 import javax.mail.MessagingException;
-import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 import java.io.IOException;
 import java.text.ParseException;
@@ -181,6 +180,7 @@ public class TripController {
         try {
             trip = tripsService.findTripById(tripId, user);
         } catch (TripsException e) {
+            //trip not found
         }
         boolean isEnrolled = tripsService.isUserEnrolled(user, trip);
         if (isEnrolled) return true;
@@ -238,69 +238,57 @@ public class TripController {
         }
     }
 
-    @RequestMapping(value = "/publishTrip/{tripId}", method = RequestMethod.GET)
+    @RequestMapping(value = "/users/publishTrip/{tripId}", method = RequestMethod.GET)
     public ModelAndView publish(@PathVariable int tripId, Locale locale) {
         User user = (User) session.getAttribute("user");
-        if (isLoggedIn()) {
-            Trip trip = null;
-            Map map = new HashMap();
-            try {
-                trip = tripsService.findTripById(tripId, user);
-                tripsService.publishTrip(trip, user);
-                map = putInMap(map, trip, "success", messageSource.getMessage("IsPublished", null, locale));
+        Trip trip = null;
+        Map map = new HashMap();
+        try {
+            trip = tripsService.findTripById(tripId, user);
+            tripsService.publishTrip(trip, user);
+            map = putInMap(map, trip, "success", messageSource.getMessage("IsPublished", null, locale));
+            return new ModelAndView("tripView", map);
+        } catch (TripsException e) {
+            if (e.getMessage().contains("Trip with id")) {
+                return new ModelAndView("tripsView", "error", messageSource.getMessage("FindTripError", null, locale));
+            } else if (e.getMessage().contains("is not the organizer")) {
+                map = putInMap(map, trip, "error", messageSource.getMessage("NotOrganizerError", null, locale));
                 return new ModelAndView("tripView", map);
-            } catch (TripsException e) {
-                if (e.getMessage().contains("Trip with id")) {
-                    return new ModelAndView("tripsView", "error", messageSource.getMessage("FindTripError", null, locale));
-                } else if (e.getMessage().contains("is not the organizer")) {
-                    map = putInMap(map, trip, "error", messageSource.getMessage("NotOrganizerError", null, locale));
-                    return new ModelAndView("tripView", map);
-                } else {   //e.getMessage().contains("published")
-                    map = putInMap(map, trip, "error", messageSource.getMessage("AlreadyPublishedError", null, locale));
-                    return new ModelAndView("tripView", map);
-                }
+            } else {   //e.getMessage().contains("published")
+                map = putInMap(map, trip, "error", messageSource.getMessage("AlreadyPublishedError", null, locale));
+                return new ModelAndView("tripView", map);
             }
-        } else {
-            return new ModelAndView("loginView", "loginBean", new LoginBean());
         }
     }
 
-    @RequestMapping(value = "/labels/{tripId}", method = RequestMethod.GET)
+    @RequestMapping(value = "/users/labels/{tripId}", method = RequestMethod.GET)
     public ModelAndView addLabel(@PathVariable int tripId, Locale locale) {
         User user = (User) session.getAttribute("user");
-        if (isLoggedIn()) {
-            try {
-                Trip trip = tripsService.findTripById(tripId, user);
-                return new ModelAndView("labelsView", "trip", trip);
-            } catch (TripsException e) {
-                return new ModelAndView("tripsView", "error", messageSource.getMessage("FindTripError", null, locale));
-            }
-        } else {
-            return new ModelAndView("loginView", "loginBean", new LoginBean());
+        try {
+            Trip trip = tripsService.findTripById(tripId, user);
+            return new ModelAndView("/users/labelsView", "trip", trip);
+        } catch (TripsException e) {
+            return new ModelAndView("tripsView", "error", messageSource.getMessage("FindTripError", null, locale));
         }
     }
 
-    @RequestMapping(value = "/labels/{tripId}", method = RequestMethod.POST)
+    @RequestMapping(value = "/users/labels/{tripId}", method = RequestMethod.POST)
     public ModelAndView addLabel(@PathVariable int tripId, @RequestParam String label, Locale locale) {
-        User user = (User) session.getAttribute("user");
-        if (isLoggedIn()) {
-            Trip trip = null;
-            Map map = new HashMap();
-            try {
-                trip = tripsService.findTripById(tripId, user);
-                tripsService.addLabelToTrip(trip, user, label);
-                map = putInMap(map, trip, "success", messageSource.getMessage("LabelAdded", null, locale));
-                return new ModelAndView("labelsView", map);
-            } catch (TripsException e) {
-                if (e.getMessage().contains("Trip with id")) {
-                    return new ModelAndView("tripsView", "error", messageSource.getMessage("FindTripError", null, locale));
-                } else {    //e.getMessage().contains("is not the organizer")
-                    map = putInMap(map, trip, "error", messageSource.getMessage("NotOrganizerError", null, locale));
-                    return new ModelAndView("tripView", map);
-                }
+        Trip trip = null;
+        Map map = new HashMap();
+        try {
+            User user = (User) session.getAttribute("user");
+            trip = tripsService.findTripById(tripId, user);
+            tripsService.addLabelToTrip(trip, user, label);
+            map = putInMap(map, trip, "success", messageSource.getMessage("LabelAdded", null, locale));
+            return new ModelAndView("/users/labelsView", map);
+        } catch (TripsException e) {
+            if (e.getMessage().contains("Trip with id")) {
+                return new ModelAndView("tripsView", "error", messageSource.getMessage("FindTripError", null, locale));
+            } else {    //e.getMessage().contains("is not the organizer")
+                map = putInMap(map, trip, "error", messageSource.getMessage("NotOrganizerError", null, locale));
+                return new ModelAndView("tripView", map);
             }
-        } else {
-            return new ModelAndView("loginView", "loginBean", new LoginBean());
         }
     }
 
@@ -453,7 +441,7 @@ public class TripController {
 
     @RequestMapping(value = "/trip/{tripId}/locations", method = RequestMethod.GET)
     public ModelAndView getLocations(@PathVariable int tripId) {
-        Map map = new HashMap();                                           //TODO:check if isLoggedIn
+        Map map = new HashMap();          //TODO:check if isLoggedIn
         try {
             Trip trip = tripsService.findTripById(tripId, (User) session.getAttribute("user"));
             map.put("trip", trip);
@@ -498,7 +486,7 @@ public class TripController {
                             country, title, description, question, possibleAnswers, possibleAnswers.indexOf(correctAnswer), bFile);
                 }
             } catch (TripsException e) {
-                //failed to add location to trip
+                //trip not found or failed to add loc to trip
             } catch (IOException e) {
                 //TODO: bfile is foute type (niet jpeg, gif of png)
             }
@@ -515,18 +503,15 @@ public class TripController {
         if (isLoggedIn()) {
             try {
                 trip = tripsService.findTripById(tripId, user);
-                try {
-                    tripsService.deleteLocation(trip, user, tripsService.findLocationById(locationId));
-                } catch (TripsException e) {
-                    //failed to delete location
-                }
+                tripsService.deleteLocation(trip, user, tripsService.findLocationById(locationId));
+                return new ModelAndView("redirect:/trip/" + trip.getId() + "/locations");
             } catch (TripsException e) {
-                //Failed to find trip
+                //trip not found or failed to delete/find location
+                return new ModelAndView("tripsView");
             }
         } else {
             return new ModelAndView("loginView", "loginBean", new LoginBean());
         }
-        return new ModelAndView("redirect:/trip/" + trip.getId() + "/locations");
     }
 
     @RequestMapping(value = "/trip/switchLocation", method = RequestMethod.POST)
@@ -537,21 +522,18 @@ public class TripController {
         int tripId = Integer.parseInt(ids[0]);
         int locationId = Integer.parseInt(ids[1]);
         Trip trip = null;
-        try {
-            trip = tripsService.findTripById(tripId, user);
-        } catch (TripsException e) {
-            //Trip not found
-            System.out.println("error1");
-        }
-        if (user != null) {
+        if (isLoggedIn()) {
             try {
+                trip = tripsService.findTripById(tripId, user);
                 tripsService.switchLocationSequence(trip, user, fromPosition - 1, toPosition - 1);
+                return new ModelAndView("locationsView", "trip", trip);
             } catch (TripsException e) {
-                //Switch location failed
-                System.out.println("error2");
+                //trip not found or Switch location failed
+                return new ModelAndView("locationsView", "trip", trip);
             }
+        } else {
+            return new ModelAndView("loginView", "loginBean", new LoginBean());
         }
-        return new ModelAndView("locationsView", "trip", trip);
     }
 
     @RequestMapping(value = "/trip/{tripId}/participants", method = RequestMethod.GET)
@@ -564,10 +546,10 @@ public class TripController {
                 List<Enrollment> enr = tripsService.findEnrollmentsByTrip(trip);
                 map.put("trip", trip);
                 map.put("enrollments", enr);
-            } catch (TripsException e) {
+                return new ModelAndView("users/participantsView", map);
+            } catch (TripsException e) {          //TODO:find enrollments by trip error
                 return new ModelAndView("tripsView", "error", messageSource.getMessage("FindTripError", null, locale));
             }
-            return new ModelAndView("users/participantsView", map);
         } else {
             return new ModelAndView("loginView", "loginBean", new LoginBean());
         }
@@ -591,15 +573,6 @@ public class TripController {
         return jsonArray.toString();
     }
 
-    public boolean isLoggedIn() {
-        User user = (User) session.getAttribute("user");
-        if (user != null) {
-            return true;
-        } else {
-            return false;
-        }
-    }
-
     @RequestMapping(value = "/trip/{tripId}/locations/{locationId}/editLocation", method = RequestMethod.POST)
     public ModelAndView editLocation(@PathVariable int tripId, @PathVariable int locationId, @RequestParam String title, @RequestParam String description) {
         Map parameters = new HashMap();
@@ -609,22 +582,18 @@ public class TripController {
         if (isLoggedIn()) {
             try {
                 trip = tripsService.findTripById(tripId, user);
-                try {
-                    location = tripsService.findLocationById(locationId);
-                    tripsService.editTripLocationDetails(user, trip, location, "", "", "", "", "", title, description);
-                    parameters.put("trip", trip);
-                    parameters.put("location", location);
-                } catch (TripsException e) {
-                    // location not found
-                    return new ModelAndView("locationsView");
-                }
+                location = tripsService.findLocationById(locationId);
+                tripsService.editTripLocationDetails(user, trip, location, "", "", "", "", "", title, description);
+                parameters.put("trip", trip);
+                parameters.put("location", location);
+                return new ModelAndView("redirect:/trip/" + trip.getId() + "/locations/" + location.getId(), parameters);
             } catch (TripsException e) {
-                // trip not found
+                // trip/location not found or edit locationDetails failed
+                return new ModelAndView("locationsView");
             }
         } else {
             return new ModelAndView("loginView", "loginBean", new LoginBean());
         }
-        return new ModelAndView("redirect:/trip/" + trip.getId() + "/locations/" + location.getId(), parameters);
     }
 
     @RequestMapping(value = "/inviteUser/{tripId}", method = RequestMethod.GET)
@@ -653,18 +622,15 @@ public class TripController {
         if (isLoggedIn()) {
             try {
                 trip = tripsService.findTripById(tripId, user);
-                try {
-                    tripsService.uninvite(trip, user, tripsService.findUser(uninviteEmail));
-                } catch (TripsException e) {
-                    // user not found
-                }
+                tripsService.uninvite(trip, user, tripsService.findUser(uninviteEmail));
+                return new ModelAndView("redirect:/inviteUser/" + trip.getId());
             } catch (TripsException e) {
-                // trip not found
+                // trip/user not found or failed to uninvite
+                return new ModelAndView("tripsView");
             }
         } else {
             return new ModelAndView("loginView", "loginBean", new LoginBean());
         }
-        return new ModelAndView("redirect:/inviteUser/" + trip.getId());
     }
 
     @RequestMapping(value = "/inviteUser/{tripId}/findUsersByKeyword", method = RequestMethod.GET)
@@ -677,19 +643,16 @@ public class TripController {
             try {
                 trip = tripsService.findTripById(tripId, user);
                 parameters.put("trip", trip);
-                try {
-                    parameters.put("invitations", trip.getInvitations());
-                    parameters.put("usersByKeyword", tripsService.findUsersByKeyword(keyword, user));
-                } catch (TripsException e) {
-                    // keyword not found in users
-                }
+                parameters.put("invitations", trip.getInvitations());
+                parameters.put("usersByKeyword", tripsService.findUsersByKeyword(keyword, user));
+                return new ModelAndView("/users/inviteUserView", parameters);
             } catch (TripsException e) {
-                // trip not found
+                // trip not found or keyword not found in users
+                return new ModelAndView("loginView", "loginBean", new LoginBean());
             }
         } else {
             return new ModelAndView("loginView", "loginBean", new LoginBean());
         }
-        return new ModelAndView("/users/inviteUserView", parameters);
     }
 
     @RequestMapping(value = "/inviteUser/{tripId}/sendInvite", method = RequestMethod.POST)
@@ -699,13 +662,11 @@ public class TripController {
         if (isLoggedIn()) {
             try {
                 trip = tripsService.findTripById(tripId, user);
-                try {
-                    tripsService.invite(trip, user, tripsService.findUser(userByKeywordEmail));
-                } catch (MessagingException e) {
-                    // failed to invite user
-                }
+                tripsService.invite(trip, user, tripsService.findUser(userByKeywordEmail));
+            } catch (MessagingException e) {
+                // failed to invite user
             } catch (TripsException e) {
-                //Failed to find trip
+                //failed to find trip or failed to find user or failed to invite
             }
         } else {
             return new ModelAndView("loginView", "loginBean", new LoginBean());
@@ -714,54 +675,63 @@ public class TripController {
     }
 
     @RequestMapping(value = "/editTripPic/{tripId}", method = RequestMethod.GET)
-    public ModelAndView showEditTripPic(@PathVariable int tripId) {
-        User user = (User) session.getAttribute("user");
-        Trip trip = null;
+    public ModelAndView showEditTripPic(@PathVariable int tripId, Locale locale) {
         try {
-            trip = tripsService.findTripById(tripId, user);
+            User user = (User) session.getAttribute("user");
+            Trip trip = tripsService.findTripById(tripId, user);
             return new ModelAndView("editTripPicView", "trip", trip);
         } catch (TripsException e) {
-            e.printStackTrace();  //To change body of catch statement use File | Settings | File Templates.
+            return new ModelAndView("tripsView", "error", messageSource.getMessage("FindTripError", null, locale));
         }
-        return new ModelAndView("tripsView");
     }
 
     @RequestMapping(value = "/tripPic/{tripId}", method = RequestMethod.GET, produces = "image/jpg")
     public
     @ResponseBody
     byte[] showProfilePic(@PathVariable int tripId) {
-        User user = (User) session.getAttribute("user");
         byte[] imageData = null;
         try {
+            User user = (User) session.getAttribute("user");
             Trip trip = tripsService.findTripById(tripId, user);
             imageData = trip.getImage();
         } catch (TripsException e) {
-            //Trip not found
+            //trip not found or trip.getImage failed
         }
         return imageData;
     }
 
     @RequestMapping(value = "/editTripPic/{tripId}", method = RequestMethod.POST)
-    public ModelAndView editProfilePic(@PathVariable int tripId, @RequestParam("file") MultipartFile file) {
+    public ModelAndView editTripPic(@PathVariable int tripId, @RequestParam("file") MultipartFile file, Locale locale) {
+        Trip trip = null;
         try {
             byte[] bFile = file.getBytes();
             User user = (User) session.getAttribute("user");
-            Trip trip = tripsService.findTripById(tripId, user);
+            trip = tripsService.findTripById(tripId, user);
             tripsService.addImageToTrip(trip, user, bFile);
             return new ModelAndView("editTripPicView", "trip", trip);
         } catch (IOException | TripsException e) {
-            //TODO: tripsexception kan zijn: user bestaat niet of bfile is foute type (niet jpeg, gif of png)
+            Map map = new HashMap();
+            if (e.getMessage().contains("Trip with id")) {
+                return new ModelAndView("tripsView", "error", messageSource.getMessage("FindTripError", null, locale));
+            } else if (e.getMessage().contains("doesn't exist")) {
+                map = putInMap(map, trip, "error", messageSource.getMessage("UserIncorrect.user", null, locale));
+                return new ModelAndView("editTripPicView", map);
+            } else if (e.getMessage().contains("not organizer")) {
+                map = putInMap(map, trip, "error", messageSource.getMessage("NotOrganizerError", null, locale));
+                return new ModelAndView("editTripPicView", map);
+            } else {
+                map = putInMap(map, trip, "error", messageSource.getMessage("FileError", null, locale));
+                return new ModelAndView("editTripPicView", map);
+            }
         }
-        return new ModelAndView("tripsView");
     }
 
     @RequestMapping(value = "/addDate/{tripId}", method = RequestMethod.GET)
     public ModelAndView addDate(@PathVariable int tripId, Locale locale) {
         User user = (User) session.getAttribute("user");
         if (isLoggedIn()) {
-            Trip trip = null;
             try {
-                trip = tripsService.findTripById(tripId, user);
+                Trip trip = tripsService.findTripById(tripId, user);
                 return new ModelAndView("/users/addDateView", "trip", trip);
             } catch (TripsException e) {
                 return new ModelAndView("tripsView", "error", messageSource.getMessage("FindTripError", null, locale));
@@ -805,16 +775,19 @@ public class TripController {
     }
 
     @RequestMapping(value = "/editTripTheme/{tripId}", method = RequestMethod.POST)
-    public ModelAndView editTripTheme(@PathVariable int tripId, @RequestParam String theme) {
+    public ModelAndView editTripTheme(@PathVariable int tripId, @RequestParam String theme, Locale locale) {
         try {
             User user = (User) session.getAttribute("user");
             Trip trip = tripsService.findTripById(tripId, user);
             tripsService.changeThemeOfTrip(trip, theme);
             return new ModelAndView("redirect:editTripPicView/" + tripId, "trip", trip);
         } catch (TripsException e) {
-            e.printStackTrace();  //To change body of catch statement use File | Settings | File Templates.
+            if (e.getMessage().contains("Trip with id")) {
+                return new ModelAndView("tripsView", "error", messageSource.getMessage("FindTripError", null, locale));
+            } else {
+                return new ModelAndView("tripsView", "error", e.getMessage());
+            }
         }
-        return new ModelAndView("tripsView");
     }
 
     @RequestMapping(value = "/costs/{tripId}", method = RequestMethod.GET)
@@ -926,12 +899,6 @@ public class TripController {
         }
     }
 
-    public Map putInMap(Map map, Trip value1, String key2, String value2) {
-        map.put("trip", value1);
-        map.put(key2, value2);
-        return map;
-    }
-
     @RequestMapping(value = "/trip/{tripId}/locations/{locationId}/addQuestion", method = RequestMethod.POST)
     public ModelAndView addQuestion(@PathVariable int tripId, @PathVariable int locationId, @RequestParam String question, @RequestParam("file") MultipartFile file,
                                     @RequestParam List<String> possibleAnswers, @RequestParam String correctAnswer) {
@@ -951,7 +918,7 @@ public class TripController {
                 }
                 tripsService.addQuestionToLocation(user, location, question, possibleAnswers, possibleAnswers.indexOf(correctAnswer), bFile);
             } catch (TripsException e) {
-                //failed to add location to trip
+                //trip.loc not found or failed to add q to loc
             } catch (IOException e) {
                 //TODO: bfile is foute type (niet jpeg, gif of png)
             }
@@ -976,7 +943,7 @@ public class TripController {
                 parameters.put("location", location);
                 tripsService.editTripQuestionDetails(user, location, question, possibleAnswers, possibleAnswers.indexOf(correctAnswer), null);
             } catch (TripsException e) {
-                //failed to add location to trip
+                //trip/loc not found or failed to edit q details
             }
         } else {
             return new ModelAndView("loginView", "loginBean", new LoginBean());
@@ -998,7 +965,7 @@ public class TripController {
                 parameters.put("location", location);
                 tripsService.removeQuestionFromLocation(user, location);
             } catch (TripsException e) {
-                // errors nog fixen
+                // trip/loc not found or failed to remove q from loc
             }
         } else {
             return new ModelAndView("loginView", "loginBean", new LoginBean());
@@ -1080,4 +1047,20 @@ public class TripController {
         }
         return new ModelAndView("redirect:/trip/" + trip.getId() + "/locations/" + location.getId(), parameters);
     }
+
+    public Map putInMap(Map map, Trip value1, String key2, String value2) {
+        map.put("trip", value1);
+        map.put(key2, value2);
+        return map;
+    }
+
+    public boolean isLoggedIn() {
+        User user = (User) session.getAttribute("user");
+        if (user != null) {
+            return true;
+        } else {
+            return false;
+        }
+    }
+
 }
