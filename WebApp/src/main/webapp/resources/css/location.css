@@ -1,0 +1,94 @@
+#titleH {
+    display: inline-block;
+}
+
+#editLocation{
+    margin-top: 20px;
+}
+
+#locationCanvas {
+    display: inline-block;
+    width: 50%;
+    height: 260px;
+    background-color: #413E19;
+    border: solid 1px #736F3D;
+    -moz-box-shadow: 5px 5px 10px #2b2814;
+    -webkit-box-shadow: 5px 5px 10px #2b2814;
+    box-shadow: 5px 5px 10px #2b2814;
+    float: left;
+}
+
+#address {
+    margin-top: 20px;
+    margin-left: 20px;
+    display: inline-block;
+    width: 40%;
+    float: right;
+}
+
+#questionContainer {
+    display: inline-block;
+    margin-top: 20px;
+    width: 600px;
+}
+
+#showQuestion, #addQuestion {
+    margin-top: 20px;
+}
+
+#questionContainer img, .bgImage {
+    float: right;
+    display: inline-block;
+    width: 50%;
+    height: 260px;
+}
+
+#showQuestion label {
+    display: inline-block;
+    width: 50%;
+}
+
+#showQuestion ul {
+    margin-top: 10px;
+}
+
+#addQuestion label {
+    display: inline-block;
+    width: 200px;
+}
+
+#addQuestion input, select, .answer, #question, #answersEdit input {
+    display: inline-block;
+    width: 40%;
+}
+
+#btn-submitAdd {
+    margin-left: 204px;
+}
+
+.bold {
+    font-weight: bold;
+}
+
+ul {
+    width: 50%;
+    padding: 0;
+}
+
+ul li {
+    list-style: none;
+}
+
+#question {
+    margin-bottom: 10px;
+}
+
+.bgimage {
+    background-size: 100%;
+    background-repeat: no-repeat;
+}
+
+.onImage {
+    float: right;
+    display: inline-block;
+}
