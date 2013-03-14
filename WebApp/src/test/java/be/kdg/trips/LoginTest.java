@@ -55,7 +55,6 @@ public class LoginTest {
         MockitoAnnotations.initMocks(this);
         mockHttpSession = new MockHttpSession(null);
         lg = new LoginController();
-        MockitoAnnotations.initMocks(this);
         ReflectionTestUtils.setField(lg, "tripsService", tripsService);
         ReflectionTestUtils.setField(lg, "session", mockHttpSession);
         mockMvc = MockMvcBuilders.standaloneSetup(lg).build();
