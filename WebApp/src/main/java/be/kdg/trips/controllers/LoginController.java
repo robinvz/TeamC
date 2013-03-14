@@ -103,7 +103,7 @@ public class LoginController {
                 return "loginView";
             }
         } catch (TripsException e) {
-            //will never throw
+            return "redirect:/";
         }
         return "redirect:/";
     }
@@ -125,7 +125,7 @@ public class LoginController {
                 return "redirect:/login#"+tripId;
             }
         } catch (TripsException e) {
-            //will never throw
+            return "redirect:/login#"+tripId;
         }
         return "redirect:/trip/"+tripId;
     }
