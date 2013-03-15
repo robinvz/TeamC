@@ -15,13 +15,17 @@ import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
 import org.springframework.context.MessageSource;
 import org.springframework.mock.web.MockHttpSession;
+import org.springframework.mock.web.MockMultipartFile;
+import org.springframework.mock.web.MockMultipartHttpServletRequest;
 import org.springframework.test.util.ReflectionTestUtils;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.RequestBuilder;
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
+import org.springframework.web.servlet.ModelAndView;
 
 import javax.mail.MessagingException;
+import java.io.IOException;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.*;
@@ -1264,4 +1268,52 @@ public class TripTest {
         when(tripsService.findTripById(t.getId(), testUser)).thenThrow(new TripsException("Could not find trip"));
         mockMvc.perform(requestBuilder).andExpect(view().name("locationsView"));
     }
+
+    @Test
+    public void testEditTripPic() throws TripsException {
+        Trip t = new TimelessTrip(title, description, privacy, testUser);
+        MockMultipartHttpServletRequest request = new MockMultipartHttpServletRequest();
+        MockMultipartHttpServletRequest mockMultipartHttpServletRequest = (MockMultipartHttpServletRequest) request;
+        MockMultipartFile multipartFile = new MockMultipartFile("Hallo", "Hallo".getBytes());
+        when(tripsService.findTripById(anyInt(), any(User.class))).thenReturn(t);
+        ModelAndView mv = tc.editTripPic(0, multipartFile, null);
+        assertEquals(mv.getViewName(), "users/editTripPicView");
+        assertTrue(mv.getModel().containsKey("trip"));
+        assertEquals(mv.getModel().get("trip"), t);
+    }
+
+    @Test
+    public void testEditTripPicFailTripsException() throws TripsException {
+        Trip t = new TimelessTrip(title, description, privacy, testUser);
+        MockMultipartHttpServletRequest request = new MockMultipartHttpServletRequest();
+        MockMultipartHttpServletRequest mockMultipartHttpServletRequest = (MockMultipartHttpServletRequest) request;
+        MockMultipartFile multipartFile = new MockMultipartFile("Hallo", "Hallo".getBytes());
+        when(tripsService.findTripById(anyInt(), any(User.class))).thenThrow(new TripsException("Fail"));
+        ModelAndView mv = tc.editTripPic(0, multipartFile, null);
+        assertEquals(mv.getViewName(), "tripsView");
+        assertTrue(mv.getModel().containsKey("error"));
+    }
+
+    @Test
+    public void getTripPic() throws Exception {
+        mockHttpSession.setAttribute("user", testUser);
+        Trip t = new TimelessTrip(title, description, privacy, testUser);
+        byte[] b = new byte[1024];
+        t.setImage(b);
+        RequestBuilder requestBuilder = MockMvcRequestBuilders.get("/tripPic/1") ;
+        when(tripsService.findTripById(1, testUser)).thenReturn(t);
+        mockMvc.perform(requestBuilder).andExpect(content().bytes(b));
+    }
+
+    @Test
+    public void getTripPicFail() throws Exception {
+        mockHttpSession.setAttribute("user", testUser);
+        Trip t = new TimelessTrip(title, description, privacy, testUser);
+        byte[] b = new byte[1024];
+        t.setImage(b);
+        RequestBuilder requestBuilder = MockMvcRequestBuilders.get("/tripPic/1") ;
+        when(tripsService.findTripById(1, testUser)).thenThrow(new TripsException("Error"));
+        mockMvc.perform(requestBuilder).equals(null);
+    }
+
 }
