@@ -4,6 +4,7 @@ import be.kdg.trips.businessLogic.exception.TripsException;
 import be.kdg.trips.model.user.User;
 import be.kdg.trips.services.impl.TripsServiceImpl;
 import be.kdg.trips.services.interfaces.TripsService;
+import be.kdg.trips.utility.MailSender;
 import org.junit.BeforeClass;
 import org.junit.Test;
 import org.springframework.context.support.ClassPathXmlApplicationContext;
@@ -30,6 +31,12 @@ public class TestMailContact
     @Test
     public void successfulSendContactMail() throws MessagingException {
         tripsService.sendContactMail("Trip Location","I can't find the trip location", "tony_corsari@robin.com");
+    }
+
+    @Test(expected = MessagingException.class)
+    public void failedSendEmailUnexistingAddress() throws MessagingException
+    {
+        MailSender.sendMail("", "", "");
     }
 
     @Test

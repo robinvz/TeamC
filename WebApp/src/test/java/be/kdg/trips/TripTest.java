@@ -368,8 +368,8 @@ public class TripTest {
         when(tripsService.findTripById(t.getId(), (User) mockHttpSession.getAttribute("user"))).thenReturn(t);
         mockMvc.perform(requestBuilder).andExpect(view().name("createLocationView")).andExpect(model().attribute("trip", t));
     }
-    /*
-    @Test
+
+    /*@Test
     public void createLocationSuccess() throws Exception {
         mockHttpSession.setAttribute("user", testUser);
         Trip t = new TimelessTrip(title, description, privacy, testUser);
@@ -1203,9 +1203,40 @@ public class TripTest {
     public void getLocationsLatLngSuccess() throws Exception {
         mockHttpSession.setAttribute("user", testUser);
         Trip t = new TimelessTrip(title, description, privacy, testUser);
+        t.setLocations(new ArrayList<Location>());
+        Location l1 = new Location(t, 12.00, 13.00, null, "Location", "Aangename location1", 0);
+        Location l2 = new Location(t, 12.00, 13.00, null, "Location", "Aangename location2", 1);
+        Location l3 = new Location(t, 12.00, 13.00, null, "Location", "Aangename location3", 2);
+        Location l4 = new Location(t, 12.00, 13.00, null, "Location", "Aangename location4", 3);
+        Location l5 = new Location(t, 12.00, 13.00, null, "Location", "Aangename location5", 4);
+        t.addLocation(l1);
+        t.addLocation(l2);
+        t.addLocation(l3);
+        t.addLocation(l4);
+        t.addLocation(l5);
         RequestBuilder requestBuilder = MockMvcRequestBuilders.get("/trip/" + t.getId() + "/locations/getLocationsLatLng");
         when(tripsService.findTripById(t.getId(), testUser)).thenReturn(t);
-        mockMvc.perform(requestBuilder).andExpect(content().string("[]"));
+        mockMvc.perform(requestBuilder).andExpect(content().string("[{\"latitude\":12,\"longitude\":13},{\"latitude\":12,\"longitude\":13},{\"latitude\":12,\"longitude\":13},{\"latitude\":12,\"longitude\":13},{\"latitude\":12,\"longitude\":13}]"));
+    }
+
+    @Test
+    public void getLocationsLatLngFail() throws Exception {
+        mockHttpSession.setAttribute("user", testUser);
+        Trip t = new TimelessTrip(title, description, privacy, testUser);
+        t.setLocations(new ArrayList<Location>());
+        Location l1 = new Location(t, 12.00, 13.00, null, "Location", "Aangename location1", 0);
+        Location l2 = new Location(t, 12.00, 13.00, null, "Location", "Aangename location2", 1);
+        Location l3 = new Location(t, 12.00, 13.00, null, "Location", "Aangename location3", 2);
+        Location l4 = new Location(t, 12.00, 13.00, null, "Location", "Aangename location4", 3);
+        Location l5 = new Location(t, 12.00, 13.00, null, "Location", "Aangename location5", 4);
+        t.addLocation(l1);
+        t.addLocation(l2);
+        t.addLocation(l3);
+        t.addLocation(l4);
+        t.addLocation(l5);
+        RequestBuilder requestBuilder = MockMvcRequestBuilders.get("/trip/" + t.getId() + "/locations/getLocationsLatLng");
+        when(tripsService.findTripById(t.getId(), testUser)).thenThrow(new TripsException("Could not find trip"));
+        mockMvc.perform(requestBuilder).andExpect(content().string("redirect:/trips"));
     }
 
     @Test

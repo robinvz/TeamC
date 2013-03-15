@@ -167,9 +167,18 @@ public class TestEnrollment
     public void failedInviteInvalidTripPrivacy() throws TripsException, MessagingException {
         User user = new User("unexisting2@hotmail.com","pass");
         User invitee = tripsService.createUser(user);
-        Trip trip = tripsService.createTimelessTrip("Spartacus run", "Lopen door de modder!", TripPrivacy.PUBLIC, organizer);
-        tripsService.publishTrip(trip, organizer);
-        Invitation invitation = tripsService.invite(trip, organizer, user);
+        Trip trip = tripsService.createTimelessTrip("Spartacus run", "Lopen door de modder!", TripPrivacy.PROTECTED, organizer);
+        //tripsService.publishTrip(trip, organizer);
+        tripsService.invite(trip, organizer, invitee);
+    }
+
+    @Test(expected = TripsException.class)
+    public void failedInviteTwice() throws TripsException, MessagingException {
+        User user = new User("unexisting3@hotmail.com","pass");
+        User invitee = tripsService.createUser(user);
+        Trip trip = tripsService.createTimelessTrip("Spartacus run", "Lopen door de modder!", TripPrivacy.PRIVATE, organizer);
+        tripsService.invite(trip, organizer, invitee);
+        tripsService.invite(trip, organizer, invitee);
     }
 
     @Test
