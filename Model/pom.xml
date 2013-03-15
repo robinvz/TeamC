@@ -120,6 +120,7 @@
                 <version>2.13</version>
                 <configuration>
                     <argLine>-XX:-UseSplitVerifier</argLine>
+                    <skipTests>true</skipTests>
                 </configuration>
             </plugin>
             <plugin>

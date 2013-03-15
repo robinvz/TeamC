@@ -26,5 +26,25 @@ $(document).ready(function(){
             });
         //$.post('/editTripTheme/' + tripId,  {theme : "blue"});
     });
+
+    $('.trip-edit').hide();
+
+    $('#btn-edit').on("click", function(){
+        $('.trip-view').hide();
+     /*   $('tr').each(function() {
+            $(this).children(':last-child').children(':last-child').val($(this).children(':last-child').children(':first-child').text());
+        });                       */
+        $('.trip-edit').show();
+    });
+
+    $('#btn-save').on("click", function(){
+        $('.trip-view').show();
+        $('.trip-edit').hide();
+    });
+
+    $('#btn-cancel').on("click", function(){
+        $('.trip-view').show();
+        $('.trip-edit').hide();
+    });
 });
 

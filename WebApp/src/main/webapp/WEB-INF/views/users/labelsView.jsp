@@ -8,6 +8,9 @@
     <link rel="stylesheet" href="${pageContext.request.contextPath}/resources/css/trip.css"/>
     <link rel="stylesheet" href="<spring:theme code="css"/>" type="text/css"/>
     <link rel="shortcut icon" href="${pageContext.request.contextPath}/resources/res/favicon.ico">
+    <!--[if lt IE 9]>
+    <script src="${pageContext.request.contextPath}/resources/js/html5shiv.js"></script>
+    <![endif]-->
     <title><spring:message code="TripPage"/></title>
 </head>
 <body>
@@ -34,9 +37,22 @@
                     </tr>
                 </form>
             </table>
+
+
+            <c:if test="${not empty trip.labels}">
+                <table>
+
+                    <tbody>
+                    <c:forEach items="${trip.labels}" var="label">
+                        <tr>
+                            <td>${label}</td>
+                        </tr>
+                    </c:forEach>
+                    </tbody>
+                </table>
+            </c:if>
         </c:if>
     </div>
-
 </div>
 </body>
 </html>

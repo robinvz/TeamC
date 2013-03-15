@@ -5,34 +5,33 @@
 <script src="${pageContext.request.contextPath}/resources/js/html5shiv.js"></script>
 <![endif]-->
 <script type="text/javascript">
-    $(document).ready(function () {
+    $(document).ready(function(){
         var enrolled = null;
         $.ajax({
             type: "GET",
             url: "/isEnrolled/${trip.id}",
-            success: function (data) {
+            success:function(data){
                 enrolled = data;
-                enrolled ? $('#button').addClass('on') : $('#button').removeClass('on');
-                enrolled ? $('#button2').addClass('on') : $('#button2').removeClass('on');
+                enrolled ?  $('#button').addClass('on') :  $('#button').removeClass('on');
             }
         });
-        $('#button').on('click', function () {
-            if (enrolled != null) {
-                if (enrolled) {
+        $('#button').on('click', function(){
+            if(enrolled != null){
+                if(enrolled){
                     $.ajax({
                         type: "POST",
                         url: "/unSubscribe",
-                        data: {tripId: ${trip.id}}
-                    }).done(function () {
+                        data: {tripId : ${trip.id}}
+                    }).done(function(){
                                 window.location = '?';
                             });
                     enrolled = false;
-                } else {
+                }else{
                     $.ajax({
                         type: "POST",
                         url: "/subscribe",
-                        data: {tripId: ${trip.id}}
-                    }).done(function () {
+                        data: {tripId : ${trip.id}}
+                    }).done(function(){
                                 window.location = '?';
                             });
                     enrolled = true;
@@ -41,31 +40,7 @@
                 $(this).toggleClass('on');
             }
         });
-        $('#button2').on('click', function () {
-            if (enrolled != null) {
-                if (enrolled) {
-                    $.ajax({
-                        type: "POST",
-                        url: "/declineInvitation",
-                        data: {tripId: ${trip.id}}
-                    }).done(function () {
-                                window.location = '?';
-                            });
-                    enrolled = false;
-                } else {
-                    $.ajax({
-                        type: "POST",
-                        url: "/acceptInvitation",
-                        data: {tripId: ${trip.id}}
-                    }).done(function () {
-                                window.location = '?';
-                            });
-                    enrolled = true;
-                }
 
-                $(this).toggleClass('on');
-            }
-        });
     });
 </script>
 
@@ -103,12 +78,7 @@
         <span class="attending-light"></span>
     </section>
 </c:if>
-<c:if test="${validPrivateTrip == true}">
-    <section class="attending">
-        <a href="#" id="button2" class="btn-attend"><spring:message code="Attending"></spring:message></a>
-        <span class="attending-light"></span>
-    </section>
-</c:if>
+
 
 <aside class="above-footer">
     <nav class="trip-nav">
@@ -121,11 +91,10 @@
                 <li class="jump-in"><a href="/requirements/${trip.id}"><spring:message code="Requisites"/></a></li>
             </c:if>
             <c:if test="${not empty user}">
-                <li class="jump-in"><a href="/trip/${trip.id}/locations"><spring:message code="Locations"/></a></li>
-                <li class="jump-in"><a href="/requirements/${trip.id}"><spring:message code="Requisites"/></a></li>
+                   <li class="jump-in"><a href="/trip/${trip.id}/locations"><spring:message code="Locations"/></a></li>
+                    <li class="jump-in"><a href="/requirements/${trip.id}"><spring:message code="Requisites"/></a></li>
                 <c:if test="${trip.privacy != 'PUBLIC' && trip.published == true}">
-                    <li class="jump-in"><a href="/trip/${trip.id}/participants"><spring:message
-                            code="Participants"/></a></li>
+                    <li class="jump-in"><a href="/trip/${trip.id}/participants"><spring:message code="Participants"/></a></li>
                     <c:forEach items="${trip.enrollments}" var="enrollment">
                         <c:if test="${enrollment.user == user && enrollment.status == 'READY' || 'FINISHED'}">
                             <li class="jump-in"><a href="/costs/${trip.id}"><spring:message code="Costs"/></a></li>
@@ -136,25 +105,23 @@
                         </c:if>
                     </c:forEach>
                 </c:if>
-                <c:if test="${trip.organizer == user}">
-                    <li><strong>Admin Tools</strong></li>
-                    <li class="jump-in"><a href="/users/labels/${trip.id}">Labels</a></li>
-                    <li class="jump-in"><a href="/users/editTripPic/${trip.id}"><spring:message code="EditTripHeader"/></a>
-                    </li>
-                    <c:if test="${trip.published == false}">
-                        <li class="jump-in"><a href="/users/publishTrip/${trip.id}"><spring:message code="Publish"/></a>
-                        </li>
-                    </c:if>
-                    <c:if test="${trip.privacy == 'PRIVATE'}">
-                        <li class="jump-in"><a href="/users/inviteUser/${trip.id}"><spring:message code="InviteUsers"/></a>
-                        </li>
-                    </c:if>
-                    <c:if test="${trip.timeBoundTrip==true}">
-                        <li class="jump-in"><a href="/users/addDate/${trip.id}"><spring:message code="AddDate"/></a>
-                        </li>
-                    </c:if>
-                    <li class="jump-in"><a href="/users/deleteTrip/${trip.id}"><spring:message code="Delete"/></a></li>
+                <li><strong>Chat</strong></li>
+                <li class="jump-in"><a href="#">Chat</a></li>
+            </c:if>
+            <c:if test="${not empty user && trip.organizer == user}">
+                <li><strong>Admin Tools</strong></li>
+                <li class="jump-in"><a href="/labels/${trip.id}">Labels</a></li>
+                <li class="jump-in"><a href="/editTripPic/${trip.id}"><spring:message code="EditTripHeader"/></a></li>
+                <c:if test="${trip.published == false}">
+                    <li class="jump-in"><a href="/publishTrip/${trip.id}"><spring:message code="Publish"/></a></li>
                 </c:if>
+                <c:if test="${trip.privacy == 'PRIVATE'}">
+                    <li class="jump-in"><a href="/inviteUser/${trip.id}"><spring:message code="InviteUsers"/></a></li>
+                </c:if>
+                <c:if test="${trip.timeBoundTrip==true}">
+                    <li class="jump-in"><a href="/addDate/${trip.id}"><spring:message code="AddDate"/></a></li>
+                </c:if>
+                <li class="jump-in"><a href="/deleteTrip/${trip.id}"><spring:message code="Delete"/></a></li>
             </c:if>
         </ul>
     </nav>

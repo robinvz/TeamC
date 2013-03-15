@@ -20,70 +20,6 @@
 
     <div class="inner-content">
         <h3><spring:message code="Costs"/></h3>
-
-        <c:choose>
-            <c:when test="${not empty totalTripCosts}">
-                <table>
-                    <thead>
-                    <th><spring:message code="User"/></th>
-                    <th><spring:message code="Cost"/></th>
-                    <th><spring:message code="Price"/></th>
-                    <th></th>
-                    </thead>
-                    <c:if test="${trip.organizer == user}">
-                        <c:forEach items="${totalTripCosts}" var="cost">
-                        <c:forEach items="${cost.value}" var="costLine">
-                            <tr>
-                                <td>
-                                        ${cost.key}
-                                </td>
-                                <td>
-                                        ${costLine.key}
-                                </td>
-                                <td>
-                                        ${costLine.value}
-                                </td>
-                                <td>
-                                    <form action="/costs/${trip.id}/deleteCost/${costLine.key}/${costLine.value}">
-                                        <button id="btn-removeCost" type="submit" class="btn-blue"><spring:message code="removeCost"/></button>
-                                    </form>
-                                </td>
-                            </tr>
-                        </c:forEach>
-                        </c:forEach>
-                    </c:if>
-                    <c:if test="${trip.organizer != user}">
-                        <c:forEach items="${totalTripCosts}" var="cost">
-                            <c:forEach items="${cost.value}" var="costLine">
-                               <c:if test="${cost.key == user}">
-                                   <tr>
-                                       <td>
-                                               ${cost.key}
-                                       </td>
-                                       <td>
-                                               ${costLine.key}
-                                       </td>
-                                       <td>
-                                               ${costLine.value}
-                                       </td>
-                                       <td>
-                                           <form action="/costs/${trip.id}/deleteCost/${costLine.key}/${costLine.value}">
-                                               <button type="submit" class="btn-blue"><spring:message code="removeCost"/></button>
-                                           </form>
-                                       </td>
-                                   </tr>
-                               </c:if>
-                            </c:forEach>
-                        </c:forEach>
-                    </c:if>
-
-
-                </table>
-            </c:when>
-            <c:otherwise>
-                <h3><spring:message code="NoCosts"/></h3>
-            </c:otherwise>
-        </c:choose>
         <c:if test="${not empty user}">
             <form id="form-createCost" action="/costs/${trip.id}/createCost" method="POST">
                 <table>
@@ -100,6 +36,67 @@
 
             </form>
         </c:if>
+        <c:choose>
+            <c:when test="${not empty totalTripCosts}">
+                <table>
+                    <thead>
+                    <th><spring:message code="User"/></th>
+                    <th><spring:message code="Cost"/></th>
+                    <th><spring:message code="Price"/></th>
+                    <th></th>
+                    </thead>
+                    <c:if test="${trip.organizer == user}">
+                        <c:forEach items="${totalTripCosts}" var="cost">
+                            <c:forEach items="${cost.value}" var="costLine">
+                                <tr>
+                                    <td>
+                                            ${cost.key}
+                                    </td>
+                                    <td>
+                                            ${costLine.key}
+                                    </td>
+                                    <td>
+                                            ${costLine.value}
+                                    </td>
+                                    <td>
+                                        <form action="/costs/${trip.id}/deleteCost/${costLine.key}/${costLine.value}">
+                                            <button id="btn-removeCost" type="submit" class="btn-blue"><spring:message code="removeCost"/></button>
+                                        </form>
+                                    </td>
+                                </tr>
+                            </c:forEach>
+                        </c:forEach>
+                    </c:if>
+                    <c:if test="${trip.organizer != user}">
+                        <c:forEach items="${totalTripCosts}" var="cost">
+                            <c:forEach items="${cost.value}" var="costLine">
+                                <c:if test="${cost.key == user}">
+                                    <tr>
+                                        <td>
+                                                ${cost.key}
+                                        </td>
+                                        <td>
+                                                ${costLine.key}
+                                        </td>
+                                        <td>
+                                                ${costLine.value}
+                                        </td>
+                                        <td>
+                                            <form action="/costs/${trip.id}/deleteCost/${costLine.key}/${costLine.value}">
+                                                <button type="submit" class="btn-blue"><spring:message code="removeCost"/></button>
+                                            </form>
+                                        </td>
+                                    </tr>
+                                </c:if>
+                            </c:forEach>
+                        </c:forEach>
+                    </c:if>
+                </table>
+            </c:when>
+            <c:otherwise>
+                <h3><spring:message code="NoCosts"/></h3>
+            </c:otherwise>
+        </c:choose>
     </div>
 </div>
 
