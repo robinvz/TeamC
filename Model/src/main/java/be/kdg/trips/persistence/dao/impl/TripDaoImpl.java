@@ -91,20 +91,6 @@ public class TripDaoImpl implements TripDao{
     }
 
     @Override
-    public Trip getTripByQuestion(Question question) throws TripsException {
-        Query query = entityManager.createQuery("SELECT DISTINCT t FROM Trip t LEFT JOIN FETCH t.locations location WHERE location.question = :question");
-        query.setParameter("question", question);
-        try
-        {
-            return (Trip)query.getSingleResult();
-        }
-        catch(NoResultException ex)
-        {
-            throw new TripsException("Trip with question '"+question.getQuestion()+"' doesn't exist");
-        }
-    }
-
-    @Override
     public Location getLocationById(int id) throws TripsException {
         return entityManager.find(Location.class, id);
     }

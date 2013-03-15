@@ -183,6 +183,13 @@ public class EnrollmentBLImpl implements EnrollmentBL
         return invitation;
     }
 
+    /**
+     * Used to invite the organizer into his own trip, ensuring editing and joining rights
+     *
+     * @param trip The trip that the organizer is being invited into
+     * @param organizer the organizer that is being invited
+     * @return the invitation created
+     */
     @Override
     public Invitation selfInvite(Trip trip, User organizer)
     {
@@ -312,6 +319,14 @@ public class EnrollmentBLImpl implements EnrollmentBL
         return "";
     }
 
+    /**
+     * Sets the location the user last visited in the model.
+     *
+     * @param trip The trip that is being executed
+     * @param user the user executing the trip
+     * @param location the location that is being visited
+     * @throws TripsException if question is already answered, the trip hasn't been started yet, or the location hasn't been reached yet.
+     */
     @Transactional
     @Override
     public void setLastLocationVisited(Trip trip, User user, Location location) throws TripsException
@@ -339,11 +354,20 @@ public class EnrollmentBLImpl implements EnrollmentBL
         }
     }
 
+    /**
+     * Returns true or false depending on whether or not the answer index is the correct one in the question.
+     *
+     * @param question The question that needs answering
+     * @param answerIndex the index of the provided answer
+     * @param user The user that provides the answer
+     * @return true if answer is correct
+     * @throws TripsException if question is already answered, the trip hasn't been started yet, or the location hasn't been reached yet.
+     */
     @Transactional
     @Override
     public boolean checkAnswerFromQuestion(Question question, int answerIndex, User user) throws TripsException
     {
-        Trip trip = tripBL.findTripByQuestion(question);
+        Trip trip = question.getLocation().getTrip();
         boolean correct = false;
         if(isExistingEnrollment(user, trip))
         {
@@ -354,7 +378,7 @@ public class EnrollmentBLImpl implements EnrollmentBL
                 {
                     for(Location location: trip.getLocations())
                     {
-                        if(location.getQuestion().equals(question))
+                        if(location.getQuestion()!=null && location.getQuestion().equals(question))
                         {
                             Location lastLocationVisited = enrollment.getLastLocationVisited();
                             if(lastLocationVisited != null && lastLocationVisited.equals(location) && lastLocationVisited.getSequence() == location.getSequence())

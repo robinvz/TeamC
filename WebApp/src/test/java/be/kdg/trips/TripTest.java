@@ -774,12 +774,39 @@ public class TripTest {
     }
 
     @Test
+    public void sendInviteFailed() throws Exception {
+        mockHttpSession.setAttribute("user", testUser);
+        Trip t = new TimelessTrip(title, description, privacy, testUser);
+        RequestBuilder requestBuilder = MockMvcRequestBuilders.post("/inviteUser/" + t.getId() + "/sendInvite/").param("userByKeywordEmail", "testEmail");
+        when(tripsService.findTripById(anyInt(), any(User.class))).thenThrow(new TripsException("Trip with id"));
+        mockMvc.perform(requestBuilder).andExpect(view().name("tripsView"));
+    }
+
+    @Test
+    public void sendInviteMessageFailed() throws Exception {
+        mockHttpSession.setAttribute("user", testUser);
+        Trip t = new TimelessTrip(title, description, privacy, testUser);
+        RequestBuilder requestBuilder = MockMvcRequestBuilders.post("/inviteUser/" + t.getId() + "/sendInvite/").param("userByKeywordEmail", "testEmail");
+        when(tripsService.invite(any(Trip.class), any(User.class), any(User.class))).thenThrow(new MessagingException("could not send email"));
+        mockMvc.perform(requestBuilder).andExpect(view().name("tripsView"));
+    }
+
+    @Test
     public void unInviteSuccess() throws Exception {
         mockHttpSession.setAttribute("user", testUser);
         Trip t = new TimelessTrip(title, description, privacy, testUser);
         RequestBuilder requestBuilder = MockMvcRequestBuilders.post("/inviteUser/" + t.getId() + "/uninvite").param("uninviteEmail", "test@test.be");
         when(tripsService.findTripById(anyInt(), any(User.class))).thenReturn(t);
         mockMvc.perform(requestBuilder).andExpect(view().name("redirect:/inviteUser/" + t.getId()));
+    }
+
+    @Test
+    public void unInviteFailed() throws Exception {
+        mockHttpSession.setAttribute("user", testUser);
+        Trip t = new TimelessTrip(title, description, privacy, testUser);
+        RequestBuilder requestBuilder = MockMvcRequestBuilders.post("/inviteUser/" + t.getId() + "/uninvite").param("uninviteEmail", "test@test.be");
+        when(tripsService.findTripById(anyInt(), any(User.class))).thenThrow(new TripsException("Trip not found"));
+        mockMvc.perform(requestBuilder).andExpect(view().name("tripsView"));
     }
 
     @Test
@@ -1113,12 +1140,47 @@ public class TripTest {
     }
 
     @Test
+    public void findUsersByKeywordFailed() throws Exception {
+        mockHttpSession.setAttribute("user", testUser);
+        Trip t = new TimelessTrip(title, description, privacy, testUser);
+        RequestBuilder requestBuilder = MockMvcRequestBuilders.get("/inviteUser/" + t.getId() + "/findUsersByKeyword").param("keyword", "testKeyword");
+        when(tripsService.findTripById(anyInt(), any(User.class))).thenThrow(new TripsException("Trip with id"));
+        mockMvc.perform(requestBuilder).andExpect(view().name("tripsView"));
+    }
+
+    @Test
     public void getLocationsLatLngSuccess() throws Exception {
         mockHttpSession.setAttribute("user", testUser);
         Trip t = new TimelessTrip(title, description, privacy, testUser);
         RequestBuilder requestBuilder = MockMvcRequestBuilders.get("/trip/" + t.getId() + "/locations/getLocationsLatLng");
         when(tripsService.findTripById(t.getId(), testUser)).thenReturn(t);
         mockMvc.perform(requestBuilder).andExpect(content().string("[]"));
+    }
+
+    @Test
+    public void deleteCost() throws Exception {
+        mockHttpSession.setAttribute("user", testUser);
+        Trip t = new TimelessTrip(title, description, privacy, testUser);
+        Enrollment enrollment = new Enrollment(t, testUser);
+        String name = "name";
+        double amount = 10.5;
+        enrollment.addCost(name, amount);
+        RequestBuilder requestBuilder = MockMvcRequestBuilders.get("/costs/" + t.getId() + "/deleteCost/" + name + "/" + amount);
+        when(tripsService.findTripById(t.getId(), testUser)).thenReturn(t);
+        mockMvc.perform(requestBuilder).andExpect(view().name("redirect:/costs/" + t.getId()));
+    }
+
+    @Test
+    public void deleteCostTripNotFound() throws Exception {
+        mockHttpSession.setAttribute("user", testUser);
+        Trip t = new TimelessTrip(title, description, privacy, testUser);
+        Enrollment enrollment = new Enrollment(t, testUser);
+        String name = "name";
+        double amount = 10.5;
+        enrollment.addCost(name, amount);
+        RequestBuilder requestBuilder = MockMvcRequestBuilders.get("/costs/" + t.getId() + "/deleteCost/" + name + "/" + amount);
+        when(tripsService.findTripById(anyInt(), any(User.class))).thenThrow(new TripsException("Trip not found"));
+        mockMvc.perform(requestBuilder).andExpect(view().name("tripsView"));
     }
 
     @Test

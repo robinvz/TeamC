@@ -623,18 +623,16 @@ public class TripController {
     @RequestMapping(value = "/inviteUser/{tripId}/findUsersByKeyword", method = RequestMethod.GET)
     public ModelAndView findUsersByKeyword(@PathVariable int tripId, @RequestParam String keyword) {
         User user = (User) session.getAttribute("user");
-        Map parameters;
-        Trip trip;
         if (isLoggedIn()) {
-            parameters = new HashMap();
             try {
-                trip = tripsService.findTripById(tripId, user);
-                parameters.put("trip", trip);
-                parameters.put("invitations", trip.getInvitations());
-                parameters.put("usersByKeyword", tripsService.findUsersByKeyword(keyword, user));
-                return new ModelAndView("/users/inviteUserView", parameters);
+                Map map = new HashMap() ;
+                Trip trip = tripsService.findTripById(tripId, user);
+                map.put("trip", trip);
+                map.put("invitations", trip.getInvitations());
+                map.put("usersByKeyword", tripsService.findUsersByKeyword(keyword, user));
+                return new ModelAndView("/users/inviteUserView", map);
             } catch (TripsException e) { // trip not found or keyword not found in users
-                return new ModelAndView("loginView", "loginBean", new LoginBean());
+                return new ModelAndView("tripsView", "error", e.getMessage());
             }
         } else {
             return new ModelAndView("loginView", "loginBean", new LoginBean());
@@ -649,15 +647,15 @@ public class TripController {
             try {
                 trip = tripsService.findTripById(tripId, user);
                 tripsService.invite(trip, user, tripsService.findUser(userByKeywordEmail));
+                return new ModelAndView("redirect:/inviteUser/" + trip.getId());
             } catch (MessagingException e) {
-                // failed to invite user
+                return new ModelAndView("tripsView", "error", e.getMessage());
             } catch (TripsException e) {
-                //failed to find trip or failed to find user or failed to invite
+                return new ModelAndView("tripsView", "error", e.getMessage());
             }
         } else {
             return new ModelAndView("loginView", "loginBean", new LoginBean());
         }
-        return new ModelAndView("redirect:/inviteUser/" + trip.getId());
     }
 
     @RequestMapping(value = "/users/editTripPic/{tripId}", method = RequestMethod.GET)
@@ -799,9 +797,9 @@ public class TripController {
     public ModelAndView deleteCost(@PathVariable int tripId, @PathVariable String name, @PathVariable double amount, Locale locale) {
         User user = (User) session.getAttribute("user");
         if (isLoggedIn()) {
-            Trip trip = null;
-            Map map = new HashMap();
             try {
+                Trip trip = null;
+                Map map = new HashMap();
                 trip = tripsService.findTripById(tripId, user);
                 tripsService.removeCostFromEnrollment(name, amount, trip, user);
                 map = putInMap(map, trip, "success", messageSource.getMessage("CostAdded", null, locale));
@@ -866,8 +864,8 @@ public class TripController {
     }
 
     @RequestMapping(value = "/trip/{tripId}/locations/{locationId}/addQuestion", method = RequestMethod.POST)
-    public ModelAndView addQuestion(@PathVariable int tripId, @PathVariable int locationId, @RequestParam String question, @RequestParam("file") MultipartFile file,
-                                    @RequestParam List<String> possibleAnswers, @RequestParam String correctAnswer) {
+    public ModelAndView addQuestion(@PathVariable int tripId, @PathVariable int locationId, @RequestParam String question,
+                                    @RequestParam("file") MultipartFile file, @RequestParam List<String> possibleAnswers, @RequestParam String correctAnswer) {
         Map parameters = new HashMap();
         User user = (User) session.getAttribute("user");
         Trip trip = null;
