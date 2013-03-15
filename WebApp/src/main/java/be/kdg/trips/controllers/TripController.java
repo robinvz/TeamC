@@ -91,6 +91,19 @@ public class TripController {
         }
     }
 
+    @RequestMapping(value = "/trip/{tripId}/editTrip", method = RequestMethod.POST)
+    public ModelAndView editTrip(@PathVariable int tripId,@RequestParam String title, @RequestParam String description, @RequestParam boolean chatAllowed, @RequestParam boolean positionVisible ){
+        User user = (User) session.getAttribute("user");
+        Trip trip = null;
+        try {
+            trip = tripsService.findTripById(tripId, user);
+            tripsService.editTripDetails(trip, title, description, chatAllowed, positionVisible, user);
+        } catch (TripsException e) {
+            e.printStackTrace();  //To change body of catch statement use File | Settings | File Templates.
+        }
+        return new ModelAndView("tripView", "trip", trip);
+    }
+
     @RequestMapping(value = "/createTrip", method = RequestMethod.GET)
     public String createTrip() {
         return "/createTripView";
