@@ -7,7 +7,8 @@
         android:title="@string/menu_settings"/>
     
     <item android:id="@+id/logout"
-        android:title="@string/logout">
+        android:title="@string/logout"
+        android:showAsAction="ifRoom|withText">
         
     </item>
 

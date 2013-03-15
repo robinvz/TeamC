@@ -35,10 +35,10 @@ public class LoginValidator implements Validator {
         if (!errors.hasErrors()) {
             try {
                 if (!tripsService.checkLogin(loginBean.getEmail(), loginBean.getPassword())) {
-                    errors.rejectValue("password", "PasswordIncorrect.user");
+                    errors.rejectValue("email", "WrongLogin.user");
                 }
             } catch (TripsException e) {
-                errors.rejectValue("email", "UserIncorrect.user");
+                errors.rejectValue("email", "WrongLogin.user");
             }
         }
     }

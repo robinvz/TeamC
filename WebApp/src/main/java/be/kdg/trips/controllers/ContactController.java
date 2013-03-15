@@ -2,11 +2,18 @@ package be.kdg.trips.controllers;
 
 import be.kdg.trips.services.interfaces.TripsService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.MessageSource;
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
+import org.springframework.validation.BindingResult;
+import org.springframework.validation.ObjectError;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.servlet.ModelAndView;
+
 import javax.mail.MessagingException;
+import java.util.Locale;
 
 /**
  * Created with IntelliJ IDEA.
@@ -19,6 +26,9 @@ import javax.mail.MessagingException;
 @RequestMapping(value = "/contact")
 public class ContactController {
     @Autowired
+    private MessageSource messageSource;
+
+    @Autowired
     private TripsService tripsService;
 
     @RequestMapping(value="", method = RequestMethod.GET)
@@ -27,13 +37,13 @@ public class ContactController {
     }
 
     @RequestMapping(value = "/sendContactMail", method = RequestMethod.POST)
-    public String sendContactMail(@RequestParam String email, @RequestParam String type, @RequestParam String message) {
+    public ModelAndView sendContactMail(@RequestParam String email, @RequestParam String type, @RequestParam String message,  Locale locale) {
         try {
             tripsService.sendContactMail(type, message, email);
         } catch (MessagingException e) {
-            //error occurred
+            return new ModelAndView("contactView", "error", messageSource.getMessage("CouldNotSendMail", null, locale));
         }
-        return "indexView";
+        return new ModelAndView("indexView");
     }
 
 }

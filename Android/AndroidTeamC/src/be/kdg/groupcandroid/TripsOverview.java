@@ -47,6 +47,7 @@ public class TripsOverview extends FragmentActivity {
 	}
 
 	 class MyAdapter extends FragmentPagerAdapter {
+		 
 		public MyAdapter(FragmentManager fm) {
 			super(fm);
 		}
@@ -81,6 +82,7 @@ public class TripsOverview extends FragmentActivity {
 	public boolean onCreateOptionsMenu(Menu menu) {
 		// Inflate the menu; this adds items to the action bar if it is present.
 		getMenuInflater().inflate(R.menu.activity_main, menu);
+		
 		return true;
 	}
 

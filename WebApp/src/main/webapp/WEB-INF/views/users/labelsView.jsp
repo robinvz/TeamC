@@ -8,6 +8,9 @@
     <link rel="stylesheet" href="${pageContext.request.contextPath}/resources/css/trip.css"/>
     <link rel="stylesheet" href="<spring:theme code="css"/>" type="text/css"/>
     <link rel="shortcut icon" href="${pageContext.request.contextPath}/resources/res/favicon.ico">
+    <!--[if lt IE 9]>
+    <script src="${pageContext.request.contextPath}/resources/js/html5shiv.js"></script>
+    <![endif]-->
     <title><spring:message code="TripPage"/></title>
 </head>
 <body>
@@ -16,7 +19,7 @@
     <jsp:include page="../tripHeaderView.jsp"/>
 
     <div class="inner-content">
-        <h3><spring:message code="AddDate"/></h3>
+        <h3>Labels</h3>
         <c:if test="${error != null}">
             <span class="errorblock">${error}</span>
         </c:if>
@@ -26,23 +29,30 @@
 
         <c:if test="${user == trip.organizer}">
             <table>
-                <form action="/users/addDate/${trip.id}" method="POST">
+                <form action="/users/labels/${trip.id}" method="POST">
                     <tr>
-                        <td><label><spring:message code="StartDate"/></label></td>
-                        <td><input type="datetime-local" class="picker" name="startDate"></td>
-                    </tr>
-                    <tr>
-                        <td><label><spring:message code="EndDate"/></label></td>
-                        <td><input type="datetime-local" name="endDate"></td>
-                    </tr>
-                    <tr>
-                        <td><td><input id="btn-save" type="submit" value="<spring:message code="Save" />" class="btn-blue"></td></td>
+                        <td><spring:message code="EnterLabel" /></td>
+                        <td><input type="text" name="label"></td>
+                        <td><input id="btn-save" type="submit" value="<spring:message code="Save" />" class="btn-blue"></td>
                     </tr>
                 </form>
             </table>
+
+
+            <c:if test="${not empty trip.labels}">
+                <table>
+
+                    <tbody>
+                    <c:forEach items="${trip.labels}" var="label">
+                        <tr>
+                            <td>${label}</td>
+                        </tr>
+                    </c:forEach>
+                    </tbody>
+                </table>
+            </c:if>
         </c:if>
     </div>
-
 </div>
 </body>
 </html>

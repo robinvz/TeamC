@@ -70,9 +70,8 @@
                             </td>
                             <c:if test="${not empty user && trip.organizer == user}">
                             <td>
-                                <a href="/trip/${trip.id}/locations/${location.id}/deleteLocation">
-                                    <button type="button" id="btn-deleteLocation"><spring:message code="Delete"/>
-                                    </button>
+                                <a href="/users/trip/${trip.id}/locations/${location.id}/deleteLocation">
+                                    <button type="button" id="btn-deleteLocation"><spring:message code="Delete"/></button>
                                 </a>
                             </td>
                             </c:if>
@@ -82,8 +81,7 @@
             </c:choose>
             <c:if test="${not empty user && trip.organizer == user}">
                 <a href="/trip/${trip.id}/locations/createLocation">
-                    <button type="button" id="btn-createLocation" class="btn-blue"><spring:message
-                            code="CreateLocation"/></button>
+                    <button type="button" id="btn-createLocation" class="btn-blue"><spring:message code="CreateLocation"/></button>
                 </a>
             </c:if>
             <button type="button" id="btn-toggleLocations" class="btn-blue">

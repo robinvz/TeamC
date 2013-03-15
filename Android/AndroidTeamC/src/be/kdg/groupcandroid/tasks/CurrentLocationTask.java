@@ -1,7 +1,6 @@
 package be.kdg.groupcandroid.tasks;
 
 import java.io.BufferedReader;
-import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.net.URI;
@@ -14,57 +13,40 @@ import org.apache.http.NameValuePair;
 import org.apache.http.StatusLine;
 import org.apache.http.client.HttpClient;
 import org.apache.http.client.entity.UrlEncodedFormEntity;
-import org.apache.http.client.methods.HttpGet;
 import org.apache.http.client.methods.HttpPost;
 import org.apache.http.impl.client.DefaultHttpClient;
 import org.apache.http.message.BasicNameValuePair;
-import org.json.JSONArray;
-import org.json.JSONException;
 import org.json.JSONObject;
 
-import be.kdg.groupcandroid.R;
-import be.kdg.groupcandroid.R.drawable;
-import be.kdg.groupcandroid.model.Item;
-import be.kdg.groupcandroid.model.Trip;
-
-import android.app.Activity;
-import android.app.ProgressDialog;
-import android.graphics.drawable.Drawable;
 import android.os.AsyncTask;
 import android.util.Log;
+import be.kdg.groupcandroid.model.Contact;
 
-public class TripsTask extends AsyncTask<String, Void, ArrayList<Trip>>{
-	
-	public ProgressDialog dialog;
-
-	public TripsTask(Activity activity) {
-		dialog = new ProgressDialog(activity);
-	}
-	
-
+public class CurrentLocationTask extends
+		AsyncTask<String, Void, Boolean> {
 
 	@Override
-	protected ArrayList<Trip> doInBackground(String... params) {
-		
+	protected Boolean doInBackground(String... params) {
+
 		String ip = params[0];
 		String port = params[1];
-		String action = params[2];
-		String username = params[3];
-		String password = params[4];
-		
+		String latitude= params[2];
+		String longitude = params[3];
+		String username = params[4];
+		String password = params[5];
+
 		StringBuilder builder = new StringBuilder();
 		HttpClient client = new DefaultHttpClient();
 		HttpPost httpPost;
-		ArrayList<Trip> trips = new ArrayList<Trip>();
+		ArrayList<Contact> contacts = new ArrayList<Contact>();
 		try {
 			httpPost = new HttpPost(new URI("http://" + ip + ":" + port
-					+ "/service/"+ action + "trips"));
+					+ "/service/updateLocation"));
 			List<NameValuePair> nameValuePairs = new ArrayList<NameValuePair>(3);
 			nameValuePairs.add(new BasicNameValuePair("password", password));
 			nameValuePairs.add(new BasicNameValuePair("username", username));
-			if (params.length == 6){
-				nameValuePairs.add(new BasicNameValuePair("keyword", params[5]));
-			} 
+			nameValuePairs.add(new BasicNameValuePair("longitude", longitude));
+			nameValuePairs.add(new BasicNameValuePair("latitude", latitude));
 			httpPost.setEntity(new UrlEncodedFormEntity(nameValuePairs));
 			HttpResponse response = client.execute(httpPost);
 			StatusLine statusLine = response.getStatusLine();
@@ -80,48 +62,19 @@ public class TripsTask extends AsyncTask<String, Void, ArrayList<Trip>>{
 				}
 				JSONObject jsonObject = new JSONObject(builder.toString());
 				if (jsonObject.getBoolean("valid")) {
-					JSONArray array = jsonObject.getJSONArray("trips");
-						for (int i = 0; i < array.length(); i++){
-							trips.add(new Trip(array.getJSONObject(i).getInt("id"), array.getJSONObject(i).getString("title")));
-						}
-					return trips;
+					
+					return true;
 				} else {
-					return trips;
+					return false ;
 				}
 			} else {
-				return trips;
+				return false;
 			}
 		} catch (Exception e) {
 			String message = e.getMessage();
 			e.printStackTrace();
 			Log.d("error", message);
-			return trips;
-		} 
-	}
-	
-	protected void onPreExecute() {
-		this.dialog.setMessage("Getting Trips");
-		this.dialog.show();
-	}
-
-	
-	
-	@Override
-	protected void onPostExecute(ArrayList<Trip> items) {
-		if (dialog.isShowing()) {
-			dialog.dismiss();
+			return false;
 		}
 	}
-
-
-
-	@Override
-	protected void onCancelled() {
-		if (dialog.isShowing()) {
-			dialog.dismiss();
-		}
-	}
-	
-	
-
 }

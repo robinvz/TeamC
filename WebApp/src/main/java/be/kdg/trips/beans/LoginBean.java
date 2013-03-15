@@ -18,8 +18,6 @@ import org.springframework.validation.Validator;
  */
 
 public class LoginBean{
-    @Autowired
-    TripsService service;
 
     @NotEmpty
     private String email;

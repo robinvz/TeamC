@@ -53,6 +53,11 @@
             android:label=""
             android:screenOrientation="portrait" >
         </activity>
+          <activity
+            android:name="be.kdg.groupcandroid.UserMapActivity"
+            android:label=""
+            android:screenOrientation="portrait" >
+        </activity>
         <activity
             android:name="be.kdg.groupcandroid.TripsOverview"
             android:label=""
