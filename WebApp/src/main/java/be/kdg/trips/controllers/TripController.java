@@ -73,17 +73,6 @@ public class TripController {
         User user = (User) session.getAttribute("user");
         try {
             Trip trip = tripsService.findTripById(tripId, user);
-            if (isLoggedIn()) {
-                Set<Enrollment> enrollmentSet = user.getEnrollments();
-                for (Enrollment enrollment : enrollmentSet) {
-                    if (enrollment.getTrip() == trip) {
-                        Map map = new HashMap();
-                        map.put("trip", trip);
-                        map.put("enrollmentRequisites", enrollment.getRequisites());
-                        return new ModelAndView("tripView", map);
-                    }
-                }
-            }
             return new ModelAndView("tripView", "trip", trip);
         } catch (TripsException e) {
             return new ModelAndView("tripsView", "error", messageSource.getMessage("FindTripError", null, locale));
@@ -91,16 +80,16 @@ public class TripController {
     }
 
     @RequestMapping(value = "/trip/{tripId}/editTrip", method = RequestMethod.POST)
-    public ModelAndView editTrip(@PathVariable int tripId,@RequestParam String title, @RequestParam String description, @RequestParam boolean chatAllowed, @RequestParam boolean positionVisible ){
-        User user = (User) session.getAttribute("user");
-        Trip trip = null;
+    public ModelAndView editTrip(@PathVariable int tripId, @RequestParam String title, @RequestParam String description,
+                                 @RequestParam boolean chatAllowed, @RequestParam boolean positionVisible){
         try {
-            trip = tripsService.findTripById(tripId, user);
+            User user = (User) session.getAttribute("user");
+            Trip trip = tripsService.findTripById(tripId, user);
             tripsService.editTripDetails(trip, title, description, chatAllowed, positionVisible, user);
+            return new ModelAndView("tripView", "trip", trip);
         } catch (TripsException e) {
-            e.printStackTrace();  //To change body of catch statement use File | Settings | File Templates.
+            return new ModelAndView("tripsView", "error", e.getMessage());
         }
-        return new ModelAndView("tripView", "trip", trip);
     }
 
     @RequestMapping(value = "/createTrip", method = RequestMethod.GET)

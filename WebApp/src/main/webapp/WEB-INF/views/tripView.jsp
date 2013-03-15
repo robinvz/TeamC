@@ -20,7 +20,6 @@
     <jsp:include page="tripHeaderView.jsp"/>
 
     <div class="inner-content">
-
         <section>
             <article>
                 <h3><spring:message code="General"/></h3>
@@ -32,14 +31,6 @@
                 </c:if>
 
                 <div class="trip-info">
-                    <c:if test="${not empty enrollmentRequisites}">
-                        <h3>Requisites only for you!</h3>
-                        <c:forEach items="${enrollmentRequisites}" var="enrollmentRequisite">
-                            ${enrollmentRequisite.value}
-                            ${enrollmentRequisite.key}
-                        </c:forEach>
-                    </c:if>
-
                     <form id="trip-form" action="/trip/${trip.id}/editTrip" method="POST">
                         <table>
                             <tr class="trip-edit">
