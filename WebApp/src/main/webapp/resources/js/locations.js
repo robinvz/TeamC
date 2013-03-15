@@ -53,7 +53,8 @@ function listeners() {
     });
 
     $("table tr").not(':first').on('click', function () {
-        var ref = '/trip/' + tripId + '/locations/' + $(this).attr('id').substr(9);
+        var ids = $(this).attr('id').split('-');
+        var ref = '/trip/' + tripId + '/locations/' + ids[1];
         window.location = ref;
     });
 }
@@ -69,8 +70,6 @@ function getLatLng() {
 }
 
 function initDataTable() {
- /*   $('#locations-table').dataTable({ 'bFilter': false, "bLengthChange": false, "bPaginate": false, "bInfo": false, "bAutoWidth": false })
-        .rowReordering({ sURL: "/trip/switchLocation" })
-        .makeEditable({sUpdateURL: "/trip/" + tripId + "/locations/editLocation",
-            sReadOnlyCellClass: "read_only"});          */
+    $('#locations-table').dataTable({ 'bFilter': false, "bLengthChange": false, "bPaginate": false, "bInfo": false, "bAutoWidth": false })
+        .rowReordering({ sURL: "/trip/switchLocation" });
 }
