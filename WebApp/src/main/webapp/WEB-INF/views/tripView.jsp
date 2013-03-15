@@ -20,7 +20,6 @@
     <jsp:include page="tripHeaderView.jsp"/>
 
     <div class="inner-content">
-
         <section>
             <article>
                 <h3><spring:message code="General"/></h3>
@@ -32,14 +31,6 @@
                 </c:if>
 
                 <div class="trip-info">
-                    <c:if test="${not empty enrollmentRequisites}">
-                        <h3>Requisites only for you!</h3>
-                        <c:forEach items="${enrollmentRequisites}" var="enrollmentRequisite">
-                            ${enrollmentRequisite.value}
-                            ${enrollmentRequisite.key}
-                        </c:forEach>
-                    </c:if>
-
                     <form id="trip-form" action="/trip/${trip.id}/editTrip" method="POST">
                         <table>
                             <tr class="trip-edit">
@@ -166,12 +157,11 @@
                         </c:if>
                     </c:if>
                     <c:if test="${validPrivateTrip == true && invited == true}">
-                        <a href="/acceptInvitation?tripId=${trip.id}">
-                            <button class="btn-blue"><spring:message code="subscribe"/></button>
-                            </a>
-                        <a href="/declineInvitation?tripId=${trip.id}">
-                            <button class="btn-blue"><spring:message code="unSubscribe"/></button>
-
+                        <a href="/users/acceptInvitation?tripId=${trip.id}">
+                            <button class="btn-blue">Accept</button>
+                        </a>
+                        <a href="/users/declineInvitation?tripId=${trip.id}">
+                            <button class="btn-blue">Decline</button>
                         </a>
                     </c:if>
                     <script type="text/javascript">

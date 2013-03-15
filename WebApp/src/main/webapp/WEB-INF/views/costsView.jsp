@@ -21,7 +21,7 @@
     <div class="inner-content">
         <h3><spring:message code="Costs"/></h3>
         <c:if test="${not empty user}">
-            <form id="form-createCost" action="/costs/${trip.id}/createCost" method="POST">
+            <form id="form-createCost" action="/users/costs/${trip.id}/createCost" method="POST">
                 <table>
                     <tr>
                         <td><label><spring:message code="Name"/></label></td>
@@ -59,7 +59,7 @@
                                             ${costLine.value}
                                     </td>
                                     <td>
-                                        <form action="/costs/${trip.id}/deleteCost/${costLine.key}/${costLine.value}">
+                                        <form action="/users/costs/${trip.id}/deleteCost/${costLine.key}/${costLine.value}">
                                             <button id="btn-removeCost" type="submit" class="btn-blue"><spring:message code="removeCost"/></button>
                                         </form>
                                     </td>
@@ -82,7 +82,7 @@
                                                 ${costLine.value}
                                         </td>
                                         <td>
-                                            <form action="/costs/${trip.id}/deleteCost/${costLine.key}/${costLine.value}">
+                                            <form action="/users/costs/${trip.id}/deleteCost/${costLine.key}/${costLine.value}">
                                                 <button type="submit" class="btn-blue"><spring:message code="removeCost"/></button>
                                             </form>
                                         </td>

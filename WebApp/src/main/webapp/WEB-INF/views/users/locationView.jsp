@@ -161,7 +161,6 @@
     $(document).ready(function () {
         $('#editQuestion').hide();
         $('#editLocation').hide();
-        getLatLng(${location.latitude}, ${location.longitude});
         getIds(${trip.id}, ${location.id});
     });
 </script>

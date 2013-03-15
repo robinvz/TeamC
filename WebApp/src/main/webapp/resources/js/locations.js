@@ -43,12 +43,12 @@ function listeners() {
         if ($('#mapcanvas').is(":hidden")) {
             getLatLng();
             $(this).text('Text Overview');
-            $('#example').hide();
+            $('#locations-table').hide();
             $('#mapcanvas').show();
         } else {
             $(this).text('Map Overview');
             $('#mapcanvas').hide();
-            $('#example').show();
+            $('#locations-table').show();
         }
     });
 
@@ -59,7 +59,7 @@ function listeners() {
 }
 
 function getLatLng() {
-    $.getJSON("/trip/" + tripId + "/locations/getLocationsLatLng", function (coordinates) {
+    $.getJSON("/trip/" + tripId + "/locations/getLocationsLatLng?amount=all&locationId=0", function (coordinates) {
         $.each(coordinates, function (i, coordinate) {
             createMarker(coordinate.latitude, coordinate.longitude)
             locations[i] = coordinate;
@@ -69,5 +69,8 @@ function getLatLng() {
 }
 
 function initDataTable() {
-    $('#locations-table').dataTable({ "bPaginate": false, "bInfo": false, "bAutoWidth": false });
+ /*   $('#locations-table').dataTable({ 'bFilter': false, "bLengthChange": false, "bPaginate": false, "bInfo": false, "bAutoWidth": false })
+        .rowReordering({ sURL: "/trip/switchLocation" })
+        .makeEditable({sUpdateURL: "/trip/" + tripId + "/locations/editLocation",
+            sReadOnlyCellClass: "read_only"});          */
 }
