@@ -9,16 +9,20 @@ var tmpVal = '';
 function getIds(trip, location) {
     tripId = trip;
     locationId = location;
+    getLatLng()
     updateCorrectAnswers();
 }
 
-function getLatLng(lat, lng) {
-    latitude = lat;
-    longitude = lng;
-
-    listeners();
-    initializeMap();
-    createMarker();
+function getLatLng() {
+    $.getJSON("/trip/" + tripId + "/locations/getLocationsLatLng?amount=one&locationId=" + locationId, function (coordinates) {
+        $.each(coordinates, function (i, coordinate) {
+            latitude = coordinate.latitude;
+            longitude = coordinate.longitude;
+        });
+        listeners();
+        initializeMap();
+        createMarker();
+    });
 }
 
 function initializeMap() {
