@@ -157,12 +157,11 @@
                         </c:if>
                     </c:if>
                     <c:if test="${validPrivateTrip == true && invited == true}">
-                        <a href="/acceptInvitation?tripId=${trip.id}">
-                            <button class="btn-blue"><spring:message code="subscribe"/></button>
-                            </a>
-                        <a href="/declineInvitation?tripId=${trip.id}">
-                            <button class="btn-blue"><spring:message code="unSubscribe"/></button>
-
+                        <a href="/users/acceptInvitation?tripId=${trip.id}">
+                            <button class="btn-blue">Accept</button>
+                        </a>
+                        <a href="/users/declineInvitation?tripId=${trip.id}">
+                            <button class="btn-blue">Decline</button>
                         </a>
                     </c:if>
                     <script type="text/javascript">
