@@ -59,7 +59,7 @@ public class TripController {
                 allNonPrivateTrips = tripsService.findAllNonPrivateTrips(null);
             }
         } catch (TripsException e) {
-            //No (non)private trips
+            return new ModelAndView("tripsView");
         }
         parameters.put("allNonPrivateTrips", allNonPrivateTrips);
         parameters.put("allPrivateTrips", allPrivateTrips);
@@ -472,11 +472,12 @@ public class TripController {
                     if (!file.getOriginalFilename().isEmpty()) {
                         bFile = file.getBytes();
                     }
+                    possibleAnswers.remove(0);
                     tripsService.addLocationToTrip(user, trip, latitude, longitude, street, houseNr.split("-")[0], city, postalCode,
                             country, title, description, question, possibleAnswers, possibleAnswers.indexOf(correctAnswer), bFile);
                 }
             } catch (TripsException e) {
-                //trip not found or failed to add loc to trip
+                return new ModelAndView("tripsView");
             } catch (IOException e) {
                 //TODO: bfile is foute type (niet jpeg, gif of png)
             }
@@ -968,7 +969,7 @@ public class TripController {
                 parameters.put("trip", trip);
                 parameters.put("location", location);
                 byte[] bFile = file.getBytes();
-                tripsService.editTripQuestionDetails(user, location, "", new ArrayList<String>(), 0, bFile);
+                tripsService.editTripQuestionDetails(user, location, "", new ArrayList<String>(), null, bFile);
             } catch (IOException | TripsException e) {
                 //TODO: tripsexception kan zijn: user bestaat niet of bfile is foute type (niet jpeg, gif of png)
             }
@@ -992,5 +993,4 @@ public class TripController {
             return false;
         }
     }
-
 }

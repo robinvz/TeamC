@@ -92,7 +92,7 @@ public class LoginValidatorTest {
     @Test
     public void emailWrong() throws TripsException {
         LoginBean loginBean = new LoginBean();
-        loginBean.setEmail("Whatever"); // Already null, but only to be explicit here...
+        loginBean.setEmail("Whatever@gmail.be"); // Already null, but only to be explicit here...
         loginBean.setPassword("HelloPassword");
         BindException errors = new BindException(loginBean, "loginBean");
         ValidationUtils.invokeValidator(validator, loginBean, errors);

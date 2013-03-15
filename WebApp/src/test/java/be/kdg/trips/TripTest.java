@@ -14,26 +14,23 @@ import org.junit.Test;
 import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
 import org.springframework.context.MessageSource;
-import org.springframework.mock.web.MockHttpServletRequest;
 import org.springframework.mock.web.MockHttpSession;
-import org.springframework.mock.web.MockMultipartFile;
-import org.springframework.mock.web.MockMultipartHttpServletRequest;
 import org.springframework.test.util.ReflectionTestUtils;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.RequestBuilder;
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
-import org.springframework.web.multipart.MultipartRequest;
-import org.springframework.web.multipart.commons.CommonsMultipartResolver;
-import org.springframework.web.multipart.support.StandardMultipartHttpServletRequest;
 
 import javax.mail.MessagingException;
 import javax.servlet.http.HttpServletRequest;
+import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.*;
 
 import static org.junit.Assert.*;
 import static org.mockito.Matchers.*;
+import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.doThrow;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
@@ -86,6 +83,14 @@ public class TripTest {
         when(tripsService.findTripsByOrganizer(testUser)).thenReturn(new ArrayList());
         when(tripsService.findEnrollmentsByUser(testUser)).thenReturn(new ArrayList());
         mockMvc.perform(requestBuilder).andExpect(view().name("tripsView")).andExpect(model().attributeExists("allNonPrivateTrips")).andExpect(model().attributeExists("allPrivateTrips")).andExpect(model().attributeExists("allOrganizedTrips")).andExpect(model().attributeExists("allEnrollments"));
+    }
+
+    @Test
+    public void getTripsFail() throws Exception {
+        mockHttpSession.setAttribute("user", testUser);
+        RequestBuilder requestBuilder = MockMvcRequestBuilders.get("/trips");
+        when(tripsService.findAllNonPrivateTrips(testUser)).thenThrow(new TripsException("No nonprivate trips found"));
+        mockMvc.perform(requestBuilder).andExpect(view().name("tripsView"));
     }
 
     @Test
@@ -376,17 +381,18 @@ public class TripTest {
         mockMvc.perform(requestBuilder).andExpect(view().name("redirect:/trip/" + t.getId() + "/locations"));
     }*/
 
-    @Test
+
+    /*@Test
     public void createLocationFail() throws Exception {
         mockHttpSession.setAttribute("user", testUser);
-        TimelessTrip t = new TimelessTrip(title, description, privacy, testUser);
-        Location l = new Location(t, 1.00, 1.00, new Address("", "", "", "", ""), "", "", 0);
-        t.addLocation(l);
-        RequestBuilder requestBuilder = MockMvcRequestBuilders.get("/trip/" + t.getId() + "/locations/createLocation").param("id", t.getId() + "");
-        when(tripsService.findTripById(t.getId(), testUser)).thenThrow(new TripsException("trip not found"));
+        Trip t = new TimelessTrip(title, description, privacy, testUser);
+        RequestBuilder requestBuilder = MockMvcRequestBuilders.post("/trip/" + t.getId() + "/locations/createLocation").param("user", "testUser").param("trip", "t")
+                .param("latitude", "1.00").param("longitude", "1.00").param("street", "testStreet").param("houseNr", "1").param("city", "testCity")
+                .param("postalCode", "2000").param("country", "testCountry").param("title", "testTitle").param("description", "testDescription")
+                .param("question", "testQuestion").param("correctAnswer", "testCorrectAnswer").param("possibleAnswers", "testList").param("file","testFile");
+        when(tripsService.findTripById(t.getId(), testUser)).thenThrow(new TripsException("Could not find trip"));
         mockMvc.perform(requestBuilder).andExpect(view().name("tripsView"));
-        assertEquals(1, t.getLocations().size());
-    }
+    }*/
 
     @Test
     public void locationDeletedSuccess() throws Exception {
@@ -1048,6 +1054,39 @@ public class TripTest {
         when(tripsService.findTripById(t.getId(), testUser)).thenReturn(t);
         when(tripsService.findLocationById(anyInt())).thenReturn(new Location());
         mockMvc.perform(requestBuilder).andExpect(view().name("redirect:/trip/" + t.getId() + "/locations/" + t.getLocations().get(0).getId())).andExpect(model().attribute("trip", t)).andExpect(model().attribute("location", t.getLocations().get(0)));
+    }
+
+    @Test
+    public void deleteQuestionFail() throws Exception {
+        mockHttpSession.setAttribute("user", testUser);
+        Trip t = new TimelessTrip(title, description, privacy, testUser);
+        t.addLocation(new Location());
+        RequestBuilder requestBuilder = MockMvcRequestBuilders.get("/users/trip/" + anyInt() + "/locations/" + anyInt() + "/deleteQuestion");
+        when(tripsService.findTripById(t.getId(), testUser)).thenThrow(new TripsException("Could not find trip"));
+        mockMvc.perform(requestBuilder).andExpect(view().name("tripsView"));
+    }
+
+    @Test
+    public void editQuestionSuccess() throws Exception {
+        mockHttpSession.setAttribute("user", testUser);
+        Trip t = new TimelessTrip(title, description, privacy, testUser);
+        t.addLocation(new Location());
+        RequestBuilder requestBuilder = MockMvcRequestBuilders.post("/users/trip/" + anyInt() + "/locations/" + anyInt() + "/editQuestion").param("question", "testQuestion")
+                .param("possibleAnswers", "testAnswers").param("correctAnswer", "testAnswer");
+        when(tripsService.findTripById(t.getId(), testUser)).thenReturn(t);
+        when(tripsService.findLocationById(anyInt())).thenReturn(new Location());
+        mockMvc.perform(requestBuilder).andExpect(view().name("redirect:/trip/" + t.getId() + "/locations/" + t.getLocations().get(0).getId())).andExpect(model().attribute("trip", t)).andExpect(model().attribute("location", t.getLocations().get(0)));
+    }
+
+    @Test
+    public void editQuestionFail() throws Exception {
+        mockHttpSession.setAttribute("user", testUser);
+        Trip t = new TimelessTrip(title, description, privacy, testUser);
+        t.addLocation(new Location());
+        RequestBuilder requestBuilder = MockMvcRequestBuilders.post("/users/trip/" + anyInt() + "/locations/" + anyInt() + "/editQuestion").param("question", "testQuestion")
+                .param("possibleAnswers", "testAnswers").param("correctAnswer", "testAnswer");
+        when(tripsService.findTripById(t.getId(), testUser)).thenThrow(new TripsException("Could not find trip"));
+        mockMvc.perform(requestBuilder).andExpect(view().name("tripsView"));
     }
 
     @Test
