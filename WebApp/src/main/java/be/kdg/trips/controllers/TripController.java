@@ -59,7 +59,7 @@ public class TripController {
                 allNonPrivateTrips = tripsService.findAllNonPrivateTrips(null);
             }
         } catch (TripsException e) {
-            //No (non)private trips
+            return new ModelAndView("tripsView");
         }
         parameters.put("allNonPrivateTrips", allNonPrivateTrips);
         parameters.put("allPrivateTrips", allPrivateTrips);
@@ -484,7 +484,7 @@ public class TripController {
                             country, title, description, question, possibleAnswers, possibleAnswers.indexOf(correctAnswer), bFile);
                 }
             } catch (TripsException e) {
-                //trip not found or failed to add loc to trip
+                return new ModelAndView("tripsView");
             } catch (IOException e) {
                 //TODO: bfile is foute type (niet jpeg, gif of png)
             }
@@ -1000,5 +1000,4 @@ public class TripController {
             return false;
         }
     }
-
 }
