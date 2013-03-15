@@ -13,7 +13,6 @@
             success:function(data){
                 enrolled = data;
                 enrolled ?  $('#button').addClass('on') :  $('#button').removeClass('on');
-                enrolled ?  $('#button2').addClass('on') :  $('#button2').removeClass('on');
             }
         });
         $('#button').on('click', function(){
@@ -41,31 +40,7 @@
                 $(this).toggleClass('on');
             }
         });
-        $('#button2').on('click', function(){
-            if(enrolled != null){
-                if(enrolled){
-                    $.ajax({
-                        type: "POST",
-                        url: "/declineInvitation",
-                        data: {tripId : ${trip.id}}
-                    }).done(function(){
-                                window.location = '?';
-                            });
-                    enrolled = false;
-                }else{
-                    $.ajax({
-                        type: "POST",
-                        url: "/acceptInvitation",
-                        data: {tripId : ${trip.id}}
-                    }).done(function(){
-                                window.location = '?';
-                            });
-                    enrolled = true;
-                }
 
-                $(this).toggleClass('on');
-            }
-        });
     });
 </script>
 
@@ -103,12 +78,7 @@
         <span class="attending-light"></span>
     </section>
 </c:if>
-<c:if test="${validPrivateTrip == true}">
-    <section class="attending">
-        <a href="#" id="button2" class="btn-attend"><spring:message code="Attending"></spring:message></a>
-        <span class="attending-light"></span>
-    </section>
-</c:if>
+
 
 <aside class="above-footer">
     <nav class="trip-nav">

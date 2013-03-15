@@ -26,7 +26,7 @@
             <p>${location.description}</p>
         </div>
         <div id="editLocation">
-            <form action="/trip/${trip.id}/locations/${location.id}/editLocation" method="POST">
+            <form action="/users/trip/${trip.id}/locations/${location.id}/editLocation" method="POST">
                 <input id="title" name="title" type="text" value="${location.title}"/>
 
                 <h3><spring:message code="Description"/></h3>
@@ -66,9 +66,8 @@
                                 <div class="bgImage"
                                      style="background-image: url('/trip/${trip.id}/locations/${location.id}/questionPic');">
                                 </div>
-                                <a href="/trip/${trip.id}/locations/${location.id}/deleteQuestionImage">
-                                    <button class="onImage" type="button" id="btn-deletePicture">Delete image
-                                    </button>
+                                <a href="/users/trip/${trip.id}/locations/${location.id}/deleteQuestionImage">
+                                    <button class="onImage" type="button" id="btn-deletePicture"><spring:message code="Delete" /></button>
                                 </a>
 
                                 <form action="/trip/${trip.id}/locations/${location.id}/editLocationPic"
@@ -90,11 +89,9 @@
                                 </li>
                             </c:forEach>
                         </ul>
-                        <button type="button" id="btn-toggleEditQuestion"><spring:message code="Edit"/>
-                        </button>
-                        <a href="/trip/${trip.id}/locations/${location.id}/deleteQuestion">
-                            <button type="button" id="btn-deleteQuestion"><spring:message code="Delete"/>
-                            </button>
+                        <button type="button" id="btn-toggleEditQuestion"><spring:message code="Edit"/></button>
+                        <a href="/users/trip/${trip.id}/locations/${location.id}/deleteQuestion">
+                            <button type="button" id="btn-deleteQuestion"><spring:message code="Delete"/></button>
                         </a>
                     </div>
                 </c:when>
@@ -124,8 +121,7 @@
             </c:choose>
 
             <div id="editQuestion">
-                <form:form action="/trip/${trip.id}/locations/${location.id}/editQuestion" method="POST"
-                           enctype="multipart/form-data">
+                <form:form action="/users/trip/${trip.id}/locations/${location.id}/editQuestion" method="POST" enctype="multipart/form-data">
                     <c:choose>
                         <c:when test="${location.question.image == null}">
                             <div class="bgImage">
