@@ -1121,5 +1121,23 @@ public class TripTest {
         mockMvc.perform(requestBuilder).andExpect(content().string("[]"));
     }
 
+    @Test
+    public void switchLocationSuccess() throws Exception {
+        mockHttpSession.setAttribute("user", testUser);
+        Trip t = new TimelessTrip(title, description, privacy, testUser);
+        RequestBuilder requestBuilder = MockMvcRequestBuilders.post("/trip/switchLocation").param("id", anyInt() + "-" + anyInt()).param("fromPosition", "1")
+                .param("toPosition", "2").param("direction", "testDirection");
+        when(tripsService.findTripById(t.getId(), testUser)).thenReturn(t);
+        mockMvc.perform(requestBuilder).andExpect(view().name("locationsView")).andExpect(model().attribute("trip", t));
+    }
 
+    @Test
+    public void switchLocationTripNotFound() throws Exception {
+        mockHttpSession.setAttribute("user", testUser);
+        Trip t = new TimelessTrip(title, description, privacy, testUser);
+        RequestBuilder requestBuilder = MockMvcRequestBuilders.post("/trip/switchLocation").param("id", anyInt() + "-" + anyInt()).param("fromPosition", "1")
+                .param("toPosition", "2").param("direction", "testDirection");
+        when(tripsService.findTripById(t.getId(), testUser)).thenThrow(new TripsException("Could not find trip"));
+        mockMvc.perform(requestBuilder).andExpect(view().name("locationsView"));
+    }
 }
