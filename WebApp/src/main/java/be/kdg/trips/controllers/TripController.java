@@ -556,11 +556,17 @@ public class TripController {
 
     @RequestMapping(value = "/trip/{tripId}/locations/getLocationsLatLng", method = RequestMethod.GET)
     @ResponseBody
-    public String getLocationsLatLng(@PathVariable int tripId) {
+    public String getLocationsLatLng(@PathVariable int tripId, @RequestParam String amount, @RequestParam int locationId) {
         JSONArray jsonArray = new JSONArray();
         try {
             Trip trip = tripsService.findTripById(tripId, (User) session.getAttribute("user"));
-            for (Location location : trip.getLocations()) {
+            List<Location> locs = new ArrayList<>();
+            if(amount.equals("all")){
+                locs = trip.getLocations();
+            }else if(amount.equals("one")){
+                locs.add(tripsService.findLocationById(locationId));
+            }
+            for (Location location : locs) {
                 JSONObject coordinates = new JSONObject();
                 coordinates.put("latitude", location.getLatitude());
                 coordinates.put("longitude", location.getLongitude());
@@ -654,14 +660,14 @@ public class TripController {
     @RequestMapping(value = "/tripPic/{tripId}", method = RequestMethod.GET, produces = "image/jpg")
     public
     @ResponseBody
-    byte[] showProfilePic(@PathVariable int tripId) {
+    byte[] showTripPic(@PathVariable int tripId) {
         byte[] imageData = null;
         try {
             User user = (User) session.getAttribute("user");
             Trip trip = tripsService.findTripById(tripId, user);
             imageData = trip.getImage();
         } catch (TripsException e) {
-            //trip not found or trip.getImage failed
+            return null;
         }
         return imageData;
     }
