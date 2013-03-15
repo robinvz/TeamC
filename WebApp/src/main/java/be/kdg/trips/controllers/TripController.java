@@ -81,7 +81,7 @@ public class TripController {
 
     @RequestMapping(value = "/trip/{tripId}/editTrip", method = RequestMethod.POST)
     public ModelAndView editTrip(@PathVariable int tripId, @RequestParam String title, @RequestParam String description,
-                                 @RequestParam boolean chatAllowed, @RequestParam boolean positionVisible){
+                                 @RequestParam boolean chatAllowed, @RequestParam boolean positionVisible) {
         try {
             User user = (User) session.getAttribute("user");
             Trip trip = tripsService.findTripById(tripId, user);
@@ -383,57 +383,49 @@ public class TripController {
         }
     }
 
-    @RequestMapping(value = "/startTrip/{tripId}", method = RequestMethod.GET)
+    @RequestMapping(value = "/users/startTrip/{tripId}", method = RequestMethod.GET)
     public ModelAndView startTrip(@PathVariable int tripId, Locale locale) {
         User user = (User) session.getAttribute("user");
-        if (isLoggedIn()) {
-            Trip trip = null;
-            Map map = new HashMap();
-            try {
-                trip = tripsService.findTripById(tripId, user);
-                tripsService.startTrip(trip, user);
-                map = putInMap(map, trip, "success", messageSource.getMessage("TripStarted", null, locale));
+        Trip trip = null;
+        Map map = new HashMap();
+        try {
+            trip = tripsService.findTripById(tripId, user);
+            tripsService.startTrip(trip, user);
+            map = putInMap(map, trip, "success", messageSource.getMessage("TripStarted", null, locale));
+            return new ModelAndView("tripView", map);
+        } catch (TripsException e) {
+            if (e.getMessage().contains("Trip with id")) {
+                return new ModelAndView("tripsView", "error", messageSource.getMessage("FindTripError", null, locale));
+            } else if (e.getMessage().contains("is already started")) {
+                map = putInMap(map, trip, "error", messageSource.getMessage("EnrollmentAlreadyStartedError", null, locale));
                 return new ModelAndView("tripView", map);
-            } catch (TripsException e) {
-                if (e.getMessage().contains("Trip with id")) {
-                    return new ModelAndView("tripsView", "error", messageSource.getMessage("FindTripError", null, locale));
-                } else if (e.getMessage().contains("is already started")) {
-                    map = putInMap(map, trip, "error", messageSource.getMessage("EnrollmentAlreadyStartedError", null, locale));
-                    return new ModelAndView("tripView", map);
-                } else {  //TODO:catch error for tb trip (trip is not active yet->cannot start)
-                    map = putInMap(map, trip, "error", messageSource.getMessage("EnrollmentUnExistingError", null, locale));
-                    return new ModelAndView("tripView", map);
-                }
+            } else {  //TODO:catch error for tb trip (trip is not active yet->cannot start)
+                map = putInMap(map, trip, "error", messageSource.getMessage("EnrollmentUnExistingError", null, locale));
+                return new ModelAndView("tripView", map);
             }
-        } else {
-            return new ModelAndView("loginView", "loginBean", new LoginBean());
         }
     }
 
-    @RequestMapping(value = "/stopTrip/{tripId}", method = RequestMethod.GET)
+    @RequestMapping(value = "/users/stopTrip/{tripId}", method = RequestMethod.GET)
     public ModelAndView endTrip(@PathVariable int tripId, Locale locale) {
         User user = (User) session.getAttribute("user");
-        if (isLoggedIn()) {
-            Trip trip = null;
-            Map map = new HashMap();
-            try {
-                trip = tripsService.findTripById(tripId, user);
-                tripsService.stopTrip(trip, user);
-                map = putInMap(map, trip, "success", messageSource.getMessage("TripStopped", null, locale));
+        Trip trip = null;
+        Map map = new HashMap();
+        try {
+            trip = tripsService.findTripById(tripId, user);
+            tripsService.stopTrip(trip, user);
+            map = putInMap(map, trip, "success", messageSource.getMessage("TripStopped", null, locale));
+            return new ModelAndView("tripView", map);
+        } catch (TripsException e) {
+            if (e.getMessage().contains("Trip with id")) {
+                return new ModelAndView("tripsView", "error", messageSource.getMessage("FindTripError", null, locale));
+            } else if (e.getMessage().contains("you haven't begun yet")) {
+                map = putInMap(map, trip, "error", messageSource.getMessage("StopTripError", null, locale));
                 return new ModelAndView("tripView", map);
-            } catch (TripsException e) {
-                if (e.getMessage().contains("Trip with id")) {
-                    return new ModelAndView("tripsView", "error", messageSource.getMessage("FindTripError", null, locale));
-                } else if (e.getMessage().contains("you haven't begun yet")) {
-                    map = putInMap(map, trip, "error", messageSource.getMessage("StopTripError", null, locale));
-                    return new ModelAndView("tripView", map);
-                } else {
-                    map = putInMap(map, trip, "error", messageSource.getMessage("EnrollmentUnExistingError", null, locale));
-                    return new ModelAndView("tripView", map);
-                }
+            } else {
+                map = putInMap(map, trip, "error", messageSource.getMessage("EnrollmentUnExistingError", null, locale));
+                return new ModelAndView("tripView", map);
             }
-        } else {
-            return new ModelAndView("loginView", "loginBean", new LoginBean());
         }
     }
 
@@ -614,7 +606,7 @@ public class TripController {
         User user = (User) session.getAttribute("user");
         if (isLoggedIn()) {
             try {
-                Map map = new HashMap() ;
+                Map map = new HashMap();
                 Trip trip = tripsService.findTripById(tripId, user);
                 map.put("trip", trip);
                 map.put("invitations", trip.getInvitations());
