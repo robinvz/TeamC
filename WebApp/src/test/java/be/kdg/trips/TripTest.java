@@ -5,6 +5,7 @@ import be.kdg.trips.controllers.TripController;
 import be.kdg.trips.model.address.Address;
 import be.kdg.trips.model.enrollment.Enrollment;
 import be.kdg.trips.model.location.Location;
+import be.kdg.trips.model.question.Question;
 import be.kdg.trips.model.trip.*;
 import org.mockito.Mockito;
 import be.kdg.trips.model.user.User;
@@ -373,7 +374,6 @@ public class TripTest {
         Trip t = new TimelessTrip(title, description, privacy, testUser);
         List<String> list = new ArrayList();
         list.add("hallo");
-        MockMultipartHttpServletRequest request = new MockMultipartHttpServletRequest();
         MockMultipartFile multipartFile = new MockMultipartFile("Hallo", "Hallo".getBytes());
         when(tripsService.findTripById(anyInt(), any(User.class))).thenReturn(t);
         ModelAndView mv = tc.createLocation(t.getId(), 0.0, 0.0, "street", "1", "city", "2000", "country", "title",
@@ -387,7 +387,6 @@ public class TripTest {
         Trip t = new TimelessTrip(title, description, privacy, testUser);
         List<String> list = new ArrayList();
         list.add("hallo");
-        MockMultipartHttpServletRequest request = new MockMultipartHttpServletRequest();
         MockMultipartFile multipartFile = new MockMultipartFile("Hallo", "Hallo".getBytes());
         when(tripsService.findTripById(anyInt(), any(User.class))).thenThrow(new TripsException("Could not find trip"));
         ModelAndView mv = tc.createLocation(t.getId(), 0.0, 0.0, "street", "1", "city", "2000", "country", "title",
@@ -1061,6 +1060,86 @@ public class TripTest {
     }
 
     @Test
+    public void addQuestionSuccess() throws Exception {
+        mockHttpSession.setAttribute("user", testUser);
+        Trip t = new TimelessTrip(title, description, privacy, testUser);
+        t.addLocation(new Location());
+        MockMultipartFile multipartFile = new MockMultipartFile("Hallo", "Hallo".getBytes());
+        when(tripsService.findTripById(anyInt(), any(User.class))).thenReturn(t);
+        when(tripsService.findLocationById(anyInt())).thenReturn(new Location());
+        ModelAndView mv = tc.addQuestion(anyInt(), anyInt(), "question", multipartFile, new ArrayList<String>(), "correctAnswer");
+        assertEquals(mv.getViewName(), "redirect:/trip/" + t.getId() + "/locations/" + t.getLocations().get(0).getId());
+        assertTrue(mv.getModel().containsKey("trip"));
+        assertEquals(mv.getModel().get("trip"), t);
+        assertTrue(mv.getModel().containsKey("location"));
+        assertEquals(mv.getModel().get("location"), t.getLocations().get(0));
+    }
+
+    @Test
+    public void addQuestionFail() throws Exception {
+        mockHttpSession.setAttribute("user", testUser);
+        Trip t = new TimelessTrip(title, description, privacy, testUser);
+        t.addLocation(new Location());
+        MockMultipartFile multipartFile = new MockMultipartFile("Hallo", "Hallo".getBytes());
+        when(tripsService.findTripById(anyInt(), any(User.class))).thenThrow(new TripsException("Could not find trip"));
+        ModelAndView mv = tc.addQuestion(anyInt(), anyInt(), "question", multipartFile, new ArrayList<String>(), "correctAnswer");
+        assertEquals(mv.getViewName(), "tripsView");
+    }
+
+    @Test
+    public void showQuestionPicSuccess() throws Exception{
+        mockHttpSession.setAttribute("user", testUser);
+        Trip t = new TimelessTrip(title, description, privacy, testUser);
+        Location l = new Location(t, 12.00, 13.00, null, "Location", "Aangename location1", 0);
+        t.addLocation(new Location());
+        byte[] b = new byte[1024];
+        l.addQuestion(new Question("question",new ArrayList<String>(),0,b));
+            RequestBuilder requestBuilder = MockMvcRequestBuilders.get("/trip/" + t.getId() + "/locations/" + 0 + "/questionPic");
+        when(tripsService.findLocationById(anyInt())).thenReturn(l);
+        mockMvc.perform(requestBuilder).andExpect(content().bytes(b));
+    }
+
+    @Test
+    public void showQuestionPicFail() throws Exception{
+        mockHttpSession.setAttribute("user", testUser);
+        Trip t = new TimelessTrip(title, description, privacy, testUser);
+        Location l = new Location(t, 12.00, 13.00, null, "Location", "Aangename location1", 0);
+        t.addLocation(new Location());
+        byte[] b = new byte[1024];
+        l.addQuestion(new Question("question",new ArrayList<String>(),0,b));
+        RequestBuilder requestBuilder = MockMvcRequestBuilders.get("/trip/" + t.getId() + "/locations/" + 0 + "/questionPic");
+        when(tripsService.findLocationById(0)).thenThrow(new TripsException("Could not find location"));
+        mockMvc.perform(requestBuilder).andExpect(content().bytes(new byte[0]));
+    }
+
+    @Test
+    public void editQuestionPicSuccess() throws Exception {
+        mockHttpSession.setAttribute("user", testUser);
+        Trip t = new TimelessTrip(title, description, privacy, testUser);
+        t.addLocation(new Location());
+        MockMultipartFile multipartFile = new MockMultipartFile("Hallo", "Hallo".getBytes());
+        when(tripsService.findTripById(anyInt(), any(User.class))).thenReturn(t);
+        when(tripsService.findLocationById(anyInt())).thenReturn(new Location());
+        ModelAndView mv = tc.editQuestionPic(anyInt(), anyInt(), multipartFile);
+        assertEquals(mv.getViewName(), "redirect:/trip/" + t.getId() + "/locations/" + t.getLocations().get(0).getId());
+        assertTrue(mv.getModel().containsKey("trip"));
+        assertEquals(mv.getModel().get("trip"), t);
+        assertTrue(mv.getModel().containsKey("location"));
+        assertEquals(mv.getModel().get("location"), t.getLocations().get(0));
+    }
+
+    @Test
+    public void editQuestionPicFail() throws Exception {
+        mockHttpSession.setAttribute("user", testUser);
+        Trip t = new TimelessTrip(title, description, privacy, testUser);
+        t.addLocation(new Location());
+        MockMultipartFile multipartFile = new MockMultipartFile("Hallo", "Hallo".getBytes());
+        when(tripsService.findTripById(anyInt(), any(User.class))).thenThrow(new TripsException("Could not find trip"));
+        ModelAndView mv = tc.editQuestionPic(anyInt(), anyInt(), multipartFile);
+        assertEquals(mv.getViewName(), "tripsView");
+    }
+
+    @Test
     public void deleteQuestionImageSuccess() throws Exception {
         mockHttpSession.setAttribute("user", testUser);
         Trip t = new TimelessTrip(title, description, privacy, testUser);
@@ -1277,7 +1356,7 @@ public class TripTest {
         MockMultipartFile multipartFile = new MockMultipartFile("Hallo", "Hallo".getBytes());
         when(tripsService.findTripById(anyInt(), any(User.class))).thenReturn(t);
         ModelAndView mv = tc.editTripPic(0, multipartFile, null);
-        assertEquals(mv.getViewName(), "users/editTripPicView");
+        assertEquals(mv.getViewName(), "/users/editTripPicView");
         assertTrue(mv.getModel().containsKey("trip"));
         assertEquals(mv.getModel().get("trip"), t);
     }
