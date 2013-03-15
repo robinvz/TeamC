@@ -137,9 +137,15 @@ public class TestTrip {
     @Test
     public void successfulCreateTimeBoundYearlyRepeatableTrip() throws ParseException, TripsException {
         User organizer = tripsService.createUser(new User("LouisPaul@toko.com","Jean"));
-        tripsService.createTimeBoundTrip("Herhaalbaar ieder jaar", "repeatable each year", TripPrivacy.PUBLIC, organizer, df.parse("14/12/2014"), df.parse("15/12/2014"), Repeatable.ANNUALLY, 1);
+        tripsService.createTimeBoundTrip("Herhaalbaar ieder jaar", "repeatable each year", TripPrivacy.PUBLIC, organizer, df.parse("14/12/2014"), df.parse("15/12/2014"), Repeatable.ANNUALLY, 2);
         List<Trip> trips = tripsService.findTripsByOrganizer(organizer);
-        assertEquals(2, trips.size());
+        assertEquals(3, trips.size());
+    }
+
+    @Test(expected = TripsException.class)
+    public void failedCreateTimeBoundYearlyRepeatableTrip() throws ParseException, TripsException {
+        User organizer = tripsService.createUser(new User("LouisPauly@toko.com","Jean"));
+        tripsService.createTimeBoundTrip("Herhaalbaar ieder jaar", "repeatable each year", TripPrivacy.PUBLIC, organizer, df.parse("14/12/2014"), df.parse("15/12/2014"), Repeatable.ANNUALLY, 16);
     }
 
     @Test(expected = TransactionSystemException.class)
@@ -265,10 +271,18 @@ public class TestTrip {
     }
 
     @Test
-    public void successfulFindTripById() throws TripsException
+    public void successfulFindTripByIdUser() throws TripsException
     {
         Trip createdTrip = tripsService.createTimelessTrip("Boswandeling 2", "Wandeling in bos", TripPrivacy.PROTECTED, organizer);
         Trip foundTrip = tripsService.findTripById(createdTrip.getId(), user);
+        assertEquals(createdTrip, foundTrip);
+    }
+
+    @Test
+    public void successfulFindTripByIdGuest() throws TripsException
+    {
+        Trip createdTrip = tripsService.createTimelessTrip("Boswandeling 2", "Wandeling in bos", TripPrivacy.PROTECTED, organizer);
+        Trip foundTrip = tripsService.findTripById(createdTrip.getId(), null);
         assertEquals(createdTrip, foundTrip);
     }
 

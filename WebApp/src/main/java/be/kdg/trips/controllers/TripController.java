@@ -81,7 +81,7 @@ public class TripController {
 
     @RequestMapping(value = "/trip/{tripId}/editTrip", method = RequestMethod.POST)
     public ModelAndView editTrip(@PathVariable int tripId, @RequestParam String title, @RequestParam String description,
-                                 @RequestParam boolean chatAllowed, @RequestParam boolean positionVisible){
+                                 @RequestParam boolean chatAllowed, @RequestParam boolean positionVisible) {
         try {
             User user = (User) session.getAttribute("user");
             Trip trip = tripsService.findTripById(tripId, user);
@@ -621,7 +621,7 @@ public class TripController {
         User user = (User) session.getAttribute("user");
         if (isLoggedIn()) {
             try {
-                Map map = new HashMap() ;
+                Map map = new HashMap();
                 Trip trip = tripsService.findTripById(tripId, user);
                 map.put("trip", trip);
                 map.put("invitations", trip.getInvitations());
@@ -668,14 +668,14 @@ public class TripController {
     @RequestMapping(value = "/tripPic/{tripId}", method = RequestMethod.GET, produces = "image/jpg")
     public
     @ResponseBody
-    byte[] showProfilePic(@PathVariable int tripId) {
+    byte[] showTripPic(@PathVariable int tripId) {
         byte[] imageData = null;
         try {
             User user = (User) session.getAttribute("user");
             Trip trip = tripsService.findTripById(tripId, user);
             imageData = trip.getImage();
         } catch (TripsException e) {
-            //trip not found or trip.getImage failed
+            return null;
         }
         return imageData;
     }
