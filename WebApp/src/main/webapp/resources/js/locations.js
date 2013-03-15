@@ -69,5 +69,8 @@ function getLatLng() {
 }
 
 function initDataTable() {
-    $('#locations-table').dataTable({ "bPaginate": false, "bInfo": false, "bAutoWidth": false });
+    $('#locations-table').dataTable({ 'bFilter': false, "bLengthChange": false, "bPaginate": false, "bInfo": false, "bAutoWidth": false })
+        .rowReordering({ sURL: "/trip/switchLocation" })
+        .makeEditable({sUpdateURL: "/trip/" + tripId + "/locations/editLocation",
+            sReadOnlyCellClass: "read_only"});
 }
