@@ -92,8 +92,11 @@
         <div id="mapcanvas" class="map-canvas"></div>
     </div>
 </div>
-<script src="${pageContext.request.contextPath}/resources/js/jquery-1.9.0.min.js"></script>
+<script src="http://code.jquery.com/jquery-1.8.3.min.js"></script>
 <script src="${pageContext.request.contextPath}/resources/js/jquery.dataTables.js"></script>
+<script src="//ajax.googleapis.com/ajax/libs/jqueryui/1.8.24/jquery-ui.min.js"></script>
+<script src="${pageContext.request.contextPath}/resources/js/jquery.dataTables.rowReordering.js"></script>
+<script src="${pageContext.request.contextPath}/resources/js/jquery.dataTables.editable.js"></script>
 <script src="http://maps.googleapis.com/maps/api/js?sensor=false"></script>
 <script src="${pageContext.request.contextPath}/resources/js/locations.js"></script>
 <script>
