@@ -23,7 +23,6 @@ public interface TripDao {
     public List<Trip> getProtectedTripsWithoutDetailsByKeyword(String keyword);
     public List<Trip> getTripsByOrganizer(User organizer);
     public Trip getTrip(int id) throws TripsException;
-    public Trip getTripByQuestion(Question question) throws TripsException;
     public Location getLocationById(int id) throws TripsException;
 
     public void saveTrip(Trip trip);

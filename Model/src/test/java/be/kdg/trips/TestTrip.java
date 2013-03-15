@@ -629,7 +629,7 @@ public class TestTrip {
     }
 
     @Test(expected = TripsException.class)
-    public void failedRemoveQuestionFromLocation() throws TripsException
+    public void failedRemoveQuestionFromLocationTwice() throws TripsException
     {
         Trip trip = tripsService.createTimelessTrip("Trip with removed questions", "Trip with removed questions", TripPrivacy.PROTECTED, organizer);
         List<String> possibleAnswers = new ArrayList<>();
