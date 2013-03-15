@@ -849,7 +849,7 @@ public class TripController {
                 }
                 tripsService.addQuestionToLocation(user, location, question, possibleAnswers, possibleAnswers.indexOf(correctAnswer), bFile);
             } catch (TripsException e) {
-                //trip.loc not found or failed to add q to loc
+                return new ModelAndView("tripsView");
             } catch (IOException e) {
                 //TODO: bfile is foute type (niet jpeg, gif of png)
             }
@@ -919,8 +919,9 @@ public class TripController {
         try {
             Location location = tripsService.findLocationById(locationId);
             return location.getQuestion().getImage();
-        } catch (TripsException e) { //location not found
-            return null;
+        } catch (TripsException e) {
+            // location not found
+            return new byte[0];
         }
     }
 
@@ -942,7 +943,7 @@ public class TripController {
     }
 
     @RequestMapping(value = "/trip/{tripId}/locations/{locationId}/editLocationPic", method = RequestMethod.POST)
-    public ModelAndView editLocationPic(@PathVariable int tripId, @PathVariable int locationId, @RequestParam("file") MultipartFile file) {
+    public ModelAndView editQuestionPic(@PathVariable int tripId, @PathVariable int locationId, @RequestParam("file") MultipartFile file) {
         Map parameters = new HashMap();
         User user = (User) session.getAttribute("user");
         Trip trip = null;
@@ -955,7 +956,9 @@ public class TripController {
                 parameters.put("location", location);
                 byte[] bFile = file.getBytes();
                 tripsService.editTripQuestionDetails(user, location, "", new ArrayList<String>(), null, bFile);
-            } catch (IOException | TripsException e) {
+            } catch (TripsException e) {
+                return new ModelAndView("tripsView");
+            } catch (IOException e) {
                 //TODO: tripsexception kan zijn: user bestaat niet of bfile is foute type (niet jpeg, gif of png)
             }
         } else {
