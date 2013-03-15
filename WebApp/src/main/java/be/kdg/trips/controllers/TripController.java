@@ -575,7 +575,7 @@ public class TripController {
                 jsonArray.add(coordinates);
             }
         } catch (TripsException e) {
-            //Trip not found
+            return "redirect:/trips";
         }
         return jsonArray.toString();
     }
