@@ -4,6 +4,7 @@ import be.kdg.trips.businessLogic.exception.TripsException;
 import be.kdg.trips.model.user.User;
 import be.kdg.trips.persistence.dao.interfaces.UserDao;
 import org.apache.log4j.Logger;
+import org.hibernate.exception.JDBCConnectionException;
 import org.springframework.stereotype.Repository;
 
 import javax.persistence.EntityManager;
@@ -32,17 +33,25 @@ public class UserDaoImpl implements UserDao {
     @Override
     public User getUser(String email) throws TripsException
     {
-        Query query = entityManager.createQuery("SELECT u FROM User u LEFT JOIN FETCH u.enrollments LEFT JOIN FETCH u.invitations WHERE u.email = :email");
-        query.setParameter("email", email.toLowerCase());
-        try
-        {
-            return (User)query.getSingleResult();
-        }
-        catch (NoResultException ex)
-        {
-            logger.warn("User with email " + email + " tried to log in, but was not registered in database");
-            throw new TripsException("User with email '"+email+"' doesn't exist");
-        }
+
+            Query query = entityManager.createQuery("SELECT u FROM User u LEFT JOIN FETCH u.enrollments LEFT JOIN FETCH u.invitations WHERE u.email = :email");
+            query.setParameter("email", email.toLowerCase());
+            try
+            {
+                return (User)query.getSingleResult();
+            }
+            catch (NoResultException ex)
+            {
+                logger.warn("User with email " + email + " tried to log in, but was not registered in database");
+                throw new TripsException("User with email '"+email+"' doesn't exist");
+            }
+            /*
+            catch (JDBCConnectionException connectionEx)
+            {
+                logger.fatal("Could not connect to database");
+                throw new RuntimeException("Could not connect to the database");
+            }
+            */
     }
 
     @Override

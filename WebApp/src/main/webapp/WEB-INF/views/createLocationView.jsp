@@ -51,6 +51,7 @@
                             <input id="location-question" name="question" type="text">
                             <input id="btn-picture" type="file" name="file" value="<spring:message code="LocationPicture"/>"/>
                             <div id="answers">
+                                <input name="possibleAnswers"/>
                             </div>
                             <label><spring:message code="AddAnswer"/>: </label>
                             <input id="new-answer" type="text">

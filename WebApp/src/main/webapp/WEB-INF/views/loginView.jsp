@@ -48,7 +48,6 @@
                 </tr>
             </table>
         </form:form>
-
             <script>
                 if (window.location.hash) {
                     var pathArray = window.location.pathname.split('/');
@@ -60,7 +59,6 @@
                     }
                 }
             </script>
-
     </div>
 
 </div>

@@ -1,5 +1,6 @@
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@ taglib prefix="spring" uri="http://www.springframework.org/tags" %>
+<%@ taglib prefix="sql" uri="http://java.sun.com/jsp/jstl/sql" %>
 
 <html>
 <head>
@@ -52,6 +53,7 @@
                     <th><spring:message code="Description" /></th>
                         <th><spring:message code="Type"/></th>
                     <th>Privacy</th>
+                    <th class="labels">Labels</th>
                 </tr>
                 </thead>
 
@@ -85,6 +87,13 @@
                                     <td>
                                             ${allNonPrivateTrip.privacy}
                                     </td>
+                                    <td class="labels">
+                                        <c:if test="${not empty allNonPrivateTrip.labels}">
+                                             <c:forEach items="${allNonPrivateTrip.labels}" var="label">
+                                                    ${label}
+                                             </c:forEach>
+                                        </c:if>
+                                    </td>
                                 </div>
                             </tr>
                         </c:forEach>
@@ -117,6 +126,13 @@
                                     <td>
                                             ${allPrivateTrip.privacy}
                                     </td>
+                                    <td class="labels">
+                                        <c:if test="${not empty allPrivateTrip.labels}">
+                                            <c:forEach items="${allPrivateTrip.labels}" var="label">
+                                                ${label}
+                                            </c:forEach>
+                                        </c:if>
+                                    </td>
                                 </div>
                             </tr>
                         </c:forEach>
@@ -133,6 +149,8 @@
                     <th><spring:message code="Description" /></th>
                     <th>Privacy</th>
                     <th><spring:message code="SubscriptionDate" /></th>
+                    <th class="labels">Labels</th>
+
                 </tr>
                 </thead>
 
@@ -161,6 +179,13 @@
                                     <td>
                                             ${enrollment.date}
                                     </td>
+                                    <td class="labels">
+                                        <c:if test="${not empty enrollment.trip.labels}">
+                                            <c:forEach items="${enrollment.trip.labels}" var="label">
+                                                ${label}
+                                            </c:forEach>
+                                        </c:if>
+                                    </td>
                                 </div>
                             </tr>
                         </c:forEach>
@@ -176,6 +201,7 @@
                     <th><spring:message code="Description" /></th>
                     <th>Privacy</th>
                     <th><spring:message code="Published" /></th>
+                    <th class="labels">Labels</th>
                 </tr>
                 </thead>
 
@@ -210,6 +236,13 @@
                                             <img src="${pageContext.request.contextPath}/resources/res/img/icons/false.png" alt="No" title="Not Published">
                                         </c:if>
 
+                                    </td>
+                                    <td class="labels">
+                                        <c:if test="${not empty organizedTrip.labels}">
+                                            <c:forEach items="${organizedTrip.labels}" var="label">
+                                                ${label}
+                                            </c:forEach>
+                                        </c:if>
                                     </td>
                                 </div>
                             </tr>

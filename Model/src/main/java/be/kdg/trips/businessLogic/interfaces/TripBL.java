@@ -53,8 +53,6 @@ public interface TripBL
     public void removeQuestionFromLocation(User organizer, Location location) throws TripsException;
     public void removeImageFromQuestion(User organizer, Question question) throws TripsException;
 
-    public Trip findTripByQuestion(Question question) throws TripsException;
-
     public boolean isExistingTrip(int id) throws TripsException;
     public boolean isExistingLocation(int id) throws TripsException;
     public boolean isOrganizer(Trip trip, User organizer) throws TripsException;

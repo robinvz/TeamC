@@ -637,11 +637,6 @@ public class TripBLImpl implements TripBL
     }
 
     @Override
-    public Trip findTripByQuestion(Question question) throws TripsException {
-        return tripDao.getTripByQuestion(question);
-    }
-
-    @Override
     public boolean isExistingTrip(int id) throws TripsException {
         return tripDao.isExistingTrip(id);
     }

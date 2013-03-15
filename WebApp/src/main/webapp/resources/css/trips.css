@@ -89,3 +89,6 @@ tr:hover{
     border-bottom: solid rgb(153, 170, 255) 4px;
 }
 
+.labels{
+    display: none;
+}
