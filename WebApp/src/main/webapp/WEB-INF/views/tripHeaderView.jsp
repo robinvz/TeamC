@@ -97,7 +97,7 @@
                     <li class="jump-in"><a href="/trip/${trip.id}/participants"><spring:message code="Participants"/></a></li>
                     <c:forEach items="${trip.enrollments}" var="enrollment">
                         <c:if test="${enrollment.user == user && enrollment.status == 'READY' || 'FINISHED'}">
-                            <li class="jump-in"><a href="/costs/${trip.id}"><spring:message code="Costs"/></a></li>
+                            <li class="jump-in"><a href="/users/costs/${trip.id}"><spring:message code="Costs"/></a></li>
                             <li class="jump-in"><a href="/users/startTrip/${tripId}">Start trip</a></li>
                         </c:if>
                         <c:if test="${enrollment.user == user && enrollment.status == 'BUSY'}">
