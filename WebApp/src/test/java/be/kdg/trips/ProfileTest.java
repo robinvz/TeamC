@@ -14,15 +14,22 @@ import org.mockito.MockitoAnnotations;
 import org.mockito.runners.MockitoJUnitRunner;
 import org.springframework.context.MessageSource;
 import org.springframework.mock.web.MockHttpSession;
+import org.springframework.mock.web.MockMultipartFile;
+import org.springframework.mock.web.MockMultipartHttpServletRequest;
 import org.springframework.test.util.ReflectionTestUtils;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.RequestBuilder;
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
+import org.springframework.web.multipart.MultipartFile;
+import org.springframework.web.servlet.ModelAndView;
 
 import static org.junit.Assert.*;
 import static org.mockito.Matchers.any;
+import static org.mockito.Matchers.isNotNull;
+import static org.mockito.Matchers.isNull;
 import static org.mockito.Mockito.when;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.view;
 
 /**
@@ -160,6 +167,27 @@ public class ProfileTest {
         RequestBuilder requestBuilder = MockMvcRequestBuilders.get("/users/editProfilePic");
         mockMvc.perform(requestBuilder).andExpect(view().name("/users/editProfilePicView"));
     }
+
+
+    @Test
+    public void editProfilePic() throws Exception{
+        MockMultipartFile multipartFile = new MockMultipartFile("Hallo", "Hallo".getBytes());
+        String str = pc.editProfilePic(multipartFile) ;
+        assertEquals(str, "/users/profileView");
+    }
+
+    @Test
+    public void showProfilePic() throws Exception{
+        mockHttpSession.setAttribute("user", testUser);
+        User u = (User) mockHttpSession.getAttribute("user");
+        byte[] b = new byte[1024];
+        u.setProfilePicture(b);
+        RequestBuilder requestBuilder = MockMvcRequestBuilders.get("/users/profilePic") ;
+       // when(tripsService.findTripById(1, testUser)).thenThrow(new TripsException("Error"));
+        mockMvc.perform(requestBuilder).andExpect(content().bytes(b));
+    }
+
+
     /*
     @Test
     public void editProfilePic() throws Exception {

@@ -684,7 +684,7 @@ public class TripController {
         return imageData;
     }
 
-    @RequestMapping(value = "/editTripPic/{tripId}", method = RequestMethod.POST)
+    @RequestMapping(value = "/users/editTripPic/{tripId}", method = RequestMethod.POST)
     public ModelAndView editTripPic(@PathVariable int tripId, @RequestParam("file") MultipartFile file, Locale locale) {
         Trip trip = null;
         try {
@@ -692,7 +692,7 @@ public class TripController {
             User user = (User) session.getAttribute("user");
             trip = tripsService.findTripById(tripId, user);
             tripsService.addImageToTrip(trip, user, bFile);
-            return new ModelAndView("users/editTripPicView", "trip", trip);
+            return new ModelAndView("/users/editTripPicView", "trip", trip);
         } catch (IOException | TripsException e) {
             return new ModelAndView("tripsView", "error", e.getMessage());
         }
