@@ -25,16 +25,11 @@ import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 import org.springframework.web.servlet.ModelAndView;
 
 import javax.mail.MessagingException;
-import javax.servlet.http.HttpServletRequest;
-import java.io.IOException;
-import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.*;
 
 import static org.junit.Assert.*;
 import static org.mockito.Matchers.*;
-import static org.mockito.Mockito.doThrow;
-import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 
@@ -1271,7 +1266,6 @@ public class TripTest {
         mockMvc.perform(requestBuilder).andExpect(view().name("locationsView"));
     }
 
-
     @Test
     public void testEditTripPic() throws TripsException {
         Trip t = new TimelessTrip(title, description, privacy, testUser);
@@ -1287,9 +1281,6 @@ public class TripTest {
 
     @Test
     public void testEditTripPicFailTripsException() throws TripsException {
-        Trip t = new TimelessTrip(title, description, privacy, testUser);
-        MockMultipartHttpServletRequest request = new MockMultipartHttpServletRequest();
-        MockMultipartHttpServletRequest mockMultipartHttpServletRequest = (MockMultipartHttpServletRequest) request;
         MockMultipartFile multipartFile = new MockMultipartFile("Hallo", "Hallo".getBytes());
         when(tripsService.findTripById(anyInt(), any(User.class))).thenThrow(new TripsException("Fail"));
         ModelAndView mv = tc.editTripPic(0, multipartFile, null);
