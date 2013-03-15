@@ -105,7 +105,7 @@ public class EnrollmentBLImpl implements EnrollmentBL
             }
             else
             {
-                throw new TripsException("You can't disenroll from a trip that is currently active");
+                throw new TripsException("You can't disenroll from a timebound trip that is currently active");
             }
         }
         else
@@ -177,7 +177,7 @@ public class EnrollmentBLImpl implements EnrollmentBL
             }
             else
             {
-                throw new TripsException("Trip is already active, not private, organizer/user doesn't exist or organizer doesn't match with the trip's organizer");
+                throw new TripsException("Trip is already active or not private");
             }
         }
         return invitation;
@@ -258,7 +258,7 @@ public class EnrollmentBLImpl implements EnrollmentBL
                 }
                 else
                 {
-                    throw new TripsException("Organizer/user doesn't exist, organizer doesn't match with the trip's organizer or user already accepted the invitation");
+                    throw new TripsException("User already accepted the invitation");
                 }
             }
         }
@@ -474,7 +474,7 @@ public class EnrollmentBLImpl implements EnrollmentBL
             }
             else
             {
-                throw new TripsException("Trip is either not published, already active");
+                throw new TripsException("Trip is either not published or already active");
             }
         }
         return enrollment;

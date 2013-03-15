@@ -1,6 +1,7 @@
 package be.kdg.trips;
 
 import be.kdg.trips.businessLogic.exception.TripsException;
+import be.kdg.trips.model.address.Address;
 import be.kdg.trips.model.location.Location;
 import be.kdg.trips.model.question.Question;
 import be.kdg.trips.model.trip.*;
@@ -371,12 +372,75 @@ public class TestTrip {
     }
 
     @Test
-    public void successfulEditTripLocation() throws TripsException
+    public void successfulEditTripLocationHouseNr() throws TripsException
     {
         Trip trip = tripsService.createTimelessTrip("Trip1", "TripDescription", TripPrivacy.PUBLIC, user);
         Location location1 = tripsService.addLocationToTrip(user, trip, 10.12131, 10.12131, "Nationalestraat", "1", "Antwerp", "2000", "Belgium", "Titel", "Lange straat met tramspoor");
         tripsService.editTripLocationDetails(user, trip, location1, "", "2", "", "", "", "", "");
         assertTrue(tripsService.findTripById(trip.getId(), user).getLocations().get(FIRST_ELEMENT).getAddress().getHouseNr().equals("2"));
+    }
+
+    @Test
+    public void successfulEditTripLocationStreet() throws TripsException
+    {
+        Trip trip = tripsService.createTimelessTrip("Trip1", "TripDescription", TripPrivacy.PUBLIC, user);
+        Location location1 = tripsService.addLocationToTrip(user, trip, 10.12131, 10.12131, "Nationalestraat", "1", "Antwerp", "2000", "Belgium", "Titel", "Lange straat met tramspoor");
+        tripsService.editTripLocationDetails(user, trip, location1, "Boulevard", "", "", "", "", "", "");
+        assertTrue(tripsService.findTripById(trip.getId(), user).getLocations().get(FIRST_ELEMENT).getAddress().getStreet().equals("Boulevard"));
+    }
+
+    @Test
+    public void successfulEditTripLocationCity() throws TripsException
+    {
+        Trip trip = tripsService.createTimelessTrip("Trip1", "TripDescription", TripPrivacy.PUBLIC, user);
+        Location location1 = tripsService.addLocationToTrip(user, trip, 10.12131, 10.12131, "Nationalestraat", "1", "Antwerp", "2000", "Belgium", "Titel", "Lange straat met tramspoor");
+        tripsService.editTripLocationDetails(user, trip, location1, "", "", "Ekeren", "", "", "", "");
+        assertTrue(tripsService.findTripById(trip.getId(), user).getLocations().get(FIRST_ELEMENT).getAddress().getCity().equals("Ekeren"));
+    }
+
+    @Test
+    public void successfulEditTripLocationPostalCode() throws TripsException
+    {
+        Trip trip = tripsService.createTimelessTrip("Trip1", "TripDescription", TripPrivacy.PUBLIC, user);
+        Location location1 = tripsService.addLocationToTrip(user, trip, 10.12131, 10.12131, "Nationalestraat", "1", "Antwerp", "2000", "Belgium", "Titel", "Lange straat met tramspoor");
+        tripsService.editTripLocationDetails(user, trip, location1, "", "", "", "2180", "", "", "");
+        assertTrue(tripsService.findTripById(trip.getId(), user).getLocations().get(FIRST_ELEMENT).getAddress().getPostalCode().equals("2180"));
+    }
+
+    @Test
+    public void successfulEditTripLocationCountry() throws TripsException
+    {
+        Trip trip = tripsService.createTimelessTrip("Trip1", "TripDescription", TripPrivacy.PUBLIC, user);
+        Location location1 = tripsService.addLocationToTrip(user, trip, 10.12131, 10.12131, "Nationalestraat", "1", "Antwerp", "2000", "Belgium", "Titel", "Lange straat met tramspoor");
+        tripsService.editTripLocationDetails(user, trip, location1, "", "", "", "", "Nederland", "", "");
+        assertTrue(tripsService.findTripById(trip.getId(), user).getLocations().get(FIRST_ELEMENT).getAddress().getCountry().equals("Nederland"));
+    }
+
+    @Test
+    public void successfulEditTripLocationTitle() throws TripsException
+    {
+        Trip trip = tripsService.createTimelessTrip("Trip1", "TripDescription", TripPrivacy.PUBLIC, user);
+        Location location1 = tripsService.addLocationToTrip(user, trip, 10.12131, 10.12131, "Nationalestraat", "1", "Antwerp", "2000", "Belgium", "Titel", "Lange straat met tramspoor");
+        tripsService.editTripLocationDetails(user, trip, location1, "", "", "", "", "", "title", "");
+        assertTrue(tripsService.findTripById(trip.getId(), user).getLocations().get(FIRST_ELEMENT).getTitle().equals("title"));
+    }
+
+    @Test
+    public void successfulEditTripLocationDescription() throws TripsException
+    {
+        Trip trip = tripsService.createTimelessTrip("Trip1", "TripDescription", TripPrivacy.PUBLIC, user);
+        Location location1 = tripsService.addLocationToTrip(user, trip, 10.12131, 10.12131, "Nationalestraat", "1", "Antwerp", "2000", "Belgium", "Titel", "Lange straat met tramspoor");
+        tripsService.editTripLocationDetails(user, trip, location1, "", "", "", "", "", "", "description");
+        assertTrue(tripsService.findTripById(trip.getId(), user).getLocations().get(FIRST_ELEMENT).getDescription().equals("description"));
+    }
+
+    @Test(expected = TripsException.class)
+    public void failedEditTripLocationInvalidLocation() throws TripsException
+    {
+        Trip trip = tripsService.createTimelessTrip("Trip1", "TripDescription", TripPrivacy.PUBLIC, user);
+        Location realLocation = tripsService.addLocationToTrip(user, trip, 10.12131, 10.12131, "Nationalestraat", "1", "Antwerp", "2000", "Belgium", "Titel", "Lange straat met tramspoor");
+        Location falseLocation = new Location(trip, 12.1, 12.12, new Address(), "titl", "desc", 2);
+        tripsService.editTripLocationDetails(user, trip, falseLocation, "", "", "", "", "", "", "newDesc");
     }
 
     @Test
@@ -684,14 +748,24 @@ public class TestTrip {
         possibleAnswers.add("Keke");
         tripsService.addLocationToTrip(organizer, trip, 10.12131, 10.12131, "Nationalestraat", null, "Antwerp", "2000", "Belgium", "Titel", "Lange straat met tramspoor", "Wie is hier den baas?", possibleAnswers, 0, null);
         Location location = tripsService.findTripById(trip.getId(),organizer).getLocations().get(FIRST_ELEMENT);
-        tripsService.editTripQuestionDetails(organizer, location, "", null, SECOND_ELEMENT, null);
+        possibleAnswers.add("Robin");
+        tripsService.editTripQuestionDetails(organizer, location, "", possibleAnswers, SECOND_ELEMENT, null);
         Question question = tripsService.findTripById(trip.getId(), organizer).getLocations().get(FIRST_ELEMENT).getQuestion();
         boolean correct = true;
         if(!question.getQuestion().equals("Wie is hier den baas?")) correct = false;
-        if(question.getPossibleAnswers().size()!=possibleAnswers.size()) correct = false;
+        if(question.getPossibleAnswers().size()!=3) correct = false;
         if(!question.checkAnswer(SECOND_ELEMENT)) correct = false;
         if(question.getCorrectAnswerIndex()!=SECOND_ELEMENT) correct = false;
         assertTrue(correct);
+    }
+
+    @Test(expected = TripsException.class)
+    public void failedEditQuestionDetailsNoQuestion() throws TripsException
+    {
+        Trip trip = tripsService.createTimelessTrip("Trip with added questions", "Trip with added questions", TripPrivacy.PROTECTED, organizer);
+        tripsService.addLocationToTrip(organizer, trip, 10.12131, 10.12131, "Nationalestraat", null, "Antwerp", "2000", "Belgium", "Titel", "Lange straat met tramspoor");
+        Location location = tripsService.findTripById(trip.getId(),organizer).getLocations().get(FIRST_ELEMENT);
+        tripsService.editTripQuestionDetails(organizer, location, "", null, SECOND_ELEMENT, null);
     }
 
     @Test

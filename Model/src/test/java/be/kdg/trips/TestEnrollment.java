@@ -1,6 +1,7 @@
 package be.kdg.trips;
 
 import be.kdg.trips.businessLogic.exception.TripsException;
+import be.kdg.trips.model.address.Address;
 import be.kdg.trips.model.enrollment.Enrollment;
 import be.kdg.trips.model.enrollment.Status;
 import be.kdg.trips.model.invitation.Answer;
@@ -22,8 +23,7 @@ import javax.validation.ConstraintViolationException;
 import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
-import java.util.ArrayList;
-import java.util.List;
+import java.util.*;
 
 import static org.junit.Assert.*;
 
@@ -94,6 +94,20 @@ public class TestEnrollment
         tripsService.subscribe(trip, subscriber);
     }
 
+    @Test(expected = TripsException.class)
+    public void failedSubscribeTripAlreadyStarted() throws TripsException
+    {
+        User user = tripsService.createUser(new User("duvel.mortgat@hotmail.com","paard"));
+        Calendar calendar = Calendar.getInstance();
+        calendar.setTime(new Date());
+        calendar.add(Calendar.SECOND, 1);
+        Date startDate = calendar.getTime();
+        calendar.add(Calendar.YEAR, 1);
+        Date endDate = calendar.getTime();
+        Trip trip = tripsService.createTimeBoundTrip("Paus Fransiscus", "Pontifex", TripPrivacy.PROTECTED, organizer, startDate, endDate, null, null);
+        tripsService.subscribe(trip, user);
+    }
+
     @Test
     public void successfulDisenrollProtectedTrip() throws TripsException
     {
@@ -128,6 +142,17 @@ public class TestEnrollment
     public void failedDisenrollIsOrganizer() throws TripsException {
         Trip trip = tripsService.createTimelessTrip("zalt gaan ja", "dimitri de tremmerie", TripPrivacy.PROTECTED, organizer);
         tripsService.disenroll(trip, organizer);
+    }
+
+    @Test(expected = TripsException.class)
+    public void failedDisenrollEnrollmentAlreadyStarted() throws TripsException
+    {
+        User user = tripsService.createUser(new User("kriek.lindemans@hotmail.com","paard"));
+        Trip trip = tripsService.createTimelessTrip("Paus Fransiscus", "Pontifex", TripPrivacy.PROTECTED, organizer);
+        tripsService.publishTrip(trip, organizer);
+        tripsService.subscribe(trip, user);
+        tripsService.startTrip(trip, user);
+        tripsService.disenroll(trip, user);
     }
 
     @Test
@@ -291,6 +316,18 @@ public class TestEnrollment
         tripsService.setLastLocationVisited(trip, user, loc1);
     }
 
+    @Test(expected = TripsException.class)
+    public void failedSetLastLocationVisitedInvalidLocation() throws TripsException {
+        User user = tripsService.createUser(new User("testosteron@hotmail.com","pass"));
+        Trip trip = tripsService.createTimelessTrip("Spartacus run", "Lopen door de modder!", TripPrivacy.PROTECTED, organizer);
+        Location realLocation = tripsService.addLocationToTrip(organizer, trip, 12.00, 160.00, null, null, null, null, null, "Loc1", "Location1");
+        tripsService.publishTrip(trip,organizer);
+        tripsService.subscribe(trip, user);
+        tripsService.setLastLocationVisited(trip, user, realLocation);
+        Location falseLocation = new Location(trip, 12.12, 12.23, new Address(),"title","description",2);
+        tripsService.setLastLocationVisited(trip, user, falseLocation);
+    }
+
     @Test
     public void successfulAddRequisiteToEnrollment() throws TripsException
     {
@@ -448,6 +485,19 @@ public class TestEnrollment
         tripsService.startTrip(createdTrip, organizer);
     }
 
+    @Test(expected = TripsException.class)
+    public void failedStartTripNotActive() throws TripsException {
+        Calendar calendar = Calendar.getInstance();
+        calendar.setTime(new Date());
+        calendar.add(Calendar.YEAR, 1);
+        Date startDate = calendar.getTime();
+        calendar.add(Calendar.YEAR, 2);
+        Date endDate = calendar.getTime();
+        Trip trip = tripsService.createTimeBoundTrip("Paus Fransiscus", "Pontifex", TripPrivacy.PROTECTED, organizer, startDate, endDate, null, null);
+        tripsService.publishTrip(trip, organizer);
+        tripsService.startTrip(trip, organizer);
+    }
+
     @Test
     public void successfulStopTrip() throws TripsException {
         User organizer = tripsService.createUser(new User("danslajeeenflater@msn.com","herr"));
@@ -465,14 +515,6 @@ public class TestEnrollment
         tripsService.publishTrip(createdTrip, organizer);
         tripsService.startTrip(createdTrip, organizer);
         tripsService.stopTrip(createdTrip, organizer);
-        tripsService.stopTrip(createdTrip, organizer);
-    }
-
-    @Test(expected = TripsException.class)
-    public void failedStopTripNotStarted() throws TripsException {
-        User organizer = tripsService.createUser(new User("danslajeeenflater@msn.com","herr"));
-        Trip createdTrip = tripsService.createTimelessTrip("Trip", "trip ", TripPrivacy.PROTECTED, organizer);
-        tripsService.publishTrip(createdTrip, organizer);
         tripsService.stopTrip(createdTrip, organizer);
     }
 
