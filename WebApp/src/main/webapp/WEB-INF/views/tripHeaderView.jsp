@@ -105,23 +105,22 @@
                         </c:if>
                     </c:forEach>
                 </c:if>
-                <li><strong>Chat</strong></li>
-                <li class="jump-in"><a href="#">Chat</a></li>
+
             </c:if>
             <c:if test="${not empty user && trip.organizer == user}">
                 <li><strong>Admin Tools</strong></li>
-                <li class="jump-in"><a href="/labels/${trip.id}">Labels</a></li>
-                <li class="jump-in"><a href="/editTripPic/${trip.id}"><spring:message code="EditTripHeader"/></a></li>
+                <li class="jump-in"><a href="/users/labels/${trip.id}">Labels</a></li>
+                <li class="jump-in"><a href="/users/editTripPic/${trip.id}"><spring:message code="EditTripHeader"/></a></li>
                 <c:if test="${trip.published == false}">
-                    <li class="jump-in"><a href="/publishTrip/${trip.id}"><spring:message code="Publish"/></a></li>
+                    <li class="jump-in"><a href="users/publishTrip/${trip.id}"><spring:message code="Publish"/></a></li>
                 </c:if>
                 <c:if test="${trip.privacy == 'PRIVATE'}">
-                    <li class="jump-in"><a href="/inviteUser/${trip.id}"><spring:message code="InviteUsers"/></a></li>
+                    <li class="jump-in"><a href="users/inviteUser/${trip.id}"><spring:message code="InviteUsers"/></a></li>
                 </c:if>
                 <c:if test="${trip.timeBoundTrip==true}">
-                    <li class="jump-in"><a href="/addDate/${trip.id}"><spring:message code="AddDate"/></a></li>
+                    <li class="jump-in"><a href="/users/addDate/${trip.id}"><spring:message code="AddDate"/></a></li>
                 </c:if>
-                <li class="jump-in"><a href="/deleteTrip/${trip.id}"><spring:message code="Delete"/></a></li>
+                <li class="jump-in"><a href="/users/deleteTrip/${trip.id}"><spring:message code="Delete"/></a></li>
             </c:if>
         </ul>
     </nav>
