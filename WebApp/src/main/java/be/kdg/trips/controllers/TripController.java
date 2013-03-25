@@ -399,8 +399,11 @@ public class TripController {
             } else if (e.getMessage().contains("is already started")) {
                 map = putInMap(map, trip, "error", messageSource.getMessage("EnrollmentAlreadyStartedError", null, locale));
                 return new ModelAndView("tripView", map);
-            } else {  //TODO:catch error for tb trip (trip is not active yet->cannot start)
+            } else if (e.getMessage().contains("exist")) {
                 map = putInMap(map, trip, "error", messageSource.getMessage("EnrollmentUnExistingError", null, locale));
+                return new ModelAndView("tripView", map);
+            } else {
+                map = putInMap(map, trip, "error", messageSource.getMessage("TripNotActiveError", null, locale));
                 return new ModelAndView("tripView", map);
             }
         }
