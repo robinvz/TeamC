@@ -9,9 +9,6 @@
 <head>
     <link rel="stylesheet" href="${pageContext.request.contextPath}/resources/css/main.css"/>
     <link rel="stylesheet" href="${pageContext.request.contextPath}/resources/css/login.css"/>
-    <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.6/jquery.min.js"></script>
-    <script src="jquery.motionCaptcha.0.2.min.js"></script>
-    <link href="jquery.motionCaptcha.0.2.css">
     <title><spring:message code="RetrievePassword"/></title>
 </head>
 <body>
@@ -33,9 +30,6 @@
             </tr>
             <tr>
                 <td colspan="2">
-                    <script type="text/javascript"
-                            src="http://api.recaptcha.net/challenge?k=6LfJ2N4SAAAAAJWDZEtWCVKRHKmQyWWLst5VIDeF">
-                    </script>
                     <noscript>
                         <iframe src="http://api.recaptcha.net/noscript?k=6LfJ2N4SAAAAAJWDZEtWCVKRHKmQyWWLst5VIDeF"
                                 height="300" width="500" frameborder="0"></iframe><br>
@@ -55,6 +49,6 @@
 
     </form>
 </div>
-
+<script type="text/javascript" src="http://api.recaptcha.net/challenge?k=6LfJ2N4SAAAAAJWDZEtWCVKRHKmQyWWLst5VIDeF"></script>
 </body>
 </html>

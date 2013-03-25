@@ -128,4 +128,11 @@ public class ProfileController {
         }
     }
 
+    @RequestMapping(value = "/users/viewTripsHistory", method = RequestMethod.GET)
+    public String editProfile()
+    {
+        return "/users/tripsHistoryView";
+    }
+
+
 }
