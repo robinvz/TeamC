@@ -16,7 +16,7 @@
     <div class="inner-content">
         <section>
             <article>
-                <h3>Change picture</h3>
+                <h3><spring:message code="EditPicture"/></h3>
 
                 <div class="trip-general">
 
