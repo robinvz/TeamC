@@ -1,4 +1,5 @@
 <%@ taglib prefix="spring" uri="http://www.springframework.org/tags" %>
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 
 <html>
 <head>
@@ -13,29 +14,28 @@
     <jsp:include page="profileHeaderView.jsp"/>
 
     <div class="content">
-        <h2><spring:message code="EditPwFor"/> ${user.firstName} ${user.lastName}</h2>
-
+        <h2><spring:message code="EditPassword"/></h2>
+        <c:if test="${error != null}">
+            <span class="errorblock">${error}</span>
+        </c:if>
         <form action="/users/editCredentials" method="POST">
             <table>
                 <tr>
-                    <td>
-                        <label><spring:message code="OldPassword"/></label>
-                    </td>
-
-                    <td>
-                        <input type="password" name="oldPassword">
-                    </td>
+                    <td><spring:message code="OldPassword"/></td>
+                    <td><input type="password" name="oldPassword"></td>
                 </tr>
                 <tr>
-                    <td>
-                        <label><spring:message code="NewPassword"/></label>
-                    </td>
-
-                    <td>
-                        <input type="password" name="newPassword">
-                    </td>
+                    <td><spring:message code="NewPassword"/></td>
+                    <td><input type="password" name="newPassword1"></td>
                 </tr>
-                <input id="btn-save" type="submit" value="<spring:message code="Save" />" class="btn-blue">
+                <tr>
+                    <td><spring:message code="NewPassword"/></td>
+                    <td><input type="password" name="newPassword2"></td>
+                </tr>
+                <tr>
+                    <td></td>
+                    <td><input id="btn-save" type="submit" value="<spring:message code="Save" />" class="btn-blue"></td>
+                </tr>
             </table>
         </form>
     </div>
