@@ -30,6 +30,7 @@
             </tr>
             <tr>
                 <td colspan="2">
+                    <script type="text/javascript" src="http://api.recaptcha.net/challenge?k=6LfJ2N4SAAAAAJWDZEtWCVKRHKmQyWWLst5VIDeF"></script>
                     <noscript>
                         <iframe src="http://api.recaptcha.net/noscript?k=6LfJ2N4SAAAAAJWDZEtWCVKRHKmQyWWLst5VIDeF"
                                 height="300" width="500" frameborder="0"></iframe><br>
@@ -49,6 +50,5 @@
 
     </form>
 </div>
-<script type="text/javascript" src="http://api.recaptcha.net/challenge?k=6LfJ2N4SAAAAAJWDZEtWCVKRHKmQyWWLst5VIDeF"></script>
 </body>
 </html>
