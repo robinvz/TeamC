@@ -6,8 +6,11 @@ import be.kdg.trips.businessLogic.exception.TripsException;
 import be.kdg.trips.model.user.User;
 import be.kdg.trips.services.interfaces.TripsService;
 import net.sf.json.JSONObject;
+import net.tanesha.recaptcha.ReCaptchaImpl;
+import net.tanesha.recaptcha.ReCaptchaResponse;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.propertyeditors.StringTrimmerEditor;
+import org.springframework.context.MessageSource;
 import org.springframework.stereotype.Controller;
 import org.springframework.validation.BindingResult;
 import org.springframework.validation.ObjectError;
@@ -16,9 +19,11 @@ import org.springframework.web.bind.WebDataBinder;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
 
+import javax.mail.MessagingException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 import javax.validation.Valid;
+import java.util.Locale;
 
 
 /**
@@ -31,6 +36,9 @@ import javax.validation.Valid;
 public class LoginController {
     @Autowired
     LoginValidator loginValidator;
+
+    @Autowired
+    private MessageSource messageSource;
 
     @InitBinder
     protected void initBinder(HttpServletRequest request, ServletRequestDataBinder binder) throws Exception {
@@ -106,6 +114,52 @@ public class LoginController {
             return "redirect:/";
         }
         return "redirect:/";
+    }
+
+    @RequestMapping(value = "/retrievePassword", method = RequestMethod.GET)
+    public String forgotPassword()
+    {
+        return "retrievePasswordView";
+    }
+
+    @RequestMapping(value = "/retrievePassword", method = RequestMethod.POST)
+    public ModelAndView retrievePassword(HttpServletRequest req,
+                                         @RequestParam String email, @RequestParam("recaptcha_challenge_field") String challenge,
+                                         @RequestParam("recaptcha_response_field") String response, Locale locale)
+    {
+        String remoteAddr = req.getRemoteAddr();
+        ReCaptchaImpl reCaptcha = new ReCaptchaImpl();
+        reCaptcha.setPrivateKey("6LfJ2N4SAAAAAEk4MsvrkJp3V6_5RiJWhTM5bCso");
+
+        if(response==null)
+        {
+            return new ModelAndView("retrievePasswordView", "error", messageSource.getMessage("CaptchaError",null, locale));
+        }
+
+        ReCaptchaResponse reCaptchaResponse = reCaptcha.checkAnswer(remoteAddr, challenge, response);
+
+        if (reCaptchaResponse.isValid())
+        {
+            if(email!=null)
+            {
+                try{
+                    tripsService.forgotPassword(email);
+                } catch (TripsException e) {
+                    //User doesn't exist - Don't show!
+                } catch (MessagingException e) {
+                    return new ModelAndView("retrievePasswordView", "error", messageSource.getMessage("MessageError", null, locale));
+                }
+            }
+            else
+            {
+                return new ModelAndView("retrievePasswordView", "error", messageSource.getMessage("EmptyEmail", null, locale));
+            }
+        }
+        else
+        {
+            return new ModelAndView("retrievePasswordView", "error", messageSource.getMessage("CaptchaError",null, locale));
+        }
+        return new ModelAndView("loginView", "loginBean", new LoginBean());
     }
 
     @RequestMapping(value = "/login/{tripId}", method = RequestMethod.POST)

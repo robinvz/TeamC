@@ -46,6 +46,12 @@
                         <button class="btn-blue" type="submit"><spring:message code="LogIn" /></button>
                     </td>
                 </tr>
+                <tr>
+                    <td></td>
+                    <td>
+                        <a href="retrievePassword"><spring:message code="forgotPassword"/></a>
+                    </td>
+                </tr>
             </table>
         </form:form>
             <script>
