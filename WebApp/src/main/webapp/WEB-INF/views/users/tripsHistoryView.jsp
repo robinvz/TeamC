@@ -15,26 +15,34 @@
         <div class="content">
             <h2><spring:message code="TripsHistory"/></h2>
             <p>Please be aware that public trips don't require any kind of authentication and therefore aren't shown in trips history</p>
-            <table class="tables">
-                <thead>
-                <tr>
-                    <th>Title</th>
-                    <th>Description</th>
-                    <th>Enrollment date</th>
-                    <th>Status</th>
-                </tr>
-                </thead>
-                <tbody>
-                <c:forEach items="${user.enrollments}" var="enrollment">
-                   <tr>
-                       <td>${enrollment.trip.title}</td>
-                       <td>${enrollment.trip.description}</td>
-                       <td>${enrollment.date}</td>
-                       <td>${enrollment.status}</td>
-                   </tr>
-                </c:forEach>
-                </tbody>
-            </table>
+
+            <c:choose>
+                <c:when test="${empty user.enrollments}">
+                    <p>You haven't subscribed for any trip yet. You better hurry before it's too late!</p>
+                </c:when>
+                <c:otherwise>
+                    <table class="tables">
+                        <thead>
+                        <tr>
+                            <th>Title</th>
+                            <th>Description</th>
+                            <th>Enrollment date</th>
+                            <th>Status</th>
+                        </tr>
+                        </thead>
+                        <tbody>
+                        <c:forEach items="${user.enrollments}" var="enrollment">
+                            <tr>
+                                <td>${enrollment.trip.title}</td>
+                                <td>${enrollment.trip.description}</td>
+                                <td>${enrollment.date}</td>
+                                <td>${enrollment.status}</td>
+                            </tr>
+                        </c:forEach>
+                        </tbody>
+                    </table>
+                </c:otherwise>
+            </c:choose>
         </div>
     </div>
     <script src="${pageContext.request.contextPath}/resources/js/jquery-1.9.0.min.js"></script>
