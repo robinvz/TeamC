@@ -6,6 +6,8 @@
 <head>
     <link rel="stylesheet" href="${pageContext.request.contextPath}/resources/css/main.css"/>
     <link rel="stylesheet" href="${pageContext.request.contextPath}/resources/css/trips.css"/>
+    <link rel="stylesheet" media="(max-width:1040px)" href="${pageContext.request.contextPath}/resources/css/main-responsive.css">
+    <link rel="stylesheet" media="(min-width:1039px)" href="${pageContext.request.contextPath}/resources/css/responsive-fix.css">
     <link rel="shortcut icon" href="${pageContext.request.contextPath}/resources/res/favicon.ico">
     <!--[if lt IE 9]>
     <script src="${pageContext.request.contextPath}/resources/js/html5shiv.js"></script>
@@ -21,7 +23,7 @@
         <span class="errorblock">${error}</span>
     </c:if>
     <c:if test="${not empty user}">
-        <nav class="inner-nav">
+        <nav class="inner-nav bigView">
             <ul class="nav-inner">
                 <li id="btn-trips" class="inner-nav-link inner-selected"><spring:message code="ShowAllTrips" /></li>
                 <li id="btn-trips-participating" class="inner-nav-link"><spring:message code="ShowEnrolledTrips" /></li>
@@ -45,6 +47,7 @@
 
     <div id="content">
         <div id="inner-content">
+        <h2 class="smallView"><spring:message code="allTrips"></spring:message></h2>
             <table class="tables">
                 <!-- model heeft momenteel: type, id, description, privacy, published, title, userId -->
                 <thead>
@@ -141,6 +144,8 @@
                 </form>
                 </tbody>
             </table>
+        <c:if test="${not empty user}">
+        <h2 class="smallView tripstitle"><spring:message code="enrolledTrips"></spring:message></h2>
             <table class="tables">
                 <!-- model heeft momenteel: type, id, description, privacy, published, title, userId -->
                 <thead>
@@ -193,6 +198,7 @@
                     </div>
                 </tbody>
             </table>
+        <h2 class="smallView tripstitle"><spring:message code="myTrips"></spring:message></h2>
             <table class="tables">
                 <!-- model heeft momenteel: type, id, description, privacy, published, title, userId -->
                 <thead>
@@ -251,6 +257,7 @@
                 </div>
                 </tbody>
             </table>
+        </c:if>
         </div>
     </div>
 

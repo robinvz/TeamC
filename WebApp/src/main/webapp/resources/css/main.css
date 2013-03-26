@@ -69,8 +69,9 @@ p{
 }
 
 .header-nav{
-    display: inline-block;
     float: right;
+    display: inline-block;
+
     vertical-align: bottom;
 }
 
@@ -254,3 +255,11 @@ footer
 .ui-timepicker-rtl{ direction: rtl; }
 .ui-timepicker-rtl dl { text-align: right; }
 .ui-timepicker-rtl dl dd { margin: 0 65px 10px 10px; }
+
+.bigView{
+    display: block;
+}
+
+.smallView{
+    display: none;
+}

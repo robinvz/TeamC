@@ -6,6 +6,8 @@
     <link rel="stylesheet" href="${pageContext.request.contextPath}/resources/css/main.css"/>
     <link rel="stylesheet" href="${pageContext.request.contextPath}/resources/css/trip.css"/>
     <link rel="stylesheet" href="${pageContext.request.contextPath}/resources/css/locations.css"/>
+    <link rel="stylesheet" media="(max-width:1040px)" href="${pageContext.request.contextPath}/resources/css/main-responsive.css">
+    <link rel="stylesheet" media="(min-width:1039px)" href="${pageContext.request.contextPath}/resources/css/responsive-fix.css">
     <link rel="stylesheet" href="<spring:theme code="css"/>" type="text/css"/>
     <link rel="shortcut icon" href="${pageContext.request.contextPath}/resources/res/favicon.ico">
     <link rel="stylesheet" href="http://code.jquery.com/ui/1.10.1/themes/base/jquery-ui.css"/>
@@ -24,11 +26,11 @@
                 <th></th>
                 <th><spring:message code="Title"/></th>
                 <th><spring:message code="Description"/></th>
-                <th><spring:message code="Street"/></th>
-                <th><spring:message code="HouseNr"/></th>
-                <th><spring:message code="City"/></th>
-                <th><spring:message code="PostalCode"/></th>
-                <th><spring:message code="Country"/></th>
+                <th class="bigView"><spring:message code="Street"/></th>
+                <th class="bigView"><spring:message code="HouseNr"/></th>
+                <th class="bigView"><spring:message code="City"/></th>
+                <th class="bigView"><spring:message code="PostalCode"/></th>
+                <th class="bigView"><spring:message code="Country"/></th>
                 <c:if test="${not empty user && trip.organizer == user}">
                 <th></th>
                 </c:if>
@@ -53,19 +55,19 @@
                             <td>
                                     ${location.description}
                             </td>
-                            <td>
+                            <td class="bigView">
                                     ${location.getAddress().street}
                             </td>
-                            <td>
+                            <td class="bigView">
                                     ${location.getAddress().houseNr}
                             </td>
-                            <td>
+                            <td class="bigView">
                                     ${location.getAddress().city}
                             </td>
-                            <td>
+                            <td class="bigView">
                                     ${location.getAddress().postalCode}
                             </td>
-                            <td>
+                            <td class="bigView">
                                     ${location.getAddress().country}
                             </td>
                             <c:if test="${not empty user && trip.organizer == user}">
