@@ -11,6 +11,7 @@
 </head>
 <body>
 <div id="page">
+    <jsp:useBean id="today" class="java.util.Date" scope="page" />
     <jsp:include page="../baseView.jsp"/>
     <jsp:include page="profileHeaderView.jsp"/>
 
@@ -93,8 +94,7 @@
                                     <label><spring:message code="MemberSince"/></label>
                                 </td>
                                 <td>
-                                    <output>${user.registerDate}</output>
-                                    <input style="display: none" type="text">
+                                    ${user.registerDate}
                                 </td>
                             </tr>
                             <tr>

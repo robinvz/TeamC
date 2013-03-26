@@ -159,7 +159,9 @@ public class LoginController {
         {
             return new ModelAndView("retrievePasswordView", "error", messageSource.getMessage("CaptchaError",null, locale));
         }
-        return new ModelAndView("loginView", "loginBean", new LoginBean());
+        ModelAndView mav = new ModelAndView("loginView", "loginBean", new LoginBean());
+        mav.addObject("success", messageSource.getMessage("MailSent", null, locale));
+        return mav;
     }
 
     @RequestMapping(value = "/login/{tripId}", method = RequestMethod.POST)
