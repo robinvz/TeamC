@@ -31,6 +31,9 @@
                 </c:if>
 
                 <div class="trip-info">
+                    <c:if test="${trip.organizer == user}">
+                        <button id="btn-edit" class="trip-view btn-blue" style="float: right;"><spring:message code="Edit"/></button>
+                    </c:if>
                     <form id="trip-form" action="/trip/${trip.id}/editTrip" method="POST">
                         <table>
                             <tr class="trip-edit">
@@ -126,8 +129,28 @@
                         <input id="btn-save" type="submit" value="<spring:message code="Save" />"
                                class="btn-submit trip-edit btn-blue">
                     </form>
-                    <c:if test="${trip.organizer == user}">
-                        <button id="btn-edit" class="trip-view btn-blue"><spring:message code="Edit"/></button>
+                    <c:if test="${not empty requisites}">
+                        <h3><spring:message code="EnrollmentRequisites"/></h3>
+                        <table class="EnrollReqTable">
+                            <c:forEach items="${requisites}" var="requisite">
+                                <thead>
+                                    <th>
+                                        <spring:message code="Requisites"/>
+                                    </th>
+                                    <th>
+                                        <spring:message code="Amount"/>
+                                    </th>
+                                </thead>
+                                <tr>
+                                    <td>
+                                        ${requisite.key}
+                                    </td>
+                                    <td>
+                                        ${requisite.value}
+                                    </td>
+                                </tr>
+                            </c:forEach>
+                        </table>
                     </c:if>
                 </div>
 
@@ -158,10 +181,10 @@
                     </c:if>
                     <c:if test="${validPrivateTrip == true && invited == true}">
                         <a href="/users/acceptInvitation?tripId=${trip.id}">
-                            <button class="btn-blue">Accept</button>
+                            <button class="btn-blue"><spring:message code="Accept"/></button>
                         </a>
                         <a href="/users/declineInvitation?tripId=${trip.id}">
-                            <button class="btn-blue">Decline</button>
+                            <button class="btn-blue"><spring:message code="Decline"/></button>
                         </a>
                     </c:if>
                     <script type="text/javascript">
@@ -204,7 +227,6 @@
                         });
                     </script>
 
-
                     <c:if test="${validPrivateTrip == true && showButton == true}">
                         <section class="attending">
                             <a href="#" id="button2" class="btn-attend"><spring:message code="Attending"></spring:message></a>
@@ -212,12 +234,6 @@
                         </section>
                     </c:if>
 
-                    <c:if test="${not empty requisites}">
-                        <c:forEach items="${requisites}" var="requisite">
-                            ${requisite.key}
-                            ${requisite.value}
-                        </c:forEach>
-                    </c:if>
                 </div>
             </article>
         </section>
