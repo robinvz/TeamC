@@ -4,6 +4,7 @@ import be.kdg.trips.beans.LoginBean;
 import be.kdg.trips.businessLogic.exception.TripsException;
 import be.kdg.trips.model.user.User;
 import be.kdg.trips.services.interfaces.TripsService;
+import org.hibernate.TransactionException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.MessageSource;
 import org.springframework.stereotype.Controller;
@@ -13,6 +14,8 @@ import org.springframework.web.servlet.ModelAndView;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
+import javax.transaction.TransactionRequiredException;
+import javax.validation.ConstraintViolationException;
 import java.io.*;
 import java.util.Locale;
 
@@ -93,7 +96,11 @@ public class ProfileController {
                 session.setAttribute("user", tripsService.findUser(((User) session.getAttribute("user")).getEmail()));
                 return new ModelAndView("/users/profileView");
             } catch (TripsException e) {
-                return new ModelAndView("/users/profileView");
+                return new ModelAndView("/users/profileView", "error", e.getMessage());
+            } catch (RuntimeException e) {
+                return new ModelAndView("/users/profileView", "error", "Please follow these guidelines:\n" +
+                        "Street, City and country should only contain letters\n" +
+                        "House number should be a number with a maximum of one letter");
             }
         } else {
             return new ModelAndView("loginView", "loginBean", new LoginBean());
