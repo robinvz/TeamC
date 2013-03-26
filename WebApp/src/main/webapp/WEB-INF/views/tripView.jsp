@@ -211,6 +211,13 @@
                             <span class="attending-light"></span>
                         </section>
                     </c:if>
+
+                    <c:if test="${not empty requisites}">
+                        <c:forEach items="${requisites}" var="requisite">
+                            ${requisite.key}
+                            ${requisite.value}
+                        </c:forEach>
+                    </c:if>
                 </div>
             </article>
         </section>
