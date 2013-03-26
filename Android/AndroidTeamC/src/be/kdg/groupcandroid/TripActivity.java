@@ -114,6 +114,7 @@ public class TripActivity extends FragmentActivity implements LocationListener {
 		LocationManager locationManager = (LocationManager) getSystemService(LOCATION_SERVICE);
 		// Creating a criteria object to retrieve provider
 		Criteria criteria = new Criteria();
+		criteria.setAccuracy(Criteria.ACCURACY_LOW);
 
 		// Getting the name of the best provider
 		String provider = locationManager.getBestProvider(criteria, true);

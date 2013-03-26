@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
 
-    <string name="app_name">GroupCAndroid</string>
+    <string name="app_name">Trips</string>
     <string name="hello_world">Hello world!</string>
     <string name="menu_settings">Instellingen</string>
     <string name="login">Inloggen</string>
@@ -54,5 +54,6 @@
     <string name="unroll">We konden jou niet uitschrijven, probeer opnieuw.</string>
     <string name="couldnotstop">We konden de trip niet stoppen, probeer opnieuw!</string>  
         <string name="notstarted">Je moet de trip starten voor de vraag te zien!</string>
-    
+    <string name="augmented_reality">Verhoogde Realiteit</string>
+        
 </resources>

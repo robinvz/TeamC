@@ -21,6 +21,7 @@ import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
 import com.google.android.gms.maps.model.Polyline;
 import com.google.android.gms.maps.model.PolylineOptions;
+import com.qualcomm.QCARSamples.CloudRecognition.CloudReco;
 
 import android.annotation.SuppressLint;
 import android.app.AlertDialog;
@@ -44,6 +45,7 @@ import android.preference.PreferenceManager;
 import android.support.v4.app.FragmentActivity;
 import android.view.ContextMenu;
 import android.view.ContextMenu.ContextMenuInfo;
+import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.AdapterView.AdapterContextMenuInfo;
@@ -219,6 +221,27 @@ public class Maptivity extends FragmentActivity implements LocationListener {
 		data.putExtra("correct", correct);
 		// Set the data to pass back
 		setResult(RESULT_OK, data);
+	}
+	
+	
+
+	@Override
+	public boolean onCreateOptionsMenu(Menu menu) {
+		getMenuInflater().inflate(R.menu.augmentedreality, menu);
+		return true;
+	}
+	
+	
+	
+
+	@Override
+	public boolean onOptionsItemSelected(MenuItem item) {
+		if (item.getItemId() == R.id.artif){
+			 Intent i = new Intent(this, CloudReco.class);
+		     startActivity(i);
+			
+		}
+		return super.onOptionsItemSelected(item);
 	}
 
 	@Override
