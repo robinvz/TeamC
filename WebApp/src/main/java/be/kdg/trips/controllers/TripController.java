@@ -73,7 +73,18 @@ public class TripController {
         User user = (User) session.getAttribute("user");
         try {
             Trip trip = tripsService.findTripById(tripId, user);
-            return new ModelAndView("tripView", "trip", trip);
+            Map<String, Integer> requisitesPerTrip = new HashMap<>();
+            if (isLoggedIn()) {
+                Set<Enrollment> enrollmentSet = user.getEnrollments();
+                for (Enrollment enrollment : enrollmentSet) {
+                    if (enrollment.getTrip().equals(trip)) { //check whether user is enrolled for This trip
+                        requisitesPerTrip.putAll(enrollment.getRequisites());
+                    }
+                }
+            }
+            ModelAndView mav = new ModelAndView("tripView", "trip", trip);
+            mav.addObject("requisites", requisitesPerTrip);
+            return mav;
         } catch (TripsException e) {
             return new ModelAndView("tripsView", "error", messageSource.getMessage("FindTripError", null, locale));
         }
