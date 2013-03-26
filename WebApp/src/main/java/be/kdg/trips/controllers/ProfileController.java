@@ -49,17 +49,24 @@ public class ProfileController {
     public ModelAndView editCredentials(HttpServletRequest request, Locale locale) {
         User user = (User) session.getAttribute("user");
         if(user!=null) {
-            try {
-                tripsService.changePassword(user, request.getParameter("oldPassword"),
-                        request.getParameter("newPassword"));
-                session.setAttribute("user", tripsService.findUser(((User) session.getAttribute("user")).getEmail()));
-            } catch (TripsException e) {
-                return new ModelAndView("/users/profileView", "error", messageSource.getMessage("EditCredentialsError", null, locale));
+            String newpw1 = request.getParameter("newPassword1");
+            String newpw2 = request.getParameter("newPassword2");
+            if(newpw1.equals(newpw2))
+            {
+                try {
+                    tripsService.changePassword(user, request.getParameter("oldPassword"), newpw1);
+                    session.setAttribute("user", tripsService.findUser(((User) session.getAttribute("user")).getEmail()));
+                } catch (TripsException e) {
+                    return new ModelAndView("/users/editCredentialsView", "error", messageSource.getMessage("EditCredentialsOldPwError", null, locale));
+                }
+            }else
+            {
+                return new ModelAndView("/users/editCredentialsView", "error", messageSource.getMessage("EditCredentialsNewPwError", null, locale));
             }
-            return new ModelAndView("/users/profileView");
         } else {
             return new ModelAndView("loginView", "loginBean", new LoginBean());
         }
+        return new ModelAndView("/users/profileView");
     }
 
     @RequestMapping(value = "/users/editProfilePic", method = RequestMethod.GET)
@@ -120,5 +127,12 @@ public class ProfileController {
             return new ModelAndView("loginView", "loginBean", new LoginBean());
         }
     }
+
+    @RequestMapping(value = "/users/viewTripsHistory", method = RequestMethod.GET)
+    public String editProfile()
+    {
+        return "/users/tripsHistoryView";
+    }
+
 
 }

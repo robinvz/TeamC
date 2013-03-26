@@ -30,34 +30,7 @@
             <page-encoding>UTF-8</page-encoding>
         </jsp-property-group>
     </jsp-config>
-    <!--servlet-mapping>
-        <servlet-name>default</servlet-name>
-        <url-pattern>*.css</url-pattern>
-    </servlet-mapping>
-    <servlet-mapping>
-        <servlet-name>default</servlet-name>
-        <url-pattern>*.png</url-pattern>
-    </servlet-mapping>
-    <servlet-mapping>
-        <servlet-name>default</servlet-name>
-        <url-pattern>*.js</url-pattern>
-    </servlet-mapping>
-    <servlet-mapping>
-        <servlet-name>default</servlet-name>
-        <url-pattern>*.eot</url-pattern>
-    </servlet-mapping>
-    <servlet-mapping>
-        <servlet-name>default</servlet-name>
-        <url-pattern>*.svg</url-pattern>
-    </servlet-mapping>
-    <servlet-mapping>
-        <servlet-name>default</servlet-name>
-        <url-pattern>*.ttf</url-pattern>
-    </servlet-mapping>
-    <servlet-mapping>
-        <servlet-name>default</servlet-name>
-        <url-pattern>*.woff</url-pattern>
-    </servlet-mapping-->
+
 
     <context-param>
         <param-name>contextConfigLocation</param-name>
@@ -67,8 +40,7 @@
     <listener>
         <listener-class>org.springframework.web.context.ContextLoaderListener</listener-class>
     </listener>
-
-    <error-page>
+  <!--  <error-page>
         <error-code>400</error-code>
         <location>/WEB-INF/views/errors/400View.jsp</location>
     </error-page>
@@ -92,10 +64,8 @@
         <exception-type>java.lang.NumberFormatException</exception-type>
         <location>/WEB-INF/views/errors/numberFormatView.jsp</location>
     </error-page>
-    <!--DataAccessException wrapped to runtime?-->
     <error-page>
         <exception-type>java.lang.RuntimeException</exception-type>
         <location>/WEB-INF/views/errors/DbError.jsp</location>
-    </error-page>
-
+    </error-page>-->
 </web-app>

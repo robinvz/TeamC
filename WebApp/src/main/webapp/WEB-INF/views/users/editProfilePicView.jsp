@@ -20,23 +20,6 @@
                 <h2>Change picture</h2>
 
                 <div class="profile-general">
-                 <%--   <form id="profile-form" action="/users/editProfilePic" method="POST">
-                        <table id="profile-data">
-                            <tr>
-                                <td>
-                                    <label>Enter the path of your picture: </label>
-                                </td>
-                                <td>
-                                    <input type="text" name="picPath">
-                                </td>
-
-                            </tr>
-                            <tr>
-                                <input id="btn-save" type="submit" value="Save changes" class="btn-submit btn-blue">
-                            </tr>
-                        </table>
-                    </form>--%>
-
                     <form id="profile-form" action="/users/editProfilePic" method="POST" enctype="multipart/form-data">
                         <spring:message code="UploadFile" /><input type="file" name="file" />
                             <input type="submit" value="<spring:message code="UploadButton" />"  >

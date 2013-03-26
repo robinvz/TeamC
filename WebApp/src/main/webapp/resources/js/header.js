@@ -36,6 +36,12 @@ $(document).ready(function(){
         case "trip":
            $("#nav-trips").addClass("selected");
            break;
+        case "retrievePassword":
+            $("#nav-login").addClass("selected");
+            break;
+        case "viewTripsHistory":
+            $("#nav-profile").addClass("selected");
+            break;
         default :
             $("#nav-trips").addClass("selected");
             break;

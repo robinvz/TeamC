@@ -1,6 +1,7 @@
 <%@ taglib prefix="form" uri="http://www.springframework.org/tags/form" %>
 <%@taglib prefix="spring" uri="http://www.springframework.org/tags" %>
 <%@ taglib prefix="fmt" uri="http://www.springframework.org/tags" %>
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 
 <html>
 <head>
@@ -17,8 +18,9 @@
 
     <h2><spring:message code="PleaseLogIn"/></h2>
     <div id="content">
-
-
+        <c:if test="${success != null}">
+            <span class="successblock">${success}</span>
+        </c:if>
 
         <form:form action="/login" commandName="loginBean" method="post" id="loginform" name="loginform" dir="loginform">
             <form:errors path="*" cssClass="errorblock" element="div"/>
@@ -46,6 +48,12 @@
                     <td></td>
                     <td>
                         <button class="btn-blue" type="submit"><spring:message code="LogIn" /></button>
+                    </td>
+                </tr>
+                <tr>
+                    <td></td>
+                    <td>
+                        <a href="retrievePassword"><spring:message code="forgotPassword"/></a>
                     </td>
                 </tr>
             </table>
