@@ -62,7 +62,7 @@
 
     <error-page>
         <exception-type>java.lang.NumberFormatException</exception-type>
-        <location>/WEB-INF/views/errors/numberFormatView.jsp</location>
+        <location>/WEB-INF/views/errors/NumberFormatView.jsp</location>
     </error-page>
     <error-page>
         <exception-type>java.lang.RuntimeException</exception-type>

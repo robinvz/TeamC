@@ -19,8 +19,10 @@
     <div id="content">
         <div id="showLocation">
             <h3 id="titleH">${location.title}</h3>
-            <button type="button" id="btn-toggleEditLocation"><spring:message code="Edit"/>
-            </button>
+            <c:if test="${trip.organizer == user}">
+                <button type="button" id="btn-toggleEditLocation"><spring:message code="Edit"/>
+                </button>
+            </c:if>
             <h3><spring:message code="Description"/></h3>
 
             <p>${location.description}</p>
@@ -51,6 +53,7 @@
             <c:choose>
                 <c:when test="${location.question != null}">
                     <div id="showQuestion">
+                        <c:if test="${trip.organizer == user}">
                         <c:choose>
                             <c:when test="${location.question.image == null}">
                                 <div class="bgImage">
@@ -78,21 +81,25 @@
                                 </form>
                             </c:otherwise>
                         </c:choose>
+                        </c:if>
                         <label type="text">${location.getQuestion().question}</label>
                         <ul>
-                            <c:forEach items="${location.question.possibleAnswers}" var="answer" varStatus="status">
-                                <c:set var="correctAnswerBold" value="normal"/>
-                                <c:if test="${status.index == location.question.correctAnswerIndex}">
-                                    <c:set var="correctAnswerBold" value="bold"/>
-                                </c:if>
-                                <li><label class="${correctAnswerBold}" type="text">${status.index +1}.${answer}</label>
-                                </li>
-                            </c:forEach>
+
+                                <c:forEach items="${location.question.possibleAnswers}" var="answer" varStatus="status">
+                                    <c:set var="correctAnswerBold" value="normal"/>
+                                    <c:if test="${status.index == location.question.correctAnswerIndex && trip.organizer == user}">
+                                        <c:set var="correctAnswerBold" value="bold"/>
+                                    </c:if>
+                                    <li><label class="${correctAnswerBold}" type="text">${status.index +1}.${answer}</label></li>
+                                </c:forEach>
+
                         </ul>
-                        <button type="button" id="btn-toggleEditQuestion"><spring:message code="Edit"/></button>
-                        <a href="/users/trip/${trip.id}/locations/${location.id}/deleteQuestion">
-                            <button type="button" id="btn-deleteQuestion"><spring:message code="Delete"/></button>
-                        </a>
+                        <c:if test="${trip.organizer == user}">
+                            <button type="button" id="btn-toggleEditQuestion"><spring:message code="Edit"/></button>
+                            <a href="/users/trip/${trip.id}/locations/${location.id}/deleteQuestion">
+                                <button type="button" id="btn-deleteQuestion"><spring:message code="Delete"/></button>
+                            </a>
+                        </c:if>
                     </div>
                 </c:when>
                 <c:otherwise>
