@@ -9,7 +9,6 @@
             <li><a href="/users/viewTripsHistory"><spring:message code="TripsHistory" /></a></li>
             <li><a href="/users/editProfilePic"><spring:message code="EditPicture" /></a></li>
             <li><a href="/users/editCredentials"><spring:message code="EditPassword" /></a></li>
-            <li><a href="#"><spring:message code="ImportFb" /></a></li>
             <li>
                 <form id="deleteProfileForm" action="/users/deleteProfile" method="get">
                     <button type="submit" id="deleteBtn" class="btn-blue"><spring:message code="DeleteProfile" /></button>

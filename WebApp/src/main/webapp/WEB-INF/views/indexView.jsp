@@ -51,7 +51,7 @@
                         </c:choose>
                         <div class="carousel-caption">
                            <h1 style="color: white">${trip.title}</h1>
-                           <p>${trip.description}</p>
+                           <p>${trip.description} (privacy: ${trip.privacy})</p>
                         </div>
                     </div>
                 </c:forEach>
