@@ -25,11 +25,11 @@
                 <table>
                     <tr>
                         <td><label><spring:message code="Title"/></label></td>
-                        <td><input type="text" name="title" required="true"></td>
+                        <td><input type="text" name="title" required="true" placeholder="Title"></td>
                     </tr>
                     <tr>
                         <td><label><spring:message code="Description"/></label></td>
-                        <td><input type="text" name="description" required="true"></td>
+                        <td><input type="text" name="description" required="true" placeholder="Description"></td>
                     </tr>
                     <tr>
                         <td><label><spring:message code="Privacy"/></label></td>

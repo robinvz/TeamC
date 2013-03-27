@@ -21,13 +21,13 @@
     <jsp:include page="../tripHeaderView.jsp"/>
 
     <div class="inner-content">
-        <h3>Labels</h3>
         <c:if test="${error != null}">
             <span class="errorblock">${error}</span>
         </c:if>
         <c:if test="${success != null}">
             <span class="successblock">${success}</span>
         </c:if>
+        <h3>Labels</h3>
 
         <c:if test="${user == trip.organizer}">
             <table>
@@ -39,22 +39,9 @@
                     </tr>
                 </form>
             </table>
-
-
-            <c:if test="${not empty trip.labels}">
-                <table>
-
-                    <tbody>
-                    <c:forEach items="${trip.labels}" var="label">
-                        <tr>
-                            <td>${label}</td>
-                        </tr>
-                    </c:forEach>
-                    </tbody>
-                </table>
-            </c:if>
         </c:if>
     </div>
+
 </div>
 </body>
 </html>
