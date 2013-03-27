@@ -18,7 +18,7 @@ public class LogFilter implements Filter {
         if (((HttpServletRequest) req).getSession().getAttribute("user")!=null) {
             chain.doFilter(req, resp);
         } else {
-            ((HttpServletResponse) resp).sendRedirect("/errors/loginError");
+            ((HttpServletResponse) resp).sendRedirect("/login");
         }
     }
 
