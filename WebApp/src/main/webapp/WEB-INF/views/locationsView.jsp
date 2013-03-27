@@ -1,5 +1,6 @@
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@ taglib prefix="spring" uri="http://www.springframework.org/tags" %>
+<%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions" %>
 
 <html>
 <head>
@@ -20,6 +21,7 @@
     <jsp:include page="tripHeaderView.jsp"/>
     <div id="content">
         <h3><spring:message code="LocationsOverview"/></h3>
+
         <table id="locations-table">
             <thead>
             <tr>
@@ -32,7 +34,7 @@
                 <th class="bigView"><spring:message code="PostalCode"/></th>
                 <th class="bigView"><spring:message code="Country"/></th>
                 <c:if test="${not empty user && trip.organizer == user}">
-                <th></th>
+                    <th></th>
                 </c:if>
             </tr>
             </thead>
@@ -71,11 +73,12 @@
                                     ${location.getAddress().country}
                             </td>
                             <c:if test="${not empty user && trip.organizer == user}">
-                            <td>
-                                <a href="/users/trip/${trip.id}/locations/${location.id}/deleteLocation">
-                                    <button type="button" id="btn-deleteLocation"><spring:message code="Delete"/></button>
-                                </a>
-                            </td>
+                                <td>
+                                    <a href="/users/trip/${trip.id}/locations/${location.id}/deleteLocation">
+                                        <button type="button" id="btn-deleteLocation"><spring:message
+                                                code="Delete"/></button>
+                                    </a>
+                                </td>
                             </c:if>
                         </tr>
                     </c:forEach>
@@ -83,7 +86,8 @@
             </c:choose>
             <c:if test="${not empty user && trip.organizer == user}">
                 <a href="/trip/${trip.id}/locations/createLocation">
-                    <button type="button" id="btn-createLocation" class="btn-blue"><spring:message code="CreateLocation"/></button>
+                    <button type="button" id="btn-createLocation" class="btn-blue"><spring:message
+                            code="CreateLocation"/></button>
                 </a>
             </c:if>
             <button type="button" id="btn-toggleLocations" class="btn-blue">
@@ -92,6 +96,14 @@
             </tbody>
         </table>
         <div id="mapcanvas" class="map-canvas"></div>
+
+
+        <c:if test="${fn:length(locations) ge 2 }">
+            <h3><spring:message code="Directions"/></h3>
+
+            <div id="directionsPanel">
+            </div>
+        </c:if>
     </div>
 </div>
 <script src="http://code.jquery.com/jquery-1.8.3.min.js"></script>
