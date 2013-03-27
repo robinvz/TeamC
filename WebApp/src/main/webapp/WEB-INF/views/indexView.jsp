@@ -29,27 +29,29 @@
           </ol>
           <!-- Carousel items -->
           <div class="carousel-inner">
-            <div class="active item">
-                <img alt="Logo" src="${pageContext.request.contextPath}/resources/res/img/logosite.png" width="100%" height="400">
-                <div class="carousel-caption">
-                    <h4>Please behold</h4>
-                    <p>Our site logo</p>
-                </div>
-            </div>
-            <div class="item">
-                <img alt="Background" src="${pageContext.request.contextPath}/resources/res/img/background.jpg" width="100%" height="400">
-                <div class="carousel-caption">
-                    <h4>It is amazing</h4>
-                    <p>Le lovely background</p>
-                </div>
-            </div>
-            <div class="item">
-                <img alt="Pig" src="${pageContext.request.contextPath}/resources/res/img/404-Pig.png" width="100%" height="400">
-                <div class="carousel-caption">
-                    <h4>Is it really him?</h4>
-                    <p>Our infamous pig</p>
-                </div>
-            </div>
+                    <div class="active item">
+                        <img alt="Logo" src="${pageContext.request.contextPath}/resources/res/img/welcome.jpg" width="100%" height="400">
+                        <div class="carousel-caption">
+                            <h4><spring:message code="WelcomeTitle" /></h4>
+                            <p><spring:message code="WelcomeMessage" /></p>
+                        </div>
+                    </div>
+                <c:forEach items="${trips}" var="trip">
+                    <div class="item">
+                        <c:choose>
+                            <c:when test="${not empty trip.image}">
+                                <a href="/trip/${trip.id}"><img alt="Logo" src="/trip/${trip.id}/banner" width="100%" height="400"></a>
+                            </c:when>
+                            <c:otherwise>
+                                <a href="/trip/${trip.id}"><img alt="Logo" src="${pageContext.request.contextPath}/resources/res/img/img_antwerpen.png" width="100%" height="400"></a>
+                            </c:otherwise>
+                        </c:choose>
+                        <div class="carousel-caption">
+                           <h4>${trip.title}</h4>
+                           <p>${trip.description}</p>
+                        </div>
+                    </div>
+                </c:forEach>
           </div>
           <!-- Carousel nav -->
           <a class="carousel-control left" href="#myCarousel" data-slide="prev">&lsaquo;</a>
