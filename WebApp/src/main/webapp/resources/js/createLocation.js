@@ -115,6 +115,6 @@ function btnListeners() {
         $('#new-answer').val('');
         answerNumber += 1;
         $('.poss').attr('readonly','readonly');
-        $('.poss').style.marginLeft = "4px";
+        $('.poss').css('marginLeft','4px');
     });
 }

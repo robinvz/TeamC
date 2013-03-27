@@ -53,14 +53,14 @@
                             <input id="location-question" name="question" type="text">
                             <input id="btn-picture" type="file" name="file" value="<spring:message code="LocationPicture"/>"/>
                             <div id="answers">
-                                <input name="possibleAnswers" hidden="hidden"/>
+                                <input id="hiddenAnswer" name="possibleAnswers"/>
                             </div>
                             <label><spring:message code="AddAnswer"/>: </label>
                             <input id="new-answer" type="text">
                             <button id="btn-answer" type="button"><spring:message code="Save"/></button>
                             <label><spring:message code="SelectCorrectAnswer"/>: </label>
                             <select id="correct-answer" name="correctAnswer">
-                                <option></option>
+                                <option hidden="hidden"></option>
                             </select>
                             <button id="btn-back" type="button"><spring:message code="Back"/></button>
                             <button id="btn-submit" type="submit"><spring:message code="Submit"/></button>
