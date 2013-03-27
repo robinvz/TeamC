@@ -40,6 +40,20 @@
                 </form>
             </table>
         </c:if>
+        <c:choose>
+            <c:when test="${not empty trip.labels}">
+                <table>
+                    <c:forEach items="${trip.labels}" var="label">
+                        <tr>
+                            <td>${label}</td>
+                        </tr>
+                    </c:forEach>
+                </table>
+            </c:when>
+            <c:otherwise>
+                <p>There aren't any labels at the moment</p>
+            </c:otherwise>
+        </c:choose>
     </div>
 
 </div>

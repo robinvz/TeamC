@@ -48,7 +48,7 @@
                     </tr>
                     <tr class="optionsTimeBound">
                         <td><label><spring:message code="StartDate"/></label></td>
-                        <td><input type="datetime-local" class="picker" name="startDate"></td>
+                        <td><input type="datetime-local" name="startDate"></td>
                     </tr>
                     <tr class="optionsTimeBound">
                         <td><label><spring:message code="EndDate"/></label></td>
