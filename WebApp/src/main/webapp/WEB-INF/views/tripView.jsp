@@ -137,24 +137,21 @@
                                     </tbody>
                                 </table>
                             </c:if>
-
                         <tr>
                             <td>
                                 <input id="btn-save" type="submit" value="<spring:message code="Save" />"
                                                                class="btn-submit trip-edit btn-blue">
                             </td>
                         </tr>
-
                     </form>
                     <c:if test="${trip.organizer == user}">
                         <tr>
                             <td>
-                                <button id="btn-edit" class="trip-view btn-blue"><spring:message code="Edit"/></button>
+                                <button id="btn-edit" type="submit" class="trip-view btn-blue"><spring:message code="Edit"/></button>
                             </td>
                         </tr>
-
                     </c:if>
-                    </table>
+                </table>
                     <c:if test="${not empty requisites}">
                         <h3><spring:message code="EnrollmentRequisites"/></h3>
                         <table class="EnrollReqTable">
