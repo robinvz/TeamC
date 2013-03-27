@@ -93,14 +93,19 @@ public class TripController {
 
     @RequestMapping(value = "/trip/{tripId}/editTrip", method = RequestMethod.POST)
     public ModelAndView editTrip(@PathVariable int tripId, @RequestParam String title, @RequestParam String description,
-                                 @RequestParam boolean chatAllowed, @RequestParam boolean positionVisible) {
+                                 @RequestParam boolean chatAllowed, @RequestParam boolean positionVisible, Locale locale) {
+        Trip trip = null;
         try {
             User user = (User) session.getAttribute("user");
-            Trip trip = tripsService.findTripById(tripId, user);
+            trip = tripsService.findTripById(tripId, user);
             tripsService.editTripDetails(trip, title, description, chatAllowed, positionVisible, user);
             return new ModelAndView("tripView", "trip", trip);
         } catch (TripsException e) {
             return new ModelAndView("tripsView", "error", e.getMessage());
+        } catch (RuntimeException r) {
+            Map map = new HashMap();
+            map = putInMap(map, trip, "error", messageSource.getMessage("TitleDescriptionError", null, locale));
+            return new ModelAndView("tripView", map);
         }
     }
 
@@ -135,7 +140,7 @@ public class TripController {
                 }
             } catch (ParseException e) {
                 return new ModelAndView("/users/createTripView", "error", messageSource.getMessage("ParseError", null, locale));
-            } catch (NumberFormatException n) {
+            } catch (RuntimeException r) {
                 return new ModelAndView("/users/createTripView", "error", messageSource.getMessage("NotANumberError", null, locale));
             }
         } else {
@@ -144,7 +149,8 @@ public class TripController {
     }
 
     @RequestMapping(value = "/createTimeLessTrip", method = RequestMethod.POST)
-    public ModelAndView createTimeLessTrip(@RequestParam String title, @RequestParam String description, @RequestParam TripPrivacy privacy) {
+    public ModelAndView createTimeLessTrip(@RequestParam String title, @RequestParam String description, @RequestParam TripPrivacy privacy,
+                                           Locale locale) {
         User user = (User) session.getAttribute("user");
         if (isLoggedIn()) {
             try {
@@ -152,6 +158,8 @@ public class TripController {
                 return new ModelAndView("redirect:trip/" + test.getId());
             } catch (TripsException e) {
                 return new ModelAndView("/users/createTripView");
+            } catch (RuntimeException r) {
+                return new ModelAndView("/users/createTripView", "error", messageSource.getMessage("NotANumberError", null, locale));
             }
         } else {
             return new ModelAndView("loginView", "loginBean", new LoginBean());
@@ -289,9 +297,15 @@ public class TripController {
         try {
             User user = (User) session.getAttribute("user");
             trip = tripsService.findTripById(tripId, user);
-            tripsService.addLabelToTrip(trip, user, label);
-            map = putInMap(map, trip, "success", messageSource.getMessage("LabelAdded", null, locale));
-            return new ModelAndView("/users/labelsView", map);
+            if(label.length()==0){
+                map.put("trip", trip);
+                map.put("error", messageSource.getMessage("LabelEmptyError", null, locale));
+                return new ModelAndView("/users/labelsView", map);
+            } else {
+                tripsService.addLabelToTrip(trip, user, label);
+                map = putInMap(map, trip, "success", messageSource.getMessage("LabelAdded", null, locale));
+                return new ModelAndView("/users/labelsView", map);
+            }
         } catch (TripsException e) {
             if (e.getMessage().contains("Trip with id")) {
                 return new ModelAndView("tripsView", "error", messageSource.getMessage("FindTripError", null, locale));
@@ -338,6 +352,9 @@ public class TripController {
                     map = putInMap(map, trip, "error", messageSource.getMessage("AlreadyActiveError", null, locale));
                     return new ModelAndView("requirementsView", map);
                 }
+            } catch (NumberFormatException n) {
+                map = putInMap(map, trip, "error", messageSource.getMessage("RequisiteWrongError", null, locale));
+                return new ModelAndView("requirementsView", map);
             }
         } else {
             return new ModelAndView("loginView", "loginBean", new LoginBean());
@@ -389,6 +406,9 @@ public class TripController {
                     map = putInMap(map, trip, "error", e.getMessage());
                     return new ModelAndView("requirementsView", map);
                 }
+            } catch (NumberFormatException n) {
+                map = putInMap(map, trip, "error", messageSource.getMessage("RequisiteWrongError", null, locale));
+                return new ModelAndView("requirementsView", map);
             }
         } else {
             return new ModelAndView("loginView", "loginBean", new LoginBean());
@@ -796,7 +816,7 @@ public class TripController {
             Trip trip = tripsService.findTripById(tripId, user);
             tripsService.removeCostFromEnrollment(name, amount, trip, user);
             map = putInMap(map, trip, "success", messageSource.getMessage("CostAdded", null, locale));
-            return new ModelAndView("redirect:/costs/" + trip.getId(), map);
+            return new ModelAndView("redirect:/costs/" + trip.getId(), map); //TODO:error
         } catch (TripsException e) {
             return new ModelAndView("tripsView", "error", messageSource.getMessage("FindTripError", null, locale));
         }
