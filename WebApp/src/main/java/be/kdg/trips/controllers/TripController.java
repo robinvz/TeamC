@@ -104,9 +104,7 @@ public class TripController {
         } catch (TripsException e) {
             return new ModelAndView("tripsView", "error", e.getMessage());
         } catch (RuntimeException r) {
-            Map map = new HashMap();
-            map = putInMap(map, trip, "error", messageSource.getMessage("TitleDescriptionError", null, locale));
-            return new ModelAndView("tripView", map);
+            return new ModelAndView("tripsView", "error", messageSource.getMessage("TitleDescriptionError", null, locale));
         }
     }
 
