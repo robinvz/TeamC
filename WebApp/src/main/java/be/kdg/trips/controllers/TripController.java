@@ -15,6 +15,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.ModelAndView;
+import org.springframework.web.util.HtmlUtils;
 
 import javax.mail.MessagingException;
 import javax.servlet.http.HttpSession;
@@ -93,14 +94,17 @@ public class TripController {
 
     @RequestMapping(value = "/trip/{tripId}/editTrip", method = RequestMethod.POST)
     public ModelAndView editTrip(@PathVariable int tripId, @RequestParam String title, @RequestParam String description,
-                                 @RequestParam boolean chatAllowed, @RequestParam boolean positionVisible) {
+                                 @RequestParam boolean chatAllowed, @RequestParam boolean positionVisible, Locale locale) {
+        Trip trip = null;
         try {
             User user = (User) session.getAttribute("user");
-            Trip trip = tripsService.findTripById(tripId, user);
+            trip = tripsService.findTripById(tripId, user);
             tripsService.editTripDetails(trip, title, description, chatAllowed, positionVisible, user);
             return new ModelAndView("tripView", "trip", trip);
         } catch (TripsException e) {
             return new ModelAndView("tripsView", "error", e.getMessage());
+        } catch (RuntimeException r) {
+            return new ModelAndView("tripsView", "error", messageSource.getMessage("TitleDescriptionError", null, locale));
         }
     }
 
@@ -125,7 +129,7 @@ public class TripController {
                     rp = Repeatable.valueOf(repeat);
                     limitInt = Integer.parseInt(limit);
                 }
-                Trip test = tripsService.createTimeBoundTrip(title, description, privacy, user, sdf.parse(startDate), sdf.parse(endDate), rp, limitInt);
+                Trip test = tripsService.createTimeBoundTrip(HtmlUtils.htmlEscape(title), HtmlUtils.htmlEscape(description), privacy, user, sdf.parse(startDate), sdf.parse(endDate), rp, limitInt);
                 return new ModelAndView("redirect:trip/" + test.getId());
             } catch (TripsException e) {
                 if (e.getMessage().contains("future")) {
@@ -135,7 +139,7 @@ public class TripController {
                 }
             } catch (ParseException e) {
                 return new ModelAndView("/users/createTripView", "error", messageSource.getMessage("ParseError", null, locale));
-            } catch (NumberFormatException n) {
+            } catch (RuntimeException r) {
                 return new ModelAndView("/users/createTripView", "error", messageSource.getMessage("NotANumberError", null, locale));
             }
         } else {
@@ -144,14 +148,17 @@ public class TripController {
     }
 
     @RequestMapping(value = "/createTimeLessTrip", method = RequestMethod.POST)
-    public ModelAndView createTimeLessTrip(@RequestParam String title, @RequestParam String description, @RequestParam TripPrivacy privacy) {
+    public ModelAndView createTimeLessTrip(@RequestParam String title, @RequestParam String description, @RequestParam TripPrivacy privacy,
+                                           Locale locale) {
         User user = (User) session.getAttribute("user");
         if (isLoggedIn()) {
             try {
-                Trip test = tripsService.createTimelessTrip(title, description, privacy, user);
+                Trip test = tripsService.createTimelessTrip(HtmlUtils.htmlEscape(title), HtmlUtils.htmlEscape(description), privacy, user);
                 return new ModelAndView("redirect:trip/" + test.getId());
             } catch (TripsException e) {
                 return new ModelAndView("/users/createTripView");
+            } catch (RuntimeException r) {
+                return new ModelAndView("/users/createTripView", "error", messageSource.getMessage("NotANumberError", null, locale));
             }
         } else {
             return new ModelAndView("loginView", "loginBean", new LoginBean());
@@ -289,9 +296,15 @@ public class TripController {
         try {
             User user = (User) session.getAttribute("user");
             trip = tripsService.findTripById(tripId, user);
-            tripsService.addLabelToTrip(trip, user, label);
-            map = putInMap(map, trip, "success", messageSource.getMessage("LabelAdded", null, locale));
-            return new ModelAndView("/users/labelsView", map);
+            if(label.length()==0){
+                map.put("trip", trip);
+                map.put("error", messageSource.getMessage("LabelEmptyError", null, locale));
+                return new ModelAndView("/users/labelsView", map);
+            } else {
+                tripsService.addLabelToTrip(trip, user, HtmlUtils.htmlEscape(label));
+                map = putInMap(map, trip, "success", messageSource.getMessage("LabelAdded", null, locale));
+                return new ModelAndView("/users/labelsView", map);
+            }
         } catch (TripsException e) {
             if (e.getMessage().contains("Trip with id")) {
                 return new ModelAndView("tripsView", "error", messageSource.getMessage("FindTripError", null, locale));
@@ -318,14 +331,15 @@ public class TripController {
     }
 
     @RequestMapping(value = "/requirements/{tripId}", method = RequestMethod.POST)
-    public ModelAndView requirements(@PathVariable int tripId, @RequestParam String requisite, @RequestParam String amount, Locale locale) {
+    public ModelAndView requirements(@PathVariable int tripId, @RequestParam String requisite, @RequestParam String amount, Locale locale)
+    {
         User user = (User) session.getAttribute("user");
         if (isLoggedIn()) {
             Trip trip = null;
             Map map = new HashMap();
             try {
                 trip = tripsService.findTripById(tripId, user);
-                tripsService.addRequisiteToTrip(requisite, Integer.parseInt(amount), trip, user);
+                tripsService.addRequisiteToTrip(HtmlUtils.htmlEscape(requisite), Integer.parseInt(amount), trip, user);
                 map = putInMap(map, trip, "success", messageSource.getMessage("RequisiteAdded", null, locale));
                 return new ModelAndView("requirementsView", map);
             } catch (TripsException e) {
@@ -338,6 +352,9 @@ public class TripController {
                     map = putInMap(map, trip, "error", messageSource.getMessage("AlreadyActiveError", null, locale));
                     return new ModelAndView("requirementsView", map);
                 }
+            } catch (NumberFormatException n) {
+                map = putInMap(map, trip, "error", messageSource.getMessage("RequisiteWrongError", null, locale));
+                return new ModelAndView("requirementsView", map);
             }
         } else {
             return new ModelAndView("loginView", "loginBean", new LoginBean());
@@ -389,6 +406,9 @@ public class TripController {
                     map = putInMap(map, trip, "error", e.getMessage());
                     return new ModelAndView("requirementsView", map);
                 }
+            } catch (NumberFormatException n) {
+                map = putInMap(map, trip, "error", messageSource.getMessage("RequisiteWrongError", null, locale));
+                return new ModelAndView("requirementsView", map);
             }
         } else {
             return new ModelAndView("loginView", "loginBean", new LoginBean());
@@ -488,8 +508,8 @@ public class TripController {
                         bFile = file.getBytes();
                     }
                     possibleAnswers.remove(0);
-                    tripsService.addLocationToTrip(user, trip, latitude, longitude, street, houseNr.split("-")[0], city, postalCode,
-                            country, title, description, question, possibleAnswers, possibleAnswers.indexOf(correctAnswer), bFile);
+                    tripsService.addLocationToTrip(user, trip, latitude, longitude, HtmlUtils.htmlEscape(street), HtmlUtils.htmlEscape(houseNr.split("-")[0]), HtmlUtils.htmlEscape(city), HtmlUtils.htmlEscape(postalCode),
+                            HtmlUtils.htmlEscape(country), HtmlUtils.htmlEscape(title), HtmlUtils.htmlEscape(description), HtmlUtils.htmlEscape(question), possibleAnswers, possibleAnswers.indexOf(correctAnswer), bFile);
                 }
             } catch (TripsException e) {
                 return new ModelAndView("tripsView");
@@ -509,7 +529,7 @@ public class TripController {
             User user = (User) session.getAttribute("user");
             Trip trip = tripsService.findTripById(tripId, user);
             Location location = tripsService.findLocationById(locationId);
-            tripsService.editTripLocationDetails(user, trip, location, "", "", "", "", "", title, description);
+            tripsService.editTripLocationDetails(user, trip, location, "", "", "", "", "", HtmlUtils.htmlEscape(title), HtmlUtils.htmlEscape(description));
             parameters.put("trip", trip);
             parameters.put("location", location);
             return new ModelAndView("redirect:/trip/" + trip.getId() + "/locations/" + location.getId(), parameters);
@@ -796,7 +816,7 @@ public class TripController {
             Trip trip = tripsService.findTripById(tripId, user);
             tripsService.removeCostFromEnrollment(name, amount, trip, user);
             map = putInMap(map, trip, "success", messageSource.getMessage("CostAdded", null, locale));
-            return new ModelAndView("redirect:/costs/" + trip.getId(), map);
+            return new ModelAndView("redirect:/costs/" + trip.getId(), map); //TODO:error
         } catch (TripsException e) {
             return new ModelAndView("tripsView", "error", messageSource.getMessage("FindTripError", null, locale));
         }

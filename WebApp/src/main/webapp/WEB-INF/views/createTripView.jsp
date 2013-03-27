@@ -6,6 +6,8 @@
 <head>
     <link rel="stylesheet" href="${pageContext.request.contextPath}/resources/css/main.css"/>
     <link rel="stylesheet" href="${pageContext.request.contextPath}/resources/css/createtrip.css"/>
+    <link rel="stylesheet" media="(max-width:1040px)" href="${pageContext.request.contextPath}/resources/css/main-responsive.css">
+    <link rel="stylesheet" media="(min-width:1039px)" href="${pageContext.request.contextPath}/resources/css/responsive-fix.css">
     <link rel="shortcut icon" href="${pageContext.request.contextPath}/resources/res/favicon.ico">
     <title><spring:message code="CreateTripPage"/></title>
 </head>
@@ -23,11 +25,11 @@
                 <table>
                     <tr>
                         <td><label><spring:message code="Title"/></label></td>
-                        <td><input type="text" name="title" required="true"></td>
+                        <td><input pattern=".{4,}" title="<spring:message code="minlength4"></spring:message> " type="text" name="title" required="true" placeholder="Title"></td>
                     </tr>
                     <tr>
                         <td><label><spring:message code="Description"/></label></td>
-                        <td><input type="text" name="description" required="true"></td>
+                        <td><input pattern=".{4,}" title="<spring:message code="minlength4"></spring:message>" type="text" name="description" required="true" placeholder="Description"></td>
                     </tr>
                     <tr>
                         <td><label><spring:message code="Privacy"/></label></td>
@@ -46,7 +48,7 @@
                     </tr>
                     <tr class="optionsTimeBound">
                         <td><label><spring:message code="StartDate"/></label></td>
-                        <td><input type="datetime-local" class="picker" name="startDate"></td>
+                        <td><input type="datetime-local" name="startDate"></td>
                     </tr>
                     <tr class="optionsTimeBound">
                         <td><label><spring:message code="EndDate"/></label></td>

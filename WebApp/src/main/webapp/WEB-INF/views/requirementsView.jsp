@@ -6,6 +6,8 @@
     <link rel="stylesheet" href="${pageContext.request.contextPath}/resources/css/main.css"/>
     <link rel="stylesheet" href="${pageContext.request.contextPath}/resources/css/login.css"/>
     <link rel="stylesheet" href="${pageContext.request.contextPath}/resources/css/trip.css"/>
+    <link rel="stylesheet" media="(max-width:1040px)" href="${pageContext.request.contextPath}/resources/css/main-responsive.css">
+    <link rel="stylesheet" media="(min-width:1039px)" href="${pageContext.request.contextPath}/resources/css/responsive-fix.css">
     <link rel="stylesheet" href="<spring:theme code="css"/>" type="text/css"/>
     <link rel="shortcut icon" href="${pageContext.request.contextPath}/resources/res/favicon.ico">
     <!--[if lt IE 9]>
@@ -19,14 +21,14 @@
     <jsp:include page="tripHeaderView.jsp"/>
 
     <div class="inner-content">
-        <h3><spring:message code="Requisites"/></h3>
-        <c:if test="${error != null}">
-            <span class="errorblock">${error}</span>
-        </c:if>
         <c:if test="${success != null}">
             <span class="successblock">${success}</span>
         </c:if>
-
+        <c:if test="${error != null}">
+            <span class="errorblock">${error}</span>
+        </c:if>
+        <br>
+        <h3><spring:message code="Requisites"/></h3>
         <p>
             <c:if test="${not empty user && user == trip.organizer}">
                 <h3><spring:message code="AddRequisiteToTrip"/></h3>
@@ -68,7 +70,6 @@
                 </table>
             </c:if>
         </p>
-
         <p>
             <c:choose>
                 <c:when test="${not empty trip.requisites}">

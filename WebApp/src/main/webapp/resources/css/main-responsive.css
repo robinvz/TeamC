@@ -1,0 +1,69 @@
+body{
+    margin-left: 0;
+    margin-right: 0;
+}
+
+h2{
+    margin: 0px 0px 25px;
+}
+
+#page{
+    width: 90%;
+    padding: 0 5%;
+}
+
+.header-nav{
+    float: none;
+    display: block;
+}
+
+.nav{
+    padding-left: 0;
+}
+
+.nav li{
+    padding: 0 3% 0 0;
+}
+
+.content{
+    float: none;
+    width: 100%;
+}
+
+#inner-content{
+    width: 100%;
+}
+
+.tables{
+    width: 100%;
+    display: block;
+    float: none;
+}
+
+.tripstitle{
+    margin-top: 20px;
+}
+
+.trip-general{
+    width: 100%
+}
+
+#content{
+    width: 100%;
+}
+
+#mapcanvas{
+    width: 100%;
+}
+
+#myCanvas{
+    width: 100%;
+}
+
+.bigView{
+    display: none;
+}
+
+.smallView{
+    display: block;
+}

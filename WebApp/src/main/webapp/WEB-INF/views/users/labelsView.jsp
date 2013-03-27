@@ -6,6 +6,8 @@
     <link rel="stylesheet" href="${pageContext.request.contextPath}/resources/css/main.css"/>
     <link rel="stylesheet" href="${pageContext.request.contextPath}/resources/css/login.css"/>
     <link rel="stylesheet" href="${pageContext.request.contextPath}/resources/css/trip.css"/>
+    <link rel="stylesheet" media="(max-width:1040px)" href="${pageContext.request.contextPath}/resources/css/main-responsive.css">
+    <link rel="stylesheet" media="(min-width:1039px)" href="${pageContext.request.contextPath}/resources/css/responsive-fix.css">
     <link rel="stylesheet" href="<spring:theme code="css"/>" type="text/css"/>
     <link rel="shortcut icon" href="${pageContext.request.contextPath}/resources/res/favicon.ico">
     <!--[if lt IE 9]>
@@ -19,13 +21,13 @@
     <jsp:include page="../tripHeaderView.jsp"/>
 
     <div class="inner-content">
-        <h3>Labels</h3>
         <c:if test="${error != null}">
             <span class="errorblock">${error}</span>
         </c:if>
         <c:if test="${success != null}">
             <span class="successblock">${success}</span>
         </c:if>
+        <h3>Labels</h3>
 
         <c:if test="${user == trip.organizer}">
             <table>
@@ -37,22 +39,23 @@
                     </tr>
                 </form>
             </table>
-
-
-            <c:if test="${not empty trip.labels}">
+        </c:if>
+        <c:choose>
+            <c:when test="${not empty trip.labels}">
                 <table>
-
-                    <tbody>
                     <c:forEach items="${trip.labels}" var="label">
                         <tr>
                             <td>${label}</td>
                         </tr>
                     </c:forEach>
-                    </tbody>
                 </table>
-            </c:if>
-        </c:if>
+            </c:when>
+            <c:otherwise>
+                <p>There aren't any labels at the moment</p>
+            </c:otherwise>
+        </c:choose>
     </div>
+
 </div>
 </body>
 </html>

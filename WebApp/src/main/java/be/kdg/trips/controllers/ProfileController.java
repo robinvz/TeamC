@@ -128,6 +128,8 @@ public class ProfileController {
                 session.invalidate();
             } catch (TripsException e) {
                 return new ModelAndView("/users/profileView", "error", messageSource.getMessage("DeleteUserError", null, locale));
+            } catch (RuntimeException e) {
+                return new ModelAndView("/users/profileView", "error", messageSource.getMessage("DeleteUserWithTripError", null, locale));
             }
             return new ModelAndView("indexView");
         } else {
