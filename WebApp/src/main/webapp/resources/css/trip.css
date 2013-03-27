@@ -5,6 +5,15 @@
 
 }
 
+.EnrollReqTable{
+    border-style: double;
+    border-width: 0.2em;
+    border-color: steelblue;
+    background-color: darkgray;
+    padding: 0.3em;
+    margin: 0.5em 0 0.5em 0;
+}
+
 h2{
     font-family: webfontbold;
     color: rgb(247, 247, 247);

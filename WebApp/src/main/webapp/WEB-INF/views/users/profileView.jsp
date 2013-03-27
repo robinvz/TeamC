@@ -20,9 +20,6 @@
     <div class="content">
         <section>
             <article>
-                <c:if test="${error != null}">
-                    <span class="errorblock">${error}</span>
-                </c:if>
                 <h2>${user.firstName} ${user.lastName}</h2>
                 <div class="profile-general">
                     <button id="btn-edit" class="profile-view btn-blue"><spring:message code="Edit"/></button>
@@ -105,13 +102,12 @@
                             </tr>
                         </table>
                     </form>
+                    <c:if test="${error != null}">
+                        <span class="errorblock">${error}</span>
+                    </c:if>
                 </div>
                 <!-- Only active trips -->
                 <div class="profile-currentTrips">
-
-                </div>
-                <!-- Only non-active trips -->
-                <div class="profile-tripsHistory">
 
                 </div>
 
