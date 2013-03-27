@@ -115,7 +115,7 @@
                     <li class="jump-in"><a href="/users/publishTrip/${trip.id}"><spring:message code="Publish"/></a></li>
                 </c:if>
                 <c:if test="${trip.privacy == 'PRIVATE'}">
-                    <li class="jump-in"><a href="users/inviteUser/${trip.id}"><spring:message code="InviteUsers"/></a></li>
+                    <li class="jump-in"><a href="/users/inviteUser/${trip.id}"><spring:message code="InviteUsers"/></a></li>
                 </c:if>
                 <c:if test="${trip.timeBoundTrip==true}">
                     <li class="jump-in"><a href="/users/addDate/${trip.id}"><spring:message code="AddDate"/></a></li>
