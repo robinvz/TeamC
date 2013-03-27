@@ -22,18 +22,15 @@
     <div class="inner-content">
         <section>
             <article>
-                <h3><spring:message code="General"/></h3>
                 <c:if test="${error != null}">
                     <span class="errorblock">${error}</span>
                 </c:if>
                 <c:if test="${success != null}">
                     <span class="successblock">${success}</span>
                 </c:if>
+                <h3><spring:message code="General"/></h3>
 
                 <div class="trip-info">
-                    <c:if test="${trip.organizer == user}">
-                        <button id="btn-edit" class="trip-view btn-blue" style="float: right;"><spring:message code="Edit"/></button>
-                    </c:if>
                     <form id="trip-form" action="/trip/${trip.id}/editTrip" method="POST">
                         <table>
                             <tr class="trip-edit">
@@ -124,11 +121,38 @@
                                     </c:otherwise>
                                 </c:choose>
                             </tr>
-                        </table>
+                            <c:if test="${not empty trip.labels}">
+                                <table>
+                                    <tbody>
+                                        <thead>
+                                            <th>Labels</th>
+                                        </thead>
+                                        <c:forEach items="${trip.labels}" var="label">
+                                            <tr>
+                                                <td>${label}</td>
+                                            </tr>
+                                        </c:forEach>
+                                    </tbody>
+                                </table>
+                            </c:if>
 
-                        <input id="btn-save" type="submit" value="<spring:message code="Save" />"
-                               class="btn-submit trip-edit btn-blue">
+                        <tr>
+                            <td>
+                                <input id="btn-save" type="submit" value="<spring:message code="Save" />"
+                                                               class="btn-submit trip-edit btn-blue">
+                            </td>
+                        </tr>
+
                     </form>
+                    <c:if test="${trip.organizer == user}">
+                        <tr>
+                            <td>
+                                <button id="btn-edit" class="trip-view btn-blue"><spring:message code="Edit"/></button>
+                            </td>
+                        </tr>
+
+                    </c:if>
+                    </table>
                     <c:if test="${not empty requisites}">
                         <h3><spring:message code="EnrollmentRequisites"/></h3>
                         <table class="EnrollReqTable">
