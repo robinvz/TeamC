@@ -32,7 +32,7 @@
                     <div class="active item">
                         <img alt="Logo" src="${pageContext.request.contextPath}/resources/res/img/welcome.jpg" width="100%" height="400">
                         <div class="carousel-caption">
-                            <h4><spring:message code="WelcomeTitle" /></h4>
+                            <h1 style="color: white"><spring:message code="WelcomeTitle" /></h1>
                             <p><spring:message code="WelcomeMessage" /></p>
                         </div>
                     </div>
@@ -47,7 +47,7 @@
                             </c:otherwise>
                         </c:choose>
                         <div class="carousel-caption">
-                           <h4>${trip.title}</h4>
+                           <h1 style="color: white">${trip.title}</h1>
                            <p>${trip.description}</p>
                         </div>
                     </div>
