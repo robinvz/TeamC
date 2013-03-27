@@ -35,39 +35,30 @@
                 <div class="trip-info">
                     <form id="trip-form" action="/trip/${trip.id}/editTrip" method="POST">
                         <table>
-                            <tr class="trip-edit">
+                            <tr>
                                 <td><label><spring:message code="Title"></spring:message></label></td>
-                                <td><input type="text" name="title"></td>
+                                <td><label class="trip-view">${trip.title}</label></td>
+                                <td><input class="trip-edit" type="text" name="title"></td>
                             </tr>
                             <tr>
                                 <td><spring:message code="Description"/></td>
-                                <td>
-                                    <label class="trip-view">${trip.description}</label>
-                                    <input class="trip-edit" type="text" name="description">
-                                </td>
-
+                                <td><label class="trip-view">${trip.description}</label></td>
+                                <td><input class="trip-edit" type="text" name="description"></td>
                             </tr>
                             <tr class="trip-edit">
+                                <td><label><spring:message code="chatAllowed"></spring:message></label></td>
                                 <td>
-                                    <label><spring:message code="chatAllowed"></spring:message></label>
-                                </td>
-                                <td>
-
                                     <input type="checkbox" value="1" name="chatAllowed" >
                                     <input type="hidden" value="0" name="chatAllowed">
-
                                 </td>
                             </tr>
                             <tr class="trip-edit">
-                                <td>
-                                    <label><spring:message code="positionVisible"></spring:message></label>
-                                </td>
+                                <td><label><spring:message code="positionVisible"></spring:message></label></td>
                                 <td>
                                     <input type="checkbox" value="1" name="positionVisible" >
                                     <input type="hidden" value="0" name="positionVisible">
                                 </td>
                             </tr>
-
                             <tr>
                                 <td><spring:message code="Privacy"/></td>
                                 <td>
@@ -139,8 +130,7 @@
                             </c:if>
                         <tr>
                             <td>
-                                <input id="btn-save" type="submit" value="<spring:message code="Save" />"
-                                                               class="btn-submit trip-edit btn-blue">
+                                <input id="btn-save" type="submit" value="<spring:message code="Save" />" class="trip-edit btn-blue">
                             </td>
                         </tr>
                     </form>
@@ -242,11 +232,9 @@
                                                 });
                                         enrolled = true;
                                     }
-
                                     $(this).toggleClass('on');
                                 }
                             });
-
                         });
                     </script>
 
