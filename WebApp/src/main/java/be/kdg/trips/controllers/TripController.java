@@ -816,7 +816,7 @@ public class TripController {
             Trip trip = tripsService.findTripById(tripId, user);
             tripsService.removeCostFromEnrollment(name, amount, trip, user);
             map = putInMap(map, trip, "success", messageSource.getMessage("CostAdded", null, locale));
-            return new ModelAndView("redirect:/costs/" + trip.getId(), map); //TODO:geeft fout
+            return new ModelAndView("redirect:/costs/" + trip.getId(), map); //TODO:error
         } catch (TripsException e) {
             return new ModelAndView("tripsView", "error", messageSource.getMessage("FindTripError", null, locale));
         }
