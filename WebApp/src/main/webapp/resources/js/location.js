@@ -13,6 +13,15 @@ function getIds(trip, location) {
     updateCorrectAnswers();
 }
 
+function init(organizer) {
+    $('#editQuestion').hide();
+    $('#editLocation').hide();
+
+    if (!organizer) {
+        $('.ifNotOrganizerHide').hide();
+    }
+}
+
 function getLatLng() {
     $.getJSON("/trip/" + tripId + "/locations/getLocationsLatLng?amount=one&locationId=" + locationId, function (coordinates) {
         $.each(coordinates, function (i, coordinate) {

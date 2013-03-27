@@ -11,8 +11,9 @@
 table {
     display: inline-table;
     margin-top: 20px;
-    width: 100%;
     margin-right: 10px;
+    margin-bottom: 30px;
+    width: 100%;
     text-align: center;
     float: left;
 }
@@ -64,4 +65,10 @@ td {
 
 #btn-createLocation, #btn-toggleLocations {
     float: right;
+}
+
+#directionsPanel{
+    width: 100%;
+    height: 400px;
+    overflow: scroll;
 }

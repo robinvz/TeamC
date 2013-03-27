@@ -84,15 +84,14 @@
                         </c:if>
                         <label type="text">${location.getQuestion().question}</label>
                         <ul>
-
-                                <c:forEach items="${location.question.possibleAnswers}" var="answer" varStatus="status">
-                                    <c:set var="correctAnswerBold" value="normal"/>
-                                    <c:if test="${status.index == location.question.correctAnswerIndex && trip.organizer == user}">
-                                        <c:set var="correctAnswerBold" value="bold"/>
-                                    </c:if>
-                                    <li><label class="${correctAnswerBold}" type="text">${status.index +1}.${answer}</label></li>
-                                </c:forEach>
-
+                            <c:forEach items="${location.question.possibleAnswers}" var="answer" varStatus="status">
+                                <c:set var="correctAnswerBold" value="normal"/>
+                                <c:if test="${status.index == location.question.correctAnswerIndex}">
+                                    <c:set var="correctAnswerBold" value="bold"/>
+                                </c:if>
+                                <li><label class="${correctAnswerBold}" type="text">${status.index +1}.${answer}</label>
+                                </li>
+                            </c:forEach>
                         </ul>
                         <c:if test="${trip.organizer == user}">
                             <button type="button" id="btn-toggleEditQuestion"><spring:message code="Edit"/></button>

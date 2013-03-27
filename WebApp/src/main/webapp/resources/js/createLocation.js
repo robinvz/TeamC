@@ -7,6 +7,7 @@ var tmpVal = '';
 var usedAddressComponents = [];
 
 $(document).ready(function () {
+    $('#hiddenAnswer').hide();
     $('#addressfields input').attr('readonly', 'readonly');
     $('#btn-next').attr('disabled', 'disabled');
     btnListeners();
@@ -109,15 +110,11 @@ function btnListeners() {
 
     $('#btn-answer').on('click', function () {
         $('#answers').append('<label>Answer ' + answerNumber + '</label>');
-        $('#answers').append('<input name="possibleAnswers" value="' + tmpVal + '"/>')
+        $('#answers').append('<input class="poss" name="possibleAnswers" value="' + $('#new-answer').val() + '"/>');
+        $('#correct-answer').append('<option>' + $('#new-answer').val() + '</option>');
         $('#new-answer').val('');
-        $('#correct-answer').append('<option>' + tmpVal + '</option>')
-        $("#new-answer").val('leeg');
         answerNumber += 1;
-    });
-
-    $('#new-answer').on('blur', function () {
-        tmpVal = $('#new-answer').val();
-        $('#new-answer').val('');
+        $('.poss').attr('readonly','readonly');
+        $('.poss').style.marginLeft = "4px";
     });
 }
