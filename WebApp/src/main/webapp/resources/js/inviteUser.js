@@ -25,7 +25,7 @@ function btnListeners() {
         var invitedUser = [
             {'name': 'userByKeywordEmail', 'value': $(this).closest('tr').find('input').val()}
         ];
-        $.post('/users/inviteUser/' + tripId + '/sendInvite', invitedUser, function () {
+        $.post('/inviteUser/' + tripId + '/sendInvite', invitedUser, function () {
             location.reload();
         });
     });
@@ -34,7 +34,7 @@ function btnListeners() {
         var uninvitedUser = [
             {'name': 'uninviteEmail', 'value': $(this).closest('tr').find('input').val()}
         ];
-        $.post('/users/inviteUser/' + tripId + '/uninvite/', uninvitedUser, function () {
+        $.post('/inviteUser/' + tripId + '/uninvite/', uninvitedUser, function () {
             location.reload();
         });
     });
