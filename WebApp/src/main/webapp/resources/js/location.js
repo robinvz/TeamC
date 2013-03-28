@@ -62,8 +62,8 @@ function listeners() {
         if ($('#editQuestion').is(':hidden')) {
             $('#answersAdd').append('<label>Answer ' + answerNumber + '</label>');
             $('#answersAdd').append('<input class="answer" name="possibleAnswers" value="' + tmpVal + '"/>');
-            $('#answersAdd .answer').attr('readonly','readonly');
-            $('#answersAdd .answer').css('marginLeft','4px');
+            $('#answersAdd .answer').attr('readonly', 'readonly');
+            $('#answersAdd .answer').css('marginLeft', '4px');
         } else {
             $('#answersEdit').append('<input class="answer" name="possibleAnswers" value="' + tmpVal + '"/>');
         }
@@ -87,6 +87,12 @@ function listeners() {
     $('#btn-toggleEditQuestion').on('click', function () {
         $('#showQuestion').hide();
         $('#editQuestion').show();
+        $('#ulAnswers li label').each(function () {
+            if ($(this).hasClass('bold')) {
+                var index = $(this).text().substr(0, 1) - 1;
+                $('#selectedRight option:eq(' + index + ')').prop('selected', true);
+            }
+        })
     })
 
     $('#btn-toggleEditLocation').on('click', function () {

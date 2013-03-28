@@ -87,7 +87,7 @@
                             </c:choose>
                         </c:if>
                         <label type="text">${location.getQuestion().question}</label>
-                        <ul>
+                        <ul id="ulAnswers">
                             <c:forEach items="${location.question.possibleAnswers}" var="answer" varStatus="status">
                                 <c:set var="correctAnswerBold" value="normal"/>
                                 <c:if test="${status.index == location.question.correctAnswerIndex}">
@@ -154,7 +154,7 @@
                     </div>
                     <input class="new-answer" type="text" value="--<spring:message code="AddAnswer"/>--">
                     <button class="btn-answer" type="button"><spring:message code="Save"/></button>
-                    <select class="correct-answer" name="correctAnswer">
+                    <select id="selectedRight" class="correct-answer" name="correctAnswer">
                         <option>--<spring:message code="SelectCorrectAnswer"/>--</option>
                     </select>
                     <button id="btn-submitEdit" type="submit"><spring:message code="Submit"/></button>

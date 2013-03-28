@@ -7,6 +7,7 @@ function getTripId(id) {
     initDataTable();
     listeners();
     initializeMap();
+    listOfWaypoints();
 }
 
 function initializeMap() {
@@ -72,7 +73,7 @@ function getLatLng() {
 
 function initDataTable() {
     $('#locations-table').dataTable({ 'bFilter': false, "bLengthChange": false, "bPaginate": false, "bInfo": false, "bAutoWidth": false })
-        .rowReordering({ sURL: "/trip/switchLocation", callback: listOfWaypoints() });
+        .rowReordering({ sURL: "/trip/switchLocation"});
 }
 
 function listOfWaypoints() {
