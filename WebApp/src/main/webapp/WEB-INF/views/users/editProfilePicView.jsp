@@ -7,7 +7,7 @@
     <link rel="stylesheet" media="(max-width:1040px)" href="${pageContext.request.contextPath}/resources/css/main-responsive.css">
     <link rel="stylesheet" media="(min-width:1039px)" href="${pageContext.request.contextPath}/resources/css/responsive-fix.css">
     <link rel="shortcut icon" href="${pageContext.request.contextPath}/resources/res/favicon.ico">
-    <title>Profile page</title>
+    <title><spring:message code="ProfilePage"/></title>
 </head>
 <body>
 <div id="page">
@@ -17,23 +17,14 @@
     <div class="content">
         <section>
             <article>
-                <h2>Change picture</h2>
+                <h2><spring:message code="ChangePicture"/></h2>
 
                 <div class="profile-general">
                     <form id="profile-form" action="/users/editProfilePic" method="POST" enctype="multipart/form-data">
-                        <spring:message code="UploadFile" /><input type="file" name="file" />
-                            <input type="submit" value="<spring:message code="UploadButton" />"  >
+                        <spring:message code="UploadFile" /><input type="file" name="file" value="<spring:message code="ChooseFile"/>"/>
+                        <input type="submit" value="<spring:message code="UploadButton" />"  >
                     </form>
                 </div>
-                <!-- Only active trips -->
-                <div class="profile-currentTrips">
-
-                </div>
-                <!-- Only non-active trips -->
-                <div class="profile-tripsHistory">
-
-                </div>
-
             </article>
         </section>
     </div>
