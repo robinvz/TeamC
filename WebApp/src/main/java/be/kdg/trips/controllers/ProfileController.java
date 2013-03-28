@@ -11,6 +11,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.ModelAndView;
+import org.springframework.web.util.HtmlUtils;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
@@ -54,22 +55,21 @@ public class ProfileController {
         if(user!=null) {
             String newpw1 = request.getParameter("newPassword1");
             String newpw2 = request.getParameter("newPassword2");
-            if(newpw1.equals(newpw2))
-            {
+            String oldpw = request.getParameter("oldPassword");
+            if(newpw1.equals(newpw2)) {
                 try {
-                    tripsService.changePassword(user, request.getParameter("oldPassword"), newpw1);
+                    tripsService.changePassword(user, HtmlUtils.htmlEscape(oldpw), HtmlUtils.htmlEscape(newpw1));
                     session.setAttribute("user", tripsService.findUser(((User) session.getAttribute("user")).getEmail()));
+                    return new ModelAndView("/users/profileView", "success", messageSource.getMessage("PasswordChanged", null, locale));
                 } catch (TripsException e) {
                     return new ModelAndView("/users/editCredentialsView", "error", messageSource.getMessage("EditCredentialsOldPwError", null, locale));
                 }
-            }else
-            {
+            } else {
                 return new ModelAndView("/users/editCredentialsView", "error", messageSource.getMessage("EditCredentialsNewPwError", null, locale));
             }
         } else {
             return new ModelAndView("loginView", "loginBean", new LoginBean());
         }
-        return new ModelAndView("/users/profileView");
     }
 
     @RequestMapping(value = "/users/editProfilePic", method = RequestMethod.GET)
@@ -88,19 +88,19 @@ public class ProfileController {
     @RequestMapping(value = "/users/editProfile", method = RequestMethod.POST)
     public ModelAndView editProfile(@RequestParam String firstName, @RequestParam String lastName, @RequestParam String street,
                                     @RequestParam String houseNr, @RequestParam String city, @RequestParam String postalCode,
-                                    @RequestParam String country) {
+                                    @RequestParam String country, Locale locale) {
         User user = (User) session.getAttribute("user");
         if (user != null) {
             try {
-                tripsService.updateUser(user, firstName, lastName, street, houseNr, city, postalCode, country, null);
+                tripsService.updateUser(user, HtmlUtils.htmlEscape(firstName), HtmlUtils.htmlEscape(lastName), HtmlUtils.htmlEscape(street),
+                        HtmlUtils.htmlEscape(houseNr), HtmlUtils.htmlEscape(city), HtmlUtils.htmlEscape(postalCode),
+                        HtmlUtils.htmlEscape(country), null);
                 session.setAttribute("user", tripsService.findUser(((User) session.getAttribute("user")).getEmail()));
                 return new ModelAndView("/users/profileView");
             } catch (TripsException e) {
                 return new ModelAndView("/users/profileView", "error", e.getMessage());
             } catch (RuntimeException e) {
-                return new ModelAndView("/users/profileView", "error", "Please follow these guidelines:\n" +
-                        "Street, City and country should only contain letters\n" +
-                        "House number should be a number with a maximum of one letter");
+                return new ModelAndView("/users/profileView", "error", messageSource.getMessage("EditProfileError", null, locale));
             }
         } else {
             return new ModelAndView("loginView", "loginBean", new LoginBean());

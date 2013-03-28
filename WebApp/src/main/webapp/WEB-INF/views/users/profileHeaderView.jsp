@@ -11,7 +11,7 @@
             <li><a href="/users/editCredentials"><spring:message code="EditPassword" /></a></li>
             <li>
                 <form id="deleteProfileForm" action="/users/deleteProfile" method="get">
-                    <button type="submit" id="deleteBtn" class="btn-blue"><spring:message code="DeleteProfile" /></button>
+                    <button type="submit" id="deleteBtn" class="btn-blue" style="float: left;"><spring:message code="DeleteProfile" /></button>
                 </form>
             </li>
         </ul>
