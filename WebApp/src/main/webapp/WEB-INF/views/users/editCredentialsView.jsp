@@ -24,15 +24,15 @@
             <table>
                 <tr>
                     <td><spring:message code="OldPassword"/></td>
-                    <td><input type="password" name="oldPassword"></td>
+                    <td><input type="password" name="oldPassword" pattern=".{4,}" title="<spring:message code="minlength4"></spring:message>" required="true"></td>
                 </tr>
                 <tr>
                     <td><spring:message code="NewPassword"/></td>
-                    <td><input type="password" name="newPassword1"></td>
+                    <td><input type="password" name="newPassword1" pattern=".{4,}" title="<spring:message code="minlength4"></spring:message>" required="true"></td>
                 </tr>
                 <tr>
                     <td><spring:message code="NewPassword"/></td>
-                    <td><input type="password" name="newPassword2"></td>
+                    <td><input type="password" name="newPassword2" pattern=".{4,}" title="<spring:message code="minlength4"></spring:message>" required="true"></td>
                 </tr>
                 <tr>
                     <td></td>

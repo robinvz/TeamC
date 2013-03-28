@@ -54,22 +54,20 @@ public class ProfileController {
         if(user!=null) {
             String newpw1 = request.getParameter("newPassword1");
             String newpw2 = request.getParameter("newPassword2");
-            if(newpw1.equals(newpw2))
-            {
+            if(newpw1.equals(newpw2)) {
                 try {
                     tripsService.changePassword(user, request.getParameter("oldPassword"), newpw1);
                     session.setAttribute("user", tripsService.findUser(((User) session.getAttribute("user")).getEmail()));
+                    return new ModelAndView("/users/profileView", "success", messageSource.getMessage("PasswordChanged", null, locale));
                 } catch (TripsException e) {
                     return new ModelAndView("/users/editCredentialsView", "error", messageSource.getMessage("EditCredentialsOldPwError", null, locale));
                 }
-            }else
-            {
+            } else {
                 return new ModelAndView("/users/editCredentialsView", "error", messageSource.getMessage("EditCredentialsNewPwError", null, locale));
             }
         } else {
             return new ModelAndView("loginView", "loginBean", new LoginBean());
         }
-        return new ModelAndView("/users/profileView");
     }
 
     @RequestMapping(value = "/users/editProfilePic", method = RequestMethod.GET)
