@@ -266,6 +266,7 @@ footer
 
 /*Carousel*/
 .carousel {
+    border: solid 1px black;
   position: relative;
   margin-bottom: 20px;
   line-height: 1;
@@ -275,6 +276,7 @@ footer
   position: relative;
   width: 100%;
   overflow: hidden;
+    border-top: solid 2px rgb(206, 206, 206);
 }
 
 .carousel-inner > .item {
@@ -349,6 +351,7 @@ footer
           border-radius: 23px;
   opacity: 0.5;
   filter: alpha(opacity=50);
+    text-decoration: none;
 }
 
 .carousel-control.right {
@@ -412,3 +415,5 @@ footer
 .carousel-caption p {
   margin-bottom: 0;
 }
+
+

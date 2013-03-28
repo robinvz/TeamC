@@ -28,11 +28,6 @@
                 <th></th>
                 <th><spring:message code="Title"/></th>
                 <th><spring:message code="Description"/></th>
-                <th class="bigView"><spring:message code="Street"/></th>
-                <th class="bigView"><spring:message code="HouseNr"/></th>
-                <th class="bigView"><spring:message code="City"/></th>
-                <th class="bigView"><spring:message code="PostalCode"/></th>
-                <th class="bigView"><spring:message code="Country"/></th>
                 <c:if test="${not empty user && trip.organizer == user}">
                     <th></th>
                 </c:if>
@@ -57,21 +52,7 @@
                             <td>
                                     ${location.description}
                             </td>
-                            <td class="bigView">
-                                    ${location.getAddress().street}
-                            </td>
-                            <td class="bigView">
-                                    ${location.getAddress().houseNr}
-                            </td>
-                            <td class="bigView">
-                                    ${location.getAddress().city}
-                            </td>
-                            <td class="bigView">
-                                    ${location.getAddress().postalCode}
-                            </td>
-                            <td class="bigView">
-                                    ${location.getAddress().country}
-                            </td>
+
                             <c:if test="${not empty user && trip.organizer == user}">
                                 <td>
                                     <a href="/users/trip/${trip.id}/locations/${location.id}/deleteLocation">
