@@ -7,14 +7,6 @@
     width: 100%;
 }
 
-#find{
-    margin-bottom: 50px;
-}
-
-div #foundUsers{
-    display: none;
-}
-
 .dataTable{
     display: inline-table;
     margin-top: 20px;

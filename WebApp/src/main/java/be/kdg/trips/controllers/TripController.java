@@ -672,7 +672,7 @@ public class TripController {
             try {
                 trip = tripsService.findTripById(tripId, user);
                 tripsService.invite(trip, user, tripsService.findUser(userByKeywordEmail));
-                return new ModelAndView("redirect:/inviteUser/" + trip.getId());
+                return new ModelAndView("redirect:/users/inviteUser/" + trip.getId());
             } catch (MessagingException e) {
                 return new ModelAndView("tripsView", "error", e.getMessage());
             } catch (TripsException e) {
