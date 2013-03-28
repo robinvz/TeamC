@@ -80,5 +80,6 @@
     <string name="UPDATE_ERROR_BAD_FRAME_QUALITY_DESC">The camera does not have enough detail, please try again later.</string>
     <string name="UPDATE_ERROR_UNKNOWN_DESC">The service is unavaiable, please try again later.</string>
     <string name="status_bar_scanning">Scanning</string>
+    <string name="find_the_photo">Find the photo!</string>
     
 </resources>
