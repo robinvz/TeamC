@@ -804,7 +804,7 @@ public class TripController {
         try {
             Trip trip = tripsService.findTripById(tripId, user);
             tripsService.addCostToEnrollment(name, amount, trip, user);
-            return new ModelAndView("redirect:/costs/" + trip.getId());
+            return new ModelAndView("redirect:/users/costs/" + trip.getId());
         } catch (TripsException e) {
             return new ModelAndView("tripsView", "error", messageSource.getMessage("FindTripError", null, locale));
         }
@@ -818,7 +818,7 @@ public class TripController {
             Trip trip = tripsService.findTripById(tripId, user);
             tripsService.removeCostFromEnrollment(name, amount, trip, user);
             map = putInMap(map, trip, "success", messageSource.getMessage("CostAdded", null, locale));
-            return new ModelAndView("redirect:/costs/" + trip.getId(), map); //TODO:error
+            return new ModelAndView("redirect:/users/costs/" + trip.getId(), map); //TODO:error
         } catch (TripsException e) {
             return new ModelAndView("tripsView", "error", messageSource.getMessage("FindTripError", null, locale));
         }
