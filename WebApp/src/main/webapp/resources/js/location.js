@@ -62,6 +62,8 @@ function listeners() {
         if ($('#editQuestion').is(':hidden')) {
             $('#answersAdd').append('<label>Answer ' + answerNumber + '</label>');
             $('#answersAdd').append('<input class="answer" name="possibleAnswers" value="' + tmpVal + '"/>');
+            $('#answersAdd .answer').attr('readonly','readonly');
+            $('#answersAdd .answer').css('marginLeft','4px');
         } else {
             $('#answersEdit').append('<input class="answer" name="possibleAnswers" value="' + tmpVal + '"/>');
         }
@@ -72,7 +74,6 @@ function listeners() {
 
     $('.new-answer').on('blur', function () {
         tmpVal = $('.new-answer').val();
-        $('.new-answer').val('');
     });
 
     $('.answer').on('blur', function () {

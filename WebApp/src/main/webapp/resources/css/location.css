@@ -45,7 +45,8 @@
 
 #showQuestion label {
     display: inline-block;
-    width: 50%;
+    width: 45%;
+    overflow: auto;;
 }
 
 #showQuestion ul {
@@ -75,14 +76,17 @@
     padding: 0;
 }
 
-
 ul {
-    width: 50%;
+    width: 90%;
     padding: 0;
 }
 
 ul li {
     list-style: none;
+}
+
+ul li label{
+    overflow: auto;
 }
 
 #question {
@@ -92,9 +96,4 @@ ul li {
 .bgimage {
     background-size: 100%;
     background-repeat: no-repeat;
-}
-
-.onImage {
-    float: right;
-    display: inline-block;
 }

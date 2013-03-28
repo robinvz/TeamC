@@ -5,8 +5,10 @@
     <link rel="stylesheet" href="${pageContext.request.contextPath}/resources/css/main.css"/>
     <link rel="stylesheet" href="${pageContext.request.contextPath}/resources/css/trip.css"/>
     <link rel="stylesheet" href="${pageContext.request.contextPath}/resources/css/createLocation.css">
-    <link rel="stylesheet" media="(max-width:1040px)" href="${pageContext.request.contextPath}/resources/css/main-responsive.css">
-    <link rel="stylesheet" media="(min-width:1039px)" href="${pageContext.request.contextPath}/resources/css/responsive-fix.css">
+    <link rel="stylesheet" media="(max-width:1040px)"
+          href="${pageContext.request.contextPath}/resources/css/main-responsive.css">
+    <link rel="stylesheet" media="(min-width:1039px)"
+          href="${pageContext.request.contextPath}/resources/css/responsive-fix.css">
     <link rel="stylesheet" href="<spring:theme code="css"/>" type="text/css"/>
     <link rel="shortcut icon" href="${pageContext.request.contextPath}/resources/res/favicon.ico">
     <title><spring:message code="CreateLocationPage"/></title>
@@ -18,15 +20,18 @@
     <div id="content">
         <div id="inner-content">
             <div id="add-location">
-                <form:form action="createLocation" method="POST" enctype="multipart/form-data">
+                <form:form action="createLocation" commandName="location" method="POST" enctype="multipart/form-data">
+                    <form:errors path="*" cssClass="errorblock" element="div"/>
                     <div class="page">
                         <div id="mapcanvas" class="map-canvas"></div>
                         <h3><spring:message code="SelectLocation"/></h3>
 
                         <div id="addressfields">
                             <div id="latlng">
-                                <input id="latitude" name="latitude" type="text">
-                                <input id="longitude" name="longitude" type="text">
+                                <form:input id="latitude" name="latitude" path="latitude"></form:input>
+                                <form:errors path="latitude" cssClass="error"></form:errors>
+                                <form:input id="longitude" name="longitude" path="longitude"></form:input>
+                                <form:errors path="longitude" cssClass="error"></form:errors>
                             </div>
                             <label><spring:message code="Street"/>: </label>
                             <input id="route" name="street" type="text">
@@ -46,12 +51,15 @@
 
                         <div id="questionfields">
                             <label><spring:message code="Title"/>: </label>
-                            <input id="location-title" name="title" type="text">
+                            <form:input id="location-title" name="title" path="title"></form:input>
+                            <form:errors path="title" cssClass="error"></form:errors>
                             <label><spring:message code="Description"/>: </label>
                             <textarea id="location-description" name="description" type="text"></textarea>
                             <label><spring:message code="Question"/>: </label>
                             <input id="location-question" name="question" type="text">
-                            <input id="btn-picture" type="file" name="file" value="<spring:message code="LocationPicture"/>"/>
+                            <input id="btn-picture" type="file" name="file"
+                                   value="<spring:message code="LocationPicture"/>"/>
+
                             <div id="answers">
                                 <input id="hiddenAnswer" name="possibleAnswers"/>
                             </div>

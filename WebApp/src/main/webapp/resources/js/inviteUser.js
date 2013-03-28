@@ -1,18 +1,20 @@
 var tripId;
 
 function getTripId(id) {
+    $('#noneFound').hide();
     tripId = id;
     initDataTable();
     btnListeners();
 }
 
 function initDataTable() {
-    $('.dataTable').dataTable();
+    $('.dataTable').dataTable({ "bPaginate": false, "bInfo": false, "bAutoWidth": false });
 }
 
 function btnListeners() {
     $('#btn-SearchUsers').click(function () {
         $('#foundUsers').show();
+        $('#noneFound').show();
     });
 
     $('.invite-input').click(function () {

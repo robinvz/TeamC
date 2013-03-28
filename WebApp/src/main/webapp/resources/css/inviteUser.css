@@ -1,3 +1,16 @@
+#invitedUsers-table{
+    margin-bottom: 50px;
+    width: 100%;
+}
+
+#foundUsers-table{
+    width: 100%;
+}
+
+#find{
+    margin-bottom: 50px;
+}
+
 div #foundUsers{
     display: none;
 }
@@ -30,4 +43,12 @@ div #foundUsers{
 .dataTable tr:hover{
     background-color:rgb(0,127,255);
     color: white;
+}
+
+.dataTables_filter{
+    float: right;
+}
+
+#findUsers-table{
+    float:left;
 }

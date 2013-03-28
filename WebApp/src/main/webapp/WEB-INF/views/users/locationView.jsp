@@ -7,8 +7,10 @@
     <link rel="stylesheet" href="${pageContext.request.contextPath}/resources/css/trip.css"/>
     <link rel="stylesheet" href="${pageContext.request.contextPath}/resources/css/locations.css"/>
     <link rel="stylesheet" href="${pageContext.request.contextPath}/resources/css/location.css"/>
-    <link rel="stylesheet" media="(max-width:1040px)" href="${pageContext.request.contextPath}/resources/css/main-responsive.css">
-    <link rel="stylesheet" media="(min-width:1039px)" href="${pageContext.request.contextPath}/resources/css/responsive-fix.css">
+    <link rel="stylesheet" media="(max-width:1040px)"
+          href="${pageContext.request.contextPath}/resources/css/main-responsive.css">
+    <link rel="stylesheet" media="(min-width:1039px)"
+          href="${pageContext.request.contextPath}/resources/css/responsive-fix.css">
     <link rel="stylesheet" href="<spring:theme code="css"/>" type="text/css"/>
     <link rel="shortcut icon" href="${pageContext.request.contextPath}/resources/res/favicon.ico">
     <link rel="stylesheet" href="http://code.jquery.com/ui/1.10.1/themes/base/jquery-ui.css"/>
@@ -56,33 +58,33 @@
                 <c:when test="${location.question != null}">
                     <div id="showQuestion">
                         <c:if test="${trip.organizer == user}">
-                        <c:choose>
-                            <c:when test="${location.question.image == null}">
-                                <div class="bgImage">
-                                    <form action="/trip/${trip.id}/locations/${location.id}/editLocationPic"
-                                          method="POST" enctype="multipart/form-data">
-                                        <input class="onImage" type="file" name="file"
-                                               value="<spring:message code="LocationPicture"/>"/>
-                                        <input type="submit" value="<spring:message code="UploadButton" />">
-                                    </form>
-                                </div>
-                            </c:when>
-                            <c:otherwise>
-                                <div class="bgImage"
-                                     style="background-image: url('/trip/${trip.id}/locations/${location.id}/questionPic');">
-                                </div>
-                                <a href="/users/trip/${trip.id}/locations/${location.id}/deleteQuestionImage">
-                                    <button class="onImage" type="button" id="btn-deletePicture"><spring:message code="Delete" /></button>
-                                </a>
-
-                                <form action="/trip/${trip.id}/locations/${location.id}/editLocationPic"
-                                      method="POST" enctype="multipart/form-data">
-                                    <input class="onImage" type="file" name="file"
-                                           value="<spring:message code="LocationPicture"/>"/>
-                                    <input type="submit" value="<spring:message code="UploadButton" />">
-                                </form>
-                            </c:otherwise>
-                        </c:choose>
+                            <c:choose>
+                                <c:when test="${location.question.image == null}">
+                                    <div class="bgImage">
+                                        <form action="/trip/${trip.id}/locations/${location.id}/editLocationPic"
+                                              method="POST" enctype="multipart/form-data">
+                                            <input type="file" name="file"
+                                                   value="<spring:message code="LocationPicture"/>"/>
+                                            <input type="submit" value="<spring:message code="UploadButton" />">
+                                        </form>
+                                    </div>
+                                </c:when>
+                                <c:otherwise>
+                                    <div class="bgImage"
+                                         style="background-image: url('/trip/${trip.id}/locations/${location.id}/questionPic');">
+                                        <form action="/trip/${trip.id}/locations/${location.id}/editLocationPic"
+                                              method="POST" enctype="multipart/form-data">
+                                            <input type="file" name="file"
+                                                   value="<spring:message code="LocationPicture"/>"/>
+                                            <input type="submit" value="<spring:message code="UploadButton" />">
+                                        </form>
+                                        <a href="/users/trip/${trip.id}/locations/${location.id}/deleteQuestionImage">
+                                            <button type="button" id="btn-deletePicture"><spring:message
+                                                    code="Delete"/></button>
+                                        </a>
+                                    </div>
+                                </c:otherwise>
+                            </c:choose>
                         </c:if>
                         <label type="text">${location.getQuestion().question}</label>
                         <ul>
@@ -129,7 +131,8 @@
             </c:choose>
 
             <div id="editQuestion">
-                <form:form action="/users/trip/${trip.id}/locations/${location.id}/editQuestion" method="POST" enctype="multipart/form-data">
+                <form:form action="/users/trip/${trip.id}/locations/${location.id}/editQuestion" method="POST"
+                           enctype="multipart/form-data">
                     <c:choose>
                         <c:when test="${location.question.image == null}">
                             <div class="bgImage">

@@ -86,7 +86,7 @@
         <c:if test="${not empty user && trip.organizer == user}">
             <h3><spring:message code="InviteAUser"/></h3>
 
-            <form action="/inviteUser/${trip.id}/findUsersByKeyword" method="GET">
+            <form id="find" action="/inviteUser/${trip.id}/findUsersByKeyword" method="GET">
                 <table id="findUsers-table">
                     <tr>
                         <td><spring:message code="User"/></td>
@@ -99,7 +99,7 @@
             </form>
             <c:choose>
                 <c:when test="${empty usersByKeyword}">
-                    <h3><spring:message code="NoUsersFound"/>.</h3>
+                    <h3 id="noneFound"><spring:message code="NoUsersFound"/>.</h3>
                 </c:when>
                 <c:otherwise>
                     <c:set var="count" value="0" scope="page"/>
