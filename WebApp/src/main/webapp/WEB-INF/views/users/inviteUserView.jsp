@@ -86,7 +86,7 @@
         <c:if test="${not empty user && trip.organizer == user}">
             <h3><spring:message code="InviteAUser"/></h3>
 
-            <form id="find" action="/inviteUser/${trip.id}/findUsersByKeyword" method="GET">
+            <form class="above-footer" id="find" action="/inviteUser/${trip.id}/findUsersByKeyword" method="GET">
                 <table id="findUsers-table">
                     <tr>
                         <td><spring:message code="User"/></td>
