@@ -636,7 +636,7 @@ public class TripController {
             try {
                 Trip trip = tripsService.findTripById(tripId, user);
                 tripsService.uninvite(trip, user, tripsService.findUser(uninviteEmail));
-                return new ModelAndView("redirect:/inviteUser/" + trip.getId());
+                return new ModelAndView("redirect:/users/inviteUser/" + trip.getId());
             } catch (TripsException e) { // trip/user not found or failed to uninvite
                 return new ModelAndView("tripsView", "error", e.getMessage());
             }

@@ -13,8 +13,12 @@ function initDataTable() {
 
 function btnListeners() {
     $('#btn-SearchUsers').click(function () {
-        $('#foundUsers').show();
-        $('#noneFound').show();
+        var count = $('#foundUsers-table > tbody > tr').length;
+        if(count != 0){
+            $('#foundUsers-table').show();
+        }else{
+            $('#noneFound').show();
+        }
     });
 
     $('.invite-input').click(function () {
