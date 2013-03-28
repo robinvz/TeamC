@@ -7,8 +7,10 @@
     <link rel="stylesheet" href="${pageContext.request.contextPath}/resources/css/main.css"/>
     <link rel="stylesheet" href="${pageContext.request.contextPath}/resources/css/trip.css"/>
     <link rel="stylesheet" href="${pageContext.request.contextPath}/resources/css/inviteUser.css"/>
-    <link rel="stylesheet" media="(max-width:1040px)" href="${pageContext.request.contextPath}/resources/css/main-responsive.css">
-    <link rel="stylesheet" media="(min-width:1039px)" href="${pageContext.request.contextPath}/resources/css/responsive-fix.css">
+    <link rel="stylesheet" media="(max-width:1040px)"
+          href="${pageContext.request.contextPath}/resources/css/main-responsive.css">
+    <link rel="stylesheet" media="(min-width:1039px)"
+          href="${pageContext.request.contextPath}/resources/css/responsive-fix.css">
     <link rel="shortcut icon" href="${pageContext.request.contextPath}/resources/res/favicon.ico">
     <title><spring:message code="TripPage"/></title>
 </head>
@@ -97,57 +99,53 @@
                     </tr>
                 </table>
             </form>
-            <c:choose>
-                <c:otherwise>
-                    <c:set var="count" value="0" scope="page"/>
-                    <table id="foundUsers-table" class="dataTable above-footer">
-                        <thead>
-                        <tr>
-                            <th></th>
-                            <th><spring:message code="FirstName"/></th>
-                            <th><spring:message code="LastName"/></th>
-                            <th>Email</th>
-                            <th></th>
-                        </tr>
-                        </thead>
-                        <tbody>
-                        <c:forEach items="${usersByKeyword}" var="userByKeyword">
-                            <c:set var="isInvited" value="false" scope="page"/>
-                            <tr id="user-${userByKeyword.id}">
-                                <td>
-                                    <c:set var="count" value="${count + 1}" scope="page"/>
-                                    <c:out value="${count}"></c:out>
-                                </td>
-                                <td>
-                                        ${userByKeyword.firstName}
-                                </td>
-                                <td>
-                                        ${userByKeyword.lastName}
-                                </td>
-                                <td>
-                                        ${userByKeyword.email}
-                                    <input name="userByKeywordEmail" value="${userByKeyword.email}"
-                                           hidden="hidden"/>
-                                </td>
-                                <td>
-                                    <c:if test="${not empty invitations}">
-                                        <c:forEach items="${invitations}" var="invitation">
-                                            <c:if test="${invitation.getUser() == userByKeyword && invitation.getTrip() == trip}">
-                                                <c:set var="isInvited" value="true" scope="page"/>
-                                            </c:if>
-                                        </c:forEach>
+            <c:set var="count" value="0" scope="page"/>
+            <table id="foundUsers-table" class="dataTable above-footer">
+                <thead>
+                <tr>
+                    <th></th>
+                    <th><spring:message code="FirstName"/></th>
+                    <th><spring:message code="LastName"/></th>
+                    <th>Email</th>
+                    <th></th>
+                </tr>
+                </thead>
+                <tbody>
+                <c:forEach items="${usersByKeyword}" var="userByKeyword">
+                    <c:set var="isInvited" value="false" scope="page"/>
+                    <tr id="user-${userByKeyword.id}">
+                        <td>
+                            <c:set var="count" value="${count + 1}" scope="page"/>
+                            <c:out value="${count}"></c:out>
+                        </td>
+                        <td>
+                                ${userByKeyword.firstName}
+                        </td>
+                        <td>
+                                ${userByKeyword.lastName}
+                        </td>
+                        <td>
+                                ${userByKeyword.email}
+                            <input name="userByKeywordEmail" value="${userByKeyword.email}"
+                                   hidden="hidden"/>
+                        </td>
+                        <td>
+                            <c:if test="${not empty invitations}">
+                                <c:forEach items="${invitations}" var="invitation">
+                                    <c:if test="${invitation.getUser() == userByKeyword && invitation.getTrip() == trip}">
+                                        <c:set var="isInvited" value="true" scope="page"/>
                                     </c:if>
-                                    <c:if test="${isInvited == false}">
-                                        <input class="invite-input" type="submit"
-                                               value="<spring:message code="Invite"/>"/>
-                                    </c:if>
-                                </td>
-                            </tr>
-                        </c:forEach>
-                        </tbody>
-                    </table>
-                </c:otherwise>
-            </c:choose>
+                                </c:forEach>
+                            </c:if>
+                            <c:if test="${isInvited == false}">
+                                <input class="invite-input" type="submit"
+                                       value="<spring:message code="Invite"/>"/>
+                            </c:if>
+                        </td>
+                    </tr>
+                </c:forEach>
+                </tbody>
+            </table>
         </c:if>
     </div>
 </div>
