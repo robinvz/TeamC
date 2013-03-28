@@ -15,19 +15,19 @@
         <jsp:include page="profileHeaderView.jsp"/>
         <div class="content">
             <h2><spring:message code="TripsHistory"/></h2>
-            <p  >Please be aware that public trips don't require any kind of authentication and therefore aren't shown in trips history</p>
+            <p><spring:message code="PleaseBeAware"/></p>
 
             <c:choose>
                 <c:when test="${empty user.enrollments}">
-                    <p>You haven't subscribed for any trip yet. You better hurry before it's too late!</p>
+                    <p><spring:message code="NoEnrollments"/></p>
                 </c:when>
                 <c:otherwise>
                     <table class="tables">
                         <thead>
                         <tr>
-                            <th>Title</th>
-                            <th>Description</th>
-                            <th>Enrollment date</th>
+                            <th><spring:message code="Title"/></th>
+                            <th><spring:message code="Description"/></th>
+                            <th><spring:message code="SubscriptionDate"/></th>
                             <th>Status</th>
                         </tr>
                         </thead>

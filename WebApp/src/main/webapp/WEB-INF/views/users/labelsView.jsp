@@ -51,7 +51,9 @@
                 </table>
             </c:when>
             <c:otherwise>
-                <p>There aren't any labels at the moment</p>
+                <p>
+                    <spring:message code="NoLabels"/>
+                </p>
             </c:otherwise>
         </c:choose>
     </div>
