@@ -98,9 +98,6 @@
                 </table>
             </form>
             <c:choose>
-                <c:when test="${empty usersByKeyword}">
-                    <h3 id="noneFound"><spring:message code="NoUsersFound"/>.</h3>
-                </c:when>
                 <c:otherwise>
                     <c:set var="count" value="0" scope="page"/>
                     <table id="foundUsers-table" class="dataTable above-footer">

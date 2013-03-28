@@ -1,7 +1,6 @@
 var tripId;
 
 function getTripId(id) {
-    $('#noneFound').hide();
     tripId = id;
     initDataTable();
     btnListeners();
@@ -12,16 +11,8 @@ function initDataTable() {
 }
 
 function btnListeners() {
-    var count = 0;
     $('#btn-SearchUsers').click(function () {
-         count = $('#foundUsers-table > tbody > tr').length;
-        if(count > 0){
-            $('#noneFound').hide();
-            $('#foundUsers-table').show();
-        }else if(count == 0){
-            $('#foundUsers-table').hide();
-            $('#noneFound').show();
-        }
+        $('#foundUsers-table').show();
     });
 
     $('.invite-input').click(function () {
