@@ -67,9 +67,9 @@ public class Maptivity extends FragmentActivity implements LocationListener {
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		loc = (Location) getIntent().getSerializableExtra("location");
-		previousLocation = (Location) getIntent().getSerializableExtra("previousLocation");
-		started = getIntent().getBooleanExtra("started",
-				false);
+		previousLocation = (Location) getIntent().getSerializableExtra(
+				"previousLocation");
+		started = getIntent().getBooleanExtra("started", false);
 		super.onCreate(savedInstanceState);
 		sequence = getIntent().getIntExtra("sequence", 0);
 		if (isGoogleMapsInstalled()) {
@@ -98,6 +98,7 @@ public class Maptivity extends FragmentActivity implements LocationListener {
 
 				// Creating a criteria object to retrieve provider
 				Criteria criteria = new Criteria();
+				criteria.setAccuracy(Criteria.NO_REQUIREMENT);
 
 				// Getting the name of the best provider
 				String provider = locationManager.getBestProvider(criteria,
@@ -106,12 +107,12 @@ public class Maptivity extends FragmentActivity implements LocationListener {
 				// Getting Current Location
 				android.location.Location location = locationManager
 						.getLastKnownLocation(provider);
+				locationManager
+						.requestLocationUpdates(provider, 20000, 0, this);
 
 				if (location != null) {
 					onLocationChanged(location);
 				}
-				locationManager
-						.requestLocationUpdates(provider, 20000, 0, this);
 			}
 
 		} else {
@@ -222,24 +223,19 @@ public class Maptivity extends FragmentActivity implements LocationListener {
 		// Set the data to pass back
 		setResult(RESULT_OK, data);
 	}
-	
-	
 
 	@Override
 	public boolean onCreateOptionsMenu(Menu menu) {
 		getMenuInflater().inflate(R.menu.augmentedreality, menu);
 		return true;
 	}
-	
-	
-	
 
 	@Override
 	public boolean onOptionsItemSelected(MenuItem item) {
-		if (item.getItemId() == R.id.artif){
-			 Intent i = new Intent(this, CloudReco.class);
-		     startActivity(i);
-			
+		if (item.getItemId() == R.id.artif) {
+			Intent i = new Intent(this, CloudReco.class);
+			startActivity(i);
+
 		}
 		return super.onOptionsItemSelected(item);
 	}
@@ -266,12 +262,11 @@ public class Maptivity extends FragmentActivity implements LocationListener {
 		loco.setLatitude(loc.getLatitude());
 		loco.setLongitude(loc.getLongitude());
 		TextView tv = (TextView) findViewById(R.id.tvVraag);
-		if(!started){
-			tv.setText(getResources().getString(R.string.notstarted));	
-		}
-		else if (loc.getQuestion().contentEquals("null")){
+		if (!started) {
+			tv.setText(getResources().getString(R.string.notstarted));
+		} else if (loc.getQuestion().contentEquals("null")) {
 			tv.setText(getResources().getString(R.string.noquestion));
-			if (location.distanceTo(loco) <= RADIUS && !loc.isVisited()){
+			if (location.distanceTo(loco) <= RADIUS && !loc.isVisited()) {
 				SharedPreferences sp = PreferenceManager
 						.getDefaultSharedPreferences(this);
 				String ip = sp.getString("server_ip", "192.168.2.200");
@@ -283,11 +278,11 @@ public class Maptivity extends FragmentActivity implements LocationListener {
 				data.putExtra("position", sequence);
 				// Set the data to pass back
 				MoveTask mv = new MoveTask(this);
-				mv.execute(new String[]{ip, port, loc.getId()+"", email, pass});
-				setResult(RESULT_OK, data);	
+				mv.execute(new String[] { ip, port, loc.getId() + "", email,
+						pass });
+				setResult(RESULT_OK, data);
 			}
-		}
-		else if (previousLocation != null && !previousLocation.isAnswered()) {
+		} else if (previousLocation != null && !previousLocation.isAnswered()) {
 			tv.setText(getResources().getString(R.string.answerpreviousfirst));
 		} else if (location.distanceTo(loco) > RADIUS) {
 			tv.setText(getResources().getString(R.string.notcloseenough));

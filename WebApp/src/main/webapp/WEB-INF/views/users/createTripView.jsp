@@ -13,7 +13,7 @@
 </head>
 <body>
 <div id="page">
-    <jsp:include page="baseView.jsp"/>
+    <jsp:include page="../baseView.jsp"/>
 
     <div id="content">
         <c:if test="${error != null}">

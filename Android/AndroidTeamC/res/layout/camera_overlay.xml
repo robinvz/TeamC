@@ -48,25 +48,37 @@
         android:textSize="16sp"
         android:visibility="gone" />
 
-    <ScrollView
+    <RelativeLayout
         android:layout_width="wrap_content"
-        android:layout_height="100dp"
-        android:layout_alignParentBottom="true"
-        android:layout_alignParentLeft="true"
-        android:layout_alignParentRight="true">
+        android:layout_height="wrap_content" >
 
-        <TextView
-            android:id="@+id/txtFindThis"
-            
-        android:background="@drawable/md__list_selector_background_transition_holo_dark" 
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text="SearchFor the blablab"
-            android:textSize="20sp" 
-            
-            android:gravity="center"
-            android:layout_gravity="bottom|center"/>
+        <ScrollView
+            android:id="@+id/scrollView1"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:layout_alignParentBottom="true"
+            android:layout_alignParentRight="true"
+            android:layout_alignTop="@+id/imageView1"
+            android:layout_toRightOf="@+id/imageView1" >
 
-    </ScrollView>
+            <TextView
+                android:id="@+id/txtFindThis"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:background="@drawable/md__list_selector_background_transition_holo_dark"
+                android:gravity="center"
+                android:text="@string/find_the_photo"
+                android:textSize="20sp" />
+        </ScrollView>
+
+        <ImageView
+            android:id="@+id/imageView1"
+            android:layout_width="60dp"
+            android:layout_height="60dp"
+            android:layout_alignParentBottom="true"
+            android:layout_alignParentLeft="true"
+            android:src="@drawable/img_antwerpen" />
+    </RelativeLayout>
 
 </RelativeLayout>
